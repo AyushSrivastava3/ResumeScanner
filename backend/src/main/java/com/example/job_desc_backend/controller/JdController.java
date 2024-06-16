@@ -15,11 +15,6 @@ import java.util.List;
 public class JdController {
     @Autowired
     JdService jdService;
-//    @PostMapping("/create")
-//    public Job_description createJobDescription(@RequestBody Job_description_RequestDto jobDescriptionRequestDto) {
-//        return jdService.createJobDescription(jobDescriptionRequestDto);
-//    }
-
 
     @PostMapping("/create")
     public Job_description createJobDescription(@RequestBody Job_description jobDescription) {

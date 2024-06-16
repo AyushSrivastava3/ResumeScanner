@@ -12,6 +12,15 @@ public class Resume {
     private String id;
     private String fileName;
     private String contentType;
+    private String fileId;
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
 
     // Getters and setters
     public String getId() {

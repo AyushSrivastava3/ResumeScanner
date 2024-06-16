@@ -1,7 +1,9 @@
 package com.example.job_desc_backend.service;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.model.Skill;
+import com.example.job_desc_backend.model.SkillPattern;
 import com.example.job_desc_backend.repository.ResumeRepository;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -9,6 +11,7 @@ import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
@@ -27,6 +30,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 public class ResumeService {
@@ -133,7 +139,8 @@ public class ResumeService {
             totalExperienceMonths += experience.durationInMonths;
             for (String skill : mandatorySkills) {
                 String lowerSkill = skill.toLowerCase();
-                Pattern pattern = Pattern.compile("\\b" + Pattern.quote(lowerSkill) + "\\b", Pattern.CASE_INSENSITIVE);
+                //Pattern pattern = Pattern.compile("\\b" + Pattern.quote(lowerSkill) + "\\b", Pattern.CASE_INSENSITIVE);
+                Pattern pattern = SkillPattern.getSkillPattern(skill);
                 Matcher matcher = pattern.matcher(experience.description.toLowerCase());
 
                 if (matcher.find()) {
@@ -169,7 +176,6 @@ public class ResumeService {
             //double percentage = totalExperienceMonths > 0 ? (double) duration / (totalExperienceMonths) * 100 : 0;
             skillPercentages.put(lowerSkill, percentage);
         }
-
         // Combine skillDurations, skillDetails, and skillPercentages into the result map
         Map<String, Object> result = new HashMap<>();
         for (String skill : mandatorySkills) {
@@ -180,7 +186,6 @@ public class ResumeService {
             skillInfo.put("details", skillDetails.get(lowerSkill));
             result.put(lowerSkill, skillInfo);
         }
-
         // Add overall percentage
 
         double sum = 0.0;
@@ -275,13 +280,23 @@ public class ResumeService {
         String[] sectionHeaders = {"EDUCATION", "SKILLS", "COURSEWORK", "PROJECTS", "AREAS OF INTEREST"};
         String lowerText = text.toLowerCase();
         int end = lowerText.length();
-        Matcher nextDateMatcher = Pattern.compile("\\b((?:\\w+ \\d{4})|(?:\\w+-\\d{4})|(?:\\d{1,2}/\\d{4})|(?:\\d{1,2}/\\d{1,2}/\\d{2,4})|(?:\\w{3}/\\d{4}))\\b", Pattern.CASE_INSENSITIVE).matcher(lowerText.substring(start));
+
+        // Pattern to find the next date in the text
+        Matcher nextDateMatcher = Pattern.compile(
+                "\\b((?:\\w+ \\d{4})|(?:\\w+-\\d{4})|(?:\\d{1,2}/\\d{4})|(?:\\d{1,2}/\\d{1,2}/\\d{2,4})|(?:\\w{3}/\\d{4}))\\b",
+                Pattern.CASE_INSENSITIVE
+        ).matcher(lowerText.substring(start));
         if (nextDateMatcher.find()) {
             end = nextDateMatcher.start() + start;
         }
 
+        // Adjust end position if section headers are found
         for (String header : sectionHeaders) {
-            Pattern headerPattern = Pattern.compile("\\b" + Pattern.quote(header.toLowerCase()) + "\\b[\\s:]*", Pattern.CASE_INSENSITIVE);
+            // Pattern to match headers on a new line or surrounded by whitespace
+            Pattern headerPattern = Pattern.compile(
+                    "(^|\\n)\\s*" + Pattern.quote(header.toLowerCase()) + "\\s*[:\\n\\r]",
+                    Pattern.CASE_INSENSITIVE
+            );
             Matcher headerMatcher = headerPattern.matcher(lowerText.substring(start, end));
             if (headerMatcher.find()) {
                 end = headerMatcher.start() + start;
@@ -290,6 +305,7 @@ public class ResumeService {
 
         return text.substring(start, end).trim();
     }
+
 
     private static class WorkExperience {
         String startDateStr;
@@ -315,17 +331,18 @@ public class ResumeService {
     public ResponseEntity<Map<String, Object>> saveResume(MultipartFile file) {
         try {
             // Save the file to MongoDB using GridFS
-            String fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType()).toString();
+            ObjectId fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
 
             // Save metadata to MongoDB
             Resume resume = new Resume();
             resume.setFileName(file.getOriginalFilename());
             resume.setContentType(file.getContentType());
+            resume.setFileId(fileId.toString());  // Store the fileId
             resumeRepository.save(resume);
 
             // Prepare response
             Map<String, Object> response = new HashMap<>();
-            response.put("fileId", fileId);
+            response.put("fileId", fileId.toString());
             response.put("fileName", file.getOriginalFilename());
             response.put("contentType", file.getContentType());
 
@@ -336,16 +353,20 @@ public class ResumeService {
         }
     }
 
-
-    public ResponseEntity<byte[]> downloadResume(String resumeId) {
-        Optional<Resume> resume = resumeRepository.findById(resumeId);
-        if (resume == null) {
+    public ResponseEntity<byte[]> downloadResume(String fileId) {
+        Optional<Resume> resume = resumeRepository.findByFileId(fileId);
+        if (resume.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Retrieve the file from GridFS
-        GridFsResource resource = gridFsTemplate.getResource(resume.get().getId());
-        if (resource == null) {
+        // Retrieve the file from GridFS using the stored fileId
+        GridFSFile gridFsFile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(fileId))));
+        if (gridFsFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        GridFsResource resource = gridFsTemplate.getResource(gridFsFile);
+        if (!resource.exists()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -362,5 +383,10 @@ public class ResumeService {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    public ResponseEntity<List<Resume>> getAllResumes() {
+        List<Resume> resumes = resumeRepository.findAll();
+        return ResponseEntity.ok(resumes);
     }
 }

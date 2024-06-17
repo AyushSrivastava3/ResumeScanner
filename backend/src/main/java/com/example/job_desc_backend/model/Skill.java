@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +13,8 @@ import java.util.regex.Pattern;
 @Setter
 public class Skill {
     private String skill;
+    private int experience;
+    private List<String> subSkills;
 
     public String getSkill() {
         return skill;
@@ -31,7 +32,11 @@ public class Skill {
         this.experience = experience;
     }
 
-    private int experience;
+    public List<String> getSubSkills() {
+        return subSkills;
+    }
 
-
+    public void setSubSkills(List<String> subSkills) {
+        this.subSkills = subSkills;
+    }
 }

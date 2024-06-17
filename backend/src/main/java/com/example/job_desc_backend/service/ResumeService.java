@@ -54,17 +54,20 @@ public class ResumeService {
             }
 
             List<String> skillNames = new ArrayList<>();
-            List<Integer> skillExperience=new ArrayList<>();
+            List<Integer> skillExperience = new ArrayList<>();
             Map<String, Integer> requiredExperienceMap = new HashMap<>();
+            Map<String, List<String>> subSkillsMap = new HashMap<>();
+
             for (Skill skill : mandatorySkills) {
                 String skillName = skill.getSkill();
-                int skillExp=skill.getExperience();
+                int skillExp = skill.getExperience();
                 skillNames.add(skillName);
                 skillExperience.add(skillExp);
                 requiredExperienceMap.put(skillName.toLowerCase(), skill.getExperience());
+                subSkillsMap.put(skillName.toLowerCase(), skill.getSubSkills());
             }
 
-            Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap);
+            Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap, subSkillsMap);
 
             return ResponseEntity.ok(skillAnalysis);
         } catch (IOException | TesseractException e) {
@@ -117,14 +120,16 @@ public class ResumeService {
         }
     }
 
-    private Map<String, Object> calculateSkillAnalysis(String resumeText, List<String> mandatorySkills, Map<String, Integer> requiredExperienceMap) {
+    private Map<String, Object> calculateSkillAnalysis(String resumeText, List<String> mandatorySkills, Map<String, Integer> requiredExperienceMap, Map<String, List<String>> subSkillsMap) {
         Map<String, Integer> skillDurations = new HashMap<>();
         Map<String, List<Map<String, Object>>> skillDetails = new HashMap<>();
+        Map<String, List<String>> matchedSubSkills = new HashMap<>();
         int totalExperienceMonths = 0;
 
         for (String skill : mandatorySkills) {
             skillDurations.put(skill.toLowerCase(), 0);
             skillDetails.put(skill.toLowerCase(), new ArrayList<>());
+            matchedSubSkills.put(skill.toLowerCase(), new ArrayList<>());
         }
 
         List<WorkExperience> experiences = extractWorkExperiences(resumeText);
@@ -148,6 +153,15 @@ public class ResumeService {
 
                     skillDetails.get(lowerSkill).add(detail);
                 }
+
+                List<String> subSkills = subSkillsMap.get(lowerSkill);
+                if (subSkills != null) {
+                    for (String subSkill : subSkills) {
+                        if (experience.description.toLowerCase().contains(subSkill.toLowerCase())) {
+                            matchedSubSkills.get(lowerSkill).add(subSkill);
+                        }
+                    }
+                }
             }
         }
 
@@ -170,6 +184,7 @@ public class ResumeService {
             skillInfo.put("requiredExperience", requiredExperienceMap.get(lowerSkill));
             skillInfo.put("percentage", skillPercentages.get(lowerSkill));
             skillInfo.put("details", skillDetails.get(lowerSkill));
+            skillInfo.put("matchedSubSkills", matchedSubSkills.get(lowerSkill));
             result.put(lowerSkill, skillInfo);
         }
 

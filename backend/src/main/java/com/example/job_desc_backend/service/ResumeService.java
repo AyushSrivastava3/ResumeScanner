@@ -54,10 +54,13 @@ public class ResumeService {
             }
 
             List<String> skillNames = new ArrayList<>();
+            List<Integer> skillExperience=new ArrayList<>();
             Map<String, Integer> requiredExperienceMap = new HashMap<>();
             for (Skill skill : mandatorySkills) {
                 String skillName = skill.getSkill();
+                int skillExp=skill.getExperience();
                 skillNames.add(skillName);
+                skillExperience.add(skillExp);
                 requiredExperienceMap.put(skillName.toLowerCase(), skill.getExperience());
             }
 
@@ -130,6 +133,7 @@ public class ResumeService {
             totalExperienceMonths += experience.durationInMonths;
             for (String skill : mandatorySkills) {
                 String lowerSkill = skill.toLowerCase();
+
                 Pattern pattern = SkillPattern.getSkillPattern(skill);
                 Matcher matcher = pattern.matcher(experience.description.toLowerCase());
 
@@ -163,6 +167,7 @@ public class ResumeService {
             String lowerSkill = skill.toLowerCase();
             Map<String, Object> skillInfo = new HashMap<>();
             skillInfo.put("totalDuration", skillDurations.get(lowerSkill));
+            skillInfo.put("requiredExperience", requiredExperienceMap.get(lowerSkill));
             skillInfo.put("percentage", skillPercentages.get(lowerSkill));
             skillInfo.put("details", skillDetails.get(lowerSkill));
             result.put(lowerSkill, skillInfo);

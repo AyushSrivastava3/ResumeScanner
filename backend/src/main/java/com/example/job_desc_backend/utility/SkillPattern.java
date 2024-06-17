@@ -1,4 +1,4 @@
-package com.example.job_desc_backend.model;
+package com.example.job_desc_backend.utility;
 
 import java.util.Map;
 import java.util.regex.Pattern;

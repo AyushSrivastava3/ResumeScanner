@@ -1,8 +1,9 @@
 package com.example.job_desc_backend.service;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.model.Skill;
-import com.example.job_desc_backend.model.SkillPattern;
+import com.example.job_desc_backend.utility.SkillPattern;
 import com.example.job_desc_backend.repository.ResumeRepository;
+import com.example.job_desc_backend.utility.DatePatternMatcher;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -25,8 +26,6 @@ import net.sourceforge.tess4j.TesseractException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,20 +53,15 @@ public class ResumeService {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(Map.of("error", "Unsupported file type"));
             }
 
-            // Extract skill names from mandatorySkills
             List<String> skillNames = new ArrayList<>();
-            for (Skill skill : mandatorySkills) {
-                skillNames.add(skill.getSkill());
-            }
-
             Map<String, Integer> requiredExperienceMap = new HashMap<>();
             for (Skill skill : mandatorySkills) {
-                skillNames.add(skill.getSkill());
-                requiredExperienceMap.put(skill.getSkill().toLowerCase(), skill.getExperience());
+                String skillName = skill.getSkill();
+                skillNames.add(skillName);
+                requiredExperienceMap.put(skillName.toLowerCase(), skill.getExperience());
             }
 
-            // Calculate skill durations and percentages
-            Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames,requiredExperienceMap);
+            Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap);
 
             return ResponseEntity.ok(skillAnalysis);
         } catch (IOException | TesseractException e) {
@@ -87,7 +81,6 @@ public class ResumeService {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
 
-            // If text extraction is unsuccessful, try OCR
             if (text.trim().isEmpty()) {
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 ITesseract tesseract = new Tesseract();
@@ -127,19 +120,16 @@ public class ResumeService {
         int totalExperienceMonths = 0;
 
         for (String skill : mandatorySkills) {
-            skillDurations.put(skill.toLowerCase(), 0); // Lowercase for case insensitive matching
+            skillDurations.put(skill.toLowerCase(), 0);
             skillDetails.put(skill.toLowerCase(), new ArrayList<>());
         }
 
-
         List<WorkExperience> experiences = extractWorkExperiences(resumeText);
 
-        // Calculate total duration and individual skill durations
         for (WorkExperience experience : experiences) {
             totalExperienceMonths += experience.durationInMonths;
             for (String skill : mandatorySkills) {
                 String lowerSkill = skill.toLowerCase();
-                //Pattern pattern = Pattern.compile("\\b" + Pattern.quote(lowerSkill) + "\\b", Pattern.CASE_INSENSITIVE);
                 Pattern pattern = SkillPattern.getSkillPattern(skill);
                 Matcher matcher = pattern.matcher(experience.description.toLowerCase());
 
@@ -157,26 +147,17 @@ public class ResumeService {
             }
         }
 
-        // Calculate percentages for each skill
         Map<String, Double> skillPercentages = new HashMap<>();
         for (String skill : mandatorySkills) {
-            double percentage;
             String lowerSkill = skill.toLowerCase();
             int duration = skillDurations.get(lowerSkill);
-            int totalExperienceYears=requiredExperienceMap.get(lowerSkill);
-            if(duration>totalExperienceYears*12){
-                percentage=100;
+            int totalExperienceYears = requiredExperienceMap.get(lowerSkill);
+            double percentage = duration > totalExperienceYears * 12 ? 100
+                    : (double) duration / (totalExperienceYears * 12) * 100;
 
-            }
-            else {
-               int totalRequiredMonth=totalExperienceYears*12;
-               percentage=(double) duration/(totalRequiredMonth)*100;
-            }
-
-            //double percentage = totalExperienceMonths > 0 ? (double) duration / (totalExperienceMonths) * 100 : 0;
             skillPercentages.put(lowerSkill, percentage);
         }
-        // Combine skillDurations, skillDetails, and skillPercentages into the result map
+
         Map<String, Object> result = new HashMap<>();
         for (String skill : mandatorySkills) {
             String lowerSkill = skill.toLowerCase();
@@ -186,15 +167,8 @@ public class ResumeService {
             skillInfo.put("details", skillDetails.get(lowerSkill));
             result.put(lowerSkill, skillInfo);
         }
-        // Add overall percentage
 
-        double sum = 0.0;
-        for (double percentage : skillPercentages.values()) {
-            sum += percentage;
-        }
-
-        double overallPercentage = sum / skillPercentages.size();
-        //double overallPercentage = totalExperienceMonths > 0 ? (double) totalExperienceMonths / experiences.size() : 0;
+        double overallPercentage = skillPercentages.values().stream().mapToDouble(Double::doubleValue).sum() / skillPercentages.size();
         result.put("overallPercentage", overallPercentage);
 
         return result;
@@ -202,13 +176,7 @@ public class ResumeService {
 
     private List<WorkExperience> extractWorkExperiences(String text) {
         List<WorkExperience> experiences = new ArrayList<>();
-        Pattern datePattern = Pattern.compile(
-                "\\b((?:\\w+ \\d{4})|(?:\\w+-\\d{4})|(?:\\d{1,2}/\\d{4})|(?:\\d{1,2}/\\d{1,2}/\\d{2,4})|(?:\\w{3}/\\d{4}))" +
-                        "\\s*(?:to|–|-)\\s*" +
-                        "((?:\\w+ \\d{4})|(?:\\w+-\\d{4})|(?:\\d{1,2}/\\d{4})|(?:\\d{1,2}/\\d{1,2}/\\d{2,4})|(?:Present)|(?:Till Date)|(?:Current)|(?:CURRENT))\\b",
-                Pattern.CASE_INSENSITIVE
-        );
-        Matcher matcher = datePattern.matcher(text);
+        Matcher matcher = DatePatternMatcher.getDateMatcher(text);
 
         while (matcher.find()) {
             String startDateStr = matcher.group(1);
@@ -217,63 +185,13 @@ public class ResumeService {
             int start = matcher.end();
             String description = extractExperienceDescription(text, start);
 
-            int durationInMonths = calculateDurationInMonthsFromString(startDateStr, endDateStr);
+            LocalDate startDate = DatePatternMatcher.parseDate(startDateStr);
+            LocalDate endDate = DatePatternMatcher.parseDate(endDateStr);
+            int durationInMonths = DatePatternMatcher.calculateDurationInMonths(startDate, endDate);
+
             experiences.add(new WorkExperience(startDateStr, endDateStr, durationInMonths, description));
         }
         return experiences;
-    }
-
-    private int calculateDurationInMonthsFromString(String startDateStr, String endDateStr) {
-        // Function to convert month name to month number
-        Map<String, Integer> monthMap = new HashMap<>();
-        String[] months = new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-        String[] abbreviations = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
-        String[] abbreviations1 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        String[] numericAbbreviations = new String[]{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
-
-        for (int i = 0; i < months.length; i++) {
-            monthMap.put(months[i].toLowerCase(), i + 1); // Ensure lowercase for case insensitive matching
-            monthMap.put(abbreviations[i].toLowerCase(), i + 1);
-            monthMap.put(abbreviations1[i].toLowerCase(), i + 1);
-            monthMap.put(numericAbbreviations[i], i + 1); // Add
-            monthMap.put(numericAbbreviations[i], i + 1); // Add numeric abbreviations to the map
-        }
-
-        LocalDate startDate = parseDate(startDateStr, monthMap);
-        LocalDate endDate = parseDate(endDateStr, monthMap);
-
-        // Calculate duration in months
-        int durationInMonths = (int) ChronoUnit.MONTHS.between(startDate, endDate);
-        return durationInMonths;
-    }
-
-    private LocalDate parseDate(String dateStr, Map<String, Integer> monthMap) {
-        if ("Present".equalsIgnoreCase(dateStr) || "Till Date".equalsIgnoreCase(dateStr) || "Current".equalsIgnoreCase(dateStr) || "CURRENT".equalsIgnoreCase(dateStr)) {
-            return LocalDate.now();
-        }
-
-        DateTimeFormatter formatter;
-        if (dateStr.contains("-")) {
-            formatter = DateTimeFormatter.ofPattern("MMM-yyyy", Locale.ENGLISH);
-        } else if (dateStr.matches("\\d{1,2}/\\d{4}")) {
-            formatter = DateTimeFormatter.ofPattern("M/yyyy");
-        } else if (dateStr.matches("\\d{1,2}/\\d{1,2}/\\d{2,4}")) {
-            formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
-        } else if (dateStr.matches("\\w{3}/\\d{4}")) {
-            formatter = DateTimeFormatter.ofPattern("MMM/yyyy", Locale.ENGLISH);
-        } else {
-            formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH);
-        }
-
-        try {
-            return LocalDate.parse(dateStr, formatter);
-        } catch (Exception e) {
-            // Fallback to manual parsing
-            String[] parts = dateStr.split("[\\s/-]");
-            int month = monthMap.getOrDefault(parts[0].toLowerCase(), 1);
-            int year = Integer.parseInt(parts[parts.length - 1]);
-            return LocalDate.of(year, month, 1);
-        }
     }
 
     private String extractExperienceDescription(String text, int start) {
@@ -281,18 +199,12 @@ public class ResumeService {
         String lowerText = text.toLowerCase();
         int end = lowerText.length();
 
-        // Pattern to find the next date in the text
-        Matcher nextDateMatcher = Pattern.compile(
-                "\\b((?:\\w+ \\d{4})|(?:\\w+-\\d{4})|(?:\\d{1,2}/\\d{4})|(?:\\d{1,2}/\\d{1,2}/\\d{2,4})|(?:\\w{3}/\\d{4}))\\b",
-                Pattern.CASE_INSENSITIVE
-        ).matcher(lowerText.substring(start));
+        Matcher nextDateMatcher = DatePatternMatcher.getDateMatcher(lowerText.substring(start));
         if (nextDateMatcher.find()) {
             end = nextDateMatcher.start() + start;
         }
 
-        // Adjust end position if section headers are found
         for (String header : sectionHeaders) {
-            // Pattern to match headers on a new line or surrounded by whitespace
             Pattern headerPattern = Pattern.compile(
                     "(^|\\n)\\s*" + Pattern.quote(header.toLowerCase()) + "\\s*[:\\n\\r]",
                     Pattern.CASE_INSENSITIVE
@@ -305,7 +217,6 @@ public class ResumeService {
 
         return text.substring(start, end).trim();
     }
-
 
     private static class WorkExperience {
         String startDateStr;
@@ -320,6 +231,7 @@ public class ResumeService {
             this.description = description;
         }
     }
+
 
 
     @Autowired

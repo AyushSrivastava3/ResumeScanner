@@ -179,8 +179,18 @@ public class ResumeService {
         Map<String, Object> result = new HashMap<>();
         for (String skill : mandatorySkills) {
             String lowerSkill = skill.toLowerCase();
+            int skillDuration_year=skillDurations.get(lowerSkill)/12;
+            int skillDuration_months=skillDurations.get(lowerSkill)%12;
             Map<String, Object> skillInfo = new HashMap<>();
-            skillInfo.put("totalDuration", skillDurations.get(lowerSkill));
+            if (skillDuration_year==0 && skillDuration_months>0){
+                skillInfo.put("totalDuration",skillDuration_months+" months");
+            } else if (skillDuration_year==0 && skillDuration_months==0) {
+                skillInfo.put("totalDuration", 0);
+            }
+            else {
+                skillInfo.put("totalDuration", skillDuration_year+" years" +skillDuration_months+" months");
+            }
+            //skillInfo.put("totalDuration", skillDuration_year+" years" +skillDuration_months+" months");
             skillInfo.put("requiredExperience", requiredExperienceMap.get(lowerSkill));
             skillInfo.put("percentage", skillPercentages.get(lowerSkill));
             skillInfo.put("details", skillDetails.get(lowerSkill));
@@ -215,7 +225,7 @@ public class ResumeService {
     }
 
     private String extractExperienceDescription(String text, int start) {
-        String[] sectionHeaders = {"EDUCATION", "SKILLS", "COURSEWORK", "PROJECTS", "AREAS OF INTEREST"};
+        String[] sectionHeaders = {"EDUCATION", "SKILLS", "COURSEWORK", "PROJECTS","PROJECT", "AREAS OF INTEREST"};
         String lowerText = text.toLowerCase();
         int end = lowerText.length();
 

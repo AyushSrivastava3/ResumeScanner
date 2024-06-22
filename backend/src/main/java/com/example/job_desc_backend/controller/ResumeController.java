@@ -12,6 +12,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "*")
+
 public class ResumeController {
 
     @Autowired

@@ -280,6 +280,7 @@ public class ResumeService {
             resume.setFileName(file.getOriginalFilename());
             resume.setContentType(file.getContentType());
             resume.setFileId(fileId.toString());  // Store the fileId
+            resume.setUploadDate(LocalDate.now());
             resumeRepository.save(resume);
 
             // Prepare response

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Descriptions</title>
+    <style>
+        /* Add some basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        .jd-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+        }
+        .jd-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: box-shadow 0.3s;
+        }
+        .jd-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .jd-item h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        .actions button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .actions button:hover {
+            background-color: #ddd;
+        }
+        .side-panel {
+            width: 300px;
+            padding: 20px;
+            box-sizing: border-box;
+            border-left: 1px solid #ccc;
+            overflow-y: auto;
+            background-color: #fafafa;
+        }
+        .skill-box, .subskill-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .subskill-box {
+            margin-left: 20px;
+        }
+        .header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .jd-details-header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .jd-summary {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .jd-summary p {
+            margin: 5px 0;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+        .pagination button {
+            padding: 10px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .pagination button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="jd-list" id="jdList">
+        <div class="header">
+            <h1>Job Description List</h1>
+        </div>
+        <div class="pagination" id="paginationControls">
+            <button id="prevPage" disabled>Previous</button>
+            <button id="nextPage">Next</button>
+        </div>
+    </div>
+    <div class="side-panel" id="jdDetails"></div>
+</div>
+<div id="response"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const jdListDiv = document.getElementById('jdList');
+        const responseDiv = document.getElementById('response');
+        const jdDetailsDiv = document.getElementById('jdDetails');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        // Fetch job descriptions for the current page
+        function fetchJobDescriptions(page) {
+            fetch(`http://13.232.9.157:8080/jd/getIds`)
+                .then(response => response.json())
+                .then(data => {
+                    const totalItems = data.length;
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
+                    const startIndex = (page - 1) * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+                    const pageData = data.slice(startIndex, endIndex);
+
+                    jdListDiv.innerHTML = `
+                        <div class="header">
+                            <h1>Job Description List</h1>
+                        </div>
+                        <div class="pagination" id="paginationControls">
+                            <button id="prevPage" ${page === 1 ? 'disabled' : ''}>Previous</button>
+                            <button id="nextPage" ${page === totalPages ? 'disabled' : ''}>Next</button>
+                        </div>`;
+
+                    pageData.forEach((jd, index) => {
+                        // Fetch additional details for each job description
+                        fetch(`http://13.232.9.157:8080/getJd?id=${jd.id}`)
+                            .then(response => response.json())
+                            .then(details => {
+                                const jdItem = document.createElement('div');
+                                jdItem.classList.add('jd-item');
+                                jdItem.innerHTML = `
+                                    <h2>${details.title}</h2>
+                                    <div class="jd-summary">
+                                        <p><strong>Location:</strong> ${details.location}</p>
+                                        <p><strong>Mandatory Skills:</strong> ${details.mandatorySkills.map(skill => skill.skill).join(', ')}</p>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="viewBtn" data-id="${details.id}">View</button>
+                                        <button class="editBtn" data-id="${details.id}">Edit</button>
+                                        <button class="deleteBtn" data-id="${details.id}">Delete</button>
+                                    </div>
+                                `;
+                                jdListDiv.appendChild(jdItem);
+
+                                // Attach event listeners to the buttons
+                                jdItem.querySelector('.viewBtn').addEventListener('click', viewJD);
+                                jdItem.querySelector('.editBtn').addEventListener('click', editJD);
+                                jdItem.querySelector('.deleteBtn').addEventListener('click', deleteJD);
+                            })
+                            .catch(error => console.error('Error fetching job description details:', error));
+                    });
+
+                    // Reattach event listeners for pagination buttons
+                    document.getElementById('prevPage').addEventListener('click', () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            fetchJobDescriptions(currentPage);
+                        }
+                    });
+
+                    document.getElementById('nextPage').addEventListener('click', () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            fetchJobDescriptions(currentPage);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching job descriptions:', error));
+        }
+
+        // View job description details
+        function viewJD(event) {
+            const selectedId = event.target.getAttribute('data-id');
+
+            fetch(`http://13.232.9.157:8080/getJd?id=${selectedId}`)
+                .then(response => response.json())
+                .then(data => {
+                    jdDetailsDiv.innerHTML = `
+                        <div class="jd-details-header">
+                            <h2>Job Description Details</h2>
+                        </div>
+                        <p><strong>ID:</strong> ${data.id}</p>
+                        <p><strong>Title:</strong> ${data.title}</p>
+                        <p><strong>Location:</strong> ${data.location}</p>
+                        <p><strong>Experience Level:</strong> ${data.experienceLevel}</p>
+                        <p><strong>Mandatory Skills:</strong> ${formatSkills(data.mandatorySkills)}</p>
+                        <p><strong>Optional Skills:</strong> ${formatSkills(data.optionalSkills)}</p>
+                    `;
+                })
+                .catch(error => console.error('Error fetching job description:', error));
+        }
+
+        // Edit job description
+        function editJD(event) {
+            const selectedId = event.target.getAttribute('data-id');
+            window.location.href = `editjd.html?id=${selectedId}`;
+        }
+
+        // Delete job description
+        function deleteJD(event) {
+            const selectedId = event.target.getAttribute('data-id');
+
+            fetch(`http://13.232.9.157:8080/deleteJd?id=${selectedId}`, {
+                method: 'DELETE'
+            })
+            .then(() => {
+                responseDiv.textContent = 'Job description deleted successfully';
+                event.target.closest('.jd-item').remove();
+                jdDetailsDiv.innerHTML = '';
+                fetchJobDescriptions(currentPage);
+            })
+            .catch(error => console.error('Error deleting job description:', error));
+        }
+
+        // Function to format skills
+        function formatSkills(skills) {
+            return skills.map(skill => `
+                <div class="skill-box">
+                    <p><strong>Skill:</strong> ${skill.skill}</p>
+                    <p><strong>Experience:</strong> ${skill.experience} years</p>
+                    ${skill.subSkills && skill.subSkills.length > 0 ? `
+                        <div><strong>SubSkills:</strong></div>
+                        ${skill.subSkills.map(subSkill => `
+                            <div class="subskill-box">${subSkill}</div>
+                        `).join('')}
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Initial fetch
+        fetchJobDescriptions(currentPage);
+    });
+</script>
+</body>
+</html>

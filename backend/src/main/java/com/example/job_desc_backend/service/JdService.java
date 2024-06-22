@@ -18,33 +18,21 @@ public class JdService {
     @Autowired
     private JdRepository jdRepository;
 
-
-//    public Job_description createJobDescription(Job_description_RequestDto jobDescriptionRequestDto) {
-//        Job_description jobDescription=new Job_description();
-//        jobDescription.setTitle(jobDescriptionRequestDto.getTitle());
-//        jobDescription.setDescription(jobDescriptionRequestDto.getDescription());
-//        jobDescription.setResponsibilities(jobDescriptionRequestDto.getResponsibilities());
-//        jobDescription.setQualifications(jobDescriptionRequestDto.getQualifications());
-//        jobDescription.setLocation(jobDescriptionRequestDto.getLocation());
-//        jobDescription.setEmploymentType(jobDescriptionRequestDto.getEmploymentType());
-//        jobDescription.setExperienceLevel(jobDescriptionRequestDto.getExperienceLevel());
-//
-//
-//        return jdRepository.save(jobDescription);
-//    }
-
     public Job_description createJobDescription(Job_description jobDescription) {
         return jdRepository.save(jobDescription);
     }
 
-//    public List<String> getAllIds(){
-//        List<String> jds=new ArrayList<>();
-//        List<Job_description> allJd=jdRepository.findAll();
-//        for (Job_description jobDescription:allJd){
-//            jds.add(jobDescription.getId());
-//        }
-//        return jds;
-//    }
+    public Job_description editJobDescription(Job_description jobDescription){
+        Job_description newJd=jdRepository.findById(jobDescription.getId()).get();
+        //newJd.setId(jobDescription.getId());
+        newJd.setTitle(jobDescription.getTitle());
+        newJd.setLocation(jobDescription.getLocation());
+        newJd.setExperienceLevel(jobDescription.getExperienceLevel());
+        newJd.setMandatorySkills(jobDescription.getMandatorySkills());
+        newJd.setOptionalSkills(jobDescription.getOptionalSkills());
+        Job_description updatedJd=jdRepository.save(newJd);
+        return updatedJd;
+    }
 
     public List<Job_description_ResponseDto> getAllJobDescriptions() {
         List<Job_description> allJd = jdRepository.findAll();
@@ -67,5 +55,15 @@ public class JdService {
             return jobDescription.getMandatorySkills(); // Assuming getDescription() returns the job description content as String
         }
         return null; // or throw an exception, handle as per your application's requirement
+    }
+
+    public void deleteJobDescription(String id) {
+        Job_description jobDescription=jdRepository.findById(id).get();
+        jdRepository.delete(jobDescription);
+    }
+
+    public Job_description getJd(String id) {
+        Job_description jobDescription=jdRepository.findById(id).get();
+        return jobDescription;
     }
 }

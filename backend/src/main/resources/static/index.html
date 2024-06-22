@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Uploader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        header h1 {
+            margin: 0;
+            padding: 0 20px;
+            font-size: 1.5em;
+        }
+        .nav-button {
+            margin: 0 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: white;
+            color: #007bff;
+            border: 2px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+            color: white;
+            border: 2px solid #0056b3;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        input[type="file"],
+        select {
+            margin: 20px auto;
+            display: block;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 400px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 600px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .overall-percentage {
+            font-size: 1.5em;
+            color: #007bff;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Resume Matcher</h1>
+    <button class="nav-button" onclick="navigateToPractice9()">Upload and Download Resume</button>
+    <button class="nav-button" onclick="navigateToJd1()">Create Jd</button>
+    <button class="nav-button" onclick="navigateToList4()">View Jd</button>
+</header>
+<div class="container">
+    <h1>Resume matcher</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" accept=".pdf,.doc,.docx" required>
+        <select id="jdSelect" required>
+            <option value="" disabled selected>Select Job Description</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="overallPercentage" class="overall-percentage"></div>
+    <div id="result" style="display: none;">
+        <h2>Skill Durations</h2>
+        <table id="skillTable">
+            <thead>
+            <tr>
+                <th>Skill</th>
+                <th>Total Duration </th>
+                <th>Required Experience (years)</th>
+                <th>Percentage</th>
+                <th>Details</th>
+                <th>Matched Subskills</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function navigateToPractice9() {
+        window.location.href = 'practice9.html';
+    }
+    function navigateToJd1() {
+        window.location.href = 'jd3.html';
+    }
+    function navigateToList4(){
+        window.location.href='list4.html'
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://13.232.9.157:8080/jd/getIds')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const jdSelect = document.getElementById('jdSelect');
+                console.log("Job Descriptions Data: ", data);
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.title;
+                    jdSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching job descriptions:', error));
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+event.preventDefault();
+
+const selectedId = document.getElementById('jdSelect').value;
+const formData = new FormData();
+formData.append('file', document.getElementById('fileInput').files[0]);
+
+fetch(`http://13.232.9.157:8080/upload?jdId=${selectedId}`, {
+    method: 'POST',
+    body: formData
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+    }
+    return response.json();
+})
+.then(data => {
+    console.log("Received data:", data);
+    const resultDiv = document.getElementById('result');
+    const skillTableBody = document.getElementById('skillTable').querySelector('tbody');
+    const overallPercentageDiv = document.getElementById('overallPercentage');
+
+    skillTableBody.innerHTML = '';
+    for (const [skill, skillInfo] of Object.entries(data)) {
+        if (skill === 'overallPercentage') continue;
+
+        const row = document.createElement('tr');
+
+        const skillCell = document.createElement('td');
+        skillCell.textContent = skill;
+        row.appendChild(skillCell);
+
+        const durationCell = document.createElement('td');
+        durationCell.textContent = skillInfo.totalDuration;
+        row.appendChild(durationCell);
+
+        const requiredExperienceCell = document.createElement('td');
+        requiredExperienceCell.textContent = skillInfo.requiredExperience;
+        row.appendChild(requiredExperienceCell);
+
+        const percentageCell = document.createElement('td');
+        percentageCell.textContent = skillInfo.percentage !== undefined ? `${skillInfo.percentage.toFixed(2)}%` : 'N/A';
+        row.appendChild(percentageCell);
+
+        const detailsCell = document.createElement('td');
+        const detailsList = document.createElement('ul');
+
+        if (Array.isArray(skillInfo.details)) {
+            skillInfo.details.forEach(detail => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;
+                detailsList.appendChild(listItem);
+            });
+        } else {
+            const listItem = document.createElement('li');
+            listItem.textContent = 'Details not available';
+            detailsList.appendChild(listItem);
+        }
+
+        detailsCell.appendChild(detailsList);
+        row.appendChild(detailsCell);
+
+        const subskillsCell = document.createElement('td');
+        const subskillsList = document.createElement('ul');
+
+        if (Array.isArray(skillInfo.matchedSubSkills)) {
+            skillInfo.matchedSubSkills.forEach(subskill => {
+                const listItem = document.createElement('li');
+                listItem.textContent = subskill;
+                subskillsList.appendChild(listItem);
+            });
+        } else {
+            const listItem = document.createElement('li');
+            listItem.textContent = 'No subskills';
+            subskillsList.appendChild(listItem);
+        }
+
+        subskillsCell.appendChild(subskillsList);
+        row.appendChild(subskillsCell);
+
+        skillTableBody.appendChild(row);
+    }
+
+    overallPercentageDiv.textContent = `Overall Percentage: ${data.overallPercentage.toFixed(2)}%`;
+    resultDiv.style.display = 'block';
+})
+.catch(error => {
+    console.error('Error:', error);
+    alert('Error occurred. Please try again.');
+});
+});
+
+</script>
+</body>
+</html>

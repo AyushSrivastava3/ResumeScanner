@@ -5,6 +5,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
 @Document(collection = "resumes")
 public class Resume {
     @Id
@@ -13,6 +15,7 @@ public class Resume {
     private String fileName;
     private String contentType;
     private String fileId;
+    private LocalDate uploadDate;
 
     public String getFileId() {
         return fileId;
@@ -45,5 +48,13 @@ public class Resume {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public LocalDate getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(LocalDate uploadDate) {
+        this.uploadDate = uploadDate;
     }
 }

@@ -3,8 +3,10 @@ package com.example.job_desc_backend.controller;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.service.JdService;
 import com.example.job_desc_backend.service.ResumeService;
+import com.example.job_desc_backend.utility.ResumeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,10 +38,28 @@ public class ResumeController {
         return resumeService.downloadResume(resumeId);
     }
 
+    @GetMapping("/viewResume")
+    public ResponseEntity<InputStreamResource> viewResume(@RequestParam("resumeId") String resumeId) {
+        return resumeService.viewResume(resumeId);
+    }
+
     @GetMapping("/allResume")
     public ResponseEntity<List<Resume>> getAllResumes() {
         return resumeService.getAllResumes();
     }
+
+    @PostMapping("/generateReport")
+    public ResponseEntity<byte[]> generateReport(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("jdId") String jdId) {
+        return resumeService.generateReport(file, jdId);
+    }
+
+    @GetMapping("/getReleventProfiles")
+    public ResponseEntity<List<ResumeInfo>> getReleventProfiles(@RequestParam String jdId) {
+        List<ResumeInfo> relevantProfiles = resumeService.ReleventProfiles(jdId);
+        return ResponseEntity.ok(relevantProfiles);
+    }
+
 }
 
 

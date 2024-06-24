@@ -63,103 +63,103 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Upload and Download Resume</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <label for="fileInput">Select File:</label>
-        <input type="file" name="file" id="fileInput" accept=".pdf,.doc,.docx" required>
-        <button type="submit">Upload Resume</button>
-    </form>
-
-    <div>
-        <label for="resumeSelect">Select Resume:</label>
-        <select id="resumeSelect">
-            <option value="" disabled selected>Select Resume</option>
-            <!-- Options will be dynamically added here -->
-        </select>
+    <div class="container">
+        <h1>Upload and Download Resume</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label for="fileInput">Select File:</label>
+            <input type="file" name="file" id="fileInput" accept=".pdf,.doc,.docx" required>
+            <button type="submit">Upload Resume</button>
+        </form>
+        
+        <div>
+            <label for="resumeSelect">Select Resume:</label>
+            <select id="resumeSelect">
+                <option value="" disabled selected>Select Resume</option>
+                <!-- Options will be dynamically added here -->
+            </select>
+        </div>
+        
+        <button type="button" id="downloadResumeBtn" class="download-btn">Download Resume</button>
     </div>
 
-    <button type="button" id="downloadResumeBtn" class="download-btn">Download Resume</button>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fetch all resumes from the server and populate the dropdown
-        fetch('http://13.232.9.157:8080/allResume')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const resumeSelect = document.getElementById('resumeSelect');
-                data.forEach(resume => {
-                    const option = document.createElement('option');
-                    option.value = resume.fileId; // Store fileId as value
-                    option.textContent = resume.fileName; // Display fileName in dropdown
-                    resumeSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching resumes:', error));
-    });
-
-    document.getElementById('uploadForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const formData = new FormData();
-        formData.append('file', document.getElementById('fileInput').files[0]);
-
-        fetch('http://13.232.9.157:8080/save', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Save Resume Response:', data);
-            alert('Resume saved successfully with ID: ' + data.fileId);
-            // After saving, update the dropdown with the new resume
-            const resumeSelect = document.getElementById('resumeSelect');
-            const option = document.createElement('option');
-            option.value = data.fileId;
-            option.textContent = data.fileName;
-            resumeSelect.appendChild(option);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error saving resume. Please try again.');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch all resumes from the server and populate the dropdown
+            fetch('http://13.232.9.157:8080/allResume')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const resumeSelect = document.getElementById('resumeSelect');
+                    data.forEach(resume => {
+                        const option = document.createElement('option');
+                        option.value = resume.fileId; // Store fileId as value
+                        option.textContent = resume.fileName; // Display fileName in dropdown
+                        resumeSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching resumes:', error));
         });
-    });
 
-    document.getElementById('downloadResumeBtn').addEventListener('click', function() {
-        const selectedResumeId = document.getElementById('resumeSelect').value;
-        if (selectedResumeId) {
-            fetch(`http://13.232.9.157:8080/getResume?resumeId=${selectedResumeId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('file', document.getElementById('fileInput').files[0]);
+
+            fetch('http://13.232.9.157:8080/save', {
+                method: 'POST',
+                body: formData
             })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'resume'; // Default download filename
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                alert('Resume downloaded successfully.');
+            .then(response => response.json())
+            .then(data => {
+                console.log('Save Resume Response:', data);
+                alert('Resume saved successfully with ID: ' + data.fileId);
+                // After saving, update the dropdown with the new resume
+                const resumeSelect = document.getElementById('resumeSelect');
+                const option = document.createElement('option');
+                option.value = data.fileId;
+                option.textContent = data.fileName;
+                resumeSelect.appendChild(option);
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error downloading resume. Please try again.');
+                alert('Error saving resume. Please try again.');
             });
-        } else {
-            alert('Please select a resume to download.');
-        }
-    });
-</script>
+        });
+
+        document.getElementById('downloadResumeBtn').addEventListener('click', function() {
+            const selectedResumeId = document.getElementById('resumeSelect').value;
+            if (selectedResumeId) {
+                fetch(`http://13.232.9.157:8080/getResume?resumeId=${selectedResumeId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'resume'; // Default download filename
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    alert('Resume downloaded successfully.');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error downloading resume. Please try again.');
+                });
+            } else {
+                alert('Please select a resume to download.');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,9 +1,14 @@
 package com.example.job_desc_backend.service;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.model.Skill;
-import com.example.job_desc_backend.utility.SkillPattern;
+import com.example.job_desc_backend.model.Skill_Experience;
+import com.example.job_desc_backend.repository.Skill_ExperienceRepository;
+import com.example.job_desc_backend.utility.*;
 import com.example.job_desc_backend.repository.ResumeRepository;
-import com.example.job_desc_backend.utility.DatePatternMatcher;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -14,6 +19,7 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.*;
@@ -24,11 +30,16 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -38,6 +49,8 @@ public class ResumeService {
 
     @Autowired
     private JdService jdService;
+    @Autowired
+    Skill_ExperienceRepository skillExperienceRepository;
 
     public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file, String jdId) {
         try {
@@ -67,9 +80,19 @@ public class ResumeService {
                 subSkillsMap.put(skillName.toLowerCase(), skill.getSubSkills());
             }
 
-            Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap, subSkillsMap);
 
-            return ResponseEntity.ok(skillAnalysis);
+            // Fetch additional IT skills from ITSkillsUtility
+            List<String> itSkills = ITSkillsUtility.getAllSkills();
+
+            // Calculate IT skills analysis
+            //Map<String, Object> itSkillAnalysis = calculateSkillAnalysis(resumeText, itSkills, new HashMap<>(), new HashMap<>());
+            Map<String, Object> itSkillAnalysis = calculateITSkillAnalysis(resumeText, itSkills,skillNames);
+            Map<String, Object> mandatorySkillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap, subSkillsMap);
+            Map<String, Object> result = new HashMap<>();
+            result.put("mandatorySkills", mandatorySkillAnalysis);
+            result.put("itSkills", itSkillAnalysis);
+
+            return ResponseEntity.ok(result);
         } catch (IOException | TesseractException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to process the file: " + e.getMessage()));
@@ -204,6 +227,202 @@ public class ResumeService {
         return result;
     }
 
+
+    private Map<String, Integer> calculateITSkillAnalysis(String resumeText, List<String> itSkills) {
+        Map<String, Integer> skillDurations = new HashMap<>();
+        Map<String, List<Map<String, Object>>> skillDetails = new HashMap<>();
+        Map<String, List<String>> matchedSubSkills = new HashMap<>();
+        int totalExperienceMonths = 0;
+
+        // Initialize maps for IT skills
+//        for (String skill : itSkills) {
+//            skillDurations.put(skill.toLowerCase(), 0);
+//            skillDetails.put(skill.toLowerCase(), new ArrayList<>());
+//            matchedSubSkills.put(skill.toLowerCase(), new ArrayList<>());
+//        }
+
+        // Initialize maps for IT skills
+        for (String skill : itSkills) {
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill);
+            skillDurations.put(canonicalSkill.toLowerCase(), 0);
+            skillDetails.put(canonicalSkill.toLowerCase(), new ArrayList<>());
+            matchedSubSkills.put(canonicalSkill.toLowerCase(), new ArrayList<>());
+        }
+
+        // Extract work experiences from resume text
+        List<WorkExperience> experiences = extractWorkExperiences(resumeText);
+
+        // Process each work experience
+        for (WorkExperience experience : experiences) {
+            totalExperienceMonths += experience.durationInMonths;
+            Set<String> skillsFoundInExperience = new HashSet<>();
+            for (String skill : itSkills) {
+                String lowerSkill = skill.toLowerCase();
+                String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
+
+                // Check if the skill is found in the experience description
+                if (experience.description.toLowerCase().contains(lowerSkill) && !skillsFoundInExperience.contains(canonicalSkill)) {
+                    skillsFoundInExperience.add(canonicalSkill);
+                    int currentDuration = skillDurations.get(canonicalSkill);
+                    skillDurations.put(canonicalSkill, currentDuration + experience.durationInMonths);
+
+                    Map<String, Object> detail = new HashMap<>();
+                    detail.put("startDate", experience.startDateStr);
+                    detail.put("endDate", experience.endDateStr);
+                    detail.put("durationInMonths", experience.durationInMonths);
+
+                    skillDetails.get(canonicalSkill).add(detail);
+                }
+            }
+        }
+
+        // Calculate percentages for IT skills
+        Map<String, Double> skillPercentages = new HashMap<>();
+        for (String skill : itSkills) {
+//            String can = skill.toLowerCase();
+//            int duration = skillDurations.get(lowerSkill);
+//            double percentage = (double) duration / totalExperienceMonths * 100;
+//
+//            skillPercentages.put(lowerSkill, percentage);
+
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
+            int duration = skillDurations.get(canonicalSkill);
+            double percentage = (double) duration / totalExperienceMonths * 100;
+
+            skillPercentages.put(canonicalSkill, percentage);
+        }
+
+        // Prepare result map for IT skills analysis
+        Map<String, Integer> result = new HashMap<>();
+        for (String skill : itSkills) {
+//            String lowerSkill = skill.toLowerCase();
+//            int skillDurationYears = skillDurations.get(lowerSkill) / 12;
+//            int skillDurationMonths = skillDurations.get(lowerSkill) % 12;
+//
+//            if (skillDurations.get(lowerSkill) > 0) {
+//                Map<String, Object> skillInfo = new HashMap<>();
+//                if (skillDurationYears == 0 && skillDurationMonths > 0) {
+//                    skillInfo.put("totalDuration", skillDurationMonths + " months");
+//                } else if (skillDurationYears == 0 && skillDurationMonths == 0) {
+//                    skillInfo.put("totalDuration", 0);
+//                } else {
+//                    skillInfo.put("totalDuration", skillDurationYears + " years " + skillDurationMonths + " months");
+//                }
+//                skillInfo.put("details", skillDetails.get(lowerSkill));
+//                result.put(lowerSkill, skillInfo);
+//            }
+
+
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
+            int skillDurationYears = skillDurations.get(canonicalSkill) / 12;
+            int skillDurationMonths = skillDurations.get(canonicalSkill) % 12;
+
+            if (skillDurations.get(canonicalSkill) > 0) {
+                Map<String, Object> skillInfo = new HashMap<>();
+                if (skillDurationYears == 0 && skillDurationMonths > 0) {
+                    skillInfo.put("totalDuration", skillDurationMonths + " months");
+                } else if (skillDurationYears == 0 && skillDurationMonths == 0) {
+                    skillInfo.put("totalDuration", 0);
+                } else {
+                    skillInfo.put("totalDuration", skillDurationYears + " years " + skillDurationMonths + " months");
+                }
+                skillInfo.put("details", skillDetails.get(canonicalSkill));
+                result.put(canonicalSkill, skillDurations.get(canonicalSkill));
+            }
+        }
+
+        return result;
+    }
+
+    private Map<String, Object> calculateITSkillAnalysis(String resumeText, List<String> itSkills, List<String> mandatorySkills) {
+        Map<String, Integer> skillDurations = new HashMap<>();
+        Map<String, List<Map<String, Object>>> skillDetails = new HashMap<>();
+        Map<String, List<String>> matchedSubSkills = new HashMap<>();
+        int totalExperienceMonths = 0;
+
+        // Create a set of canonical mandatory skills to filter them out from IT skills
+        Set<String> canonicalMandatorySkills = mandatorySkills.stream()
+                .map(ITSkillsUtility::getCanonicalSkillName)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+
+        // Initialize maps for IT skills, excluding mandatory skills
+        for (String skill : itSkills) {
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill);
+            if (!canonicalMandatorySkills.contains(canonicalSkill.toLowerCase())) {
+                skillDurations.put(canonicalSkill.toLowerCase(), 0);
+                skillDetails.put(canonicalSkill.toLowerCase(), new ArrayList<>());
+                matchedSubSkills.put(canonicalSkill.toLowerCase(), new ArrayList<>());
+            }
+        }
+
+        // Extract work experiences from resume text
+        List<WorkExperience> experiences = extractWorkExperiences(resumeText);
+
+        // Process each work experience
+        for (WorkExperience experience : experiences) {
+            totalExperienceMonths += experience.durationInMonths;
+            Set<String> skillsFoundInExperience = new HashSet<>();
+
+            for (String skill : itSkills) {
+                String lowerSkill = skill.toLowerCase();
+                String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
+
+                // Check if the skill is found in the experience description
+                if (!canonicalMandatorySkills.contains(canonicalSkill) && experience.description.toLowerCase().contains(lowerSkill) && !skillsFoundInExperience.contains(canonicalSkill)) {
+                    skillsFoundInExperience.add(canonicalSkill);
+                    int currentDuration = skillDurations.get(canonicalSkill);
+                    skillDurations.put(canonicalSkill, currentDuration + experience.durationInMonths);
+
+                    Map<String, Object> detail = new HashMap<>();
+                    detail.put("startDate", experience.startDateStr);
+                    detail.put("endDate", experience.endDateStr);
+                    detail.put("durationInMonths", experience.durationInMonths);
+
+                    skillDetails.get(canonicalSkill).add(detail);
+                }
+            }
+        }
+
+        // Calculate percentages for IT skills
+        Map<String, Double> skillPercentages = new HashMap<>();
+        for (String skill : itSkills) {
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
+            if (!canonicalMandatorySkills.contains(canonicalSkill)) {
+                int duration = skillDurations.get(canonicalSkill);
+                double percentage = (double) duration / totalExperienceMonths * 100;
+                skillPercentages.put(canonicalSkill, percentage);
+            }
+        }
+
+        // Prepare result map for IT skills analysis
+        Map<String, Object> result = new HashMap<>();
+        for (String skill : itSkills) {
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
+            if (!canonicalMandatorySkills.contains(canonicalSkill)) {
+                int skillDurationYears = skillDurations.get(canonicalSkill) / 12;
+                int skillDurationMonths = skillDurations.get(canonicalSkill) % 12;
+
+                if (skillDurations.get(canonicalSkill) > 0) {
+                    Map<String, Object> skillInfo = new HashMap<>();
+                    if (skillDurationYears == 0 && skillDurationMonths > 0) {
+                        skillInfo.put("totalDuration", skillDurationMonths + " months");
+                    } else if (skillDurationYears == 0 && skillDurationMonths == 0) {
+                        skillInfo.put("totalDuration", 0);
+                    } else {
+                        skillInfo.put("totalDuration", skillDurationYears + " years " + skillDurationMonths + " months");
+                    }
+                    skillInfo.put("details", skillDetails.get(canonicalSkill));
+                    result.put(canonicalSkill, skillInfo);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+
     private List<WorkExperience> extractWorkExperiences(String text) {
         List<WorkExperience> experiences = new ArrayList<>();
         Matcher matcher = DatePatternMatcher.getDateMatcher(text);
@@ -281,7 +500,171 @@ public class ResumeService {
             resume.setContentType(file.getContentType());
             resume.setFileId(fileId.toString());  // Store the fileId
             resume.setUploadDate(LocalDate.now());
-            resumeRepository.save(resume);
+            Resume savedResume=resumeRepository.save(resume);
+            String savedResumeId= savedResume.getId();
+
+            //Now here i am going write logic for matching it skills
+            //first thing is to read the file
+            String resumeText = extractTextFromFile(file);
+            //now we have to call the skills from utility class
+            // Fetch additional IT skills from ITSkillsUtility
+            List<String> itSkills = ITSkillsUtility.getAllSkills();
+            Map<String, Integer> itSkillAnalysis = calculateITSkillAnalysis(resumeText, itSkills);
+            Skill_Experience skillExperience=new Skill_Experience();
+            skillExperience.setResumeId(savedResumeId);
+            skillExperience.setDate(new Date());
+            for (Map.Entry<String, Integer> entry : itSkillAnalysis.entrySet()) {
+                String skillName = entry.getKey();
+                Integer experience = entry.getValue();
+
+                //create a class of skill experience
+//                Skill_Experience skillExperience=new Skill_Experience();
+//                skillExperience.setResumeId(savedResumeId);
+//                skillExperience.setDate(new Date());
+                // Step 2: Set the skill attribute dynamically using reflection or method name construction
+                switch (skillName.toLowerCase()) {
+                    case "java":
+                        skillExperience.setJava(experience);
+                        break;
+                    case "python":
+                        skillExperience.setPython(experience);
+                        break;
+                    case "javascript":
+                        skillExperience.setJavascript(experience);
+                        break;
+                    case "csharp":
+                        //skillExperience.setCSharp(experience);
+                        skillExperience.setcSharp(experience);
+                        break;
+                    case "cplusplus":
+                        //skillExperience.setCPlusPlus(experience);
+                        skillExperience.setcPlusPlus(experience);
+                        break;
+                    case "php":
+                        skillExperience.setPhp(experience);
+                        break;
+                    case "swift":
+                        skillExperience.setSwift(experience);
+                        break;
+                    case "kotlin":
+                        skillExperience.setKotlin(experience);
+                        break;
+                    case "sql":
+                        skillExperience.setSql(experience);
+                        break;
+                    case "html":
+                        skillExperience.setHtml(experience);
+                        break;
+                    case "css":
+                        skillExperience.setCss(experience);
+                        break;
+                    case "react":
+                        skillExperience.setReact(experience);
+                        break;
+                    case "angular":
+                        skillExperience.setAngular(experience);
+                        break;
+                    case "node.js":
+                        skillExperience.setNodeJs(experience);
+                        break;
+                    case "spring":
+                        skillExperience.setSpring(experience);
+                        break;
+                    case "django":
+                        skillExperience.setDjango(experience);
+                        break;
+                    case "flask":
+                        skillExperience.setFlask(experience);
+                        break;
+                    case "ruby":
+                        skillExperience.setRuby(experience);
+                        break;
+                    case "rails":
+                        skillExperience.setRails(experience);
+                        break;
+                    case "machine learning":
+                        skillExperience.setMachineLearning(experience);
+                        break;
+                    case "data science":
+                        skillExperience.setDataScience(experience);
+                        break;
+                    case "aws":
+                        skillExperience.setAws(experience);
+                        break;
+                    case "azure":
+                        skillExperience.setAzure(experience);
+                        break;
+                    case "docker":
+                        skillExperience.setDocker(experience);
+                        break;
+                    case "kubernetes":
+                        skillExperience.setKubernetes(experience);
+                        break;
+                    case "git":
+                        skillExperience.setGit(experience);
+                        break;
+                    case "ci/cd":
+                        skillExperience.setCiCd(experience);
+                        break;
+                    case "agile":
+                        skillExperience.setAgile(experience);
+                        break;
+                    case "scrum":
+                        skillExperience.setScrum(experience);
+                        break;
+                    case "jira":
+                        skillExperience.setJira(experience);
+                        break;
+                    case "devops":
+                        skillExperience.setDevOps(experience);
+                        break;
+                    case "hadoop":
+                        skillExperience.setHadoop(experience);
+                        break;
+                    case "spark":
+                        skillExperience.setSpark(experience);
+                        break;
+                    case "tableau":
+                        skillExperience.setTableau(experience);
+                        break;
+                    case "powerBi":
+                        //skillExperience.setPowerBi(experience);
+                        skillExperience.setPowerBI(experience);
+                        break;
+                    case "tensorflow":
+                        skillExperience.setTensorflow(experience);
+                        break;
+                    case "keras":
+                        skillExperience.setKeras(experience);
+                        break;
+                    case "pandas":
+                        skillExperience.setPandas(experience);
+                        break;
+                    case "numpy":
+                        //skillExperience.setNumPy(experience);
+                        skillExperience.setNumpy(experience);
+                        break;
+                    case "matplotlib":
+                        skillExperience.setMatplotlib(experience);
+                        break;
+                    default:
+                        // Handle unknown skills or skip them
+                        System.err.println("Unhandled skill: " + skillName);
+                        continue;  // Skip this skill
+                }
+
+
+
+
+
+
+
+
+
+
+            }
+            skillExperienceRepository.save(skillExperience);
+
 
             // Prepare response
             Map<String, Object> response = new HashMap<>();
@@ -293,6 +676,8 @@ public class ResumeService {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to process the file: " + e.getMessage()));
+        } catch (TesseractException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -328,8 +713,360 @@ public class ResumeService {
         }
     }
 
+    public ResponseEntity<InputStreamResource> viewResume(String fileId) {
+        //String fileId=resumeRepository.findById(resumeId).get().getFileId();
+        Optional<Resume> resume = resumeRepository.findByFileId(fileId);
+        if (resume.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Retrieve the file from GridFS using the stored fileId
+        GridFSFile gridFsFile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(fileId))));
+        if (gridFsFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        GridFsResource resource = gridFsTemplate.getResource(gridFsFile);
+        if (!resource.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            InputStreamResource inputStreamResource = new InputStreamResource(resource.getInputStream());
+
+            // Prepare HTTP headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType(resume.get().getContentType()));
+            headers.setContentDisposition(ContentDisposition.builder("inline").filename(resume.get().getFileName()).build());
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(inputStreamResource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     public ResponseEntity<List<Resume>> getAllResumes() {
         List<Resume> resumes = resumeRepository.findAll();
         return ResponseEntity.ok(resumes);
     }
+
+
+    public ResponseEntity<byte[]> generateReport(MultipartFile file, String jdId) {
+        try {
+            // Get mandatory skills from JD
+            List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
+            if (mandatorySkills == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            // Extract text from the file
+            String resumeText = extractTextFromFile(file);
+
+            // Calculate skill analysis
+            List<String> skillNames = new ArrayList<>();
+            List<Integer> skillExperience = new ArrayList<>();
+            Map<String, Integer> requiredExperienceMap = new HashMap<>();
+            Map<String, List<String>> subSkillsMap = new HashMap<>();
+
+            for (Skill skill : mandatorySkills) {
+                skillNames.add(skill.getSkill());
+                requiredExperienceMap.put(skill.getSkill().toLowerCase(), skill.getExperience());
+                subSkillsMap.put(skill.getSkill().toLowerCase(), skill.getSubSkills());
+            }
+
+            Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap, subSkillsMap);
+
+            // Generate PDF report
+            byte[] pdfReport = generatePdfReport(skillAnalysis, requiredExperienceMap);
+
+            // Prepare response
+            String resumeFileName = file.getOriginalFilename();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition.builder("inline").filename(resumeFileName+"_"+"Feedback.pdf").build());
+
+            return new ResponseEntity<>(pdfReport, headers, HttpStatus.OK);
+
+        } catch (IOException | TesseractException | DocumentException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+    private String generateFeedbackFileName(String resumeFileName) {
+        if (resumeFileName != null && resumeFileName.contains(".")) {
+            int lastDotIndex = resumeFileName.lastIndexOf(".");
+            return resumeFileName.substring(0, lastDotIndex) + "_feedback" + resumeFileName.substring(lastDotIndex);
+        } else {
+            return "feedback_report.pdf";
+        }
+    }
+
+    private byte[] generatePdfReport(Map<String, Object> skillAnalysis, Map<String, Integer> requiredExperienceMap) throws DocumentException {
+        Document document = new Document();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PdfWriter writer = PdfWriter.getInstance(document, byteArrayOutputStream);
+
+        // Add header event
+        HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+        writer.setPageEvent(event);
+
+        document.open();
+
+        document.add(new Paragraph("\n\n"));
+
+        // Create table for skill analysis
+        PdfPTable table = new PdfPTable(5); // 5 columns: Skill, Required Experience, Total Duration, Percentage, Experience Needed
+        table.setWidthPercentage(100);
+        table.setSpacingBefore(10f);
+        table.setSpacingAfter(10f);
+
+        // Define column widths
+        float[] columnWidths = {2f, 2f, 2f, 2f, 2f};
+        table.setWidths(columnWidths);
+
+        // Define table header
+        Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        PdfPCell cell;
+
+        cell = new PdfPCell(new Paragraph("Skill", headerFont));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Required Experience (years)", headerFont));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Total Duration", headerFont));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Percentage", headerFont));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Experience Needed (years)", headerFont));
+        cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        // Define table data
+        Font dataFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
+
+        for (String skill : skillAnalysis.keySet()) {
+            if (skill.equals("overallPercentage")) {
+                continue;
+            }
+
+            Map<String, Object> skillInfo = (Map<String, Object>) skillAnalysis.get(skill);
+            int requiredExperience = requiredExperienceMap.get(skill.toLowerCase());
+            String totalDuration = skillInfo.get("totalDuration").toString();
+            //int totalDuration_int=skillInfo.get("to")
+            double percentage = (double) skillInfo.get("percentage");
+
+            cell = new PdfPCell(new Paragraph(skill, dataFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph(String.valueOf(requiredExperience), dataFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph(totalDuration, dataFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph(String.format("%.2f%%", percentage), dataFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+
+            //int experienceNeeded = requiredExperience - Integer.parseInt(totalDuration.split(" ")[0]) * 12;
+            int experienceNeeded =  requiredExperience - Integer.parseInt(totalDuration.split(" ")[0]);
+            cell = new PdfPCell(new Paragraph(experienceNeeded > 0 ? String.valueOf(experienceNeeded) : "0", dataFont));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+        }
+
+        document.add(table);
+
+        double overallPercentage = (double) skillAnalysis.get("overallPercentage");
+        document.add(new Paragraph("\nOverall Percentage: " + String.format("%.2f%%", overallPercentage)));
+
+        document.close();
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
+
+
+    public List<ResumeInfo> ReleventProfiles(String jdId) {
+        List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
+        List<String> skillNames = new ArrayList<>();
+        List<Integer> skillExperience = new ArrayList<>();
+        Map<String, Integer> requiredExperienceMap = new HashMap<>();
+        List<ResumeInfo> list=new ArrayList<>();
+
+        for (Skill skill : mandatorySkills) {
+            String skillName = skill.getSkill();
+            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skillName).toLowerCase();
+            int skillExp = skill.getExperience();
+            skillNames.add(canonicalSkill);
+            skillExperience.add(skillExp);
+            requiredExperienceMap.put(canonicalSkill, skill.getExperience());
+            //subSkillsMap.put(skillName.toLowerCase(), skill.getSubSkills());
+        }
+        //Now get all resumes
+        List<Resume> resumes = resumeRepository.findAll();
+        List<String> resumeid = new ArrayList<>();
+        //get all the resume id
+        for (Resume resume : resumes) {
+            resumeid.add(resume.getId());
+        }
+        //now check all the resume skill experience using resumeid
+
+        List<String> relevantResumeIds = new ArrayList<>();
+        List<String> resumeName = new ArrayList<>();
+        for (String resumeId : resumeid) {
+            Optional<Skill_Experience> optionalSkillExperience = skillExperienceRepository.findByResumeId(resumeId);
+            if (optionalSkillExperience.isPresent()) {
+                Skill_Experience skillExperience_for_analysis = optionalSkillExperience.get();
+                boolean isRelevant = true;
+
+                for (Map.Entry<String, Integer> entry : requiredExperienceMap.entrySet()) {
+                    String skillName = entry.getKey();
+                    int requiredExp = entry.getValue() * 12;
+
+                    Integer candidateExp = getSkillExperience(skillExperience_for_analysis, skillName);
+
+                    if (candidateExp == null || candidateExp < requiredExp/2) {
+                        isRelevant = false;
+                        break;
+                    }
+                }
+
+                if (isRelevant) {
+
+                    //resumeName.add(resumeRepository.findById(resumeId).get().getFileName());
+                    String resumeFileId=resumeRepository.findById(resumeId).get().getFileId();
+                    ResumeInfo resumeInfo=new ResumeInfo(resumeFileId,resumeRepository.findById(resumeId).get().getFileName());
+                    list.add(resumeInfo);
+                }
+            }
+        }
+        return list;
+    }
+
+//    public List<ResumeInfo> ReleventProfiles(String jdId){
+//        List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
+//        List<String> skillNames = new ArrayList<>();
+//        List<Integer> skillExperience = new ArrayList<>();
+//        Map<String, Integer> requiredExperienceMap = new HashMap<>();
+//
+//        for (Skill skill : mandatorySkills) {
+//            String skillName = skill.getSkill();
+//            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skillName).toLowerCase();
+//            int skillExp = skill.getExperience();
+//            skillNames.add(canonicalSkill);
+//            skillExperience.add(skillExp);
+//            requiredExperienceMap.put(canonicalSkill, skill.getExperience());
+//        }
+//
+//        // Now get all resumes
+//        List<Resume> resumes = resumeRepository.findAll();
+//        List<String> resumeid = new ArrayList<>();
+//
+//        // Get all the resume IDs
+//        for (Resume resume : resumes){
+//            resumeid.add(resume.getId());
+//        }
+//
+//        // Now check all the resume skill experience using resumeId
+//        List<ResumeInfo> relevantResumeInfos = new ArrayList<>();
+//
+//        for (String resumeId : resumeid) {
+//            Optional<Skill_Experience> optionalSkillExperience = skillExperienceRepository.findByResumeId(resumeId);
+//            if (optionalSkillExperience.isPresent()) {
+//                Skill_Experience skillExperience_for_analysis = optionalSkillExperience.get();
+//                boolean isRelevant = true;
+//
+//                for (Map.Entry<String, Integer> entry : requiredExperienceMap.entrySet()) {
+//                    String skillName = entry.getKey();
+//                    int requiredExp = entry.getValue() * 12;
+//
+//                    Integer candidateExp = getSkillExperience(skillExperience_for_analysis, skillName);
+//
+//                    if (candidateExp == null || candidateExp < requiredExp) {
+//                        isRelevant = false;
+//                        break;
+//                    }
+//                }
+//
+//                if (isRelevant) {
+//                    Resume resume = resumeRepository.findById(resumeId).orElse(null);
+//                    if (resume != null) {
+//                        String fileName = resume.getFileName();
+//                        relevantResumeInfos.add(new ResumeInfo(resumeId, fileName));
+//                    }
+//                }
+//            }
+//        }
+//        return relevantResumeInfos;
+//    }
+
+
+
+    private Integer getSkillExperience(Skill_Experience skillExperience, String skillName) {
+        switch (skillName.toLowerCase()) {
+            case "java": return skillExperience.getJava();
+            case "python": return skillExperience.getPython();
+            case "javascript": return skillExperience.getJavascript();
+            case "c#": return skillExperience.getcSharp();
+            case "c++": return skillExperience.getcPlusPlus();
+            case "php": return skillExperience.getPhp();
+            case "swift": return skillExperience.getSwift();
+            case "kotlin": return skillExperience.getKotlin();
+            case "sql": return skillExperience.getSql();
+            case "html": return skillExperience.getHtml();
+            case "css": return skillExperience.getCss();
+            case "react": return skillExperience.getReact();
+            case "angular": return skillExperience.getAngular();
+            case "nodejs": return skillExperience.getNodeJs();
+            case "spring": return skillExperience.getSpring();
+            case "django": return skillExperience.getDjango();
+            case "flask": return skillExperience.getFlask();
+            case "ruby": return skillExperience.getRuby();
+            case "rails": return skillExperience.getRails();
+            case "machine learning": return skillExperience.getMachineLearning();
+            case "data science": return skillExperience.getDataScience();
+            case "aws": return skillExperience.getAws();
+            case "azure": return skillExperience.getAzure();
+            case "docker": return skillExperience.getDocker();
+            case "kubernetes": return skillExperience.getKubernetes();
+            case "git": return skillExperience.getGit();
+            case "ci/cd": return skillExperience.getCiCd();
+            case "agile": return skillExperience.getAgile();
+            case "scrum": return skillExperience.getScrum();
+            case "jira": return skillExperience.getJira();
+            case "devops": return skillExperience.getDevOps();
+            case "hadoop": return skillExperience.getHadoop();
+            case "spark": return skillExperience.getSpark();
+            case "tableau": return skillExperience.getTableau();
+            case "power bi": return skillExperience.getPowerBI();
+            case "tensorflow": return skillExperience.getTensorflow();
+            case "keras": return skillExperience.getKeras();
+            case "pandas": return skillExperience.getPandas();
+            case "numpy": return skillExperience.getNumpy();
+            case "matplotlib": return skillExperience.getMatplotlib();
+            default: return null;
+        }
+    }
+
 }

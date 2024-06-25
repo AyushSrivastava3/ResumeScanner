@@ -21,7 +21,47 @@ public class Skill_Experience {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String resumeId;
-
+    private Date date;
+    private Integer java;
+    private Integer python;
+    private Integer javascript;
+    private Integer cSharp;
+    private Integer cPlusPlus;
+    private Integer php;
+    private Integer swift;
+    private Integer kotlin;
+    private Integer sql;
+    private Integer html;
+    private Integer css;
+    private Integer react;
+    private Integer angular;
+    private Integer nodeJs;
+    private Integer spring;
+    private Integer django;
+    private Integer flask;
+    private Integer ruby;
+    private Integer rails;
+    private Integer machineLearning;
+    private Integer dataScience;
+    private Integer aws;
+    private Integer azure;
+    private Integer docker;
+    private Integer kubernetes;
+    private Integer git;
+    private Integer ciCd;
+    private Integer agile;
+    private Integer scrum;
+    private Integer jira;
+    private Integer devOps;
+    private Integer hadoop;
+    private Integer spark;
+    private Integer tableau;
+    private Integer powerBI;
+    private Integer tensorflow;
+    private Integer keras;
+    private Integer pandas;
+    private Integer numpy;
+    private Integer matplotlib;
     public String getId() {
         return id;
     }
@@ -366,46 +406,4 @@ public class Skill_Experience {
         this.matplotlib = matplotlib;
     }
 
-    private Date date;
-
-    private Integer java;
-    private Integer python;
-    private Integer javascript;
-    private Integer cSharp;
-    private Integer cPlusPlus;
-    private Integer php;
-    private Integer swift;
-    private Integer kotlin;
-    private Integer sql;
-    private Integer html;
-    private Integer css;
-    private Integer react;
-    private Integer angular;
-    private Integer nodeJs;
-    private Integer spring;
-    private Integer django;
-    private Integer flask;
-    private Integer ruby;
-    private Integer rails;
-    private Integer machineLearning;
-    private Integer dataScience;
-    private Integer aws;
-    private Integer azure;
-    private Integer docker;
-    private Integer kubernetes;
-    private Integer git;
-    private Integer ciCd;
-    private Integer agile;
-    private Integer scrum;
-    private Integer jira;
-    private Integer devOps;
-    private Integer hadoop;
-    private Integer spark;
-    private Integer tableau;
-    private Integer powerBI;
-    private Integer tensorflow;
-    private Integer keras;
-    private Integer pandas;
-    private Integer numpy;
-    private Integer matplotlib;
 }

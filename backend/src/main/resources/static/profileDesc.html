@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        .profile-container h1 {
+            color: #007BFF;
+        }
+        .profile-detail {
+            margin: 10px 0;
+        }
+        .profile-detail label {
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="profile-container" id="profileContainer">
+    <h1>Profile Information</h1>
+    <div id="profileDetails"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const profileDetailsDiv = document.getElementById('profileDetails');
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const fileId = getQueryParam('fileId');
+
+        function fetchProfileInformation(fileId) {
+            fetch(`http://13.232.9.157:8080/getProfileInformation?fileId=${fileId}`)
+                .then(response => response.json())
+                .then(data => {
+                    profileDetailsDiv.innerHTML = `
+                        <div class="profile-detail"><label>Resume ID:</label> ${data.resumeId}</div>
+                        <div class="profile-detail"><label>Candidate Name:</label> ${data.candidateName}</div>
+                        <div class="profile-detail"><label>Uploaded Date:</label> ${data.uploadedDate}</div>
+                        <div class="profile-detail"><label>Skills:</label>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Skill</th>
+                                        <th>Experience</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${Object.entries(data.profile_skill_map).map(([skill, experience]) =>
+                                        `<tr>
+                                            <td>${skill}</td>
+                                            <td>${convertExperience(experience)}</td>
+                                        </tr>`
+                                    ).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                })
+                .catch(error => console.error('Error fetching profile information:', error));
+        }
+
+        function convertExperience(months) {
+            if (months < 12) {
+                return `${months} month${months > 1 ? 's' : ''}`;
+            } else {
+                const years = Math.floor(months / 12);
+                const remainingMonths = months % 12;
+                return `${years} year${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}`;
+            }
+        }
+
+        fetchProfileInformation(fileId);
+    });
+</script>
+</body>
+</html>
+

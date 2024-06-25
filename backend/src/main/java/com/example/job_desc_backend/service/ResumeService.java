@@ -1,7 +1,10 @@
 package com.example.job_desc_backend.service;
+import com.example.job_desc_backend.dto.Profile_detail_page_response_dto;
+import com.example.job_desc_backend.model.Profile_detail_page;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.model.Skill;
 import com.example.job_desc_backend.model.Skill_Experience;
+import com.example.job_desc_backend.repository.Profile_detail_page_repository;
 import com.example.job_desc_backend.repository.Skill_ExperienceRepository;
 import com.example.job_desc_backend.utility.*;
 import com.example.job_desc_backend.repository.ResumeRepository;
@@ -24,6 +27,7 @@ import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
@@ -51,6 +55,8 @@ public class ResumeService {
     private JdService jdService;
     @Autowired
     Skill_ExperienceRepository skillExperienceRepository;
+    @Autowired
+    Profile_detail_page_repository profileDetailPageRepository;
 
     public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file, String jdId) {
         try {
@@ -493,6 +499,8 @@ public class ResumeService {
         try {
             // Save the file to MongoDB using GridFS
             ObjectId fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+            //Now i also wanted to create a profile_detail_page so i will create a profile_detail_object
+            Profile_detail_page profileDetailPage=new Profile_detail_page();
 
             // Save metadata to MongoDB
             Resume resume = new Resume();
@@ -500,16 +508,36 @@ public class ResumeService {
             resume.setContentType(file.getContentType());
             resume.setFileId(fileId.toString());  // Store the fileId
             resume.setUploadDate(LocalDate.now());
-            Resume savedResume=resumeRepository.save(resume);
-            String savedResumeId= savedResume.getId();
+//            Resume savedResume=resumeRepository.save(resume);
+//            String savedResumeId= savedResume.getId();
 
             //Now here i am going write logic for matching it skills
             //first thing is to read the file
             String resumeText = extractTextFromFile(file);
+            //Now we want the name of the candidate
+            // Split the string into lines
+            String[] lines = resumeText.split("\n");
+
+            // Get the first line which is the name
+            String name = lines[0];
+
+            String candidateName=name;
+            resume.setCandidateName(candidateName);
+            Resume savedResume=resumeRepository.save(resume);
+            String savedResumeCandidateName= savedResume.getCandidateName();
+            String savedResumeId= savedResume.getId();
             //now we have to call the skills from utility class
             // Fetch additional IT skills from ITSkillsUtility
             List<String> itSkills = ITSkillsUtility.getAllSkills();
             Map<String, Integer> itSkillAnalysis = calculateITSkillAnalysis(resumeText, itSkills);
+            //Now use this itSkillAnalysis to profile_detail_page
+            profileDetailPage.setProfile_skill_map(itSkillAnalysis);
+            profileDetailPage.setCandidateName(name);
+            profileDetailPage.setResumeId(savedResumeId);
+            profileDetailPage.setUploadedDate(String.valueOf(new Date()));
+            profileDetailPageRepository.save(profileDetailPage);
+
+
             Skill_Experience skillExperience=new Skill_Experience();
             skillExperience.setResumeId(savedResumeId);
             skillExperience.setDate(new Date());
@@ -671,6 +699,7 @@ public class ResumeService {
             response.put("fileId", fileId.toString());
             response.put("fileName", file.getOriginalFilename());
             response.put("contentType", file.getContentType());
+            response.put("Candidatename",savedResume.getCandidateName());
 
             return ResponseEntity.ok(response);
         } catch (IOException e) {
@@ -936,15 +965,28 @@ public class ResumeService {
         List<String> resumeName = new ArrayList<>();
         for (String resumeId : resumeid) {
             Optional<Skill_Experience> optionalSkillExperience = skillExperienceRepository.findByResumeId(resumeId);
+            int overAllPercentage=0;
+            Map<String,Integer> skillPercentageMap=new HashMap<>();
             if (optionalSkillExperience.isPresent()) {
                 Skill_Experience skillExperience_for_analysis = optionalSkillExperience.get();
                 boolean isRelevant = true;
+                int percentage=0;
 
                 for (Map.Entry<String, Integer> entry : requiredExperienceMap.entrySet()) {
                     String skillName = entry.getKey();
                     int requiredExp = entry.getValue() * 12;
 
                     Integer candidateExp = getSkillExperience(skillExperience_for_analysis, skillName);
+                    if (candidateExp!=null){
+                        if (candidateExp>requiredExp){
+                            percentage=100;
+                        }
+                        else {
+                            percentage = (candidateExp * 100) / requiredExp;
+                        }
+
+                        skillPercentageMap.put(skillName,percentage);
+                    }
 
                     if (candidateExp == null || candidateExp < requiredExp/2) {
                         isRelevant = false;
@@ -954,9 +996,23 @@ public class ResumeService {
 
                 if (isRelevant) {
 
+                    int sum = 0;
+                    for (int value : skillPercentageMap.values()) {
+                        sum += value;
+                    }
+
+                    // Get the size of the map
+                    int size = skillPercentageMap.size();
+                    // Get the percentage now
+                    overAllPercentage=sum/size;
+                    //get the uploaded data of profile
+                    String uploadedDate= String.valueOf(resumeRepository.findById(resumeId).get().getUploadDate());
+                    String [] divideDate=uploadedDate.split("T");
+                    String onlyDate=divideDate[0];
+
                     //resumeName.add(resumeRepository.findById(resumeId).get().getFileName());
                     String resumeFileId=resumeRepository.findById(resumeId).get().getFileId();
-                    ResumeInfo resumeInfo=new ResumeInfo(resumeFileId,resumeRepository.findById(resumeId).get().getFileName());
+                    ResumeInfo resumeInfo=new ResumeInfo(resumeFileId,resumeRepository.findById(resumeId).get().getCandidateName(),overAllPercentage,skillPercentageMap,onlyDate);
                     list.add(resumeInfo);
                 }
             }
@@ -1067,6 +1123,19 @@ public class ResumeService {
             case "matplotlib": return skillExperience.getMatplotlib();
             default: return null;
         }
+    }
+
+
+
+    public Profile_detail_page_response_dto getProfileInformation(String fileId){
+       String resumeId= resumeRepository.findByFileId(fileId).get().getId();
+       Profile_detail_page profileDetailPage=profileDetailPageRepository.findByResumeId(resumeId);
+       Profile_detail_page_response_dto profileDetailPageResponseDto=new Profile_detail_page_response_dto();
+       profileDetailPageResponseDto.setResumeId(resumeId);
+       profileDetailPageResponseDto.setCandidateName(profileDetailPage.getCandidateName());
+       profileDetailPageResponseDto.setProfile_skill_map(profileDetailPage.getProfile_skill_map());
+       profileDetailPageResponseDto.setUploadedDate(profileDetailPage.getUploadedDate());
+       return profileDetailPageResponseDto;
     }
 
 }

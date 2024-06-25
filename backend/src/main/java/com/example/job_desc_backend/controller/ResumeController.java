@@ -1,5 +1,6 @@
 package com.example.job_desc_backend.controller;
 
+import com.example.job_desc_backend.dto.Profile_detail_page_response_dto;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.service.JdService;
 import com.example.job_desc_backend.service.ResumeService;
@@ -58,6 +59,11 @@ public class ResumeController {
     public ResponseEntity<List<ResumeInfo>> getReleventProfiles(@RequestParam String jdId) {
         List<ResumeInfo> relevantProfiles = resumeService.ReleventProfiles(jdId);
         return ResponseEntity.ok(relevantProfiles);
+    }
+
+    @GetMapping("/getProfileInformation")
+    public Profile_detail_page_response_dto getProfileInformation(@RequestParam String fileId){
+       return resumeService.getProfileInformation(fileId);
     }
 
 }

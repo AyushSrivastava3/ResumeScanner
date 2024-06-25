@@ -12,6 +12,7 @@ public class Resume {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
+    private String candidateName;
     private String fileName;
     private String contentType;
     private String fileId;
@@ -56,5 +57,13 @@ public class Resume {
 
     public void setUploadDate(LocalDate uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public String getCandidateName() {
+        return candidateName;
+    }
+
+    public void setCandidateName(String candidateName) {
+        this.candidateName = candidateName;
     }
 }

@@ -66,6 +66,11 @@ public class ResumeController {
        return resumeService.getProfileInformation(fileId);
     }
 
+    @GetMapping("/getResumeFile")
+    public MultipartFile getResumeAsMultipartFile(@RequestParam String fileId){
+        return resumeService.getResumeAsMultipartFile(fileId);
+    }
+
 }
 
 

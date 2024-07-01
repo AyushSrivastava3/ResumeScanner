@@ -32,6 +32,10 @@ import org.springframework.web.multipart.MultipartFile;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -228,7 +232,7 @@ public class ResumeService {
         }
 
         double overallPercentage = skillPercentages.values().stream().mapToDouble(Double::doubleValue).sum() / skillPercentages.size();
-        result.put("overallPercentage", overallPercentage);
+        result.put("overallPercentage", (int)overallPercentage);
 
         return result;
     }
@@ -741,6 +745,42 @@ public class ResumeService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    public MultipartFile getResumeAsMultipartFile(String fileId) {
+        Optional<Resume> resume = resumeRepository.findByFileId(fileId);
+        if (resume.isEmpty()) {
+            return null;
+        }
+
+        GridFSFile gridFsFile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(fileId))));
+        if (gridFsFile == null) {
+            return null;
+        }
+
+        GridFsResource resource = gridFsTemplate.getResource(gridFsFile);
+        if (!resource.exists()) {
+            return null;
+        }
+
+        try {
+            byte[] fileData = resource.getInputStream().readAllBytes();
+            return new CustomMultipartFile(fileData, resume.get().getFileName(), resume.get().getContentType());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     public ResponseEntity<InputStreamResource> viewResume(String fileId) {
         //String fileId=resumeRepository.findById(resumeId).get().getFileId();

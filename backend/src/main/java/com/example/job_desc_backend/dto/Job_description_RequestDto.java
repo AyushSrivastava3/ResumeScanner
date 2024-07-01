@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -13,6 +15,7 @@ public class Job_description_RequestDto {
     private String title;
     private String description;
     private String responsibilities;
+    //ArrayList<Integer>ls=new ArrayList<>();
 
     public String getTitle() {
         return title;

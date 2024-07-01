@@ -1,394 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Uploader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        header {
-            width: 100%;
-            background-color: #007bff;
-            color: white;
-            padding: 10px 0;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
+            background-color: #f2f2f2;
         }
-        header h1 {
-            margin: 0;
-            padding: 0 20px;
-            font-size: 1.5em;
-        }
-        .nav-button {
-            margin: 0 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: white;
-            color: #091521;
-            border: 2px solid white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .nav-button:hover {
-            background-color: #0056b3;
-            color: white;
-            border: 2px solid #0056b3;
-        }
+
         .container {
-            position: relative;
+            border: 3px solid #f1f1f1;
+            padding: 32px; /* Increased padding */
             background-color: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 900px;
-            text-align: center;
+            width: 100%;
+            max-width: 500px; /* Increased max-width */
             box-sizing: border-box;
-            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow for better appearance */
         }
-        .download-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-        .download-button:hover {
-            background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-        input[type="file"],
-        select {
-            margin: 20px auto;
-            display: block;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            width: 80%;
-            max-width: 400px;
-            background-color: #f9f9f9;
-            font-size: 16px;
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
             box-sizing: border-box;
         }
+
         button {
-            background-color: #007bff;
+            background-color: #04AA6D;
             color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
             border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
+            width: 100%;
         }
+
         button:hover {
-            background-color: #0056b3;
+            opacity: 0.8;
         }
-        table {
-            margin: 20px auto;
-            border-collapse: collapse;
-            width: 80%;
-            max-width: 600px;
+
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
         }
-        table, th, td {
-            border: 1px solid #ddd;
+
+        .title {
+            text-align: center;
+            margin-bottom: 24px;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
         }
-        .overall-percentage {
-            font-size: 1.5em;
-            color: #007bff;
-            margin-top: 20px;
-            font-weight: bold;
+
+        .registerbtn {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 18px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .registerbtn:hover {
+            opacity: 0.8;
+        }
+
+        @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            .cancelbtn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Resume Matcher</h1>
-        <button class="nav-button" onclick="navigateToPractice9()">Upload and Download Resume</button>
-        <button class="nav-button" onclick="navigateToJd1()">Create Jd</button>
-        <button class="nav-button" onclick="navigateToPractice12()">View Jd</button>
-    </header>
-    <div class="container">
-        <button type="button" id="downloadFeedbackButton" class="download-button">Download Feedback</button>
-        <h1>Resume Matcher</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" name="file" id="fileInput" accept=".pdf,.doc,.docx" required>
-            <select id="jdSelect" required>
-                <option value="" disabled selected>Select Job Description</option>
-            </select>
-            <button type="submit">Submit</button>
-        </form>
-        <div id="overallPercentage" class="overall-percentage"></div>
-        <div id="result" style="display: none;">
-            <h2>Mandatory Skills</h2>
-            <table id="mandatorySkillsTable">
-                <thead>
-                    <tr>
-                        <th>Skill</th>
-                        <th>Total Duration</th>
-                        <th>Required Experience (years)</th>
-                        <th>Percentage</th>
-                        <th>Details</th>
-                        <th>Matched Subskills</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <h2>Other Tech Experience Of Candidate</h2>
-            <table id="itSkillsTable">
-                <thead>
-                    <tr>
-                        <th>Skill</th>
-                        <th>Total Duration</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+
+<div class="container">
+    <h2 class="title">Login Form</h2>
+    <form id="loginForm">
+        <div class="container">
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required>
+
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+
+            <button type="submit">Login</button>
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
         </div>
-    </div>
 
-    <script>
-        function navigateToPractice9() {
-            window.location.href = 'practice9.html';
-        }
+        <div class="container" style="background-color:#f1f1f1">
+            <button type="button" class="cancelbtn">Cancel</button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>
 
-        function navigateToJd1() {
-            window.location.href = 'jd3.html';
-        }
+        <div class="container">
+            <button type="button" class="registerbtn" onclick="window.open('register.html', '_blank')">Register</button>
+        </div>
+    </form>
+</div>
 
-        function navigateToPractice12(){
-            window.location.href='list4.html';
-        }
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM fully loaded and parsed");
-            fetch('http://13.232.9.157:8080/jd/getIds')
-                .then(response => {
-                    console.log("Fetching Job Descriptions...");
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const jdSelect = document.getElementById('jdSelect');
-                    console.log("Job Descriptions Data: ", data);
-                    data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.title;
-                        jdSelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error fetching job descriptions:', error));
-        });
+        // Create a JSON object with form data
+        const formData = {
+            username: document.querySelector('input[name="username"]').value,
+            password: document.querySelector('input[name="password"]').value
+        };
 
-        document.getElementById('uploadForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        // Replace 'link' with your actual backend API endpoint
+        const url = "http://13.232.9.157:8080/login";
 
-            const selectedId = document.getElementById('jdSelect').value;
-            const formData = new FormData();
-            formData.append('file', document.getElementById('fileInput').files[0]);
-
-            console.log("Selected Job Description ID: ", selectedId);
-            console.log("Form Data: ", formData);
-
-            fetch(`http://13.232.9.157:8080/upload?jdId=${selectedId}`, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                console.log("Uploading file...");
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Received data: ", data);
-                const itSkillsMap = data.itSkills || {};
-                const mandatorySkillsMap = data.mandatorySkills || {};
-                //const overallPercentage = data.overallPercentage || 0;
-                const overallPercentage = mandatorySkillsMap.overallPercentage || 0;
-                delete mandatorySkillsMap.overallPercentage;
-                console.log("IT Skills Map: ", itSkillsMap);
-                console.log("Mandatory Skills Map: ", mandatorySkillsMap);
-                console.log("Overall Percentage: ", overallPercentage);
-
-                // Display overall percentage
-                const overallPercentageDiv = document.getElementById('overallPercentage');
-                overallPercentageDiv.textContent = `Overall Percentage: ${overallPercentage.toFixed(2)}%`;
-                
-                // Handle itSkills
-                const itSkillsTableBody = document.getElementById('itSkillsTable').querySelector('tbody');
-                itSkillsTableBody.innerHTML = '';
-                Object.entries(itSkillsMap).forEach(([skill, skillInfo]) => {
-                    const row = document.createElement('tr');
-                    
-                    const skillCell = document.createElement('td');
-                    skillCell.textContent = skill;
-                    row.appendChild(skillCell);
-                    
-                    const durationCell = document.createElement('td');
-                    durationCell.textContent = skillInfo.totalDuration;
-                    row.appendChild(durationCell);
-                    
-                    const detailsCell = document.createElement('td');
-                    const detailsList = document.createElement('ul');
-
-                    if (Array.isArray(skillInfo.details)) {
-                        skillInfo.details.forEach(detail => {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;
-                            detailsList.appendChild(listItem);
-                        });
-                    } else {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = 'Details not available';
-                        detailsList.appendChild(listItem);
-                    }
-
-                    detailsCell.appendChild(detailsList);
-                    row.appendChild(detailsCell);
-
-                    itSkillsTableBody.appendChild(row);
+        // Make a POST request to the backend
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                // If login successful, redirect to your home page or display a success message
+                window.location.replace("home.html");
+            } else {
+                // Handle unsuccessful login (e.g., display an error message)
+                response.json().then(data => {
+                    alert("Login failed: Either username or password is incorrect.");
                 });
-
-                // Handle mandatorySkills
-                const mandatorySkillsTableBody = document.getElementById('mandatorySkillsTable').querySelector('tbody');
-                mandatorySkillsTableBody.innerHTML = '';
-                Object.entries(mandatorySkillsMap).forEach(([skill, skillInfo]) => {
-                    const row = document.createElement('tr');
-                    
-                    const skillCell = document.createElement('td');
-                    skillCell.textContent = skill;
-                    row.appendChild(skillCell);
-                    
-                    const durationCell = document.createElement('td');
-                    durationCell.textContent = skillInfo.totalDuration;
-                    row.appendChild(durationCell);
-                    
-                    const requiredExperienceCell = document.createElement('td');
-                    requiredExperienceCell.textContent = skillInfo.requiredExperience;
-                    row.appendChild(requiredExperienceCell);
-                    
-                    const percentageCell = document.createElement('td');
-                    percentageCell.textContent = skillInfo.percentage !== undefined ? `${skillInfo.percentage.toFixed(2)}%` : 'N/A';
-                    row.appendChild(percentageCell);
-                    
-                    const detailsCell = document.createElement('td');
-                    const detailsList = document.createElement('ul');
-
-                    if (Array.isArray(skillInfo.details)) {
-                        skillInfo.details.forEach(detail => {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;
-                            detailsList.appendChild(listItem);
-                        });
-                    } else {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = 'Details not available';
-                        detailsList.appendChild(listItem);
-                    }
-
-                    detailsCell.appendChild(detailsList);
-                    row.appendChild(detailsCell);
-                    
-                    const subskillsCell = document.createElement('td');
-                    const subskillsList = document.createElement('ul');
-
-                    if (Array.isArray(skillInfo.matchedSubSkills)) {
-                        skillInfo.matchedSubSkills.forEach(subskill => {
-                            const listItem = document.createElement('li');
-                            listItem.textContent = subskill;
-                            subskillsList.appendChild(listItem);
-                        });
-                    } else {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = 'No subskills';
-                        subskillsList.appendChild(listItem);
-                    }
-
-                    subskillsCell.appendChild(subskillsList);
-                    row.appendChild(subskillsCell);
-
-                    mandatorySkillsTableBody.appendChild(row);
-                });
-
-                // Display the result section
-                const resultDiv = document.getElementById('result');
-                resultDiv.style.display = 'block';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error occurred. Please try again.');
-            });
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again later.");
         });
+    });
+</script>
 
-        // Add event listener for "Download Feedback" button
-        document.getElementById('downloadFeedbackButton').addEventListener('click', function(event) {
-            const selectedId = document.getElementById('jdSelect').value;
-            const formData = new FormData();
-            formData.append('file', document.getElementById('fileInput').files[0]);
-
-            console.log("Selected Job Description ID for report: ", selectedId);
-            console.log("Form Data for report: ", formData);
-
-            fetch(`http://13.232.9.157:8080/generateReport?jdId=${selectedId}`, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                console.log("Generating report...");
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                console.log("Report generated successfully");
-                const url = window.URL.createObjectURL(new Blob([blob]));
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'feedback_report.pdf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error occurred. Please try again.');
-            });
-        });
-    </script>
 </body>
 </html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Description</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px; /* Added margin-top */
+        }
+        .header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .jd-details {
+            padding: 20px;
+        }
+        .jd-details-header {
+            color: #007BFF;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .jd-details p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        .skill {
+            margin-bottom: 20px;
+        }
+        .skill h3 {
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="jd-details" id="jdDetails">
+        <div class="header">
+            <h1>Job Description Details</h1>
+        </div>
+        <!-- Job description details will be inserted here -->
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const jdDetailsDiv = document.getElementById('jdDetails');
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const jdId = getQueryParam('jdId');
+
+        if (jdId) {
+            fetchJobDescription(jdId);
+        } else {
+            jdDetailsDiv.innerHTML = '<p>Job Description ID not provided in the URL.</p>';
+        }
+
+        function fetchJobDescription(id) {
+            fetch(`http://13.232.9.157:8080/getJd?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    jdDetailsDiv.innerHTML = `
+                        <div class="jd-details-header">
+                            <h2>Job Description Details</h2>
+                        </div>
+                        <p><strong>ID:</strong> ${data.id}</p>
+                        <p><strong>Title:</strong> ${data.title}</p>
+                        <p><strong>Location:</strong> ${data.location}</p>
+                        <p><strong>Experience Level:</strong> ${data.experienceLevel}</p>
+                        <div class="skill">
+                            <h3>Mandatory Skills:</h3>
+                            ${formatSkillsTable(data.mandatorySkills)}
+                        </div>
+                        <div class="skill">
+                            <h3>Optional Skills:</h3>
+                            ${formatSkillsTable(data.optionalSkills)}
+                        </div>
+                    `;
+                })
+                .catch(error => console.error('Error fetching job description:', error));
+        }
+
+        function formatSkillsTable(skills) {
+            if (!skills || skills.length === 0) return '<p>N/A</p>';
+            let tableContent = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Skill</th>
+                            <th>Experience (Years)</th>
+                            <th>Sub-Skills</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            skills.forEach(skill => {
+                tableContent += `
+                    <tr>
+                        <td>${skill.skill}</td>
+                        <td>${skill.experience}</td>
+                        <td>${skill.subSkills.join(', ')}</td>
+                    </tr>
+                `;
+            });
+            tableContent += '</tbody></table>';
+            return tableContent;
+        }
+    });
+</script>
+</body>
+</html>

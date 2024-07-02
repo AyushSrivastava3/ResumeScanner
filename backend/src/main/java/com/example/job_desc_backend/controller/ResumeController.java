@@ -25,8 +25,9 @@ public class ResumeController {
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadResume(@RequestParam("file") MultipartFile file,
-                                                            @RequestParam("jdId") String jdId) {
-        return resumeService.uploadResume(file, jdId);
+                                                            @RequestParam(value = "jdFile", required = false) MultipartFile jdFile,
+                                                            @RequestParam(value = "jdId", required = false) String jdId) {
+        return resumeService.uploadResume(file,jdFile, jdId);
     }
 
     @PostMapping("/save")

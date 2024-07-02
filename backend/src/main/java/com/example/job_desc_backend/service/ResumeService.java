@@ -62,12 +62,34 @@ public class ResumeService {
     @Autowired
     Profile_detail_page_repository profileDetailPageRepository;
 
-    public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file, String jdId) {
+    public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
-            List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
+//            List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
+//
+//            if (mandatorySkills == null) {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Job Description not found"));
+//            }
 
-            if (mandatorySkills == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Job Description not found"));
+
+
+            List<Skill> mandatorySkills = new ArrayList<>();
+
+            // Check if JD file is provided and extract skills from it
+            if (jdFile != null && !jdFile.isEmpty()) {
+                String jdText = extractTextFromFile(jdFile);
+                if (jdText == null) {
+                    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(Map.of("error", "Unsupported JD file type"));
+                }
+                mandatorySkills = extractSkillsFromJDText(jdText);
+            }
+            // Check if JD ID is provided and fetch skills using the ID
+            else if (jdId != null) {
+                mandatorySkills = jdService.getMandatorySkills(jdId);;
+                if (mandatorySkills == null || mandatorySkills.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "JD not found with the provided ID"));
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Either JD file or JD ID must be provided"));
             }
 
             String resumeText = extractTextFromFile(file);
@@ -151,6 +173,28 @@ public class ResumeService {
         } else {
             return null;
         }
+    }
+
+    private List<Skill> extractSkillsFromJDText(String jdText) {
+        List<Skill> skills = new ArrayList<>();
+
+        // Pattern to match lines with skill and experience
+        Pattern pattern = Pattern.compile("([a-zA-Z]+)\\s+(\\d+)");
+        Matcher matcher = pattern.matcher(jdText);
+
+        while (matcher.find()) {
+            String skillName = matcher.group(1);
+            int experience = Integer.parseInt(matcher.group(2));
+
+            Skill skill = new Skill();
+            skill.setSkill(skillName);
+            skill.setExperience(experience);
+            skill.setSubSkills(new ArrayList<>()); // Since subSkills are not present
+
+            skills.add(skill);
+        }
+
+        return skills;
     }
 
     private Map<String, Object> calculateSkillAnalysis(String resumeText, List<String> mandatorySkills, Map<String, Integer> requiredExperienceMap, Map<String, List<String>> subSkillsMap) {

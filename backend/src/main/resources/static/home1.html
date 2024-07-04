@@ -1,10 +1,12 @@
 <!--<!DOCTYPE html>-->
 <!--<html lang="en">-->
+
 <!--<head>-->
 <!--    <meta charset="UTF-8">-->
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
 <!--    <title>Resume Uploader</title>-->
 <!--    <style>-->
+<!--        /* General Styles */-->
 <!--        body {-->
 <!--            font-family: Arial, sans-serif;-->
 <!--            background-color: #f4f4f9;-->
@@ -15,6 +17,7 @@
 <!--            padding: 0;-->
 <!--            box-sizing: border-box;-->
 <!--        }-->
+
 <!--        header {-->
 <!--            width: 100%;-->
 <!--            background-color: #007bff;-->
@@ -24,13 +27,14 @@
 <!--            justify-content: space-between;-->
 <!--            align-items: center;-->
 <!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
-<!--            box-sizing: border-box;-->
 <!--        }-->
+
 <!--        header h1 {-->
 <!--            margin: 0;-->
 <!--            padding: 0 20px;-->
 <!--            font-size: 1.5em;-->
 <!--        }-->
+
 <!--        .nav-button {-->
 <!--            margin: 0 20px;-->
 <!--            padding: 10px 20px;-->
@@ -40,14 +44,16 @@
 <!--            border: 2px solid white;-->
 <!--            border-radius: 5px;-->
 <!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s, color 0.3s, border 0.3s;-->
 <!--        }-->
+
 <!--        .nav-button:hover {-->
 <!--            background-color: #0056b3;-->
 <!--            color: white;-->
 <!--            border: 2px solid #0056b3;-->
 <!--        }-->
+
 <!--        .container {-->
-<!--            position: relative;-->
 <!--            background-color: white;-->
 <!--            padding: 40px;-->
 <!--            border-radius: 8px;-->
@@ -55,9 +61,10 @@
 <!--            width: 90%;-->
 <!--            max-width: 900px;-->
 <!--            text-align: center;-->
-<!--            box-sizing: border-box;-->
 <!--            margin-top: 20px;-->
+<!--            position: relative;-->
 <!--        }-->
+
 <!--        .download-button {-->
 <!--            position: absolute;-->
 <!--            top: 10px;-->
@@ -72,28 +79,30 @@
 <!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
 <!--            transition: background-color 0.3s, box-shadow 0.3s;-->
 <!--        }-->
+
 <!--        .download-button:hover {-->
 <!--            background-color: #0056b3;-->
 <!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);-->
 <!--        }-->
+
 <!--        h1 {-->
 <!--            color: #333;-->
 <!--            margin-bottom: 20px;-->
 <!--            font-size: 2em;-->
 <!--        }-->
+
 <!--        input[type="file"],-->
 <!--        select {-->
-<!--            margin: 20px auto;-->
-<!--            display: block;-->
+<!--            margin: 10px;-->
 <!--            padding: 10px;-->
 <!--            border: 2px solid #ddd;-->
 <!--            border-radius: 5px;-->
-<!--            width: 80%;-->
+<!--            width: calc(100% - 24px);-->
 <!--            max-width: 400px;-->
 <!--            background-color: #f9f9f9;-->
 <!--            font-size: 16px;-->
-<!--            box-sizing: border-box;-->
 <!--        }-->
+
 <!--        button {-->
 <!--            background-color: #007bff;-->
 <!--            color: white;-->
@@ -104,294 +113,403 @@
 <!--            font-size: 16px;-->
 <!--            margin-top: 20px;-->
 <!--        }-->
+
 <!--        button:hover {-->
 <!--            background-color: #0056b3;-->
 <!--        }-->
+
 <!--        table {-->
 <!--            margin: 20px auto;-->
 <!--            border-collapse: collapse;-->
 <!--            width: 80%;-->
 <!--            max-width: 600px;-->
 <!--        }-->
-<!--        table, th, td {-->
+
+<!--        table,-->
+<!--        th,-->
+<!--        td {-->
 <!--            border: 1px solid #ddd;-->
 <!--        }-->
-<!--        th, td {-->
+
+<!--        th,-->
+<!--        td {-->
 <!--            padding: 10px;-->
 <!--            text-align: left;-->
 <!--        }-->
+
 <!--        .overall-percentage {-->
 <!--            font-size: 1.5em;-->
 <!--            color: #007bff;-->
 <!--            margin-top: 20px;-->
 <!--            font-weight: bold;-->
 <!--        }-->
+
+<!--        .field-group {-->
+<!--            margin: 20px 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .field-group label {-->
+<!--            display: block;-->
+<!--            font-size: 16px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        .jd-options {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            margin: 20px 0;-->
+<!--            gap: 20px;-->
+<!--        }-->
+
+<!--        .jd-option {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            width: 100%;-->
+<!--            max-width: 400px;-->
+<!--        }-->
+
+<!--        .jd-option label {-->
+<!--            margin-left: 10px;-->
+<!--        }-->
+
+<!--        .jd-option select,-->
+<!--        .jd-option input[type="file"] {-->
+<!--            margin-left: 20px;-->
+<!--            width: 100%;-->
+<!--            max-width: 300px;-->
+<!--        }-->
 <!--    </style>-->
 <!--</head>-->
+
 <!--<body>-->
-<!--    <header>-->
-<!--        <h1>Resume Matcher</h1>-->
-<!--        <button class="nav-button" onclick="navigateToPractice9()">Upload and Download Resume</button>-->
-<!--        <button class="nav-button" onclick="navigateToJd1()">Create Jd</button>-->
-<!--        <button class="nav-button" onclick="navigateToPractice12()">View Jd</button>-->
-<!--    </header>-->
-<!--    <div class="container">-->
-<!--        <button type="button" id="downloadFeedbackButton" class="download-button">Download Feedback</button>-->
-<!--        <h1>Resume Matcher</h1>-->
-<!--        <form id="uploadForm" enctype="multipart/form-data">-->
+<!--<header>-->
+<!--    <h1>Resume Matcher</h1>-->
+<!--    <button class="nav-button" onclick="navigateToPractice9()">Upload and Download Resume</button>-->
+<!--    <button class="nav-button" onclick="navigateToJd1()">Create JD</button>-->
+<!--    <button class="nav-button" onclick="navigateToPractice12()">View JD</button>-->
+<!--</header>-->
+
+<!--<div class="container">-->
+<!--    <button type="button" id="downloadFeedbackButton" class="download-button">Download Feedback</button>-->
+<!--    <h1>Resume Matcher</h1>-->
+
+<!--    <form id="uploadForm" enctype="multipart/form-data">-->
+<!--        <div class="field-group">-->
+<!--            <label for="fileInput">Select Your Resume:</label>-->
 <!--            <input type="file" name="file" id="fileInput" accept=".pdf,.doc,.docx" required>-->
-<!--            <select id="jdSelect" required>-->
-<!--                <option value="" disabled selected>Select Job Description</option>-->
-<!--            </select>-->
-<!--            <button type="submit">Submit</button>-->
-<!--        </form>-->
-<!--        <div id="overallPercentage" class="overall-percentage"></div>-->
-<!--        <div id="result" style="display: none;">-->
-<!--            <h2>Mandatory Skills</h2>-->
-<!--            <table id="mandatorySkillsTable">-->
-<!--                <thead>-->
-<!--                    <tr>-->
-<!--                        <th>Skill</th>-->
-<!--                        <th>Total Duration</th>-->
-<!--                        <th>Required Experience (years)</th>-->
-<!--                        <th>Percentage</th>-->
-<!--                        <th>Details</th>-->
-<!--                        <th>Matched Subskills</th>-->
-<!--                    </tr>-->
-<!--                </thead>-->
-<!--                <tbody></tbody>-->
-<!--            </table>-->
-<!--            <h2>Other Tech Experience Of Candidate</h2>-->
-<!--            <table id="itSkillsTable">-->
-<!--                <thead>-->
-<!--                    <tr>-->
-<!--                        <th>Skill</th>-->
-<!--                        <th>Total Duration</th>-->
-<!--                        <th>Details</th>-->
-<!--                    </tr>-->
-<!--                </thead>-->
-<!--                <tbody></tbody>-->
-<!--            </table>-->
 <!--        </div>-->
+
+<!--        <div class="jd-options">-->
+<!--            <div class="jd-option">-->
+<!--                <input type="radio" id="selectJdRadio" name="jdOption" value="selectJd" checked>-->
+<!--                <label for="selectJdRadio">Select an Existing JD</label>-->
+<!--                <select id="jdSelect" name="jdId">-->
+<!--                    <option value="" disabled selected>Select Job Description</option>-->
+<!--                </select>-->
+<!--            </div>-->
+
+<!--            <div class="jd-option">-->
+<!--                <input type="radio" id="uploadJdRadio" name="jdOption" value="uploadJd">-->
+<!--                <label for="uploadJdRadio">Upload a New JD</label>-->
+<!--                <input type="file" name="jdFile" id="jdFileInput" accept=".pdf,.doc,.docx" disabled>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <button type="submit">Submit</button>-->
+<!--    </form>-->
+
+<!--    <div id="overallPercentage" class="overall-percentage"></div>-->
+
+<!--    <div id="result" style="display: none;">-->
+<!--        <h2>Mandatory Skills</h2>-->
+<!--        <table id="mandatorySkillsTable">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Skill</th>-->
+<!--                <th>Total Duration</th>-->
+<!--                <th>Required Experience (years)</th>-->
+<!--                <th>Percentage</th>-->
+<!--                <th>Details</th>-->
+<!--                <th>Matched Subskills</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody></tbody>-->
+<!--        </table>-->
+
+<!--        <h2>Other Tech Experience Of Candidate</h2>-->
+<!--        <table id="itSkillsTable">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Skill</th>-->
+<!--                <th>Total Duration</th>-->
+<!--                <th>Details</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody></tbody>-->
+<!--        </table>-->
 <!--    </div>-->
+<!--</div>-->
 
-<!--    <script>-->
-<!--        function navigateToPractice9() {-->
-<!--            window.location.href = 'practice9.html';-->
-<!--        }-->
 
-<!--        function navigateToJd1() {-->
-<!--            window.location.href = 'jd3.html';-->
-<!--        }-->
+<!--</body>-->
 
-<!--        function navigateToPractice12(){-->
-<!--            window.location.href='list4.html';-->
-<!--        }-->
+<!--</html>-->
 
-<!--        document.addEventListener('DOMContentLoaded', function() {-->
-<!--            console.log("DOM fully loaded and parsed");-->
-<!--            fetch('http://13.232.9.157:8080/jd/getIds')-->
-<!--                .then(response => {-->
-<!--                    console.log("Fetching Job Descriptions...");-->
-<!--                    if (!response.ok) {-->
-<!--                        throw new Error('Network response was not ok ' + response.statusText);-->
-<!--                    }-->
-<!--                    return response.json();-->
-<!--                })-->
-<!--                .then(data => {-->
-<!--                    const jdSelect = document.getElementById('jdSelect');-->
-<!--                    console.log("Job Descriptions Data: ", data);-->
-<!--                    data.forEach(item => {-->
-<!--                        const option = document.createElement('option');-->
-<!--                        option.value = item.id;-->
-<!--                        option.textContent = item.title;-->
-<!--                        jdSelect.appendChild(option);-->
-<!--                    });-->
-<!--                })-->
-<!--                .catch(error => console.error('Error fetching job descriptions:', error));-->
-<!--        });-->
 
-<!--        document.getElementById('uploadForm').addEventListener('submit', function(event) {-->
-<!--            event.preventDefault();-->
 
-<!--            const selectedId = document.getElementById('jdSelect').value;-->
-<!--            const formData = new FormData();-->
-<!--            formData.append('file', document.getElementById('fileInput').files[0]);-->
 
-<!--            console.log("Selected Job Description ID: ", selectedId);-->
-<!--            console.log("Form Data: ", formData);-->
+<!--<script>-->
+<!--    function navigateToPractice9() {-->
+<!--        window.location.href = 'practice9.html';-->
+<!--    }-->
 
-<!--            fetch(`http://13.232.9.157:8080/upload?jdId=${selectedId}`, {-->
-<!--                method: 'POST',-->
-<!--                body: formData-->
-<!--            })-->
+<!--    function navigateToJd1() {-->
+<!--        window.location.href = 'jd3.html';-->
+<!--    }-->
+
+<!--    function navigateToPractice12(){-->
+<!--        window.location.href='list5.html';-->
+<!--    }-->
+
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        console.log("DOM fully loaded and parsed");-->
+<!--        fetch('http://13.232.9.157:8080/jd/getIds')-->
 <!--            .then(response => {-->
-<!--                console.log("Uploading file...");-->
+<!--                console.log("Fetching Job Descriptions...");-->
 <!--                if (!response.ok) {-->
 <!--                    throw new Error('Network response was not ok ' + response.statusText);-->
 <!--                }-->
 <!--                return response.json();-->
 <!--            })-->
 <!--            .then(data => {-->
-<!--                console.log("Received data: ", data);-->
-<!--                const itSkillsMap = data.itSkills || {};-->
-<!--                const mandatorySkillsMap = data.mandatorySkills || {};-->
-<!--                //const overallPercentage = data.overallPercentage || 0;-->
-<!--                const overallPercentage = mandatorySkillsMap.overallPercentage || 0;-->
-<!--                delete mandatorySkillsMap.overallPercentage;-->
-<!--                console.log("IT Skills Map: ", itSkillsMap);-->
-<!--                console.log("Mandatory Skills Map: ", mandatorySkillsMap);-->
-<!--                console.log("Overall Percentage: ", overallPercentage);-->
-
-<!--                // Display overall percentage-->
-<!--                const overallPercentageDiv = document.getElementById('overallPercentage');-->
-<!--                overallPercentageDiv.textContent = `Overall Percentage: ${overallPercentage.toFixed(2)}%`;-->
-<!--                -->
-<!--                // Handle itSkills-->
-<!--                const itSkillsTableBody = document.getElementById('itSkillsTable').querySelector('tbody');-->
-<!--                itSkillsTableBody.innerHTML = '';-->
-<!--                Object.entries(itSkillsMap).forEach(([skill, skillInfo]) => {-->
-<!--                    const row = document.createElement('tr');-->
-<!--                    -->
-<!--                    const skillCell = document.createElement('td');-->
-<!--                    skillCell.textContent = skill;-->
-<!--                    row.appendChild(skillCell);-->
-<!--                    -->
-<!--                    const durationCell = document.createElement('td');-->
-<!--                    durationCell.textContent = skillInfo.totalDuration;-->
-<!--                    row.appendChild(durationCell);-->
-<!--                    -->
-<!--                    const detailsCell = document.createElement('td');-->
-<!--                    const detailsList = document.createElement('ul');-->
-
-<!--                    if (Array.isArray(skillInfo.details)) {-->
-<!--                        skillInfo.details.forEach(detail => {-->
-<!--                            const listItem = document.createElement('li');-->
-<!--                            listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;-->
-<!--                            detailsList.appendChild(listItem);-->
-<!--                        });-->
-<!--                    } else {-->
-<!--                        const listItem = document.createElement('li');-->
-<!--                        listItem.textContent = 'Details not available';-->
-<!--                        detailsList.appendChild(listItem);-->
-<!--                    }-->
-
-<!--                    detailsCell.appendChild(detailsList);-->
-<!--                    row.appendChild(detailsCell);-->
-
-<!--                    itSkillsTableBody.appendChild(row);-->
+<!--                const jdSelect = document.getElementById('jdSelect');-->
+<!--                console.log("Job Descriptions Data: ", data);-->
+<!--                data.forEach(item => {-->
+<!--                    const option = document.createElement('option');-->
+<!--                    option.value = item.id;-->
+<!--                    option.textContent = item.title;-->
+<!--                    jdSelect.appendChild(option);-->
 <!--                });-->
-
-<!--                // Handle mandatorySkills-->
-<!--                const mandatorySkillsTableBody = document.getElementById('mandatorySkillsTable').querySelector('tbody');-->
-<!--                mandatorySkillsTableBody.innerHTML = '';-->
-<!--                Object.entries(mandatorySkillsMap).forEach(([skill, skillInfo]) => {-->
-<!--                    const row = document.createElement('tr');-->
-<!--                    -->
-<!--                    const skillCell = document.createElement('td');-->
-<!--                    skillCell.textContent = skill;-->
-<!--                    row.appendChild(skillCell);-->
-<!--                    -->
-<!--                    const durationCell = document.createElement('td');-->
-<!--                    durationCell.textContent = skillInfo.totalDuration;-->
-<!--                    row.appendChild(durationCell);-->
-<!--                    -->
-<!--                    const requiredExperienceCell = document.createElement('td');-->
-<!--                    requiredExperienceCell.textContent = skillInfo.requiredExperience;-->
-<!--                    row.appendChild(requiredExperienceCell);-->
-<!--                    -->
-<!--                    const percentageCell = document.createElement('td');-->
-<!--                    percentageCell.textContent = skillInfo.percentage !== undefined ? `${skillInfo.percentage.toFixed(2)}%` : 'N/A';-->
-<!--                    row.appendChild(percentageCell);-->
-<!--                    -->
-<!--                    const detailsCell = document.createElement('td');-->
-<!--                    const detailsList = document.createElement('ul');-->
-
-<!--                    if (Array.isArray(skillInfo.details)) {-->
-<!--                        skillInfo.details.forEach(detail => {-->
-<!--                            const listItem = document.createElement('li');-->
-<!--                            listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;-->
-<!--                            detailsList.appendChild(listItem);-->
-<!--                        });-->
-<!--                    } else {-->
-<!--                        const listItem = document.createElement('li');-->
-<!--                        listItem.textContent = 'Details not available';-->
-<!--                        detailsList.appendChild(listItem);-->
-<!--                    }-->
-
-<!--                    detailsCell.appendChild(detailsList);-->
-<!--                    row.appendChild(detailsCell);-->
-<!--                    -->
-<!--                    const subskillsCell = document.createElement('td');-->
-<!--                    const subskillsList = document.createElement('ul');-->
-
-<!--                    if (Array.isArray(skillInfo.matchedSubSkills)) {-->
-<!--                        skillInfo.matchedSubSkills.forEach(subskill => {-->
-<!--                            const listItem = document.createElement('li');-->
-<!--                            listItem.textContent = subskill;-->
-<!--                            subskillsList.appendChild(listItem);-->
-<!--                        });-->
-<!--                    } else {-->
-<!--                        const listItem = document.createElement('li');-->
-<!--                        listItem.textContent = 'No subskills';-->
-<!--                        subskillsList.appendChild(listItem);-->
-<!--                    }-->
-
-<!--                    subskillsCell.appendChild(subskillsList);-->
-<!--                    row.appendChild(subskillsCell);-->
-
-<!--                    mandatorySkillsTableBody.appendChild(row);-->
-<!--                });-->
-
-<!--                // Display the result section-->
-<!--                const resultDiv = document.getElementById('result');-->
-<!--                resultDiv.style.display = 'block';-->
 <!--            })-->
-<!--            .catch(error => {-->
-<!--                console.error('Error:', error);-->
-<!--                alert('Error occurred. Please try again.');-->
-<!--            });-->
+<!--            .catch(error => console.error('Error fetching job descriptions:', error));-->
+
+<!--        const selectJdRadio = document.getElementById('selectJdRadio');-->
+<!--        const uploadJdRadio = document.getElementById('uploadJdRadio');-->
+<!--        const jdSelect = document.getElementById('jdSelect');-->
+<!--        const jdFileInput = document.getElementById('jdFileInput');-->
+
+<!--        selectJdRadio.addEventListener('change', function() {-->
+<!--            jdSelect.disabled = !this.checked;-->
+<!--            jdFileInput.disabled = this.checked;-->
 <!--        });-->
 
-<!--        // Add event listener for "Download Feedback" button-->
-<!--        document.getElementById('downloadFeedbackButton').addEventListener('click', function(event) {-->
-<!--            const selectedId = document.getElementById('jdSelect').value;-->
-<!--            const formData = new FormData();-->
-<!--            formData.append('file', document.getElementById('fileInput').files[0]);-->
+<!--        uploadJdRadio.addEventListener('change', function() {-->
+<!--            jdSelect.disabled = this.checked;-->
+<!--            jdFileInput.disabled = !this.checked;-->
+<!--        });-->
+<!--    });-->
 
-<!--            console.log("Selected Job Description ID for report: ", selectedId);-->
-<!--            console.log("Form Data for report: ", formData);-->
+<!--    document.getElementById('uploadForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault();-->
 
-<!--            fetch(`http://13.232.9.157:8080/generateReport?jdId=${selectedId}`, {-->
-<!--                method: 'POST',-->
-<!--                body: formData-->
-<!--            })-->
-<!--            .then(response => {-->
-<!--                console.log("Generating report...");-->
-<!--                if (!response.ok) {-->
-<!--                    throw new Error('Network response was not ok ' + response.statusText);-->
+<!--        const selectedId = document.getElementById('jdSelect').value;-->
+<!--        const jdFile = document.getElementById('jdFileInput').-->
+<!--        files[0];-->
+<!--        const formData = new FormData();-->
+<!--        formData.append('file', document.getElementById('fileInput').files[0]);-->
+
+<!--        if (document.getElementById('selectJdRadio').checked) {-->
+<!--            formData.append('jdId', selectedId);-->
+<!--        } else if (document.getElementById('uploadJdRadio').checked && jdFile) {-->
+<!--            formData.append('jdFile', jdFile);-->
+<!--        } else {-->
+<!--            alert('Please select or upload a JD.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        console.log("Selected Job Description ID: ", selectedId);-->
+<!--        console.log("Form Data: ", formData);-->
+
+<!--        fetch(`http://13.232.9.157:8080/upload`, {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            console.log("Uploading file...");-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error('Network response was not ok ' + response.statusText);-->
+<!--            }-->
+<!--            return response.json();-->
+<!--        })-->
+<!--        .then(data => {-->
+<!--            console.log("Received data: ", data);-->
+<!--            const itSkillsMap = data.itSkills || {};-->
+<!--            const mandatorySkillsMap = data.mandatorySkills || {};-->
+<!--            const overallPercentage = mandatorySkillsMap.overallPercentage || 0;-->
+<!--            delete mandatorySkillsMap.overallPercentage;-->
+<!--            console.log("IT Skills Map: ", itSkillsMap);-->
+<!--            console.log("Mandatory Skills Map: ", mandatorySkillsMap);-->
+<!--            console.log("Overall Percentage: ", overallPercentage);-->
+
+<!--            // Display overall percentage-->
+<!--            const overallPercentageDiv = document.getElementById('overallPercentage');-->
+<!--            overallPercentageDiv.textContent = `Overall Percentage: ${overallPercentage.toFixed(2)}%`;-->
+
+<!--            // Handle itSkills-->
+<!--            const itSkillsTableBody = document.getElementById('itSkillsTable').querySelector('tbody');-->
+<!--            itSkillsTableBody.innerHTML = '';-->
+<!--            Object.entries(itSkillsMap).forEach(([skill, skillInfo]) => {-->
+<!--                const row = document.createElement('tr');-->
+
+<!--                const skillCell = document.createElement('td');-->
+<!--                skillCell.textContent = skill;-->
+<!--                row.appendChild(skillCell);-->
+
+<!--                const durationCell = document.createElement('td');-->
+<!--                durationCell.textContent = skillInfo.totalDuration;-->
+<!--                row.appendChild(durationCell);-->
+
+<!--                const detailsCell = document.createElement('td');-->
+<!--                const detailsList = document.createElement('ul');-->
+
+<!--                if (Array.isArray(skillInfo.details)) {-->
+<!--                    skillInfo.details.forEach(detail => {-->
+<!--                        const listItem = document.createElement('li');-->
+<!--                        listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;-->
+<!--                        detailsList.appendChild(listItem);-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    const listItem = document.createElement('li');-->
+<!--                    listItem.textContent = 'Details not available';-->
+<!--                    detailsList.appendChild(listItem);-->
 <!--                }-->
-<!--                return response.blob();-->
-<!--            })-->
-<!--            .then(blob => {-->
-<!--                console.log("Report generated successfully");-->
-<!--                const url = window.URL.createObjectURL(new Blob([blob]));-->
-<!--                const a = document.createElement('a');-->
-<!--                a.style.display = 'none';-->
-<!--                a.href = url;-->
-<!--                a.download = 'feedback_report.pdf';-->
-<!--                document.body.appendChild(a);-->
-<!--                a.click();-->
-<!--                window.URL.revokeObjectURL(url);-->
-<!--            })-->
-<!--            .catch(error => {-->
-<!--                console.error('Error:', error);-->
-<!--                alert('Error occurred. Please try again.');-->
+
+<!--                detailsCell.appendChild(detailsList);-->
+<!--                row.appendChild(detailsCell);-->
+
+<!--                itSkillsTableBody.appendChild(row);-->
 <!--            });-->
+
+<!--            // Handle mandatorySkills-->
+<!--            const mandatorySkillsTableBody = document.getElementById('mandatorySkillsTable').querySelector('tbody');-->
+<!--            mandatorySkillsTableBody.innerHTML = '';-->
+<!--            Object.entries(mandatorySkillsMap).forEach(([skill, skillInfo]) => {-->
+<!--                const row = document.createElement('tr');-->
+
+<!--                const skillCell = document.createElement('td');-->
+<!--                skillCell.textContent = skill;-->
+<!--                row.appendChild(skillCell);-->
+
+<!--                const durationCell = document.createElement('td');-->
+<!--                durationCell.textContent = skillInfo.totalDuration;-->
+<!--                row.appendChild(durationCell);-->
+
+<!--                const requiredExperienceCell = document.createElement('td');-->
+<!--                requiredExperienceCell.textContent = skillInfo.requiredExperience;-->
+<!--                row.appendChild(requiredExperienceCell);-->
+
+<!--                const percentageCell = document.createElement('td');-->
+<!--                percentageCell.textContent = skillInfo.percentage !== undefined ? `${skillInfo.percentage.toFixed(2)}%` : 'N/A';-->
+<!--                row.appendChild(percentageCell);-->
+
+<!--                const detailsCell = document.createElement('td');-->
+<!--                const detailsList = document.createElement('ul');-->
+
+<!--                if (Array.isArray(skillInfo.details)) {-->
+<!--                    skillInfo.details.forEach(detail => {-->
+<!--                        const listItem = document.createElement('li');-->
+<!--                        listItem.textContent = `From ${detail.startDate} to ${detail.endDate}: ${detail.durationInMonths} months`;-->
+<!--                        detailsList.appendChild(listItem);-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    const listItem = document.createElement('li');-->
+<!--                    listItem.textContent = 'Details not available';-->
+<!--                    detailsList.appendChild(listItem);-->
+<!--                }-->
+
+<!--                detailsCell.appendChild(detailsList);-->
+<!--                row.appendChild(detailsCell);-->
+
+<!--                const subskillsCell = document.createElement('td');-->
+<!--                const subskillsList = document.createElement('ul');-->
+
+<!--                if (Array.isArray(skillInfo.matchedSubSkills)) {-->
+<!--                    skillInfo.matchedSubSkills.forEach(subskill => {-->
+<!--                        const listItem = document.createElement('li');-->
+<!--                        listItem.textContent = subskill;-->
+<!--                        subskillsList.appendChild(listItem);-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    const listItem = document.createElement('li');-->
+<!--                    listItem.textContent = 'No subskills';-->
+<!--                    subskillsList.appendChild(listItem);-->
+<!--                }-->
+
+<!--                subskillsCell.appendChild(subskillsList);-->
+<!--                row.appendChild(subskillsCell);-->
+
+<!--                mandatorySkillsTableBody.appendChild(row);-->
+<!--            });-->
+
+<!--            // Display the result section-->
+<!--            const resultDiv = document.getElementById('result');-->
+<!--            resultDiv.style.display = 'block';-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--            alert('Error occurred. Please try again.');-->
 <!--        });-->
-<!--    </script>-->
+<!--    });-->
+
+<!--    // Add event listener for "Download Feedback" button-->
+<!--    document.getElementById('downloadFeedbackButton').addEventListener('click', function(event) {-->
+<!--        const selectedId = document.getElementById('jdSelect').value;-->
+<!--        const formData = new FormData();-->
+<!--        formData.append('file', document.getElementById('fileInput').files[0]);-->
+
+<!--        const jdFile = document.getElementById('jdFileInput').files[0];-->
+<!--        if (document.getElementById('selectJdRadio').checked) {-->
+<!--            formData.append('jdId', selectedId);-->
+<!--        } else if (document.getElementById('uploadJdRadio').checked && jdFile) {-->
+<!--            formData.append('jdFile', jdFile);-->
+<!--        } else {-->
+<!--            alert('Please select or upload a JD.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        fetch(`http://13.232.9.157:8080/generateReport?jdId=${selectedId}`, {-->
+<!--            method: 'POST',-->
+<!--            body: formData-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error('Network response was not ok ' + response.statusText);-->
+<!--            }-->
+<!--            return response.blob();-->
+<!--        })-->
+<!--        .then(blob => {-->
+<!--            const url = window.URL.createObjectURL(blob);-->
+<!--            const a = document.createElement('a');-->
+<!--            a.style.display = 'none';-->
+<!--            a.href = url;-->
+<!--            a.download = 'feedback.pdf';-->
+<!--            document.body.appendChild(a);-->
+<!--            a.click();-->
+<!--            window.URL.revokeObjectURL(url);-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--            alert('Error occurred while downloading feedback. Please try again.');-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 <!--</body>-->
 <!--</html>-->
+
 
 
 
@@ -672,7 +790,7 @@
     }
 
     function navigateToPractice12(){
-        window.location.href='list5.html';
+        window.location.href='list4.html';
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -866,47 +984,45 @@
     });
 
     // Add event listener for "Download Feedback" button
-
     document.getElementById('downloadFeedbackButton').addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent default action
-    const selectedId = document.getElementById('jdSelect').value;
-    const formData = new FormData();
-    formData.append('file', document.getElementById('fileInput').files[0]);
+        const selectedId = document.getElementById('jdSelect').value;
+        const formData = new FormData();
+        formData.append('file', document.getElementById('fileInput').files[0]);
 
-    const jdFile = document.getElementById('jdFileInput').files[0];
-    if (document.getElementById('selectJdRadio').checked) {
-        formData.append('jdId', selectedId);
-    } else if (document.getElementById('uploadJdRadio').checked && jdFile) {
-        formData.append('jdFile', jdFile);
-    } else {
-        alert('Please select or upload a JD.');
-        return;
-    }
-
-    fetch('http://13.232.9.157:8080/generateReport', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+        const jdFile = document.getElementById('jdFileInput').files[0];
+        if (document.getElementById('selectJdRadio').checked) {
+            formData.append('jdId', selectedId);
+        } else if (document.getElementById('uploadJdRadio').checked && jdFile) {
+            formData.append('jdFile', jdFile);
+        } else {
+            alert('Please select or upload a JD.');
+            return;
         }
-        return response.blob();
-    })
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'feedback.pdf';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error occurred while downloading feedback. Please try again.');
-    });
+
+        fetch(`http://13.232.9.157:8080/generateReport?jdId=${selectedId}`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'feedback.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error occurred while downloading feedback. Please try again.');
+        });
     });
 </script>
 </body>

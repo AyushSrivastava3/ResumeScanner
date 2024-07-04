@@ -52,8 +52,9 @@ public class ResumeController {
 
     @PostMapping("/generateReport")
     public ResponseEntity<byte[]> generateReport(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("jdId") String jdId) {
-        return resumeService.generateReport(file, jdId);
+                                                 @RequestParam(value = "jdFile", required = false) MultipartFile jdFile,
+                                                 @RequestParam(value = "jdId", required = false) String jdId) {
+        return resumeService.generateReport(file,jdFile, jdId);
     }
 
     @GetMapping("/getReleventProfiles")

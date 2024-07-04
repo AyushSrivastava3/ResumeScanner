@@ -1,0 +1,334 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Descriptions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .jd-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            width: 100%;
+        }
+        .jd-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: box-shadow 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .jd-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .jd-item h2 {
+            margin: 0;
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: none;
+            flex: 1;
+        }
+        .jd-summary {
+            font-size: 0.9em;
+            color: #666;
+            flex: 2;
+        }
+        .jd-summary p {
+            margin: 5px 0;
+        }
+        .actions {
+            display: flex;
+            flex-shrink: 0;
+        }
+        .actions button {
+            padding: 10px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .actions button:hover {
+            background-color: #ddd;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+        .pagination button {
+            padding: 10px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .pagination button:hover {
+            background-color: #ddd;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .modal-content p {
+            margin: 10px 0;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .modal-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .modal-actions .confirm-delete {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        .modal-actions .confirm-delete:hover {
+            background-color: #0056b3;
+        }
+        .modal-actions .close-modal {
+            background-color: #ccc;
+        }
+        .modal-actions .close-modal:hover {
+            background-color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="jd-list" id="jdList">
+        <div class="header">
+            <h1>Job Description List</h1>
+        </div>
+        <div class="pagination" id="paginationControls">
+            <button id="prevPage" disabled>Previous</button>
+            <button id="nextPage">Next</button>
+        </div>
+    </div>
+</div>
+<div id="response"></div>
+
+<!-- Modal for delete confirmation -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h2>Are you sure you want to delete?</h2>
+        <div class="modal-actions">
+            <button class="confirm-delete" id="confirmDeleteBtn">Delete</button>
+            <button class="close-modal" id="closeModal">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const jdListDiv = document.getElementById('jdList');
+        const responseDiv = document.getElementById('response');
+        const jdDetailsDiv = document.getElementById('jdDetails');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const closeModal = document.getElementById('closeModal');
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let selectedIdToDelete = null;
+
+        // Fetch job descriptions for the current page
+        function fetchJobDescriptions(page) {
+            fetch(`http://13.232.9.157:8080/jd/getIds`)
+                .then(response => response.json())
+                .then(data => {
+                    const totalItems = data.length;
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
+                    console.log("data :"+data)
+                    const startIndex = (page - 1) * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+                    const pageData = data.slice(startIndex, endIndex);
+
+                    jdListDiv.innerHTML = `
+                        <div class="header">
+                            <h1>Job Description List</h1>
+                        </div>
+                        <div class="pagination" id="paginationControls">
+                            <button id="prevPage" ${page === 1 ? 'disabled' : ''}>Previous</button>
+                            <button id="nextPage" ${page === totalPages ? 'disabled' : ''}>Next</button>
+                        </div>`;
+
+                    pageData.forEach((jd, index) => {
+                        // Fetch additional details for each job description
+                        fetch(`http://13.232.9.157:8080/getJd?id=${jd.id}`)
+                            .then(response => response.json())
+                            .then(details => {
+                                const jdItem = document.createElement('div');
+                                jdItem.classList.add('jd-item');
+                                jdItem.innerHTML = `
+                                    <h2 class="jd-title" data-id="${details.id}">${details.title}</h2>
+                                    <div class="jd-summary">
+                                        <p><strong>Location:</strong> ${details.location}</p>
+                                        <p><strong>Mandatory Skills:</strong> ${details.mandatorySkills.map(skill => skill.skill).join(', ')}</p>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="editBtn" data-id="${details.id}">Edit</button>
+                                        <button class="deleteBtn" data-id="${details.id}">Delete</button>
+                                        <button class="relevantBtn" data-id="${details.id}">Relevant Profiles</button>
+                                    </div>
+                                `;
+                                jdListDiv.appendChild(jdItem);
+
+                                // Attach event listeners to the title and buttons
+                                jdItem.querySelector('.jd-title').addEventListener('click', viewJD);
+                                jdItem.querySelector('.editBtn').addEventListener('click', editJD);
+                                jdItem.querySelector('.deleteBtn').addEventListener('click', showDeleteModal);
+                                jdItem.querySelector('.relevantBtn').addEventListener('click', viewRelevantProfiles);
+                            })
+                            .catch(error => console.error('Error fetching job description details:', error));
+                    });
+
+                    // Reattach event listeners for pagination buttons
+                    document.getElementById('prevPage').addEventListener('click', () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            fetchJobDescriptions(currentPage);
+                        }
+                    });
+
+                    document.getElementById('nextPage').addEventListener('click', () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            fetchJobDescriptions(currentPage);
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching job descriptions:', error));
+        }
+
+
+       // View job description details
+       function viewJD(event) {
+           const selectedId = event.target.getAttribute('data-id');
+           window.location.href = `jddetail.html?id=${selectedId}`;
+       }
+
+
+        // Edit job description
+        function editJD(event) {
+            const selectedId = event.target.getAttribute('data-id');
+            window.location.href = `editjd.html?id=${selectedId}`;
+        }
+
+        // Show delete confirmation modal
+        function showDeleteModal(event) {
+            selectedIdToDelete = event.target.getAttribute('data-id');
+            deleteModal.style.display = 'flex';
+        }
+
+        // Delete job description
+        function deleteJD() {
+            fetch(`http://13.232.9.157:8080/deleteJd?id=${selectedIdToDelete}`, {
+                method: 'DELETE'
+            })
+            .then(() => {
+                responseDiv.textContent = 'Job description deleted successfully';
+                document.querySelector(`.jd-item button[data-id="${selectedIdToDelete}"]`).closest('.jd-item').remove();
+                jdDetailsDiv.innerHTML = '';
+                deleteModal.style.display = 'none';
+                fetchJobDescriptions(currentPage);
+            })
+            .catch(error => console.error('Error deleting job description:', error));
+        }
+
+        // View relevant profiles
+        function viewRelevantProfiles(event) {
+            const selectedId = event.target.getAttribute('data-id');
+            //window.location.href = `profilepageissue.html?jdId=${selectedId}`;
+            window.location.href = `profiles.html?jdId=${selectedId}`;
+        }
+
+        // Function to format skills
+        function formatSkills(skills) {
+            return skills.map(skill => `
+                <div class="skill-box">
+                    <p><strong>Skill:</strong> ${skill.skill}</p>
+                    <p><strong>Experience:</strong> ${skill.experience} years</p>
+                    ${skill.subSkills && skill.subSkills.length > 0 ? `
+                        <div><strong>SubSkills:</strong></div>
+                        ${skill.subSkills.map(subSkill => `
+                            <div class="subskill-box">${subSkill}</div>
+                        `).join('')}
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            deleteModal.style.display = 'none';
+            selectedIdToDelete = null;
+        });
+
+        // Confirm delete action
+        confirmDeleteBtn.addEventListener('click', deleteJD);
+
+        // Initial fetch
+        fetchJobDescriptions(currentPage);
+    });
+</script>
+</body>
+</html>

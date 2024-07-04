@@ -867,12 +867,24 @@ public class ResumeService {
     }
 
 
-    public ResponseEntity<byte[]> generateReport(MultipartFile file, String jdId) {
+    public ResponseEntity<byte[]> generateReport(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
-            // Get mandatory skills from JD
-            List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
-            if (mandatorySkills == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+            List<Skill> mandatorySkills = new ArrayList<>();
+
+            // Check if JD file is provided and extract skills from it
+            if (jdFile != null && !jdFile.isEmpty()) {
+                String jdText = extractTextFromFile(jdFile);
+
+                mandatorySkills = extractSkillsFromJDText(jdText);
+            }
+            // Check if JD ID is provided and fetch skills using the ID
+            else if (jdId != null) {
+                mandatorySkills = jdService.getMandatorySkills(jdId);;
+                if (mandatorySkills == null || mandatorySkills.isEmpty()) {
+
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                }
             }
 
             // Extract text from the file
@@ -1010,7 +1022,9 @@ public class ResumeService {
 
         document.add(table);
 
-        double overallPercentage = (double) skillAnalysis.get("overallPercentage");
+        //double overallPercentage = (double) skillAnalysis.get("overallPercentage");
+        Number numberOverallPercentage=(Number) skillAnalysis.get("overallPercentage");
+        double overallPercentage=numberOverallPercentage.doubleValue();
         document.add(new Paragraph("\nOverall Percentage: " + String.format("%.2f%%", overallPercentage)));
 
         document.close();

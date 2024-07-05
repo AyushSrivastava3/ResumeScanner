@@ -493,7 +493,7 @@ document.getElementById('downloadFeedbackButton').addEventListener('click', func
     const sendEmail = confirm('Do you want to send feedback via email? Click OK to send.');
 
     if (sendEmail) {
-        const email = prompt('Enter your email address:');
+        const email = prompt('Enter candidate email address:');
         if (email === null || email.trim() === '') {
             alert('Email address is required to send feedback.');
             return;

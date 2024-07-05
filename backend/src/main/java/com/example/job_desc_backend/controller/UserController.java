@@ -31,13 +31,19 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         // Check if username or email already exists
+//        if (userRepository.findByUsername(user.getUsername()) != null) {
+//            throw new RuntimeException("Username already exists"+HttpStatus.BAD_REQUEST);
+//            //return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
+//        }
+//        if (userRepository.findByEmail(user.getEmail())!=null) {
+//            throw new RuntimeException("Email already exists"+HttpStatus.BAD_REQUEST);
+//            //return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
+//        }
         if (userRepository.findByUsername(user.getUsername()) != null) {
-            throw new RuntimeException("Username already exists"+HttpStatus.BAD_REQUEST);
-            //return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
         }
-        if (userRepository.findByEmail(user.getEmail())!=null) {
-            throw new RuntimeException("Email already exists"+HttpStatus.BAD_REQUEST);
-            //return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
         }
         User newUser=new User();
         newUser.setEmail(user.getEmail());

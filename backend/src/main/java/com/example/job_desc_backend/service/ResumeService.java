@@ -8,7 +8,9 @@ import com.example.job_desc_backend.repository.Profile_detail_page_repository;
 import com.example.job_desc_backend.repository.Skill_ExperienceRepository;
 import com.example.job_desc_backend.utility.*;
 import com.example.job_desc_backend.repository.ResumeRepository;
+import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -38,11 +40,20 @@ import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.web.multipart.MultipartFile;
 
+
+//import com.itextpdf.layout.Document;
+//import com.itextpdf.layout.element.Paragraph;
+//import com.itextpdf.layout.element.Table;
+//import com.itextpdf.layout.element.Cell;
+////
+//// import com.itextpdf.layout.property.UnitValue;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -71,14 +82,7 @@ public class ResumeService {
 
     public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
-//            List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
 //
-//            if (mandatorySkills == null) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Job Description not found"));
-//            }
-
-
-
             List<Skill> mandatorySkills = new ArrayList<>();
 
             // Check if JD file is provided and extract skills from it
@@ -283,7 +287,7 @@ public class ResumeService {
         }
 
         double overallPercentage = skillPercentages.values().stream().mapToDouble(Double::doubleValue).sum() / skillPercentages.size();
-        result.put("overallPercentage", (int)overallPercentage);
+        result.put("overallPercentage", overallPercentage);
 
         return result;
     }
@@ -294,13 +298,6 @@ public class ResumeService {
         Map<String, List<Map<String, Object>>> skillDetails = new HashMap<>();
         Map<String, List<String>> matchedSubSkills = new HashMap<>();
         int totalExperienceMonths = 0;
-
-        // Initialize maps for IT skills
-//        for (String skill : itSkills) {
-//            skillDurations.put(skill.toLowerCase(), 0);
-//            skillDetails.put(skill.toLowerCase(), new ArrayList<>());
-//            matchedSubSkills.put(skill.toLowerCase(), new ArrayList<>());
-//        }
 
         // Initialize maps for IT skills
         for (String skill : itSkills) {
@@ -356,22 +353,7 @@ public class ResumeService {
         // Prepare result map for IT skills analysis
         Map<String, Integer> result = new HashMap<>();
         for (String skill : itSkills) {
-//            String lowerSkill = skill.toLowerCase();
-//            int skillDurationYears = skillDurations.get(lowerSkill) / 12;
-//            int skillDurationMonths = skillDurations.get(lowerSkill) % 12;
-//
-//            if (skillDurations.get(lowerSkill) > 0) {
-//                Map<String, Object> skillInfo = new HashMap<>();
-//                if (skillDurationYears == 0 && skillDurationMonths > 0) {
-//                    skillInfo.put("totalDuration", skillDurationMonths + " months");
-//                } else if (skillDurationYears == 0 && skillDurationMonths == 0) {
-//                    skillInfo.put("totalDuration", 0);
-//                } else {
-//                    skillInfo.put("totalDuration", skillDurationYears + " years " + skillDurationMonths + " months");
-//                }
-//                skillInfo.put("details", skillDetails.get(lowerSkill));
-//                result.put(lowerSkill, skillInfo);
-//            }
+
 
 
             String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skill).toLowerCase();
@@ -541,6 +523,97 @@ public class ResumeService {
             this.description = description;
         }
     }
+
+
+//
+//    public ResponseEntity<InputStreamResource> downloadResumeAnalysisAsPdf(MultipartFile file, MultipartFile jdFile, String jdId) {
+//        ResponseEntity<Map<String, Object>> response = uploadResume(file, jdFile, jdId);
+//
+//        if (!response.getStatusCode().is2xxSuccessful()) {
+//            return ResponseEntity.status(response.getStatusCode()).body(null);
+//        }
+//
+//        Map<String, Object> responseData = response.getBody();
+//
+//        try {
+//            // Create a PDF document
+//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//            PdfWriter writer = new PdfWriter(byteArrayOutputStream);
+//            PdfDocument pdf = new PdfDocument(writer);
+//            Document document = new Document(pdf);
+//
+//            // Add content to the PDF
+//            document.add(new Paragraph("Resume Analysis Report"));
+//
+//            // Add mandatory skills analysis
+//            Map<String, Object> mandatorySkills = (Map<String, Object>) responseData.get("mandatorySkills");
+//            document.add(new Paragraph("Mandatory Skills Analysis"));
+//
+//            Table mandatorySkillsTable = new Table(UnitValue.createPercentArray(new float[]{3, 3, 3, 3}));
+//            mandatorySkillsTable.setWidth(UnitValue.createPercentValue(100));
+//            mandatorySkillsTable.addHeaderCell("Skill");
+//            mandatorySkillsTable.addHeaderCell("Total Duration");
+//            mandatorySkillsTable.addHeaderCell("Required Experience");
+//            mandatorySkillsTable.addHeaderCell("Percentage");
+//
+//            for (Map.Entry<String, Object> entry : mandatorySkills.entrySet()) {
+//                String skillName = entry.getKey();
+//                Map<String, Object> skillInfo = (Map<String, Object>) entry.getValue();
+//                mandatorySkillsTable.addCell(new Cell().add(new Paragraph(skillName)));
+//                mandatorySkillsTable.addCell(new Cell().add(new Paragraph(skillInfo.get("totalDuration").toString())));
+//                mandatorySkillsTable.addCell(new Cell().add(new Paragraph(skillInfo.get("requiredExperience").toString())));
+//                mandatorySkillsTable.addCell(new Cell().add(new Paragraph(skillInfo.get("percentage").toString() + "%")));
+//            }
+//            document.add(mandatorySkillsTable);
+//
+//            // Add IT skills analysis
+//            Map<String, Object> itSkills = (Map<String, Object>) responseData.get("itSkills");
+//            document.add(new Paragraph("IT Skills Analysis"));
+//
+//            Table itSkillsTable = new Table(UnitValue.createPercentArray(new float[]{3, 3}));
+//            itSkillsTable.setWidth(UnitValue.createPercentValue(100));
+//            itSkillsTable.addHeaderCell("Skill");
+//            itSkillsTable.addHeaderCell("Total Duration");
+//
+//            for (Map.Entry<String, Object> entry : itSkills.entrySet()) {
+//                String skillName = entry.getKey();
+//                Map<String, Object> skillInfo = (Map<String, Object>) entry.getValue();
+//                itSkillsTable.addCell(new Cell().add(new Paragraph(skillName)));
+//                itSkillsTable.addCell(new Cell().add(new Paragraph(skillInfo.get("totalDuration").toString())));
+//            }
+//            document.add(itSkillsTable);
+//
+//            // Close the document
+//            document.close();
+//
+//            // Prepare response with the PDF file
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add("Content-Disposition", "inline; filename=resume_analysis.pdf");
+//
+//            InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+//            return ResponseEntity.ok()
+//                    .headers(headers)
+//                    .contentType(MediaType.APPLICATION_PDF)
+//                    .body(resource);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

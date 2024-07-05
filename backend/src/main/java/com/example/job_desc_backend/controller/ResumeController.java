@@ -3,6 +3,7 @@ package com.example.job_desc_backend.controller;
 import com.example.job_desc_backend.dto.Profile_detail_page_response_dto;
 import com.example.job_desc_backend.model.Resume;
 import com.example.job_desc_backend.service.JdService;
+import com.example.job_desc_backend.service.ReportService;
 import com.example.job_desc_backend.service.ResumeService;
 import com.example.job_desc_backend.utility.ResumeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,21 @@ public class ResumeController {
     JdService jdService;
     @Autowired
     ResumeService resumeService;
+    @Autowired
+    ReportService reportService;
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadResume(@RequestParam("file") MultipartFile file,
                                                             @RequestParam(value = "jdFile", required = false) MultipartFile jdFile,
                                                             @RequestParam(value = "jdId", required = false) String jdId) {
         return resumeService.uploadResume(file,jdFile, jdId);
+    }
+
+    @PostMapping("/downloadMatchReportPdf")
+    public ResponseEntity<InputStreamResource> uploadAndDownloadPdf(@RequestParam("file") MultipartFile file,
+                                                                    @RequestParam(value = "jdFile", required = false) MultipartFile jdFile,
+                                                                    @RequestParam(value = "jdId", required = false) String jdId) {
+        return reportService.downloadResumeAnalysisAsPdf(file, jdFile, jdId);
     }
 
     @PostMapping("/save")

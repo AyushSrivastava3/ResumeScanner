@@ -105,14 +105,27 @@
             },
             body: JSON.stringify(formData)
         })
-        .then(response => {
-            if (response.ok) {
-                alert("Registration successful. Please proceed to login.");
-                window.location.replace("index.html"); // Redirect to index.html upon success
-            } else {
-                alert("Registration failed. Please try again.");
-            }
-        })
+<!--        .then(response => {-->
+<!--            if (response.ok) {-->
+<!--                alert("Registration successful. Please proceed to login.");-->
+<!--                window.location.replace("index.html"); // Redirect to index.html upon success-->
+<!--            } else {-->
+<!--                alert("Registration failed. Please try again.");-->
+<!--            }-->
+<!--        })-->
+
+            .then(response => {
+                if (response.ok) {
+                    alert("Registration successful. Please proceed to login.");
+                    window.location.replace("index.html");
+                } else if (response.status === 400) {
+                    response.text().then(errorMessage => {
+                        alert(errorMessage); // Display the specific error message from backend
+                    });
+                } else {
+                    throw new Error("Registration failed with status: " + response.status);
+                }
+            })
         .catch(error => {
             console.error("Error:", error);
             alert("An error occurred. Please try again later.");

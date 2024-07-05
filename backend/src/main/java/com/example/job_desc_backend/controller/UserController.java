@@ -22,7 +22,8 @@ public class UserController {
         if (authenticated) {
             return new ResponseEntity<>("Login successful", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Login failed", HttpStatus.UNAUTHORIZED);
+            throw new RuntimeException("Either username or password wrong"+HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<>("Login failed", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -31,10 +32,12 @@ public class UserController {
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         // Check if username or email already exists
         if (userRepository.findByUsername(user.getUsername()) != null) {
-            return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("Username already exists"+HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
         }
         if (userRepository.findByEmail(user.getEmail())!=null) {
-            return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("Email already exists"+HttpStatus.BAD_REQUEST);
+            //return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
         }
         User newUser=new User();
         newUser.setEmail(user.getEmail());

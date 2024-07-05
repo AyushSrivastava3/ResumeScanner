@@ -13,6 +13,8 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -23,9 +25,12 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.http.*;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,6 +66,8 @@ public class ResumeService {
     Skill_ExperienceRepository skillExperienceRepository;
     @Autowired
     Profile_detail_page_repository profileDetailPageRepository;
+    @Autowired
+    private JavaMailSender mailSender;
 
     public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
@@ -867,7 +874,7 @@ public class ResumeService {
     }
 
 
-    public ResponseEntity<byte[]> generateReport(MultipartFile file,MultipartFile jdFile, String jdId) {
+    public ResponseEntity<byte[]> generateReport(MultipartFile file,MultipartFile jdFile, String jdId,String email) {
         try {
 
             List<Skill> mandatorySkills = new ArrayList<>();
@@ -889,6 +896,8 @@ public class ResumeService {
 
             // Extract text from the file
             String resumeText = extractTextFromFile(file);
+            //Extract candidate email id
+            String candidateEmailAddress = email;
 
             // Calculate skill analysis
             List<String> skillNames = new ArrayList<>();
@@ -906,7 +915,10 @@ public class ResumeService {
 
             // Generate PDF report
             byte[] pdfReport = generatePdfReport(skillAnalysis, requiredExperienceMap);
-
+            //Generate email
+            if (candidateEmailAddress!=null) {
+                sendEmailWithAttachment(candidateEmailAddress, "Subject: Report of your resume", "Please find the attached report.", pdfReport, file.getOriginalFilename() + "_Feedback.pdf");
+            }
             // Prepare response
             String resumeFileName = file.getOriginalFilename();
             HttpHeaders headers = new HttpHeaders();
@@ -915,10 +927,21 @@ public class ResumeService {
 
             return new ResponseEntity<>(pdfReport, headers, HttpStatus.OK);
 
-        } catch (IOException | TesseractException | DocumentException e) {
+        } catch (IOException | TesseractException | DocumentException | MessagingException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    private void sendEmailWithAttachment(String to, String subject, String text, byte[] attachment, String attachmentName) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(text);
+        InputStreamSource attachmentSource = new ByteArrayResource(attachment);
+        helper.addAttachment(attachmentName, attachmentSource);
+        mailSender.send(message);
     }
 
 
@@ -1234,6 +1257,19 @@ public class ResumeService {
        profileDetailPageResponseDto.setProfile_skill_map(profileDetailPage.getProfile_skill_map());
        profileDetailPageResponseDto.setUploadedDate(profileDetailPage.getUploadedDate());
        return profileDetailPageResponseDto;
+    }
+
+    public static String extractEmail(String text) {
+        String emailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}";
+
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(text);
+
+        if (matcher.find()) {
+            return matcher.group();
+        }
+
+        return null; // Return null if no email address is found
     }
 
 }

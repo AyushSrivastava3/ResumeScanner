@@ -273,7 +273,12 @@ function addOptionalSubSkill(skillIndex) {
                 },
                 body: JSON.stringify(formData),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Success:', data);
                 document.getElementById('responseId').innerText = data.id;
@@ -292,7 +297,7 @@ function addOptionalSubSkill(skillIndex) {
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error creating job description');
+                alert(`Error: ${error.message}`);
             });
         });
     </script>

@@ -79,6 +79,8 @@ public class ResumeService {
     Profile_detail_page_repository profileDetailPageRepository;
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    PdfService pdfService;
 
     public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
@@ -947,7 +949,7 @@ public class ResumeService {
     }
 
 
-    public ResponseEntity<byte[]> generateReport(MultipartFile file,MultipartFile jdFile, String jdId,String email) {
+    public ResponseEntity<byte[]> generateReport(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
 
             List<Skill> mandatorySkills = new ArrayList<>();
@@ -970,7 +972,7 @@ public class ResumeService {
             // Extract text from the file
             String resumeText = extractTextFromFile(file);
             //Extract candidate email id
-            String candidateEmailAddress = email;
+            //String candidateEmailAddress = email;
 
             // Calculate skill analysis
             List<String> skillNames = new ArrayList<>();
@@ -989,9 +991,10 @@ public class ResumeService {
             // Generate PDF report
             byte[] pdfReport = generatePdfReport(skillAnalysis, requiredExperienceMap);
             //Generate email
-            if (candidateEmailAddress!=null) {
-                sendEmailWithAttachment(candidateEmailAddress, "Subject: Report of your resume", "Please find the attached report.", pdfReport, file.getOriginalFilename() + "_Feedback.pdf");
-            }
+//            candidateEmailAddress=pdfService.extractEmailFromPdf(file);
+//            if (candidateEmailAddress!=null) {
+//                sendEmailWithAttachment(candidateEmailAddress, "Subject: Report of your resume", "Please find the attached report.", pdfReport, file.getOriginalFilename() + "_Feedback.pdf");
+//            }
             // Prepare response
             String resumeFileName = file.getOriginalFilename();
             HttpHeaders headers = new HttpHeaders();
@@ -1000,13 +1003,13 @@ public class ResumeService {
 
             return new ResponseEntity<>(pdfReport, headers, HttpStatus.OK);
 
-        } catch (IOException | TesseractException | DocumentException | MessagingException e) {
+        } catch (IOException | TesseractException | DocumentException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    private void sendEmailWithAttachment(String to, String subject, String text, byte[] attachment, String attachmentName) throws MessagingException {
+    public void sendEmailWithAttachment(String to, String subject, String text, byte[] attachment, String attachmentName) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(to);
@@ -1344,5 +1347,50 @@ public class ResumeService {
 
         return null; // Return null if no email address is found
     }
+
+    public Map<String, Object> generateReportData(MultipartFile file, MultipartFile jdFile, String jdId) throws IOException, TesseractException, DocumentException {
+        List<Skill> mandatorySkills = new ArrayList<>();
+
+        // Check if JD file is provided and extract skills from it
+        if (jdFile != null && !jdFile.isEmpty()) {
+            String jdText = extractTextFromFile(jdFile);
+            mandatorySkills = extractSkillsFromJDText(jdText);
+        }
+        // Check if JD ID is provided and fetch skills using the ID
+        else if (jdId != null) {
+            mandatorySkills = jdService.getMandatorySkills(jdId);
+            if (mandatorySkills == null || mandatorySkills.isEmpty()) {
+                return null;
+            }
+        }
+
+        // Extract text from the file
+        String resumeText = extractTextFromFile(file);
+
+        // Calculate skill analysis
+        List<String> skillNames = new ArrayList<>();
+        List<Integer> skillExperience = new ArrayList<>();
+        Map<String, Integer> requiredExperienceMap = new HashMap<>();
+        Map<String, List<String>> subSkillsMap = new HashMap<>();
+
+        for (Skill skill : mandatorySkills) {
+            skillNames.add(skill.getSkill());
+            requiredExperienceMap.put(skill.getSkill().toLowerCase(), skill.getExperience());
+            subSkillsMap.put(skill.getSkill().toLowerCase(), skill.getSubSkills());
+        }
+
+        Map<String, Object> skillAnalysis = calculateSkillAnalysis(resumeText, skillNames, requiredExperienceMap, subSkillsMap);
+
+        // Generate PDF report
+        byte[] pdfReport = generatePdfReport(skillAnalysis, requiredExperienceMap);
+
+        // Prepare response
+        Map<String, Object> response = new HashMap<>();
+        response.put("pdfReport", pdfReport);
+        response.put("fileName", file.getOriginalFilename());
+
+        return response;
+    }
+
 
 }

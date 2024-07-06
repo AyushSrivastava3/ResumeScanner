@@ -764,6 +764,76 @@
             width: 100%;
             max-width: 300px;
         }
+
+    .hidden {
+        display: none;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 25;
+        top: 0;
+        width: 75%;
+        height: 75%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0);
+        align-items: center;
+        justify-content: center;
+    }
+
+
+
+    .modal-content {
+        background-color: #fefefe;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        max-width: 500px;
+        height: 40%;
+        max-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .close {
+        align-self: flex-end;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+    }
+    .modal-content label {
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+    .modal-content input {
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    .modal-content button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #3a80b9;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+    .modal-content button:hover {
+        background-color: #436692;
+    }
+
     </style>
 </head>
 
@@ -804,8 +874,20 @@
             <button type="submit">Submit</button>
             <button type="button" id="downloadFeedbackButton" class="download-button" disabled>Download Feedback</button>
             <button type="button" id="downloadReportButton" class="download-button" disabled>Download Report</button>
+            <button type="button" id="sendEmailButton" class="download-button" disabled>Send Feedback to Candidate</button>
 
 
+        </div>
+
+        <!-- Email Input Modal -->
+        <div id="emailModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Unable to fetch email id of candidate from resume. Kindly enter the candidate email id manually</p>
+                <label for="modalEmailInput">Enter candidate email address:</label>
+                <input type="email" id="modalEmailInput" placeholder="Enter email address">
+                <button id="submitEmailButton">Submit</button>
+            </div>
         </div>
     </form>
 
@@ -1112,24 +1194,31 @@
 
 
     // Add event listener for "Download Feedback" button
+<!--document.getElementById('downloadFeedbackButton').addEventListener('click', function(event) {-->
+<!--    event.preventDefault(); // Prevent default action-->
+
+<!--    // Show confirmation popup-->
+<!--    const sendEmail = confirm('Do you want to send feedback via email? Click OK to send.');-->
+
+<!--    if (sendEmail) {-->
+<!--        const email = prompt('Enter your email address:');-->
+<!--        if (email === null || email.trim() === '') {-->
+<!--            alert('Email address is required to send feedback.');-->
+<!--            return;-->
+<!--        }-->
+<!--        // Proceed with sending email and downloading feedback-->
+<!--        downloadFeedback(email);-->
+<!--    } else {-->
+<!--        // Proceed with only downloading feedback-->
+<!--        downloadFeedback(null);-->
+<!--    }-->
+<!--});-->
+
 document.getElementById('downloadFeedbackButton').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent default action
 
-    // Show confirmation popup
-    const sendEmail = confirm('Do you want to send feedback via email? Click OK to send.');
-
-    if (sendEmail) {
-        const email = prompt('Enter your email address:');
-        if (email === null || email.trim() === '') {
-            alert('Email address is required to send feedback.');
-            return;
-        }
-        // Proceed with sending email and downloading feedback
-        downloadFeedback(email);
-    } else {
-        // Proceed with only downloading feedback
-        downloadFeedback(null);
-    }
+    // Directly proceed with downloading feedback
+    downloadFeedback();
 });
 
 // function enableDownloadButton() {
@@ -1143,10 +1232,59 @@ function enableDownloadButton() {
         const downloadButton = document.getElementById('downloadFeedbackButton');
         downloadButton.classList.add('enabled');
         downloadButton.disabled = false;
+
+        const sendEmailButton = document.getElementById('sendEmailButton');
+        sendEmailButton.classList.add('enabled');
+        sendEmailButton.disabled = false;
     }
 
 
-function downloadFeedback(email) {
+<!--function downloadFeedback(email) {-->
+<!--    const selectedId = document.getElementById('jdSelect').value;-->
+<!--    const formData = new FormData();-->
+<!--    formData.append('file', document.getElementById('fileInput').files[0]);-->
+
+<!--    const jdFile = document.getElementById('jdFileInput').files[0];-->
+<!--    if (document.getElementById('selectJdRadio').checked) {-->
+<!--        formData.append('jdId', selectedId);-->
+<!--    } else if (document.getElementById('uploadJdRadio').checked && jdFile) {-->
+<!--        formData.append('jdFile', jdFile);-->
+<!--    } else {-->
+<!--        alert('Please select or upload a JD.');-->
+<!--        return;-->
+<!--    }-->
+
+<!--    if (email) {-->
+<!--        formData.append('email', email);-->
+<!--    }-->
+
+<!--    fetch('http://13.232.9.157:8080/generateReport', {-->
+<!--        method: 'POST',-->
+<!--        body: formData-->
+<!--    })-->
+<!--    .then(response => {-->
+<!--        if (!response.ok) {-->
+<!--            throw new Error('Network response was not ok ' + response.statusText);-->
+<!--        }-->
+<!--        return response.blob();-->
+<!--    })-->
+<!--    .then(blob => {-->
+<!--        const url = window.URL.createObjectURL(blob);-->
+<!--        const a = document.createElement('a');-->
+<!--        a.style.display = 'none';-->
+<!--        a.href = url;-->
+<!--        a.download = 'feedback.pdf';-->
+<!--        document.body.appendChild(a);-->
+<!--        a.click();-->
+<!--        window.URL.revokeObjectURL(url);-->
+<!--    })-->
+<!--    .catch(error => {-->
+<!--        console.error('Error:', error);-->
+<!--        alert('Error occurred while downloading feedback. Please try again.');-->
+<!--    });-->
+<!--}-->
+
+    function downloadFeedback() {
     const selectedId = document.getElementById('jdSelect').value;
     const formData = new FormData();
     formData.append('file', document.getElementById('fileInput').files[0]);
@@ -1159,10 +1297,6 @@ function downloadFeedback(email) {
     } else {
         alert('Please select or upload a JD.');
         return;
-    }
-
-    if (email) {
-        formData.append('email', email);
     }
 
     fetch('http://13.232.9.157:8080/generateReport', {
@@ -1190,6 +1324,103 @@ function downloadFeedback(email) {
         alert('Error occurred while downloading feedback. Please try again.');
     });
 }
+
+
+    document.getElementById('sendEmailButton').addEventListener('click', function() {
+        sendEmail();
+    });
+
+    function sendEmail(email = '') {
+    const fileInput = document.getElementById('fileInput');
+    const jdFileInput = document.getElementById('jdFileInput');
+    const selectedId = document.getElementById('jdSelect').value;
+
+    if (!fileInput || !fileInput.files.length) {
+        console.error('Resume file input is missing or no file selected.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    if (jdFileInput && jdFileInput.files.length > 0) {
+        formData.append('jdFile', jdFileInput.files[0]);
+    } else if (selectedId) {
+        formData.append('jdId', selectedId);
+    } else {
+        console.error('Neither JD file nor JD ID provided.');
+        return;
+    }
+
+    if (email) {
+        formData.append('email', email);
+    }
+
+    fetch('http://13.232.9.157:8080/sendReportEmail', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.status === 400) {
+            return response.text().then(text => {
+                throw new Error(text);
+            });
+        }
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(data => {
+        alert('Email sent successfully');
+    })
+    .catch(error => {
+        if (error.message.includes("Unable to extract email from the resume. Please provide an email address.")) {
+            openEmailModal();
+        } else {
+            console.error('There has been a problem with your fetch operation:', error);
+            alert('Error occurred while sending email. Please try again.');
+        }
+    });
+}
+
+function openEmailModal() {
+    const emailModal = document.getElementById('emailModal');
+    const closeButton = document.querySelector('.close');
+    const submitEmailButton = document.getElementById('submitEmailButton');
+
+    emailModal.classList.remove('hidden');
+    emailModal.style.display = "block";
+
+    closeButton.onclick = function() {
+        emailModal.classList.add('hidden');
+        emailModal.style.display = "none";
+    }
+
+    submitEmailButton.onclick = function() {
+        const email = document.getElementById('modalEmailInput').value;
+        if (validateEmail(email)) {
+            emailModal.classList.add('hidden');
+            emailModal.style.display = "none";
+            sendEmail(email);
+        } else {
+            alert('Please enter a valid email address.');
+        }
+    }
+
+    window.onclick = function(event) {
+        if (event.target == emailModal) {
+            emailModal.classList.add('hidden');
+            emailModal.style.display = "none";
+        }
+    }
+}
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
 
 </script>
 </body>

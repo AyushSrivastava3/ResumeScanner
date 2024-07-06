@@ -20,14 +20,23 @@ public class JdController {
     JdService jdService;
 
     @PostMapping("/create")
-    public Job_description createJobDescription(@RequestBody Job_description jobDescription) {
-        return jdService.createJobDescription(jobDescription);
+    public ResponseEntity<?> createJobDescription(@RequestBody Job_description jobDescription) {
+        try {
+            Job_description createdJd = jdService.createJobDescription(jobDescription);
+            return ResponseEntity.ok(createdJd);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
+
     @PostMapping("/edit")
-    public ResponseEntity<Job_description> editJobDescription(
-            @RequestBody Job_description updatedJobDescription) {
-        Job_description editedJobDescription = jdService.editJobDescription( updatedJobDescription);
-        return new ResponseEntity<>(editedJobDescription, HttpStatus.OK);
+    public ResponseEntity<?> editJobDescription(@RequestBody Job_description jobDescription) {
+        try {
+            Job_description updatedJd = jdService.editJobDescription(jobDescription);
+            return ResponseEntity.ok(updatedJd);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/deleteJd")

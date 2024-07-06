@@ -56,7 +56,7 @@ public class ReportService {
             // Add overall percentage
             if (responseData.containsKey("overallPercentage")) {
                 double overallPercentage = (double) responseData.get("overallPercentage");
-                Paragraph overallPercentageParagraph = new Paragraph("Overall Percentage: " + String.format("%.2f", overallPercentage) + "%", overallPercentageFont);
+                Paragraph overallPercentageParagraph = new Paragraph("Overall Match Percentage: " + String.format("%.2f", overallPercentage) + "%", overallPercentageFont);
                 overallPercentageParagraph.setAlignment(Element.ALIGN_CENTER);
                 document.add(overallPercentageParagraph);
 

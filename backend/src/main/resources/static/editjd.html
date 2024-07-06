@@ -643,7 +643,12 @@
                 },
                 body: JSON.stringify(formData),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                return response.text().then(text => { throw new Error(text) });
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Success:', data);
                 alert('Successfully updated jd')
@@ -664,7 +669,7 @@
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error updating job description');
+                alert(`Error: ${error.message}`);
             });
         });
     </script>

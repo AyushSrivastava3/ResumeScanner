@@ -130,6 +130,25 @@
 			<version>8.0.4</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.apache.pdfbox</groupId>-->
+<!--			<artifactId>pdfbox</artifactId>-->
+<!--			<version>2.0.28</version>-->
+<!--		</dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.27</version> <!-- Ensure you use the appropriate version -->
+		</dependency>
+
+
+
+		<!-- Thanks for using https://jar-download.com -->
+
+
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

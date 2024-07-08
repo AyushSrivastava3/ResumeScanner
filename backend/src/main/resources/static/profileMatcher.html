@@ -1,3 +1,176 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Profile Details</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 20px;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 800px;-->
+<!--            margin: auto;-->
+<!--            padding: 20px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--            background-color: #f4f4f4;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--        .header {-->
+<!--            background-color: #007BFF;-->
+<!--            color: #fff;-->
+<!--            padding: 10px;-->
+<!--            text-align: center;-->
+<!--            border-radius: 5px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+<!--        .header h1 {-->
+<!--            margin: 0;-->
+<!--        }-->
+<!--        .overall-percentage {-->
+<!--            text-align: center;-->
+<!--            background-color: #b6b4af;-->
+<!--            color: #333;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+<!--        .overall-percentage h3 {-->
+<!--            margin-top: 0;-->
+<!--        }-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--            margin-top: 20px;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        th, td {-->
+<!--            border: 1px solid #cdbdbd;-->
+<!--            padding: 10px;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        th {-->
+<!--            background-color: #007BFF;-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--        .input-container {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            margin-bottom: 10px;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        .input-container label {-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+<!--        .input-container input[type="text"] {-->
+<!--            width: 200px;-->
+<!--            padding: 5px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 3px;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+<!--        input[readonly] {-->
+<!--            background-color: #f0f0f0;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="header">-->
+<!--        <h1>Profile Matching</h1>-->
+<!--    </div>-->
+<!--    <div id="profileDetails">-->
+<!--        &lt;!&ndash; Profile details will be inserted here dynamically &ndash;&gt;-->
+<!--    </div>-->
+<!--    <div class="overall-percentage">-->
+<!--        <h3>JD Match Percentage</h3>-->
+<!--        <div id="overallPercentageValue"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        const profileDetailsContainer = document.getElementById('profileDetails');-->
+<!--        const overallPercentageValue = document.getElementById('overallPercentageValue');-->
+
+<!--        function getQueryParam(param) {-->
+<!--            const urlParams = new URLSearchParams(window.location.search);-->
+<!--            return urlParams.get(param);-->
+<!--        }-->
+
+<!--        const fileName = decodeURIComponent(getQueryParam('fileName'));-->
+<!--        const jdId = getQueryParam('jdId');-->
+<!--        const overallPercentage = getQueryParam('overallPercentage');-->
+<!--        const percentagesParam = getQueryParam('percentages');-->
+
+<!--        // Parse percentages data from query parameter-->
+<!--        let percentages = {};-->
+<!--        if (percentagesParam) {-->
+<!--            try {-->
+<!--                percentages = JSON.parse(decodeURIComponent(percentagesParam));-->
+<!--            } catch (error) {-->
+<!--                console.error('Error parsing percentages:', error);-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Example structure for dynamic profile details-->
+<!--        const profileData = {-->
+<!--            name: fileName,-->
+<!--            jdId: jdId,-->
+<!--            overallPercentage: overallPercentage,-->
+<!--            skills: Object.keys(percentages).map(key => ({-->
+<!--                name: key,-->
+<!--                experience: `${percentages[key]}%`-->
+<!--            }))-->
+<!--        };-->
+
+<!--        // Create HTML for displaying profile details dynamically-->
+<!--        const html = `-->
+<!--            <div class="input-container">-->
+<!--                <label for="name">Name:</label>-->
+<!--                <input type="text" id="name" value="${profileData.name}" readonly>-->
+<!--            </div>-->
+<!--            <div class="input-container">-->
+<!--                <label for="jdId">JD ID:</label>-->
+<!--                <input type="text" id="jdId" value="${profileData.jdId}" readonly>-->
+<!--            </div>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                        <th>Skill</th>-->
+<!--                        <th> Relevant Experience (%)</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                    ${profileData.skills.map(skill => `-->
+<!--                        <tr>-->
+<!--                            <td>${skill.name}</td>-->
+<!--                            <td>${skill.experience}</td>-->
+<!--                        </tr>-->
+<!--                    `).join('')}-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        `;-->
+
+<!--        profileDetailsContainer.innerHTML = html;-->
+<!--        overallPercentageValue.textContent = `${profileData.overallPercentage}%`;-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +193,7 @@
             text-align: center;
         }
         .header {
-            background-color: #007BFF;
+            background-color: #3a7a74;
             color: #fff;
             padding: 10px;
             text-align: center;
@@ -53,7 +226,7 @@
             text-align: left;
         }
         th {
-            background-color: #007BFF;
+            background-color: #3a7a74;
             color: #fff;
         }
         .input-container {

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class Skill_Experience {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String resumeId;
-    private Date date;
+    private LocalDate date;
     private Integer java;
     private Integer python;
     private Integer javascript;
@@ -78,11 +79,11 @@ public class Skill_Experience {
         this.resumeId = resumeId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

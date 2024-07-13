@@ -18,7 +18,8 @@ public class SkillPattern {
             Map.entry("java", "java|Java"),
             Map.entry("spring", "spring|Spring|Spring Framework"),
             Map.entry("springboot", "springboot|Spring Boot|Spring boot|spring boot|Springboot"),
-            Map.entry("nodejs", "nodejs|NodeJS|Node Js|node js|Node.js|node.js"),
+            //Map.entry("nodejs", "nodejs|NodeJS|Node Js|node js|Node.js|node.js"),
+            Map.entry("nodeJs", "nodejs|NodeJS|Node Js|node js|Node.js|node.js"),
             Map.entry("express", "express|Express|ExpressJS|expressjs"),
 
             // Databases
@@ -43,7 +44,7 @@ public class SkillPattern {
             Map.entry("ruby", "ruby|Ruby"),
             Map.entry("php", "php|PHP|Php"),
             Map.entry("csharp", "csharp|C#|c#|C Sharp|c sharp"),
-            Map.entry("cplusplus", "cplusplus|C\\+\\+|c\\+\\+|C Plus Plus|c plus plus"),
+            Map.entry("cplusplus", "cplusplus|C\\+\\+|c\\+\\+|C Plus Plus|c plus plus|C++|c++"),
 
             // Other Technologies
             Map.entry("git", "git|Git|GIT"),

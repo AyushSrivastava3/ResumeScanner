@@ -65,7 +65,7 @@
 <!--        const fileId = getQueryParam('fileId');-->
 
 <!--        function fetchProfileInformation(fileId) {-->
-<!--            fetch(`http://13.232.9.157:8080/getProfileInformation?fileId=${fileId}`)-->
+<!--            fetch(`http://13.201.90.199:8080/getProfileInformation?fileId=${fileId}`)-->
 <!--                .then(response => response.json())-->
 <!--                .then(data => {-->
 <!--                    profileDetailsDiv.innerHTML = `-->
@@ -177,6 +177,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const profileDetailsDiv = document.getElementById('profileDetails');
+        const token = localStorage.getItem('accessToken');
+            if (!token) {
+                console.error("No token found. Please log in.");
+                return;
+            }
 
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -186,7 +191,11 @@
         const fileId = getQueryParam('fileId');
 
         function fetchProfileInformation(fileId) {
-            fetch(`http://13.232.9.157:8080/getProfileInformation?fileId=${fileId}`)
+            fetch(`http://13.201.90.199:8080/getProfileInformation?fileId=${fileId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     profileDetailsDiv.innerHTML = `

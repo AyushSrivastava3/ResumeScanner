@@ -41,8 +41,8 @@ public class ResumeController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Map<String, Object>> saveResume(@RequestParam("file") MultipartFile file) {
-        return resumeService.saveResume(file);
+    public ResponseEntity<Map<String, Object>> saveResume(@RequestParam("file") MultipartFile file,@RequestParam(value = "override", required = false) boolean override) {
+        return resumeService.saveResume(file,override);
     }
 
     @GetMapping("/getResume")

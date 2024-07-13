@@ -155,7 +155,7 @@
 
             // Fetch job descriptions for the current page
             function fetchJobDescriptions(page) {
-                fetch(`http://13.232.9.157:8080/jd/getIds`)
+                fetch(`http://13.201.90.199:8080/jd/getIds`)
                     .then(response => response.json())
                     .then(data => {
                         const totalItems = data.length;
@@ -176,7 +176,7 @@
 
                         pageData.forEach((jd, index) => {
                             // Fetch additional details for each job description
-                            fetch(`http://13.232.9.157:8080/getJd?id=${jd.id}`)
+                            fetch(`http://13.201.90.199:8080/getJd?id=${jd.id}`)
                                 .then(response => response.json())
                                 .then(details => {
                                     const jdItem = document.createElement('div');
@@ -226,7 +226,7 @@
             function viewJD(event) {
                 const selectedId = event.target.getAttribute('data-id');
 
-                fetch(`http://13.232.9.157:8080/getJd?id=${selectedId}`)
+                fetch(`http://13.201.90.199:8080/getJd?id=${selectedId}`)
                     .then(response => response.json())
                     .then(data => {
                         jdDetailsDiv.innerHTML = `
@@ -254,7 +254,7 @@
             function deleteJD(event) {
                 const selectedId = event.target.getAttribute('data-id');
 
-                fetch(`http://13.232.9.157:8080/deleteJd?id=${selectedId}`, {
+                fetch(`http://13.201.90.199:8080/deleteJd?id=${selectedId}`, {
                     method: 'DELETE'
                 })
                 .then(() => {

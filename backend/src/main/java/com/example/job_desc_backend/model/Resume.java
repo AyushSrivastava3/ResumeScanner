@@ -13,6 +13,7 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String candidateName;
+    private String emailId;
     private String fileName;
     private String contentType;
     private String fileId;
@@ -65,5 +66,12 @@ public class Resume {
 
     public void setCandidateName(String candidateName) {
         this.candidateName = candidateName;
+    }
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }

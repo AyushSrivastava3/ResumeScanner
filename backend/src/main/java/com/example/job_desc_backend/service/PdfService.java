@@ -119,5 +119,60 @@ public class PdfService {
 
         return null; // Return null if no email address is found
     }
+
+    public String extractName(String resumeText) {
+        // Split the text into lines
+        String[] lines = resumeText.split("\\r?\\n");
+
+        // The candidate's name is often in the first line
+//        for (String line : lines) {
+//            if (!line.trim().isEmpty() && line.trim().split(" ").length <= 3) {
+//                // Assuming the first non-empty line with 2-3 words is the name
+//                return line.trim();
+//            }
+//        }
+
+
+        for (String line : lines) {
+            // Trim the line to remove leading and trailing spaces
+            line = line.trim();
+
+            // Skip empty lines
+            if (line.isEmpty()) {
+                continue;
+            }
+
+            // Split the line into words
+            String[] words = line.split("\\s+");
+
+            // Initialize variables to store the first two alphabetical words
+            StringBuilder nameBuilder = new StringBuilder();
+            int count = 0;
+
+            // Iterate through the words to find the first two alphabetical words
+            for (String word : words) {
+                if (word.matches("^[A-Za-z]+$")) {
+                    // Append the word to the name builder
+                    nameBuilder.append(word).append(" ");
+                    count++;
+
+                    // Break if we have found the first two alphabetical words
+                    if (count == 2) {
+                        break;
+                    }
+                }
+            }
+
+            // Trim the name and return if found
+            String name = nameBuilder.toString().trim();
+            if (!name.isEmpty()) {
+                return name;
+            }
+        }
+
+
+        // If no suitable name is found, return a default message or handle as needed
+        return "Name not found";
+    }
 }
 

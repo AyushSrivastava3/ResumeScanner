@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ResumeRepository extends MongoRepository<Resume, String> {
     Optional<Resume> findByFileId(String fileId);
+
+    Optional<Resume> findByEmailId(String email);
 }

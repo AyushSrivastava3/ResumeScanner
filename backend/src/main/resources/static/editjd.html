@@ -175,7 +175,7 @@
 <!--        const jdId = urlParams.get('id');-->
 
 <!--        // Fetch job description details and populate form-->
-<!--        fetch(`http://13.232.9.157:8080/getJd?id=${jdId}`)-->
+<!--        fetch(`http://13.201.90.199:8080/getJd?id=${jdId}`)-->
 <!--            .then(response => response.json())-->
 <!--            .then(data => {-->
 <!--                document.getElementById('title').value = data.title;-->
@@ -296,7 +296,7 @@
 <!--                formData.optionalSkills.push(optionalSkill);-->
 <!--            }-->
 
-<!--            fetch('http://13.232.9.157:8080/edit', {-->
+<!--            fetch('http://13.201.90.199:8080/edit', {-->
 <!--                method: 'POST',-->
 <!--                headers: {-->
 <!--                    'Content-Type': 'application/json',-->
@@ -515,7 +515,7 @@
 <!--        const jdId = urlParams.get('id');-->
 
 <!--        // Fetch job description details and populate form-->
-<!--        fetch(`http://13.232.9.157:8080/getJd?id=${jdId}`)-->
+<!--        fetch(`http://13.201.90.199:8080/getJd?id=${jdId}`)-->
 <!--            .then(response => response.json())-->
 <!--            .then(data => {-->
 <!--                document.getElementById('title').value = data.title;-->
@@ -636,7 +636,7 @@
 <!--                formData.optionalSkills.push(optionalSkill);-->
 <!--            }-->
 
-<!--            fetch('http://13.232.9.157:8080/edit', {-->
+<!--            fetch('http://13.201.90.199:8080/edit', {-->
 <!--                method: 'POST',-->
 <!--                headers: {-->
 <!--                    'Content-Type': 'application/json',-->
@@ -874,9 +874,44 @@
     // Get job description ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const jdId = urlParams.get('id');
+<!--    const token = localStorage.getItem('accessToken');-->
+<!--            if (!token) {-->
+<!--                console.error("No token found. Please log in.");-->
+<!--                return;-->
+<!--            }-->
 
+<!--    // Fetch job description details and populate form-->
+<!--    fetch(`http://13.201.90.199:8080/getJd?id=${jdId}`, {-->
+<!--        headers: {-->
+<!--           'Authorization': `Bearer ${token}`-->
+<!--        }-->
+<!--    })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('title').value = data.title;-->
+<!--            document.getElementById('location').value = data.location;-->
+<!--            document.getElementById('experienceLevel').value = data.experienceLevel;-->
+
+<!--            data.mandatorySkills.forEach(skill => {-->
+<!--                addMandatorySkill(skill);-->
+<!--            });-->
+
+<!--            data.optionalSkills.forEach(skill => {-->
+<!--                addOptionalSkill(skill);-->
+<!--            });-->
+<!--        })-->
+<!--        .catch(error => console.error('Error fetching job description:', error));-->
+
+const token = localStorage.getItem('accessToken');
+if (!token) {
+    console.error("No token found. Please log in.");
+} else {
     // Fetch job description details and populate form
-    fetch(`http://13.232.9.157:8080/getJd?id=${jdId}`)
+    fetch(`http://13.201.90.199:8080/getJd?id=${jdId}`, {
+        headers: {
+           'Authorization': `Bearer ${token}`
+        }
+    })
         .then(response => response.json())
         .then(data => {
             document.getElementById('title').value = data.title;
@@ -892,6 +927,7 @@
             });
         })
         .catch(error => console.error('Error fetching job description:', error));
+}
 
     function addMandatorySkill(skill) {
         mandatorySkillCount++;
@@ -997,10 +1033,11 @@
             formData.optionalSkills.push(optionalSkill);
         }
 
-        fetch('http://13.232.9.157:8080/edit', {
+        fetch('http://13.201.90.199:8080/edit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(formData),
         })

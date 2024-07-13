@@ -127,7 +127,7 @@
         };
 
         // Replace 'link' with your actual backend API endpoint
-        const url = "http://13.232.9.157:8080/login";
+        const url = "http://13.201.90.199:8080/login";
 
         // Make a POST request to the backend
         fetch(url, {
@@ -137,16 +137,36 @@
             },
             body: JSON.stringify(formData)
         })
+<!--        .then(response => {-->
+<!--            if (response.ok) {-->
+<!--                // If login successful, redirect to your home page or display a success message-->
+<!--                window.location.replace("home.html");-->
+<!--            } else {-->
+<!--                // Handle unsuccessful login (e.g., display an error message)-->
+<!--                response.json().then(data => {-->
+<!--                    alert("Login failed: Either username or password is incorrect.");-->
+<!--                });-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error("Error:", error);-->
+<!--            alert("An error occurred. Please try again later.");-->
+<!--        });-->
         .then(response => {
             if (response.ok) {
-                // If login successful, redirect to your home page or display a success message
-                window.location.replace("home.html");
+                return response.text(); // Expect a plain text response
             } else {
-                // Handle unsuccessful login (e.g., display an error message)
-                response.json().then(data => {
-                    alert("Login failed: Either username or password is incorrect.");
-                });
+                throw new Error('Login failed either username or password is incorrect');
             }
+        })
+        .then(token => {
+
+            localStorage.setItem('accessToken', token);
+
+            console.log("Login successful, token:", token);
+
+            // Redirect to your home page or display a success message
+            window.location.replace("home.html");
         })
         .catch(error => {
             console.error("Error:", error);

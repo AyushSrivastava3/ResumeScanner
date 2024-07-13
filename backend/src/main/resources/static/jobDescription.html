@@ -84,6 +84,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const jdDetailsDiv = document.getElementById('jdDetails');
+        const token = localStorage.getItem('accessToken');
+            if (!token) {
+                console.error("No token found. Please log in.");
+                return;
+            }
 
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
@@ -99,7 +104,11 @@
         }
 
         function fetchJobDescription(id) {
-            fetch(`http://13.232.9.157:8080/getJd?id=${id}`)
+            fetch(`http://13.201.90.199:8080/getJd?id=${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     jdDetailsDiv.innerHTML = `

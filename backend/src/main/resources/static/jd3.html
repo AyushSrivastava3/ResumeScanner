@@ -266,7 +266,7 @@
 <!--                formData.optionalSkills.push(optionalSkill);-->
 <!--            }-->
 
-<!--            fetch('http://13.232.9.157:8080/create', {-->
+<!--            fetch('http://13.201.90.199:8080/create', {-->
 <!--                method: 'POST',-->
 <!--                headers: {-->
 <!--                    'Content-Type': 'application/json',-->
@@ -579,7 +579,7 @@
 <!--            formData.optionalSkills.push(optionalSkill);-->
 <!--        }-->
 
-<!--        fetch('http://13.232.9.157:8080/create', {-->
+<!--        fetch('http://13.201.90.199:8080/create', {-->
 <!--            method: 'POST',-->
 <!--            headers: {-->
 <!--                'Content-Type': 'application/json',-->
@@ -926,10 +926,17 @@ container.appendChild(subskillGroup);
             formData.optionalSkills.push(optionalSkill);
         }
 
-        fetch('http://13.232.9.157:8080/create', {
+        const token = localStorage.getItem('accessToken');
+            if (!token) {
+                console.error("No token found. Please log in.");
+                return;
+            }
+
+        fetch('http://13.201.90.199:8080/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(formData),
         })

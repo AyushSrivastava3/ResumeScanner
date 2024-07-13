@@ -277,7 +277,7 @@
 
 <!--    document.addEventListener('DOMContentLoaded', function() {-->
 <!--        console.log("DOM fully loaded and parsed");-->
-<!--        fetch('http://13.232.9.157:8080/jd/getIds')-->
+<!--        fetch('http://13.201.90.199:8080/jd/getIds')-->
 <!--            .then(response => {-->
 <!--                console.log("Fetching Job Descriptions...");-->
 <!--                if (!response.ok) {-->
@@ -334,7 +334,7 @@
 <!--        console.log("Selected Job Description ID: ", selectedId);-->
 <!--        console.log("Form Data: ", formData);-->
 
-<!--        fetch(`http://13.232.9.157:8080/upload`, {-->
+<!--        fetch(`http://13.201.90.199:8080/upload`, {-->
 <!--            method: 'POST',-->
 <!--            body: formData-->
 <!--        })-->
@@ -481,7 +481,7 @@
 <!--            return;-->
 <!--        }-->
 
-<!--        fetch(`http://13.232.9.157:8080/generateReport?jdId=${selectedId}`, {-->
+<!--        fetch(`http://13.201.90.199:8080/generateReport?jdId=${selectedId}`, {-->
 <!--            method: 'POST',-->
 <!--            body: formData-->
 <!--        })-->
@@ -795,7 +795,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         console.log("DOM fully loaded and parsed");
-        fetch('http://13.232.9.157:8080/jd/getIds')
+        fetch('http://13.201.90.199:8080/jd/getIds')
             .then(response => {
                 console.log("Fetching Job Descriptions...");
                 if (!response.ok) {
@@ -852,7 +852,7 @@
         console.log("Selected Job Description ID: ", selectedId);
         console.log("Form Data: ", formData);
 
-        fetch(`http://13.232.9.157:8080/upload`, {
+        fetch(`http://13.201.90.199:8080/upload`, {
             method: 'POST',
             body: formData
         })
@@ -999,7 +999,7 @@
             return;
         }
 
-        fetch(`http://13.232.9.157:8080/generateReport?jdId=${selectedId}`, {
+        fetch(`http://13.201.90.199:8080/generateReport?jdId=${selectedId}`, {
             method: 'POST',
             body: formData
         })

@@ -40,15 +40,6 @@ import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import org.springframework.core.io.ByteArrayResource;
-
-
-//import com.itextpdf.layout.Document;
-//import com.itextpdf.layout.element.Paragraph;
-//import com.itextpdf.layout.element.Table;
-//import com.itextpdf.layout.element.Cell;
-////
-//// import com.itextpdf.layout.property.UnitValue;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -56,8 +47,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -84,12 +73,11 @@ public class ResumeService {
 
     public ResponseEntity<Map<String, Object>> uploadResume(MultipartFile file,MultipartFile jdFile, String jdId) {
         try {
-//
             List<Skill> mandatorySkills = new ArrayList<>();
 
             // Check if JD file is provided and extract skills from it
             if (jdFile != null && !jdFile.isEmpty()) {
-                String jdText = extractTextFromFile(jdFile);
+                String jdText = FileTextExtractor.extractTextFromFile(jdFile);
                 if (jdText == null) {
                     return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(Map.of("error", "Unsupported JD file type"));
                 }
@@ -105,7 +93,7 @@ public class ResumeService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Either JD file or JD ID must be provided"));
             }
 
-            String resumeText = extractTextFromFile(file);
+            String resumeText = FileTextExtractor.extractTextFromFile(file);
 
             if (resumeText == null) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(Map.of("error", "Unsupported file type"));
@@ -144,47 +132,111 @@ public class ResumeService {
         }
     }
 
-    private String extractTextFromFile(MultipartFile file) throws IOException, TesseractException {
+//    private String extractTextFromFile(MultipartFile file) throws IOException, TesseractException {
+//        String fileName = file.getOriginalFilename();
+//        if (fileName == null) {
+//            throw new IOException("File name is null");
+//        }
+//
+//        if (fileName.endsWith(".pdf")) {
+//            PDDocument document = PDDocument.load(file.getInputStream());
+//            PDFTextStripper stripper = new PDFTextStripper();
+//            String text = stripper.getText(document);
+//
+//            if (text.trim().isEmpty()) {
+//                PDFRenderer pdfRenderer = new PDFRenderer(document);
+//                ITesseract tesseract = new Tesseract();
+//                StringBuilder ocrText = new StringBuilder();
+//
+//                for (int page = 0; page < document.getNumberOfPages(); ++page) {
+//                    BufferedImage bufferedImage = pdfRenderer.renderImageWithDPI(page, 300);
+//                    String result = tesseract.doOCR(bufferedImage);
+//                    ocrText.append(result);
+//                }
+//                document.close();
+//                return ocrText.toString();
+//            }
+//
+//            document.close();
+//            return text;
+//        } else if (fileName.endsWith(".doc")) {
+//            HWPFDocument document = new HWPFDocument(file.getInputStream());
+//            WordExtractor extractor = new WordExtractor(document);
+//            String text = extractor.getText();
+//            document.close();
+//            return text;
+//        } else if (fileName.endsWith(".docx")) {
+//            XWPFDocument document = new XWPFDocument(file.getInputStream());
+//            XWPFWordExtractor extractor = new XWPFWordExtractor(document);
+//            String text = extractor.getText();
+//            document.close();
+//            return text;
+//        } else {
+//            return null;
+//        }
+//    }
+
+
+
+    private static final ITesseract tesseract = new Tesseract();
+    static {
+        // Replace "/path/to/tessdata" with the actual path to your tessdata directory
+        tesseract.setDatapath("/opt/homebrew/Cellar/tesseract/5.4.1/share/tessdata");
+    }
+    public String extractTextFromFile(MultipartFile file) throws IOException, TesseractException {
         String fileName = file.getOriginalFilename();
         if (fileName == null) {
             throw new IOException("File name is null");
         }
 
         if (fileName.endsWith(".pdf")) {
-            PDDocument document = PDDocument.load(file.getInputStream());
+            return extractTextFromPdf(file);
+        } else if (fileName.endsWith(".doc")) {
+            return extractTextFromDoc(file);
+        } else if (fileName.endsWith(".docx")) {
+            return extractTextFromDocx(file);
+        } else {
+            throw new IOException("Unsupported file format");
+        }
+    }
+
+    private String extractTextFromPdf(MultipartFile file) throws IOException, TesseractException {
+        try (PDDocument document = PDDocument.load(file.getInputStream())) {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
 
             if (text.trim().isEmpty()) {
-                PDFRenderer pdfRenderer = new PDFRenderer(document);
-                ITesseract tesseract = new Tesseract();
-                StringBuilder ocrText = new StringBuilder();
-
-                for (int page = 0; page < document.getNumberOfPages(); ++page) {
-                    BufferedImage bufferedImage = pdfRenderer.renderImageWithDPI(page, 300);
-                    String result = tesseract.doOCR(bufferedImage);
-                    ocrText.append(result);
-                }
-                document.close();
-                return ocrText.toString();
+                return extractTextFromScannedPdf(document);
+            } else {
+                return text;
             }
+        }
+    }
 
-            document.close();
-            return text;
-        } else if (fileName.endsWith(".doc")) {
-            HWPFDocument document = new HWPFDocument(file.getInputStream());
+    private String extractTextFromScannedPdf(PDDocument document) throws IOException, TesseractException {
+        PDFRenderer pdfRenderer = new PDFRenderer(document);
+        StringBuilder ocrText = new StringBuilder();
+
+        for (int page = 0; page < document.getNumberOfPages(); ++page) {
+            BufferedImage bufferedImage = pdfRenderer.renderImageWithDPI(page, 300);
+            String result = tesseract.doOCR(bufferedImage);
+            ocrText.append(result);
+        }
+
+        return ocrText.toString();
+    }
+
+    private String extractTextFromDoc(MultipartFile file) throws IOException {
+        try (HWPFDocument document = new HWPFDocument(file.getInputStream())) {
             WordExtractor extractor = new WordExtractor(document);
-            String text = extractor.getText();
-            document.close();
-            return text;
-        } else if (fileName.endsWith(".docx")) {
-            XWPFDocument document = new XWPFDocument(file.getInputStream());
+            return extractor.getText();
+        }
+    }
+
+    private String extractTextFromDocx(MultipartFile file) throws IOException {
+        try (XWPFDocument document = new XWPFDocument(file.getInputStream())) {
             XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-            String text = extractor.getText();
-            document.close();
-            return text;
-        } else {
-            return null;
+            return extractor.getText();
         }
     }
 
@@ -285,7 +337,7 @@ public class ResumeService {
             skillInfo.put("percentage", skillPercentages.get(lowerSkill));
             skillInfo.put("details", skillDetails.get(lowerSkill));
             skillInfo.put("matchedSubSkills", matchedSubSkills.get(lowerSkill));
-            result.put(lowerSkill, skillInfo);
+            result.put(lowerSkill.substring(0,1).toUpperCase()+lowerSkill.substring(1), skillInfo);
         }
 
         double overallPercentage = skillPercentages.values().stream().mapToDouble(Double::doubleValue).sum() / skillPercentages.size();
@@ -458,7 +510,7 @@ public class ResumeService {
                         skillInfo.put("totalDuration", skillDurationYears + " years " + skillDurationMonths + " months");
                     }
                     skillInfo.put("details", skillDetails.get(canonicalSkill));
-                    result.put(canonicalSkill, skillInfo);
+                    result.put(canonicalSkill.substring(0,1).toUpperCase()+canonicalSkill.substring(1), skillInfo);
                 }
             }
         }
@@ -625,61 +677,69 @@ public class ResumeService {
     @Autowired
     private ResumeRepository resumeRepository;
 
-    public ResponseEntity<Map<String, Object>> saveResume(MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> saveResume(MultipartFile file,boolean override) {
+    try {
+        // Extract email from the uploaded resume
+//        String email = pdfService.extractEmailFromPdf(file);
+        String email = null;
         try {
-            // Save the file to MongoDB using GridFS
-            ObjectId fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
-            //Now i also wanted to create a profile_detail_page so i will create a profile_detail_object
-            Profile_detail_page profileDetailPage=new Profile_detail_page();
+            email = pdfService.extractEmailFromPdf(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String resumeText = FileTextExtractor.extractTextFromFile(file);
 
-            // Save metadata to MongoDB
-            Resume resume = new Resume();
-            resume.setFileName(file.getOriginalFilename());
-            resume.setContentType(file.getContentType());
-            resume.setFileId(fileId.toString());  // Store the fileId
-            resume.setUploadDate(LocalDate.now());
-//            Resume savedResume=resumeRepository.save(resume);
-//            String savedResumeId= savedResume.getId();
+        // Check if a profile with this email already exists
+        //Optional<Resume> existingResumeOptional = resumeRepository.findByEmailId(email);
+        Optional<Resume> existingResumeOptional = email != null ? resumeRepository.findByEmailId(email) : Optional.empty();
+        if (existingResumeOptional.isPresent()) {
+            // Profile with this email already exists
+            Resume existingResume = existingResumeOptional.get();
 
-            //Now here i am going write logic for matching it skills
-            //first thing is to read the file
-            String resumeText = extractTextFromFile(file);
-            //Now we want the name of the candidate
-            // Split the string into lines
-            String[] lines = resumeText.split("\n");
+            if (!override) {
+                // User chose not to override, return conflict error
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", "Profile with this email already exists"));
+            }
 
-            // Get the first line which is the name
-            String name = lines[0];
+            // User chose to override, update existing profile
+            existingResume.setFileName(file.getOriginalFilename());
+            existingResume.setContentType(file.getContentType());
+            existingResume.setUploadDate(LocalDate.now());
+            existingResume.setCandidateName(pdfService.extractName(resumeText));
+            existingResume.setEmailId(email);
 
-            String candidateName=name;
-            resume.setCandidateName(candidateName);
-            Resume savedResume=resumeRepository.save(resume);
-            String savedResumeCandidateName= savedResume.getCandidateName();
-            String savedResumeId= savedResume.getId();
-            //now we have to call the skills from utility class
-            // Fetch additional IT skills from ITSkillsUtility
+            // Save the updated resume
+            Resume savedResume = resumeRepository.save(existingResume);
+
+            // Perform IT skills analysis
+            //String resumeText = FileTextExtractor.extractTextFromFile(file);
             List<String> itSkills = ITSkillsUtility.getAllSkills();
             Map<String, Integer> itSkillAnalysis = calculateITSkillAnalysis(resumeText, itSkills);
-            //Now use this itSkillAnalysis to profile_detail_page
+
+            // Update Profile_detail_page
+            Profile_detail_page profileDetailPage = profileDetailPageRepository.findByResumeId(savedResume.getId());
+            if (profileDetailPage == null) {
+                profileDetailPage = new Profile_detail_page();
+                profileDetailPage.setResumeId(savedResume.getId());
+                profileDetailPage.setCandidateName(savedResume.getCandidateName());
+            }
             profileDetailPage.setProfile_skill_map(itSkillAnalysis);
-            profileDetailPage.setCandidateName(name);
-            profileDetailPage.setResumeId(savedResumeId);
             profileDetailPage.setUploadedDate(String.valueOf(new Date()));
             profileDetailPageRepository.save(profileDetailPage);
 
-
-            Skill_Experience skillExperience=new Skill_Experience();
-            skillExperience.setResumeId(savedResumeId);
-            skillExperience.setDate(new Date());
+            // Update Skill_Experience
+            Skill_Experience skillExperience = skillExperienceRepository.findByResumeId(savedResume.getId()).get();
+            if (skillExperience == null) {
+                skillExperience = new Skill_Experience();
+                skillExperience.setResumeId(savedResume.getId());
+            }
+            skillExperience.setDate(LocalDate.now());
             for (Map.Entry<String, Integer> entry : itSkillAnalysis.entrySet()) {
                 String skillName = entry.getKey();
                 Integer experience = entry.getValue();
 
-                //create a class of skill experience
-//                Skill_Experience skillExperience=new Skill_Experience();
-//                skillExperience.setResumeId(savedResumeId);
-//                skillExperience.setDate(new Date());
-                // Step 2: Set the skill attribute dynamically using reflection or method name construction
+                // Set the skill attribute based on skill name
                 switch (skillName.toLowerCase()) {
                     case "java":
                         skillExperience.setJava(experience);
@@ -694,7 +754,7 @@ public class ResumeService {
                         //skillExperience.setCSharp(experience);
                         skillExperience.setcSharp(experience);
                         break;
-                    case "cplusplus":
+                    case "c++":
                         //skillExperience.setCPlusPlus(experience);
                         skillExperience.setcPlusPlus(experience);
                         break;
@@ -810,35 +870,227 @@ public class ResumeService {
                         System.err.println("Unhandled skill: " + skillName);
                         continue;  // Skip this skill
                 }
-
-
-
-
-
-
-
-
-
-
             }
             skillExperienceRepository.save(skillExperience);
 
-
             // Prepare response
             Map<String, Object> response = new HashMap<>();
-            response.put("fileId", fileId.toString());
-            response.put("fileName", file.getOriginalFilename());
-            response.put("contentType", file.getContentType());
-            response.put("Candidatename",savedResume.getCandidateName());
+            response.put("fileId", existingResume.getFileId());
+            response.put("fileName", existingResume.getFileName());
+            response.put("contentType", existingResume.getContentType());
+            response.put("Candidate name", savedResume.getCandidateName());
+            response.put("Candidate EmailId", savedResume.getEmailId());
 
             return ResponseEntity.ok(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to process the file: " + e.getMessage()));
-        } catch (TesseractException e) {
-            throw new RuntimeException(e);
         }
+
+        // If no profile with this email exists, proceed with saving as new
+        ObjectId fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+
+        // Create new Resume object
+        Resume resume = new Resume();
+        resume.setFileName(file.getOriginalFilename());
+        resume.setContentType(file.getContentType());
+        resume.setFileId(fileId.toString());  // Store the fileId
+        resume.setCandidateName(pdfService.extractName(resumeText));
+        resume.setUploadDate(LocalDate.now());
+        resume.setEmailId(email);
+
+        // Save the resume
+        Resume savedResume = resumeRepository.save(resume);
+
+        // Perform IT skills analysis
+        //String resumeText =FileTextExtractor.extractTextFromFile(file);
+        List<String> itSkills = ITSkillsUtility.getAllSkills();
+        Map<String, Integer> itSkillAnalysis = calculateITSkillAnalysis(resumeText, itSkills);
+
+        // Create and save Profile_detail_page
+        Profile_detail_page profileDetailPage = new Profile_detail_page();
+        profileDetailPage.setProfile_skill_map(itSkillAnalysis);
+        profileDetailPage.setCandidateName(savedResume.getCandidateName());
+        profileDetailPage.setResumeId(savedResume.getId());
+        profileDetailPage.setUploadedDate(String.valueOf(new Date()));
+        profileDetailPageRepository.save(profileDetailPage);
+
+        // Create and save Skill_Experience
+        Skill_Experience skillExperience = new Skill_Experience();
+        skillExperience.setResumeId(savedResume.getId());
+        skillExperience.setDate(LocalDate.now());
+        for (Map.Entry<String, Integer> entry : itSkillAnalysis.entrySet()) {
+            String skillName = entry.getKey();
+            Integer experience = entry.getValue();
+
+            // Set the skill attribute based on skill name
+            switch (skillName.toLowerCase()) {
+                case "java":
+                    skillExperience.setJava(experience);
+                    break;
+                case "python":
+                    skillExperience.setPython(experience);
+                    break;
+                case "javascript":
+                    skillExperience.setJavascript(experience);
+                    break;
+                case "csharp":
+                    //skillExperience.setCSharp(experience);
+                    skillExperience.setcSharp(experience);
+                    break;
+                case "c++":
+                    //skillExperience.setCPlusPlus(experience);
+                    skillExperience.setcPlusPlus(experience);
+                    break;
+                case "php":
+                    skillExperience.setPhp(experience);
+                    break;
+                case "swift":
+                    skillExperience.setSwift(experience);
+                    break;
+                case "kotlin":
+                    skillExperience.setKotlin(experience);
+                    break;
+                case "sql":
+                    skillExperience.setSql(experience);
+                    break;
+                case "html":
+                    skillExperience.setHtml(experience);
+                    break;
+                case "css":
+                    skillExperience.setCss(experience);
+                    break;
+                case "react":
+                    skillExperience.setReact(experience);
+                    break;
+                case "angular":
+                    skillExperience.setAngular(experience);
+                    break;
+                case "node.js":
+                    skillExperience.setNodeJs(experience);
+                    break;
+                case "spring":
+                    skillExperience.setSpring(experience);
+                    break;
+                case "django":
+                    skillExperience.setDjango(experience);
+                    break;
+                case "flask":
+                    skillExperience.setFlask(experience);
+                    break;
+                case "ruby":
+                    skillExperience.setRuby(experience);
+                    break;
+                case "rails":
+                    skillExperience.setRails(experience);
+                    break;
+                case "machine learning":
+                    skillExperience.setMachineLearning(experience);
+                    break;
+                case "data science":
+                    skillExperience.setDataScience(experience);
+                    break;
+                case "aws":
+                    skillExperience.setAws(experience);
+                    break;
+                case "azure":
+                    skillExperience.setAzure(experience);
+                    break;
+                case "docker":
+                    skillExperience.setDocker(experience);
+                    break;
+                case "kubernetes":
+                    skillExperience.setKubernetes(experience);
+                    break;
+                case "git":
+                    skillExperience.setGit(experience);
+                    break;
+                case "ci/cd":
+                    skillExperience.setCiCd(experience);
+                    break;
+                case "agile":
+                    skillExperience.setAgile(experience);
+                    break;
+                case "scrum":
+                    skillExperience.setScrum(experience);
+                    break;
+                case "jira":
+                    skillExperience.setJira(experience);
+                    break;
+                case "devops":
+                    skillExperience.setDevOps(experience);
+                    break;
+                case "hadoop":
+                    skillExperience.setHadoop(experience);
+                    break;
+                case "spark":
+                    skillExperience.setSpark(experience);
+                    break;
+                case "tableau":
+                    skillExperience.setTableau(experience);
+                    break;
+                case "powerBi":
+                    //skillExperience.setPowerBi(experience);
+                    skillExperience.setPowerBI(experience);
+                    break;
+                case "tensorflow":
+                    skillExperience.setTensorflow(experience);
+                    break;
+                case "keras":
+                    skillExperience.setKeras(experience);
+                    break;
+                case "pandas":
+                    skillExperience.setPandas(experience);
+                    break;
+                case "numpy":
+                    //skillExperience.setNumPy(experience);
+                    skillExperience.setNumpy(experience);
+                    break;
+                case "matplotlib":
+                    skillExperience.setMatplotlib(experience);
+                    break;
+                default:
+                    // Handle unknown skills or skip them
+                    System.err.println("Unhandled skill: " + skillName);
+                    continue;  // Skip this skill
+            }
+        }
+        skillExperienceRepository.save(skillExperience);
+
+        // Prepare response
+        Map<String, Object> response = new HashMap<>();
+        response.put("fileId", fileId.toString());
+        response.put("fileName", file.getOriginalFilename());
+        response.put("contentType", file.getContentType());
+        response.put("Candidate name", savedResume.getCandidateName());
+        response.put("Candidate EmailId", savedResume.getEmailId());
+
+        return ResponseEntity.ok(response);
+    } catch (IOException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Failed to process the file: " + e.getMessage()));
+    } catch (TesseractException e) {
+        throw new RuntimeException(e);
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public ResponseEntity<byte[]> downloadResume(String fileId) {
         Optional<Resume> resume = resumeRepository.findByFileId(fileId);
@@ -956,7 +1208,7 @@ public class ResumeService {
 
             // Check if JD file is provided and extract skills from it
             if (jdFile != null && !jdFile.isEmpty()) {
-                String jdText = extractTextFromFile(jdFile);
+                String jdText = FileTextExtractor.extractTextFromFile(jdFile);
 
                 mandatorySkills = extractSkillsFromJDText(jdText);
             }
@@ -970,7 +1222,7 @@ public class ResumeService {
             }
 
             // Extract text from the file
-            String resumeText = extractTextFromFile(file);
+            String resumeText = FileTextExtractor.extractTextFromFile(file);
             //Extract candidate email id
             //String candidateEmailAddress = email;
 
@@ -1217,65 +1469,6 @@ public class ResumeService {
         return list;
     }
 
-//    public List<ResumeInfo> ReleventProfiles(String jdId){
-//        List<Skill> mandatorySkills = jdService.getMandatorySkills(jdId);
-//        List<String> skillNames = new ArrayList<>();
-//        List<Integer> skillExperience = new ArrayList<>();
-//        Map<String, Integer> requiredExperienceMap = new HashMap<>();
-//
-//        for (Skill skill : mandatorySkills) {
-//            String skillName = skill.getSkill();
-//            String canonicalSkill = ITSkillsUtility.getCanonicalSkillName(skillName).toLowerCase();
-//            int skillExp = skill.getExperience();
-//            skillNames.add(canonicalSkill);
-//            skillExperience.add(skillExp);
-//            requiredExperienceMap.put(canonicalSkill, skill.getExperience());
-//        }
-//
-//        // Now get all resumes
-//        List<Resume> resumes = resumeRepository.findAll();
-//        List<String> resumeid = new ArrayList<>();
-//
-//        // Get all the resume IDs
-//        for (Resume resume : resumes){
-//            resumeid.add(resume.getId());
-//        }
-//
-//        // Now check all the resume skill experience using resumeId
-//        List<ResumeInfo> relevantResumeInfos = new ArrayList<>();
-//
-//        for (String resumeId : resumeid) {
-//            Optional<Skill_Experience> optionalSkillExperience = skillExperienceRepository.findByResumeId(resumeId);
-//            if (optionalSkillExperience.isPresent()) {
-//                Skill_Experience skillExperience_for_analysis = optionalSkillExperience.get();
-//                boolean isRelevant = true;
-//
-//                for (Map.Entry<String, Integer> entry : requiredExperienceMap.entrySet()) {
-//                    String skillName = entry.getKey();
-//                    int requiredExp = entry.getValue() * 12;
-//
-//                    Integer candidateExp = getSkillExperience(skillExperience_for_analysis, skillName);
-//
-//                    if (candidateExp == null || candidateExp < requiredExp) {
-//                        isRelevant = false;
-//                        break;
-//                    }
-//                }
-//
-//                if (isRelevant) {
-//                    Resume resume = resumeRepository.findById(resumeId).orElse(null);
-//                    if (resume != null) {
-//                        String fileName = resume.getFileName();
-//                        relevantResumeInfos.add(new ResumeInfo(resumeId, fileName));
-//                    }
-//                }
-//            }
-//        }
-//        return relevantResumeInfos;
-//    }
-
-
-
     private Integer getSkillExperience(Skill_Experience skillExperience, String skillName) {
         switch (skillName.toLowerCase()) {
             case "java": return skillExperience.getJava();
@@ -1353,7 +1546,7 @@ public class ResumeService {
 
         // Check if JD file is provided and extract skills from it
         if (jdFile != null && !jdFile.isEmpty()) {
-            String jdText = extractTextFromFile(jdFile);
+            String jdText = FileTextExtractor.extractTextFromFile(jdFile);
             mandatorySkills = extractSkillsFromJDText(jdText);
         }
         // Check if JD ID is provided and fetch skills using the ID
@@ -1365,7 +1558,7 @@ public class ResumeService {
         }
 
         // Extract text from the file
-        String resumeText = extractTextFromFile(file);
+        String resumeText = FileTextExtractor.extractTextFromFile(file);
 
         // Calculate skill analysis
         List<String> skillNames = new ArrayList<>();
@@ -1394,3 +1587,4 @@ public class ResumeService {
 
 
 }
+

@@ -100,6 +100,7 @@
             <input type="password" placeholder="Enter Password" name="password" required>
 
             <button type="submit">Login</button>
+            <div id="results"></div>
             <label>
                 <input type="checkbox" checked="checked" name="remember"> Remember me
             </label>
@@ -137,21 +138,6 @@
             },
             body: JSON.stringify(formData)
         })
-<!--        .then(response => {-->
-<!--            if (response.ok) {-->
-<!--                // If login successful, redirect to your home page or display a success message-->
-<!--                window.location.replace("home.html");-->
-<!--            } else {-->
-<!--                // Handle unsuccessful login (e.g., display an error message)-->
-<!--                response.json().then(data => {-->
-<!--                    alert("Login failed: Either username or password is incorrect.");-->
-<!--                });-->
-<!--            }-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error("Error:", error);-->
-<!--            alert("An error occurred. Please try again later.");-->
-<!--        });-->
         .then(response => {
             if (response.ok) {
                 return response.text(); // Expect a plain text response
@@ -170,7 +156,14 @@
         })
         .catch(error => {
             console.error("Error:", error);
-            alert("An error occurred. Please try again later.");
+            const results=document.querySelector('#results');
+            results.style.backgroundColor = "#f8d7da"; // Light red background for error
+            results.style.color = "#721c24"; // Dark red text color
+            results.style.padding = "10px"; // Some padding for better readability
+            results.style.border = "1px solid #f5c6cb"; // Border to highlight the error
+            results.style.borderRadius = "5px";
+
+            results.innerHTML="Please enter a valid username or password"
         });
     });
 </script>

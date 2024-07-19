@@ -1,4 +1,262 @@
 
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Relevant Profiles</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        /* Your styles here */&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-family: Arial, sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex-direction: column;&ndash;&gt;-->
+<!--&lt;!&ndash;            height: 100vh;&ndash;&gt;-->
+<!--&lt;!&ndash;            overflow: hidden;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .header {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #005149;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #fff;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .header h1 {&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .container {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            flex: 1;&ndash;&gt;-->
+<!--&lt;!&ndash;            overflow: hidden;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .profile-list {&ndash;&gt;-->
+<!--&lt;!&ndash;            flex: 1;&ndash;&gt;-->
+<!--&lt;!&ndash;            overflow-y: auto;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-sizing: border-box;&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #f4f4f4;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        .profile-title{&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #005149;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        table {&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-collapse: collapse;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-top: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        th, td {&ndash;&gt;-->
+<!--&lt;!&ndash;            border: 1px solid #ccc;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-align: left;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        th {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #005149;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #fff;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .pagination {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .pagination button {&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0 5px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 3px;&ndash;&gt;-->
+<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
+<!--&lt;!&ndash;            transition: background-color 0.3s;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .pagination button:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: #ddd;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;        .hreflink{&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #fff;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="profile-list" id="profileList">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="header">&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash; <h1>Relevant Profiles For <a href="jobDescription1.html?jdId=${getQueryParam('jdId')}" id="jdLink">JD</a></h1> &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <h1>Relevant Profiles For <a href="jddetail.html?id=${getQueryParam('jdId')}" id="jdLink" class="hreflink">JD</a></h1>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <table id="profilesTable">&ndash;&gt;-->
+<!--&lt;!&ndash;            <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;            <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>S No</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Name</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Relevant Exp with Skill 1</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Relevant Exp with Skill 2</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>JD Match Percentage</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Uploaded Date</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Actions</th>&ndash;&gt;-->
+<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;            </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;            <tbody id="profileDetails">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;        </table>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="pagination" id="paginationControls">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button id="prevPage" disabled>Previous</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <button id="nextPage">Next</button>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div id="response"></div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    document.addEventListener('DOMContentLoaded', () => {&ndash;&gt;-->
+<!--&lt;!&ndash;const profileDetailsTableBody = document.getElementById('profileDetails');&ndash;&gt;-->
+<!--&lt;!&ndash;const prevPageBtn = document.getElementById('prevPage');&ndash;&gt;-->
+<!--&lt;!&ndash;const nextPageBtn = document.getElementById('nextPage');&ndash;&gt;-->
+<!--&lt;!&ndash;const jdLink = document.getElementById('jdLink');&ndash;&gt;-->
+
+<!--&lt;!&ndash;function getQueryParam(param) {&ndash;&gt;-->
+<!--&lt;!&ndash;    const urlParams = new URLSearchParams(window.location.search);&ndash;&gt;-->
+<!--&lt;!&ndash;    return urlParams.get(param);&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;const jdId = getQueryParam('jdId');&ndash;&gt;-->
+<!--&lt;!&ndash;let currentPage = 1;&ndash;&gt;-->
+<!--&lt;!&ndash;const itemsPerPage = 10;&ndash;&gt;-->
+
+<!--&lt;!&ndash;function fetchProfiles(page) {&ndash;&gt;-->
+<!--&lt;!&ndash;    fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(response => response.json())&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(data => {&ndash;&gt;-->
+<!--&lt;!&ndash;            if (data.length === 0) {&ndash;&gt;-->
+<!--&lt;!&ndash;                profileDetailsTableBody.innerHTML = '<tr><td colspan="7" class="header">No relevant resumes found</td></tr>';&ndash;&gt;-->
+<!--&lt;!&ndash;                return;&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;            const totalItems = data.length;&ndash;&gt;-->
+<!--&lt;!&ndash;            const totalPages = Math.ceil(totalItems / itemsPerPage);&ndash;&gt;-->
+<!--&lt;!&ndash;            const startIndex = (page - 1) * itemsPerPage;&ndash;&gt;-->
+<!--&lt;!&ndash;            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);&ndash;&gt;-->
+<!--&lt;!&ndash;            const pageData = data.slice(startIndex, endIndex);&ndash;&gt;-->
+
+<!--&lt;!&ndash;            profileDetailsTableBody.innerHTML = '';&ndash;&gt;-->
+
+<!--&lt;!&ndash;            // Get the keys dynamically from the first profile data (assuming it's not empty)&ndash;&gt;-->
+<!--&lt;!&ndash;            const skillKeys = Object.keys(pageData[0].percentages);&ndash;&gt;-->
+
+<!--&lt;!&ndash;            // Update table headers dynamically&ndash;&gt;-->
+<!--&lt;!&ndash;            const tableHeaders = document.querySelectorAll('#profilesTable th');&ndash;&gt;-->
+<!--&lt;!&ndash;            tableHeaders[2].textContent = `Relevant Exp with ${skillKeys[0]}`;&ndash;&gt;-->
+<!--&lt;!&ndash;            tableHeaders[3].textContent = `Relevant Exp with ${skillKeys[1]}`;&ndash;&gt;-->
+
+<!--&lt;!&ndash;            pageData.forEach((file, index) => {&ndash;&gt;-->
+<!--&lt;!&ndash;                const profileRow = document.createElement('tr');&ndash;&gt;-->
+<!--&lt;!&ndash;                profileRow.innerHTML = `&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td>${startIndex + index + 1}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td>${file.percentages[skillKeys[0]]}%</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td>${file.percentages[skillKeys[1]]}%</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td><a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></td>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;                    <td>${file.uploadedDate}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <td>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <button class="view-profile" data-id="${file.id}">View</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <button class="download-profile" data-id="${file.id}">Download</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </td>&ndash;&gt;-->
+<!--&lt;!&ndash;                `;&ndash;&gt;-->
+<!--&lt;!&ndash;                profileDetailsTableBody.appendChild(profileRow);&ndash;&gt;-->
+
+<!--&lt;!&ndash;                profileRow.querySelector('.view-profile').addEventListener('click', (event) => {&ndash;&gt;-->
+<!--&lt;!&ndash;                    event.preventDefault();&ndash;&gt;-->
+<!--&lt;!&ndash;                    viewProfile(event.target.getAttribute('data-id'));&ndash;&gt;-->
+<!--&lt;!&ndash;                });&ndash;&gt;-->
+<!--&lt;!&ndash;                profileRow.querySelector('.download-profile').addEventListener('click', (event) => {&ndash;&gt;-->
+<!--&lt;!&ndash;                    event.preventDefault();&ndash;&gt;-->
+<!--&lt;!&ndash;                    downloadProfile(event.target.getAttribute('data-id'), file.name);&ndash;&gt;-->
+<!--&lt;!&ndash;                });&ndash;&gt;-->
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+
+<!--&lt;!&ndash;            prevPageBtn.disabled = page === 1;&ndash;&gt;-->
+<!--&lt;!&ndash;            nextPageBtn.disabled = page === totalPages;&ndash;&gt;-->
+
+<!--&lt;!&ndash;            prevPageBtn.onclick = () => {&ndash;&gt;-->
+<!--&lt;!&ndash;                if (currentPage > 1) {&ndash;&gt;-->
+<!--&lt;!&ndash;                    currentPage&#45;&#45;;&ndash;&gt;-->
+<!--&lt;!&ndash;                    fetchProfiles(currentPage);&ndash;&gt;-->
+<!--&lt;!&ndash;                }&ndash;&gt;-->
+<!--&lt;!&ndash;            };&ndash;&gt;-->
+
+<!--&lt;!&ndash;            nextPageBtn.onclick = () => {&ndash;&gt;-->
+<!--&lt;!&ndash;                if (currentPage < totalPages) {&ndash;&gt;-->
+<!--&lt;!&ndash;                    currentPage++;&ndash;&gt;-->
+<!--&lt;!&ndash;                    fetchProfiles(currentPage);&ndash;&gt;-->
+<!--&lt;!&ndash;                }&ndash;&gt;-->
+<!--&lt;!&ndash;            };&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;        .catch(error => console.error('Error fetching profiles:', error));&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;function viewProfile(profileId) {&ndash;&gt;-->
+<!--&lt;!&ndash;    fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(response => {&ndash;&gt;-->
+<!--&lt;!&ndash;            if (!response.ok) {&ndash;&gt;-->
+<!--&lt;!&ndash;                throw new Error('Network response was not ok ' + response.statusText);&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;            return response.blob();&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(blob => {&ndash;&gt;-->
+<!--&lt;!&ndash;            const url = window.URL.createObjectURL(blob);&ndash;&gt;-->
+<!--&lt;!&ndash;            window.open(url);&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;        .catch(error => {&ndash;&gt;-->
+<!--&lt;!&ndash;            console.error('Error viewing profile:', error);&ndash;&gt;-->
+<!--&lt;!&ndash;            alert('Error viewing profile. Please try again.');&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;function downloadProfile(profileId, fileName) {&ndash;&gt;-->
+<!--&lt;!&ndash;    fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(response => {&ndash;&gt;-->
+<!--&lt;!&ndash;            if (!response.ok) {&ndash;&gt;-->
+<!--&lt;!&ndash;                throw new Error('Network response was not ok ' + response.statusText);&ndash;&gt;-->
+<!--&lt;!&ndash;            }&ndash;&gt;-->
+<!--&lt;!&ndash;            return response.blob();&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;        .then(blob => {&ndash;&gt;-->
+<!--&lt;!&ndash;            const url = window.URL.createObjectURL(blob);&ndash;&gt;-->
+<!--&lt;!&ndash;            const a = document.createElement('a');&ndash;&gt;-->
+<!--&lt;!&ndash;            a.style.display = 'none';&ndash;&gt;-->
+<!--&lt;!&ndash;            a.href = url;&ndash;&gt;-->
+<!--&lt;!&ndash;            a.download = `${fileName}.pdf`;&ndash;&gt;-->
+<!--&lt;!&ndash;            document.body.appendChild(a);&ndash;&gt;-->
+<!--&lt;!&ndash;            a.click();&ndash;&gt;-->
+<!--&lt;!&ndash;            window.URL.revokeObjectURL(url);&ndash;&gt;-->
+<!--&lt;!&ndash;            alert('Profile downloaded successfully.');&ndash;&gt;-->
+<!--&lt;!&ndash;        })&ndash;&gt;-->
+<!--&lt;!&ndash;        .catch(error => {&ndash;&gt;-->
+<!--&lt;!&ndash;            console.error('Error downloading profile:', error);&ndash;&gt;-->
+<!--&lt;!&ndash;            alert('Error downloading profile. Please try again.');&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+
+<!--&lt;!&ndash;// jdLink.href = `jobDescription1.html?jdId=${jdId}`;&ndash;&gt;-->
+<!--&lt;!&ndash;jdLink.href = `jddetail.html?id=${jdId}`;&ndash;&gt;-->
+
+<!--&lt;!&ndash;fetchProfiles(currentPage);&ndash;&gt;-->
+<!--&lt;!&ndash;});&ndash;&gt;-->
+
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+
+
+
+
+
+
 <!--<!DOCTYPE html>-->
 <!--<html lang="en">-->
 <!--<head>-->
@@ -6,7 +264,6 @@
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
 <!--    <title>Relevant Profiles</title>-->
 <!--    <style>-->
-<!--        /* Your styles here */-->
 <!--        body {-->
 <!--            font-family: Arial, sans-serif;-->
 <!--            margin: 0;-->
@@ -17,11 +274,14 @@
 <!--            overflow: hidden;-->
 <!--        }-->
 <!--        .header {-->
-<!--            background-color: #007BFF;-->
+<!--            background-color: #005149;-->
 <!--            color: #fff;-->
 <!--            padding: 10px;-->
 <!--            text-align: center;-->
 <!--            border-radius: 5px;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
 <!--        }-->
 <!--        .header h1 {-->
 <!--            margin: 0;-->
@@ -38,6 +298,9 @@
 <!--            box-sizing: border-box;-->
 <!--            background-color: #f4f4f4;-->
 <!--        }-->
+<!--        .profile-title {-->
+<!--            color: #005149;-->
+<!--        }-->
 <!--        table {-->
 <!--            width: 100%;-->
 <!--            border-collapse: collapse;-->
@@ -49,7 +312,7 @@
 <!--            text-align: left;-->
 <!--        }-->
 <!--        th {-->
-<!--            background-color: #007BFF;-->
+<!--            background-color: #005149;-->
 <!--            color: #fff;-->
 <!--        }-->
 <!--        .pagination {-->
@@ -68,355 +331,236 @@
 <!--        .pagination button:hover {-->
 <!--            background-color: #ddd;-->
 <!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="container">-->
-<!--    <div class="profile-list" id="profileList">-->
-<!--        <div class="header">-->
-<!--            <h1>Relevant Profiles For <a href="jobDescription1.html?jdId=${getQueryParam('jdId')}" id="jdLink">JD</a></h1>-->
-<!--        </div>-->
-<!--        <table id="profilesTable">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th>S No</th>-->
-<!--                <th>Name</th>-->
-<!--                <th>Relevant Exp with Skill 1</th>-->
-<!--                <th>Relevant Exp with Skill 2</th>-->
-<!--                <th>JD Match Percentage</th>-->
-<!--                <th>Uploaded Date</th>-->
-<!--                <th>Actions</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody id="profileDetails">-->
-
-<!--            </tbody>-->
-<!--        </table>-->
-<!--        <div class="pagination" id="paginationControls">-->
-<!--            <button id="prevPage" disabled>Previous</button>-->
-<!--            <button id="nextPage">Next</button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<div id="response"></div>-->
-
-<!--<script>-->
-
-<!--    document.addEventListener('DOMContentLoaded', () => {-->
-<!--const profileDetailsTableBody = document.getElementById('profileDetails');-->
-<!--const prevPageBtn = document.getElementById('prevPage');-->
-<!--const nextPageBtn = document.getElementById('nextPage');-->
-<!--const jdLink = document.getElementById('jdLink');-->
-
-<!--function getQueryParam(param) {-->
-<!--    const urlParams = new URLSearchParams(window.location.search);-->
-<!--    return urlParams.get(param);-->
-<!--}-->
-
-<!--const jdId = getQueryParam('jdId');-->
-<!--let currentPage = 1;-->
-<!--const itemsPerPage = 10;-->
-
-<!--function fetchProfiles(page) {-->
-<!--    fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            if (data.length === 0) {-->
-<!--                profileDetailsTableBody.innerHTML = '<tr><td colspan="7" class="header">No relevant resumes found</td></tr>';-->
-<!--                return;-->
-<!--            }-->
-<!--            const totalItems = data.length;-->
-<!--            const totalPages = Math.ceil(totalItems / itemsPerPage);-->
-<!--            const startIndex = (page - 1) * itemsPerPage;-->
-<!--            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);-->
-<!--            const pageData = data.slice(startIndex, endIndex);-->
-
-<!--            profileDetailsTableBody.innerHTML = '';-->
-
-<!--            // Get the keys dynamically from the first profile data (assuming it's not empty)-->
-<!--            const skillKeys = Object.keys(pageData[0].percentages);-->
-
-<!--            // Update table headers dynamically-->
-<!--            const tableHeaders = document.querySelectorAll('#profilesTable th');-->
-<!--            tableHeaders[2].textContent = `Relevant Exp with ${skillKeys[0]}`;-->
-<!--            tableHeaders[3].textContent = `Relevant Exp with ${skillKeys[1]}`;-->
-
-<!--            pageData.forEach((file, index) => {-->
-<!--                const profileRow = document.createElement('tr');-->
-<!--                profileRow.innerHTML = `-->
-<!--                    <td>${startIndex + index + 1}</td>-->
-<!--                    <td><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></td>-->
-<!--                    <td>${file.percentages[skillKeys[0]]}%</td>-->
-<!--                    <td>${file.percentages[skillKeys[1]]}%</td>-->
-<!--                    <td><a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></td>-->
-
-
-<!--                    <td>${file.uploadedDate}</td>-->
-<!--                    <td>-->
-<!--                        <button class="view-profile" data-id="${file.id}">View</button>-->
-<!--                        <button class="download-profile" data-id="${file.id}">Download</button>-->
-<!--                    </td>-->
-<!--                `;-->
-<!--                profileDetailsTableBody.appendChild(profileRow);-->
-
-<!--                profileRow.querySelector('.view-profile').addEventListener('click', (event) => {-->
-<!--                    event.preventDefault();-->
-<!--                    viewProfile(event.target.getAttribute('data-id'));-->
-<!--                });-->
-<!--                profileRow.querySelector('.download-profile').addEventListener('click', (event) => {-->
-<!--                    event.preventDefault();-->
-<!--                    downloadProfile(event.target.getAttribute('data-id'), file.name);-->
-<!--                });-->
-<!--            });-->
-
-<!--            prevPageBtn.disabled = page === 1;-->
-<!--            nextPageBtn.disabled = page === totalPages;-->
-
-<!--            prevPageBtn.onclick = () => {-->
-<!--                if (currentPage > 1) {-->
-<!--                    currentPage&#45;&#45;;-->
-<!--                    fetchProfiles(currentPage);-->
-<!--                }-->
-<!--            };-->
-
-<!--            nextPageBtn.onclick = () => {-->
-<!--                if (currentPage < totalPages) {-->
-<!--                    currentPage++;-->
-<!--                    fetchProfiles(currentPage);-->
-<!--                }-->
-<!--            };-->
-<!--        })-->
-<!--        .catch(error => console.error('Error fetching profiles:', error));-->
-<!--}-->
-
-<!--function viewProfile(profileId) {-->
-<!--    fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)-->
-<!--        .then(response => {-->
-<!--            if (!response.ok) {-->
-<!--                throw new Error('Network response was not ok ' + response.statusText);-->
-<!--            }-->
-<!--            return response.blob();-->
-<!--        })-->
-<!--        .then(blob => {-->
-<!--            const url = window.URL.createObjectURL(blob);-->
-<!--            window.open(url);-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error viewing profile:', error);-->
-<!--            alert('Error viewing profile. Please try again.');-->
-<!--        });-->
-<!--}-->
-
-<!--function downloadProfile(profileId, fileName) {-->
-<!--    fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)-->
-<!--        .then(response => {-->
-<!--            if (!response.ok) {-->
-<!--                throw new Error('Network response was not ok ' + response.statusText);-->
-<!--            }-->
-<!--            return response.blob();-->
-<!--        })-->
-<!--        .then(blob => {-->
-<!--            const url = window.URL.createObjectURL(blob);-->
-<!--            const a = document.createElement('a');-->
-<!--            a.style.display = 'none';-->
-<!--            a.href = url;-->
-<!--            a.download = `${fileName}.pdf`;-->
-<!--            document.body.appendChild(a);-->
-<!--            a.click();-->
-<!--            window.URL.revokeObjectURL(url);-->
-<!--            alert('Profile downloaded successfully.');-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error downloading profile:', error);-->
-<!--            alert('Error downloading profile. Please try again.');-->
-<!--        });-->
-<!--}-->
-
-<!--jdLink.href = `jobDescription.html?jdId=${jdId}`;-->
-
-<!--fetchProfiles(currentPage);-->
-<!--});-->
-
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
-
-
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Relevant Profiles</title>-->
-<!--    <style>-->
-<!--        /* Your styles here */-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            height: 100vh;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-<!--        .header {-->
-<!--            background-color: #007BFF;-->
+<!--        .hreflink {-->
 <!--            color: #fff;-->
-<!--            padding: 10px;-->
-<!--            text-align: center;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+<!--        .view-toggle {-->
+<!--            background-color: #fff;-->
+<!--            border: 1px solid #ccc;-->
 <!--            border-radius: 5px;-->
+<!--            padding: 5px;-->
+<!--            cursor: pointer;-->
 <!--        }-->
-<!--        .header h1 {-->
-<!--            margin: 0;-->
+<!--        .view-toggle label {-->
+<!--        color: black;-->
+<!--    }-->
+<!--        .view-toggle select {-->
+<!--            border: none;-->
+<!--            outline: none;-->
+<!--            cursor: pointer;-->
+<!--            font-size: 1em;-->
+<!--            color:black;-->
 <!--        }-->
-<!--        .container {-->
+<!--        .card {-->
+<!--            background-color: #fff;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--            padding: 15px;-->
+<!--            margin-bottom: 20px;-->
+<!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        .card h2 {-->
+<!--            margin: 0 0 10px;-->
+<!--            font-size: 1.2em;-->
+<!--        }-->
+<!--        .card p {-->
+<!--            margin: 5px 0;-->
+<!--        }-->
+<!--        .card .actions {-->
 <!--            display: flex;-->
-<!--            flex: 1;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-<!--        .profile-list {-->
-<!--            flex: 1;-->
-<!--            overflow-y: auto;-->
-<!--            padding: 20px;-->
-<!--            box-sizing: border-box;-->
-<!--            background-color: #f4f4f4;-->
-<!--        }-->
-<!--        table {-->
-<!--            width: 100%;-->
-<!--            border-collapse: collapse;-->
+<!--            justify-content: flex-end;-->
 <!--            margin-top: 10px;-->
 <!--        }-->
-<!--        th, td {-->
-<!--            border: 1px solid #ccc;-->
+<!--        .card .actions button {-->
 <!--            padding: 10px;-->
-<!--            text-align: left;-->
-<!--        }-->
-<!--        th {-->
-<!--            background-color: #007BFF;-->
-<!--            color: #fff;-->
-<!--        }-->
-<!--        .pagination {-->
-<!--            display: flex;-->
-<!--            justify-content: center;-->
-<!--            padding: 10px;-->
-<!--        }-->
-<!--        .pagination button {-->
-<!--            padding: 10px;-->
-<!--            margin: 0 5px;-->
+<!--            margin-left: 5px;-->
 <!--            border: none;-->
 <!--            border-radius: 3px;-->
 <!--            cursor: pointer;-->
+<!--            background-color: #005149;-->
+<!--            color: #fff;-->
 <!--            transition: background-color 0.3s;-->
 <!--        }-->
-<!--        .pagination button:hover {-->
-<!--            background-color: #ddd;-->
+<!--        .card .actions button:hover {-->
+<!--            background-color: #007d71;-->
 <!--        }-->
 <!--    </style>-->
 <!--</head>-->
 <!--<body>-->
 <!--<div class="container">-->
-<!--    <div class="profile-list" id="profileList">-->
+<!--    <div class="profile-list">-->
 <!--        <div class="header">-->
-<!--            &lt;!&ndash; <h1>Relevant Profiles For <a href="jobDescription1.html?jdId=${getQueryParam('jdId')}" id="jdLink">JD</a></h1> &ndash;&gt;-->
-<!--            <h1>Relevant Profiles For <a href="jddetail.html?id=${getQueryParam('jdId')}" id="jdLink">JD</a></h1>-->
+<!--            <h1>Relevant Profiles For <a href="jddetail.html?id=${getQueryParam('jdId')}" id="jdLink" class="hreflink">JD</a></h1>-->
+<!--            <div class="view-toggle">-->
+<!--                <label for="viewSelect">View In: </label>-->
+<!--                <select id="viewSelect">-->
+<!--                    <option value="list">List</option>-->
+<!--                    <option value="card">Card</option>-->
+<!--                </select>-->
+<!--            </div>-->
 <!--        </div>-->
-<!--        <table id="profilesTable">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th>S No</th>-->
-<!--                <th>Name</th>-->
-<!--                <th>Relevant Exp with Skill 1</th>-->
-<!--                <th>Relevant Exp with Skill 2</th>-->
-<!--                <th>JD Match Percentage</th>-->
-<!--                <th>Uploaded Date</th>-->
-<!--                <th>Actions</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody id="profileDetails">-->
-
-<!--            </tbody>-->
-<!--        </table>-->
+<!--        <div id="profilesContainer">-->
+<!--            <table id="profilesTable">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>S No</th>-->
+<!--                    <th>Name</th>-->
+<!--                    <th>Relevant Exp with Skill 1</th>-->
+<!--                    <th>Relevant Exp with Skill 2</th>-->
+<!--                    <th>JD Match Percentage</th>-->
+<!--                    <th>Uploaded Date</th>-->
+<!--                    <th>Actions</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody id="profileDetails"></tbody>-->
+<!--            </table>-->
+<!--        </div>-->
 <!--        <div class="pagination" id="paginationControls">-->
 <!--            <button id="prevPage" disabled>Previous</button>-->
 <!--            <button id="nextPage">Next</button>-->
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
-<!--<div id="response"></div>-->
 
 <!--<script>-->
-
 <!--    document.addEventListener('DOMContentLoaded', () => {-->
-<!--const profileDetailsTableBody = document.getElementById('profileDetails');-->
-<!--const prevPageBtn = document.getElementById('prevPage');-->
-<!--const nextPageBtn = document.getElementById('nextPage');-->
-<!--const jdLink = document.getElementById('jdLink');-->
+<!--        const profilesContainer = document.getElementById('profilesContainer');-->
+<!--        const profileDetailsTableBody = document.getElementById('profileDetails');-->
+<!--        const prevPageBtn = document.getElementById('prevPage');-->
+<!--        const nextPageBtn = document.getElementById('nextPage');-->
+<!--        const jdLink = document.getElementById('jdLink');-->
+<!--        const viewSelect = document.getElementById('viewSelect');-->
 
-<!--function getQueryParam(param) {-->
-<!--    const urlParams = new URLSearchParams(window.location.search);-->
-<!--    return urlParams.get(param);-->
-<!--}-->
+<!--        function getQueryParam(param) {-->
+<!--            const urlParams = new URLSearchParams(window.location.search);-->
+<!--            return urlParams.get(param);-->
+<!--        }-->
 
-<!--const jdId = getQueryParam('jdId');-->
-<!--let currentPage = 1;-->
-<!--const itemsPerPage = 10;-->
+<!--        const jdId = getQueryParam('jdId');-->
+<!--        let currentPage = 1;-->
+<!--        const itemsPerPage = 10;-->
+<!--        let profilesData = [];-->
 
-<!--function fetchProfiles(page) {-->
-<!--    fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--            if (data.length === 0) {-->
-<!--                profileDetailsTableBody.innerHTML = '<tr><td colspan="7" class="header">No relevant resumes found</td></tr>';-->
-<!--                return;-->
-<!--            }-->
-<!--            const totalItems = data.length;-->
+<!--        viewSelect.addEventListener('change', () => {-->
+<!--            renderProfiles(currentPage, viewSelect.value);-->
+<!--        });-->
+
+<!--        function fetchProfiles(page) {-->
+<!--            fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    profilesData = data;-->
+<!--                    if (profilesData.length === 0) {-->
+<!--                        profilesContainer.innerHTML = '<p class="header">No relevant resumes found</p>';-->
+<!--                        return;-->
+<!--                    }-->
+<!--                    renderProfiles(page, viewSelect.value);-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error fetching profiles:', error);-->
+<!--                    profilesContainer.innerHTML = '<p class="header">Failed to fetch profiles. Please try again later.</p>';-->
+<!--                });-->
+<!--        }-->
+
+<!--        function renderProfiles(page, view) {-->
+<!--            const totalItems = profilesData.length;-->
 <!--            const totalPages = Math.ceil(totalItems / itemsPerPage);-->
 <!--            const startIndex = (page - 1) * itemsPerPage;-->
 <!--            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);-->
-<!--            const pageData = data.slice(startIndex, endIndex);-->
+<!--            const pageData = profilesData.slice(startIndex, endIndex);-->
 
 <!--            profileDetailsTableBody.innerHTML = '';-->
+<!--            profilesContainer.innerHTML = '';-->
 
 <!--            // Get the keys dynamically from the first profile data (assuming it's not empty)-->
 <!--            const skillKeys = Object.keys(pageData[0].percentages);-->
 
-<!--            // Update table headers dynamically-->
-<!--            const tableHeaders = document.querySelectorAll('#profilesTable th');-->
-<!--            tableHeaders[2].textContent = `Relevant Exp with ${skillKeys[0]}`;-->
-<!--            tableHeaders[3].textContent = `Relevant Exp with ${skillKeys[1]}`;-->
-
-<!--            pageData.forEach((file, index) => {-->
-<!--                const profileRow = document.createElement('tr');-->
-<!--                profileRow.innerHTML = `-->
-<!--                    <td>${startIndex + index + 1}</td>-->
-<!--                    <td><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></td>-->
-<!--                    <td>${file.percentages[skillKeys[0]]}%</td>-->
-<!--                    <td>${file.percentages[skillKeys[1]]}%</td>-->
-<!--                    <td><a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></td>-->
-
-
-<!--                    <td>${file.uploadedDate}</td>-->
-<!--                    <td>-->
-<!--                        <button class="view-profile" data-id="${file.id}">View</button>-->
-<!--                        <button class="download-profile" data-id="${file.id}">Download</button>-->
-<!--                    </td>-->
+<!--            if (view === 'list') {-->
+<!--                profilesContainer.innerHTML = `-->
+<!--                    <table id="profilesTable">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th>S No</th>-->
+<!--                                <th>Name</th>-->
+<!--                                <th>Relevant Exp with ${skillKeys[0]}</th>-->
+<!--                                <th>Relevant Exp with ${skillKeys[1]}</th>-->
+<!--                                <th>JD Match Percentage</th>-->
+<!--                                <th>Uploaded Date</th>-->
+<!--                                <th>Actions</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody id="profileDetails"></tbody>-->
+<!--                    </table>-->
 <!--                `;-->
-<!--                profileDetailsTableBody.appendChild(profileRow);-->
 
-<!--                profileRow.querySelector('.view-profile').addEventListener('click', (event) => {-->
-<!--                    event.preventDefault();-->
-<!--                    viewProfile(event.target.getAttribute('data-id'));-->
+<!--                const profileDetailsTableBody = document.getElementById('profileDetails');-->
+
+<!--                pageData.forEach((file, index) => {-->
+<!--                    const profileRow = document.createElement('tr');-->
+<!--                    profileRow.innerHTML = `-->
+<!--                        <td>${startIndex + index + 1}</td>-->
+<!--                        <td><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></td>-->
+<!--                        <td>${file.percentages[skillKeys[0]]}%</td>-->
+<!--                        <td>${file.percentages[skillKeys[1]]}%</td>-->
+<!--                        <td><a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></td>-->
+<!--                        <td>${file.uploadedDate}</td>-->
+<!--                        <td>-->
+<!--                            <button class="view-profile" data-id="${file.id}">View</button>-->
+<!--                            <button class="download-profile" data-id="${file.id}">Download</button>-->
+<!--                        </td>-->
+<!--                    `;-->
+<!--                    profileDetailsTableBody.appendChild(profileRow);-->
+
+<!--                    profileRow.querySelector('.view-profile').addEventListener('click', (event) => {-->
+<!--                        event.preventDefault();-->
+<!--                        viewProfile(event.target.getAttribute('data-id'));-->
+<!--                    });-->
+<!--                    profileRow.querySelector('.download-profile').addEventListener('click', (event) => {-->
+<!--                        event.preventDefault();-->
+<!--                        downloadProfile(event.target.getAttribute('data-id'), file.name);-->
+<!--                    });-->
 <!--                });-->
-<!--                profileRow.querySelector('.download-profile').addEventListener('click', (event) => {-->
-<!--                    event.preventDefault();-->
-<!--                    downloadProfile(event.target.getAttribute('data-id'), file.name);-->
+<!--            } else {-->
+<!--                pageData.forEach(file => {-->
+<!--                    const profileElement = document.createElement('div');-->
+<!--                    profileElement.className = 'card';-->
+<!--                    let profileInnerHTML = `-->
+<!--                        <h2>${file.name}</h2>`;-->
+
+<!--                    // Loop through skillKeys to dynamically add relevant experience paragraphs-->
+<!--                    skillKeys.forEach(skill => {-->
+<!--                        profileInnerHTML += `-->
+<!--                        <p>Relevant Exp with ${skill}: ${file.percentages[skill]}%</p>`;-->
+<!--                    });-->
+
+<!--                    // Add the rest of the static content-->
+<!--                    profileInnerHTML += `-->
+<!--                        <p>JD Match Percentage: <a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></p>-->
+<!--                        <p>Uploaded Date: ${file.uploadedDate}</p>-->
+<!--                        <div class="actions">-->
+<!--                            <button class="view-profile" data-id="${file.id}">View</button>-->
+<!--                            <button class="download-profile" data-id="${file.id}">Download</button>-->
+<!--                        </div>-->
+<!--                    `;-->
+
+<!--                    // Set the inner HTML of the profile element-->
+<!--                    profileElement.innerHTML = profileInnerHTML;-->
+
+<!--                    // Append the profile element to the container-->
+<!--                    profilesContainer.appendChild(profileElement);-->
+
+
+<!--                    profileElement.querySelector('.view-profile').addEventListener('click', (event) => {-->
+<!--                        event.preventDefault();-->
+<!--                        viewProfile(event.target.getAttribute('data-id'));-->
+<!--                    });-->
+<!--                    profileElement.querySelector('.download-profile').addEventListener('click', (event) => {-->
+<!--                        event.preventDefault();-->
+<!--                        downloadProfile(event.target.getAttribute('data-id'), file.name);-->
+<!--                    });-->
 <!--                });-->
-<!--            });-->
+<!--            }-->
 
 <!--            prevPageBtn.disabled = page === 1;-->
 <!--            nextPageBtn.disabled = page === totalPages;-->
@@ -424,82 +568,68 @@
 <!--            prevPageBtn.onclick = () => {-->
 <!--                if (currentPage > 1) {-->
 <!--                    currentPage&#45;&#45;;-->
-<!--                    fetchProfiles(currentPage);-->
+<!--                    renderProfiles(currentPage, viewSelect.value);-->
 <!--                }-->
 <!--            };-->
 
 <!--            nextPageBtn.onclick = () => {-->
 <!--                if (currentPage < totalPages) {-->
 <!--                    currentPage++;-->
-<!--                    fetchProfiles(currentPage);-->
+<!--                    renderProfiles(currentPage, viewSelect.value);-->
 <!--                }-->
 <!--            };-->
-<!--        })-->
-<!--        .catch(error => console.error('Error fetching profiles:', error));-->
-<!--}-->
+<!--        }-->
 
-<!--function viewProfile(profileId) {-->
-<!--    fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)-->
-<!--        .then(response => {-->
-<!--            if (!response.ok) {-->
-<!--                throw new Error('Network response was not ok ' + response.statusText);-->
-<!--            }-->
-<!--            return response.blob();-->
-<!--        })-->
-<!--        .then(blob => {-->
-<!--            const url = window.URL.createObjectURL(blob);-->
-<!--            window.open(url);-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error viewing profile:', error);-->
-<!--            alert('Error viewing profile. Please try again.');-->
-<!--        });-->
-<!--}-->
+<!--        function viewProfile(profileId) {-->
+<!--            fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)-->
+<!--                .then(response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error('Network response was not ok ' + response.statusText);-->
+<!--                    }-->
+<!--                    return response.blob();-->
+<!--                })-->
+<!--                .then(blob => {-->
+<!--                    const url = window.URL.createObjectURL(blob);-->
+<!--                    window.open(url);-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error viewing profile:', error);-->
+<!--                    alert('Error viewing profile. Please try again.');-->
+<!--                });-->
+<!--        }-->
 
-<!--function downloadProfile(profileId, fileName) {-->
-<!--    fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)-->
-<!--        .then(response => {-->
-<!--            if (!response.ok) {-->
-<!--                throw new Error('Network response was not ok ' + response.statusText);-->
-<!--            }-->
-<!--            return response.blob();-->
-<!--        })-->
-<!--        .then(blob => {-->
-<!--            const url = window.URL.createObjectURL(blob);-->
-<!--            const a = document.createElement('a');-->
-<!--            a.style.display = 'none';-->
-<!--            a.href = url;-->
-<!--            a.download = `${fileName}.pdf`;-->
-<!--            document.body.appendChild(a);-->
-<!--            a.click();-->
-<!--            window.URL.revokeObjectURL(url);-->
-<!--            alert('Profile downloaded successfully.');-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Error downloading profile:', error);-->
-<!--            alert('Error downloading profile. Please try again.');-->
-<!--        });-->
-<!--}-->
+<!--        function downloadProfile(profileId, fileName) {-->
+<!--            fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)-->
+<!--                .then(response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error('Network response was not ok ' + response.statusText);-->
+<!--                    }-->
+<!--                    return response.blob();-->
+<!--                })-->
+<!--                .then(blob => {-->
+<!--                    const url = window.URL.createObjectURL(blob);-->
+<!--                    const a = document.createElement('a');-->
+<!--                    a.style.display = 'none';-->
+<!--                    a.href = url;-->
+<!--                    a.download = `${fileName}.pdf`;-->
+<!--                    document.body.appendChild(a);-->
+<!--                    a.click();-->
+<!--                    window.URL.revokeObjectURL(url);-->
+<!--                    alert('Profile downloaded successfully.');-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('Error downloading profile:', error);-->
+<!--                    alert('Error downloading profile. Please try again.');-->
+<!--                });-->
+<!--        }-->
 
-<!--// jdLink.href = `jobDescription1.html?jdId=${jdId}`;-->
-<!--jdLink.href = `jddetail.html?id=${jdId}`;-->
+<!--        jdLink.href = `jddetail.html?id=${jdId}`;-->
 
-<!--fetchProfiles(currentPage);-->
-<!--});-->
-
+<!--        fetchProfiles(currentPage);-->
+<!--    });-->
 <!--</script>-->
 <!--</body>-->
 <!--</html>-->
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -513,7 +643,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relevant Profiles</title>
     <style>
-        /* Your styles here */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -529,6 +658,9 @@
             padding: 10px;
             text-align: center;
             border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .header h1 {
             margin: 0;
@@ -545,8 +677,7 @@
             box-sizing: border-box;
             background-color: #f4f4f4;
         }
-
-        .profile-title{
+        .profile-title {
             color: #005149;
         }
         table {
@@ -579,110 +710,247 @@
         .pagination button:hover {
             background-color: #ddd;
         }
-        .hreflink{
+        .hreflink {
             color: #fff;
+            text-decoration: none;
         }
+        .view-toggle {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .view-toggle label {
+        color: black;
+    }
+        .view-toggle select {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1em;
+            color:black;
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 1.2em;
+        }
+        .card p {
+            margin: 5px 0;
+        }
+        .card .actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        .card .actions button {
+            padding: 10px;
+            margin-left: 5px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            background-color: #005149;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+        .card .actions button:hover {
+            background-color: #007d71;
+        }
+        .skill {
+    background-color: #f0f0f0; /* Set your desired background color */
+    border: 1px solid #ccc; /* Optional: adds a border */
+    padding: 10px; /* Optional: adds some padding */
+    margin-bottom: 10px; /* Optional: adds some space between skills */
+    border-radius: 5px; /* Optional: rounds the corners */
+}
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="profile-list" id="profileList">
+    <div class="profile-list">
         <div class="header">
-            <!-- <h1>Relevant Profiles For <a href="jobDescription1.html?jdId=${getQueryParam('jdId')}" id="jdLink">JD</a></h1> -->
-            <h1>Relevant Profiles For <a href="jddetail.html?id=${getQueryParam('jdId')}" id="jdLink" class="hreflink">JD</a></h1>
-        </div>
-        <table id="profilesTable">
-            <thead>
-            <tr>
-                <th>S No</th>
-                <th>Name</th>
-                <th>Relevant Exp with Skill 1</th>
-                <th>Relevant Exp with Skill 2</th>
-                <th>JD Match Percentage</th>
-                <th>Uploaded Date</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="profileDetails">
+<!--            <h1>Relevant Profiles For <a href="jddetail.html?id=${getQueryParam('jdId')}" id="jdLink" class="hreflink">JD</a></h1>-->
+            <h1>Relevant Profiles For <a id="jdLink" class="hreflink"></a></h1>
 
-            </tbody>
-        </table>
+            <div class="view-toggle">
+                <label for="viewSelect">View In: </label>
+                <select id="viewSelect">
+                    <option value="list">List</option>
+                    <option value="card">Card</option>
+                </select>
+            </div>
+        </div>
+        <div id="profilesContainer">
+            <table id="profilesTable">
+                <thead>
+                <tr>
+                    <th>S No</th>
+                    <th>Name</th>
+                    <th>Relevant Exp with Skill 1</th>
+                    <th>Relevant Exp with Skill 2</th>
+                    <th>JD Match Percentage</th>
+                    <th>Uploaded Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="profileDetails"></tbody>
+            </table>
+        </div>
         <div class="pagination" id="paginationControls">
             <button id="prevPage" disabled>Previous</button>
             <button id="nextPage">Next</button>
         </div>
     </div>
 </div>
-<div id="response"></div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', () => {
-const profileDetailsTableBody = document.getElementById('profileDetails');
-const prevPageBtn = document.getElementById('prevPage');
-const nextPageBtn = document.getElementById('nextPage');
-const jdLink = document.getElementById('jdLink');
+        const profilesContainer = document.getElementById('profilesContainer');
+        const profileDetailsTableBody = document.getElementById('profileDetails');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const jdLink = document.getElementById('jdLink');
+        const viewSelect = document.getElementById('viewSelect');
 
-function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
 
-const jdId = getQueryParam('jdId');
-let currentPage = 1;
-const itemsPerPage = 10;
+        const jdId = getQueryParam('jdId');
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let profilesData = [];
 
-function fetchProfiles(page) {
-    fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.length === 0) {
-                profileDetailsTableBody.innerHTML = '<tr><td colspan="7" class="header">No relevant resumes found</td></tr>';
-                return;
-            }
-            const totalItems = data.length;
+        viewSelect.addEventListener('change', () => {
+            renderProfiles(currentPage, viewSelect.value);
+        });
+
+        function fetchProfiles(page) {
+            fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)
+                .then(response => response.json())
+                .then(data => {
+                    profilesData = data;
+                    if (profilesData.length === 0) {
+                        profilesContainer.innerHTML = '<p class="header">No relevant resumes found</p>';
+                        return;
+                    }
+                    renderProfiles(page, viewSelect.value);
+                })
+                .catch(error => {
+                    console.error('Error fetching profiles:', error);
+                    profilesContainer.innerHTML = '<p class="header">Failed to fetch profiles. Please try again later.</p>';
+                });
+        }
+
+        function renderProfiles(page, view) {
+            const totalItems = profilesData.length;
             const totalPages = Math.ceil(totalItems / itemsPerPage);
             const startIndex = (page - 1) * itemsPerPage;
             const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-            const pageData = data.slice(startIndex, endIndex);
+            const pageData = profilesData.slice(startIndex, endIndex);
 
             profileDetailsTableBody.innerHTML = '';
+            profilesContainer.innerHTML = '';
 
             // Get the keys dynamically from the first profile data (assuming it's not empty)
             const skillKeys = Object.keys(pageData[0].percentages);
 
-            // Update table headers dynamically
-            const tableHeaders = document.querySelectorAll('#profilesTable th');
-            tableHeaders[2].textContent = `Relevant Exp with ${skillKeys[0]}`;
-            tableHeaders[3].textContent = `Relevant Exp with ${skillKeys[1]}`;
-
-            pageData.forEach((file, index) => {
-                const profileRow = document.createElement('tr');
-                profileRow.innerHTML = `
-                    <td>${startIndex + index + 1}</td>
-                    <td><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></td>
-                    <td>${file.percentages[skillKeys[0]]}%</td>
-                    <td>${file.percentages[skillKeys[1]]}%</td>
-                    <td><a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></td>
-
-
-                    <td>${file.uploadedDate}</td>
-                    <td>
-                        <button class="view-profile" data-id="${file.id}">View</button>
-                        <button class="download-profile" data-id="${file.id}">Download</button>
-                    </td>
+            if (view === 'list') {
+                profilesContainer.innerHTML = `
+                    <table id="profilesTable">
+                        <thead>
+                            <tr>
+                                <th>S No</th>
+                                <th>Name</th>
+                                <th>Relevant Exp with ${skillKeys[0]}</th>
+                                <th>Relevant Exp with ${skillKeys[1]}</th>
+                                <th>JD Match Percentage</th>
+                                <th>Uploaded Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="profileDetails"></tbody>
+                    </table>
                 `;
-                profileDetailsTableBody.appendChild(profileRow);
 
-                profileRow.querySelector('.view-profile').addEventListener('click', (event) => {
-                    event.preventDefault();
-                    viewProfile(event.target.getAttribute('data-id'));
+                const profileDetailsTableBody = document.getElementById('profileDetails');
+
+                pageData.forEach((file, index) => {
+                    const profileRow = document.createElement('tr');
+                    profileRow.innerHTML = `
+                        <td>${startIndex + index + 1}</td>
+                        <td><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></td>
+                        <td>${file.percentages[skillKeys[0]]}%</td>
+                        <td>${file.percentages[skillKeys[1]]}%</td>
+                        <td><a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></td>
+                        <td>${file.uploadedDate}</td>
+                        <td>
+                            <button class="view-profile" data-id="${file.id}">View</button>
+                            <button class="download-profile" data-id="${file.id}">Download</button>
+                        </td>
+                    `;
+                    profileDetailsTableBody.appendChild(profileRow);
+
+                    profileRow.querySelector('.view-profile').addEventListener('click', (event) => {
+                        event.preventDefault();
+                        viewProfile(event.target.getAttribute('data-id'));
+                    });
+                    profileRow.querySelector('.download-profile').addEventListener('click', (event) => {
+                        event.preventDefault();
+                        downloadProfile(event.target.getAttribute('data-id'), file.name);
+                    });
                 });
-                profileRow.querySelector('.download-profile').addEventListener('click', (event) => {
-                    event.preventDefault();
-                    downloadProfile(event.target.getAttribute('data-id'), file.name);
+            } else {
+                pageData.forEach(file => {
+                    const profileElement = document.createElement('div');
+                    profileElement.className = 'card';
+                    let profileInnerHTML = `
+                        <h2><a href="profileDesc.html?fileId=${file.id}" class="profile-title">${file.name}</a></h2>`;
+
+                    // Loop through skillKeys to dynamically add relevant experience paragraphs
+                    skillKeys.forEach(skill => {
+                        profileInnerHTML += `
+                        <div class="skill">
+                        <p>Relevant Exp with ${skill}: ${file.percentages[skill]}%</p>
+                        </div>`;
+
+                    });
+
+                    // Add the rest of the static content
+                    profileInnerHTML += `
+                        <p>JD Match Percentage: <a href="profileMatcher.html?fileId=${file.id}&jdId=${jdId}&percentages=${encodeURIComponent(JSON.stringify(file.percentages))}&fileName=${encodeURIComponent(file.name)}&overallPercentage=${file.overallPercentage}" class="overall-percentage">${file.overallPercentage}%</a></p>
+                        <p>Uploaded Date: ${file.uploadedDate}</p>
+                        <div class="actions">
+                            <button class="view-profile" data-id="${file.id}">View</button>
+                            <button class="download-profile" data-id="${file.id}">Download</button>
+                        </div>
+                    `;
+
+                    // Set the inner HTML of the profile element
+                    profileElement.innerHTML = profileInnerHTML;
+
+                    // Append the profile element to the container
+                    profilesContainer.appendChild(profileElement);
+
+                    profileElement.querySelector('.view-profile').addEventListener('click', (event) => {
+                        event.preventDefault();
+                        viewProfile(event.target.getAttribute('data-id'));
+                    });
+                    profileElement.querySelector('.download-profile').addEventListener('click', (event) => {
+                        event.preventDefault();
+                        downloadProfile(event.target.getAttribute('data-id'), file.name);
+                    });
                 });
-            });
+            }
 
             prevPageBtn.disabled = page === 1;
             nextPageBtn.disabled = page === totalPages;
@@ -690,69 +958,79 @@ function fetchProfiles(page) {
             prevPageBtn.onclick = () => {
                 if (currentPage > 1) {
                     currentPage--;
-                    fetchProfiles(currentPage);
+                    renderProfiles(currentPage, viewSelect.value);
                 }
             };
 
             nextPageBtn.onclick = () => {
                 if (currentPage < totalPages) {
                     currentPage++;
-                    fetchProfiles(currentPage);
+                    renderProfiles(currentPage, viewSelect.value);
                 }
             };
-        })
-        .catch(error => console.error('Error fetching profiles:', error));
-}
+        }
 
-function viewProfile(profileId) {
-    fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            window.open(url);
-        })
-        .catch(error => {
-            console.error('Error viewing profile:', error);
-            alert('Error viewing profile. Please try again.');
-        });
-}
+        function viewProfile(profileId) {
+            fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url);
+                })
+                .catch(error => {
+                    console.error('Error viewing profile:', error);
+                    alert('Error viewing profile. Please try again.');
+                });
+        }
 
-function downloadProfile(profileId, fileName) {
-    fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `${fileName}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            alert('Profile downloaded successfully.');
-        })
-        .catch(error => {
-            console.error('Error downloading profile:', error);
-            alert('Error downloading profile. Please try again.');
-        });
-}
+        function downloadProfile(profileId, fileName) {
+            fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `${fileName}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    alert('Profile downloaded successfully.');
+                })
+                .catch(error => {
+                    console.error('Error downloading profile:', error);
+                    alert('Error downloading profile. Please try again.');
+                });
+        }
 
-// jdLink.href = `jobDescription1.html?jdId=${jdId}`;
-jdLink.href = `jddetail.html?id=${jdId}`;
+        jdLink.href = `jddetail.html?id=${jdId}`;
 
-fetchProfiles(currentPage);
-});
+        fetchProfiles(currentPage);
+    });
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const jdId = urlParams.get('jdId');
+        const jdTitle = decodeURIComponent(urlParams.get('jdTitle'));
+
+        // Update the JD link with the title and href
+        const jdLink = document.getElementById('jdLink');
+        if (jdLink) {
+            jdLink.textContent = jdTitle;
+            jdLink.href = `jddetail.html?id=${jdId}`;
+            jdLink.style.textDecoration = 'underline'; // Add underline
+        }
+    });
 </script>
 </body>
 </html>

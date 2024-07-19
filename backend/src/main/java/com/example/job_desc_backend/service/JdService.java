@@ -19,7 +19,7 @@ public class JdService {
     private JdRepository jdRepository;
 
     public Job_description createJobDescription(Job_description jobDescription) {
-        if (jdRepository.existsByTitle(jobDescription.getTitle())) {
+        if (jdRepository.existsByTitleRegexIgnoreCase(jobDescription.getTitle())) {
             throw new RuntimeException("Job description title already exists");
         }
         return jdRepository.save(jobDescription);
@@ -28,7 +28,7 @@ public class JdService {
     public Job_description editJobDescription(Job_description jobDescription){
         Job_description newJd=jdRepository.findById(jobDescription.getId()).get();
         //newJd.setId(jobDescription.getId());
-        if (!newJd.getTitle().equals(jobDescription.getTitle()) && jdRepository.existsByTitle(jobDescription.getTitle())) {
+        if (!newJd.getTitle().equals(jobDescription.getTitle()) && jdRepository.existsByTitleRegexIgnoreCase(jobDescription.getTitle())) {
             throw new RuntimeException("Job description title already exists");
         }
         newJd.setTitle(jobDescription.getTitle());

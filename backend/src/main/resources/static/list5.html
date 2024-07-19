@@ -1007,7 +1007,10 @@
         // View relevant profiles
         function viewRelevantProfiles(event) {
             const selectedId = event.target.getAttribute('data-id');
-            window.location.href = `profiles.html?jdId=${selectedId}`;
+<!--            window.location.href = `profiles.html?jdId=${selectedId}`;-->
+            const selectedTitle = event.target.closest('.jd-item').querySelector('.jd-title').textContent;
+            const encodedTitle = encodeURIComponent(selectedTitle); // Encode the title to make it URL-safe
+            window.location.href = `profiles.html?jdId=${selectedId}&jdTitle=${encodedTitle}`;
         }
 
         // Close modals

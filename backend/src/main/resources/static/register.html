@@ -61,6 +61,11 @@
             width: 100%;
             font-size: 16px;
         }
+
+        span.psw {
+            float: left;
+            padding-top: 16px;
+        }
     </style>
 </head>
 
@@ -81,7 +86,15 @@
                        one alphabet, one symbol, and be at
                        least 8 characters long" required />
 
+        <div id="error"></div>
+
         <button type="submit">Submit</button>
+
+        <div id="errors"></div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <span class="psw">Already have an account ?  <a href="index.html">Sign in</a></span>
+        </div>
     </form>
 </div>
 
@@ -105,14 +118,6 @@
             },
             body: JSON.stringify(formData)
         })
-<!--        .then(response => {-->
-<!--            if (response.ok) {-->
-<!--                alert("Registration successful. Please proceed to login.");-->
-<!--                window.location.replace("index.html"); // Redirect to index.html upon success-->
-<!--            } else {-->
-<!--                alert("Registration failed. Please try again.");-->
-<!--            }-->
-<!--        })-->
 
             .then(response => {
                 if (response.ok) {
@@ -120,7 +125,16 @@
                     window.location.replace("index.html");
                 } else if (response.status === 400) {
                     response.text().then(errorMessage => {
-                        alert(errorMessage); // Display the specific error message from backend
+                        const error=document.getElementById("error")
+                        error.innerHTML=errorMessage
+                        error.style.backgroundColor = "#f8d7da"; // Light red background for error
+                        error.style.color = "#721c24"; // Dark red text color
+                        error.style.padding = "10px"; // Some padding for better readability
+                        error.style.border = "1px solid #f5c6cb"; // Border to highlight the error
+                        error.style.borderRadius = "5px";
+                        //error.style.marginTop="20px"
+                        error.style.marginBottom="20px"
+                        error.style.alignContent="center" // Display the specific error message from backend
                     });
                 } else {
                     throw new Error("Registration failed with status: " + response.status);
@@ -128,7 +142,16 @@
             })
         .catch(error => {
             console.error("Error:", error);
-            alert("An error occurred. Please try again later.");
+             const issue=document.getElementById("errors")
+             issue.innerHTML="An error occured please try again later"
+             issue.style.backgroundColor = "#f8d7da"; // Light red background for issue
+            issue.style.color = "#721c24"; // Dark red text color
+            issue.style.padding = "10px"; // Some padding for better readability
+               issue.style.border = "1px solid #f5c6cb"; // Border to highlight the issue
+            issue.style.borderRadius = "5px";
+            issue.style.marginTop="20px"
+            issue.style.marginBottom="20px"
+            issue.style.alignContent="center"
         });
     });
 </script>

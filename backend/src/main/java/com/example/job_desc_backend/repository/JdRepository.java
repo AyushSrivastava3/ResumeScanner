@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JdRepository extends MongoRepository<Job_description,String> {
-    boolean existsByTitle(String title);
+    //boolean existsByTitle(String title);
+    boolean existsByTitleRegexIgnoreCase(String title);
 }

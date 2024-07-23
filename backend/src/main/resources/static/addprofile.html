@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Profile</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.right-align {
+    float: right;
+}
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, td, th {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+td label {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+}
+
+select, input[type="text"], input[type="email"] {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Add spacing between input elements */
+}
+
+.center-align {
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #005149;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.loader {
+    text-align: center;
+    padding: 20px;
+}
+/* Adjust input fields */
+input[type="text"], input[type="email"] {
+    width: calc(100% - 24px); /* Adjust width to account for padding */
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Add spacing between input elements */
+}
+
+/* Ensure text is inside field structure */
+td input[type="text"], td input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+    </style>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+</head>
+<body>
+<div class="container">
+    <h1>Add Profile</h1>
+    <form id="profileForm">
+        <table>
+            <tr>
+                <td>
+                    <label for="jdSelect">Select Job Description:</label>
+                </td>
+                <td>
+                    <select id="jdSelect" name="jdId" required>
+                        <option value="">Select JD</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label for="name">Name:</label>
+                </td>
+                <td>
+                    <input type="text" id="name" name="name" disabled required>
+                </td>
+                <td>
+                    <label for="emailId">Email ID:</label>
+                </td>
+                <td>
+                    <input type="email" id="emailId" name="emailId" disabled required>
+                </td>
+                <td>
+                    <label for="mobNo">Mobile No:</label>
+                </td>
+                <td>
+                    <input type="text" id="mobNo" name="mobNo" disabled required>
+                </td>
+            </tr>
+
+            <tr id="moreDetails" style="display: none;">
+                <td>
+                    <label for="currentCtc">Current CTC:</label>
+                </td>
+                <td>
+                    <input type="text" id="currentCtc" name="currentCtc" disabled>
+                </td>
+                <td>
+                    <label for="expectedCtc">Expected CTC:</label>
+                </td>
+                <td>
+                    <input type="text" id="expectedCtc" name="expectedCtc" disabled>
+                </td>
+                <td>
+                    <label for="location">Location:</label>
+                </td>
+                <td>
+                    <input type="text" id="location" name="location" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <button type="button" id="fillMoreBtn">Fill More</button>
+                    <button type="submit" id="saveBtn" disabled>Save</button>
+                    <button type="button" id="editBtn" style="display: none;">Edit</button>
+                    <button type="button" id="addProfileBtn" style="display: none;">Add Profile</button>
+                    <button type="button" id="seeAllBtn" class="right-align" disabled>See All Profiles</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!-- <div class="loader" style="display: none;">Loading...</div>
+    <div id="profilesContainer"></div> -->
+    <div class="loader" style="display: none;">Loading...</div>
+    <!-- <button id="seeAllBtn">See All Profiles</button> -->
+    <div id="profilesContainer" style="display: none;"></div>
+</div>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM fully loaded and parsed");
+
+        const fillMoreBtn = document.getElementById('fillMoreBtn');
+        const moreDetails = document.getElementById('moreDetails');
+        const saveBtn = document.getElementById('saveBtn');
+        const editBtn = document.getElementById('editBtn');
+        const addProfileBtn = document.getElementById('addProfileBtn');
+        const profileForm = document.getElementById('profileForm');
+        const jdSelect = document.getElementById('jdSelect');
+        const profilesContainer = document.getElementById('profilesContainer');
+        const seeAllBtn = document.getElementById('seeAllBtn');
+
+        let currentJdId = "";
+
+        fillMoreBtn.addEventListener('click', function() {
+            moreDetails.style.display = moreDetails.style.display === 'none' ? 'table-row' : 'none';
+        });
+
+        profileForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const profileData = {
+                jdId: jdSelect.value,
+                name: document.getElementById('name').value,
+                emailId: document.getElementById('emailId').value,
+                mobNo: document.getElementById('mobNo').value,
+                current_ctc: document.getElementById('currentCtc').value,
+                expected_ctc: document.getElementById('expectedCtc').value,
+                current_location: document.getElementById('location').value,
+            };
+
+            const formData = new FormData();
+            formData.append('profile', new Blob([JSON.stringify(profileData)], { type: "application/json" }));
+
+            fetch('http://13.201.90.199:8080/addProfile', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Profile saved:', data);
+                saveBtn.style.display = 'none';
+                editBtn.style.display = 'none';
+                addProfileBtn.style.display = 'inline-block';
+                fetchProfileById(data.id); // Fetch and display the newly added profile
+                currentJdId = jdSelect.value; // Preserve the selected JD ID
+                profileForm.reset(); // Clear the form for new profile input
+                jdSelect.value = currentJdId; // Restore the JD selection
+                enableFormInputs(true); // Re-enable form inputs
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        addProfileBtn.addEventListener('click', function() {
+            saveBtn.style.display = 'inline-block';
+            editBtn.style.display = 'none';
+            addProfileBtn.style.display = 'none';
+            profileForm.reset(); // Clear the form
+            jdSelect.value = currentJdId; // Restore the JD selection
+            enableFormInputs(true); // Re-enable form inputs
+        });
+
+        seeAllBtn.addEventListener('click', function() {
+            if (profilesContainer.style.display === 'none' || profilesContainer.style.display === '') {
+                profilesContainer.style.display = 'block';
+                fetchProfiles(jdSelect.value);
+                seeAllBtn.textContent = 'Hide All Profiles';
+            } else {
+                profilesContainer.style.display = 'none';
+                seeAllBtn.textContent = 'See All Profiles';
+            }
+        });
+
+        jdSelect.addEventListener('change', function() {
+            currentJdId = jdSelect.value;
+            const isEnabled = currentJdId !== "";
+            enableFormInputs(isEnabled);
+            saveBtn.disabled = !isEnabled;
+            seeAllBtn.disabled = !isEnabled;
+
+            if (isEnabled) {
+                profilesContainer.innerHTML = '';
+                profilesContainer.style.display = 'none';
+                seeAllBtn.textContent = 'See All Profiles';
+            } else {
+                profilesContainer.innerHTML = '';
+            }
+        });
+
+        function enableFormInputs(enable) {
+            document.getElementById('name').disabled = !enable;
+            document.getElementById('emailId').disabled = !enable;
+            document.getElementById('mobNo').disabled = !enable;
+            fillMoreBtn.disabled = !enable;
+            document.getElementById('currentCtc').disabled = !enable;
+            document.getElementById('expectedCtc').disabled = !enable;
+            document.getElementById('location').disabled = !enable;
+        }
+
+        function showLoader() {
+            const loader = document.querySelector('.loader');
+            loader.style.display = 'block';
+        }
+
+        function hideLoader() {
+            const loader = document.querySelector('.loader');
+            loader.style.display = 'none';
+        }
+
+        function viewProfile(profileId) {
+            window.location.href = `editprofile.html?id=${profileId}`;
+        }
+
+        function fetchProfiles(jdId) {
+            fetch(`http://13.201.90.199:8080/jd/${jdId}`)
+            .then(response => response.json())
+            .then(data => {
+                profilesContainer.innerHTML = '';
+                if (data.length > 0) {
+                    const table = document.createElement('table');
+                    table.innerHTML = `
+                        <tr>
+                            <th>Name</th>
+                            <th>Email ID</th>
+                            <th>Mobile No</th>
+                            <th>Current CTC</th>
+                            <th>Expected CTC</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    `;
+                    data.forEach(profile => {
+                        const row = createProfileRow(profile);
+                        table.appendChild(row);
+                    });
+                    profilesContainer.appendChild(table);
+                } else {
+                    profilesContainer.innerHTML = '<p>No profiles found for the selected JD.</p>';
+                }
+            })
+            .catch(error => console.error('Error fetching profiles:', error));
+        }
+
+        function fetchProfileById(profileId) {
+            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`)
+            .then(response => response.json())
+            .then(profile => {
+                let table = profilesContainer.querySelector('table');
+                if (!table) {
+                    table = document.createElement('table');
+                    table.innerHTML = `
+                        <tr>
+                            <th>Name</th>
+                            <th>Email ID</th>
+                            <th>Mobile No</th>
+                            <th>Current CTC</th>
+                            <th>Expected CTC</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    `;
+                    profilesContainer.appendChild(table);
+                    profilesContainer.style.display = 'block';
+                }
+                const row = createProfileRow(profile);
+                table.insertBefore(row, table.rows[1]);
+            })
+            .catch(error => console.error('Error fetching profile:', error));
+        }
+
+        function createProfileRow(profile) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <a href="#" class="profile-link" data-profile-id="${profile.id}">
+                        ${profile.name}
+                    </a>
+                </td>
+                <td><input type="email" id="email_${profile.id}" value="${profile.emailId}" disabled></td>
+                <td><input type="text" id="mobNo_${profile.id}" value="${profile.mobNo}" disabled></td>
+                <td><input type="text" id="currentCtc_${profile.id}" value="${profile.current_ctc || ''}" disabled></td>
+                <td><input type="text" id="expectedCtc_${profile.id}" value="${profile.expected_ctc || ''}" disabled></td>
+                <td><input type="text" id="location_${profile.id}" value="${profile.current_location || ''}" disabled></td>
+                <td>
+                    <button class="editBtn">Edit</button>
+                    <button class="submitBtn" style="display: none;">Submit</button>
+                </td>
+            `;
+            row.querySelector('.editBtn').addEventListener('click', function() {
+                enableInputs(row);
+            });
+            row.querySelector('.profile-link').addEventListener('click', function(event) {
+                event.preventDefault();
+                viewProfile(profile.id);
+            });
+            row.querySelector('.submitBtn').addEventListener('click', function() {
+                const updatedProfile = {
+                    id: profile.id,
+                    jdId: jdSelect.value,
+                    name: profile.name,
+                    emailId: document.getElementById(`email_${profile.id}`).value,
+                    mobNo: document.getElementById(`mobNo_${profile.id}`).value,
+                    current_ctc: document.getElementById(`currentCtc_${profile.id}`).value,
+                    expected_ctc: document.getElementById(`expectedCtc_${profile.id}`).value,
+                    current_location: document.getElementById(`location_${profile.id}`).value,
+                };
+
+                const formData = new FormData();
+                formData.append('profile', new Blob([JSON.stringify(updatedProfile)], { type: "application/json" }));
+
+                fetch(`http://13.201.90.199:8080/profile/${profile.id}`, {
+                    method: 'PUT',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Profile updated:', data);
+                    fetchProfiles(jdSelect.value);
+                })
+                .catch(error => console.error('Error updating profile:', error));
+
+                disableInputs(row);
+            });
+
+            return row;
+        }
+
+        function enableInputs(row) {
+            const inputs = row.querySelectorAll('input[type="text"], input[type="email"]');
+            inputs.forEach(input => input.disabled = false);
+
+            row.querySelector('.editBtn').style.display = 'none';
+            row.querySelector('.submitBtn').style.display = 'inline-block';
+        }
+
+        function disableInputs(row) {
+            const inputs = row.querySelectorAll('input[type="text"], input[type="email"]');
+            inputs.forEach(input => input.disabled = true);
+
+            row.querySelector('.editBtn').style.display = 'inline-block';
+            row.querySelector('.submitBtn').style.display = 'none';
+        }
+
+        fetch('http://13.201.90.199:8080/jd/getIds')
+            .then(response => response.json())
+            .then(data => {
+                showLoader();
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.title;
+                    jdSelect.appendChild(option);
+                });
+                hideLoader();
+            })
+            .catch(error => {
+                console.error('Error fetching job descriptions:', error);
+                hideLoader();
+            });
+    });
+
+</script>
+<!-- <script src="script.js"></script> -->
+</body>
+</html>

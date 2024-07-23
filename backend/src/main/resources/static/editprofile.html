@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.profile-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #fafafa;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="file"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+input[type="checkbox"] {
+    align-self: start;
+    margin-top: 8px;
+}
+
+.file-upload input[type="file"] {
+    width: 100%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.button-container {
+    display: flex;
+    align-items: center;
+    
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#editBtn, #cancelBtn {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#editBtn {
+    margin-left: auto;
+}
+
+.button-container button {
+    padding: 12px 24px;
+    background: #005149;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.button-container button:hover {
+    background: #278b81;
+}
+
+.button-container button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.submit-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.loader {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #007BFF;
+}
+    </style>
+    <!-- <link rel="stylesheet" href="profile.css"> -->
+</head>
+<body>
+<div class="container">
+    <div class="button-container">
+        <h1 id="profileTitleName">Edit Profile</h1>
+        <button id="cancelBtn" style="display: none;">Cancel</button>
+        <button id="editBtn" style="margin-left: auto;">Edit</button>
+    </div>
+
+    <input type="hidden" id="jdId" name="jdId">
+    <div id="profileDetails" class="profile-section">
+        <div class="form-row">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" disabled>
+        </div>
+        <div class="form-row">
+            <label for="email">Email ID:</label>
+            <input type="email" id="email" name="email" disabled>
+        </div>
+        <div class="form-row">
+            <label for="mobNo">Mobile No:</label>
+            <input type="text" id="mobNo" name="mobNo" disabled>
+        </div>
+        <div class="form-row">
+            <label for="currentCtc">Current CTC:</label>
+            <input type="text" id="currentCtc" name="currentCtc" disabled>
+        </div>
+        <div class="form-row">
+            <label for="expectedCtc">Expected CTC:</label>
+            <input type="text" id="expectedCtc" name="expectedCtc" disabled>
+        </div>
+        <div class="form-row">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" disabled>
+        </div>
+        <div class="form-row">
+            <label for="totalExp">Total Experience:</label>
+            <input type="text" id="totalExp" name="totalExp" disabled>
+        </div>
+        <div class="form-row">
+            <label for="relevantExp">Relevant Experience:</label>
+            <input type="text" id="relevantExp" name="relevantExp" disabled>
+        </div>
+        <div class="form-row">
+            <label for="currentCompany">Current Company:</label>
+            <input type="text" id="currentCompany" name="currentCompany" disabled>
+        </div>
+        <div class="form-row">
+            <label for="willingToRelocate">Willing to Relocate:</label>
+            <input type="checkbox" id="willingToRelocate" name="willingToRelocate" disabled>
+        </div>
+        <div class="form-row">
+            <label for="linkedIn">LinkedIn:</label>
+            <input type="text" id="linkedIn" name="linkedIn" disabled>
+        </div>
+        <div class="form-row">
+            <label for="interestedInOpportunity">Interested in Opportunity:</label>
+            <input type="checkbox" id="interestedInOpportunity" name="interestedInOpportunity" disabled>
+        </div>
+        <div class="form-row">
+            <label for="callbackRequested">Callback Requested:</label>
+            <input type="checkbox" id="callbackRequested" name="callbackRequested" disabled>
+        </div>
+        <div class="form-row">
+            <label for="readyToRelocate">Ready to Relocate:</label>
+            <input type="checkbox" id="readyToRelocate" name="readyToRelocate" disabled>
+        </div>
+        <!-- <div class="form-row">
+            <label for="attachment">Attachment:</label>
+            <div class="file-upload">
+                <input type="file" id="attachment" name="attachment">
+            </div>
+        </div> -->
+
+        <!-- Existing form fields -->
+        <div class="form-row">
+            <label for="attachment">Attachment:</label>
+            <div class="file-upload">
+                <input type="file" id="attachment" name="attachment" disabled>
+                <span id="attachmentLabel">No file chosen</span>
+            </div>
+        </div>
+    </div>
+    <div class="submit-btn">
+        <button id="submitBtn" disabled>Submit</button>
+    </div>
+    <div class="loader">Loading...</div>
+</div>
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM fully loaded and parsed");
+    
+        const profileId = new URLSearchParams(window.location.search).get('id');
+        const profileName = document.getElementById('name');
+        const profileEmail = document.getElementById('email');
+        const profileMobNo = document.getElementById('mobNo');
+        const profileCurrentCtc = document.getElementById('currentCtc');
+        const profileExpectedCtc = document.getElementById('expectedCtc');
+        const profileLocation = document.getElementById('location');
+        const profileTotalExp = document.getElementById('totalExp');
+        const profileRelevantExp = document.getElementById('relevantExp');
+        const profileCurrentCompany = document.getElementById('currentCompany');
+        const willingToRelocate = document.getElementById('willingToRelocate');
+        const linkedIn = document.getElementById('linkedIn');
+        const interestedInOpportunity = document.getElementById('interestedInOpportunity');
+        const callbackRequested = document.getElementById('callbackRequested');
+        const readyToRelocate = document.getElementById('readyToRelocate');
+        const attachmentInput = document.getElementById('attachment');
+        const attachmentLabel = document.getElementById('attachmentLabel'); // Make sure this element exists in HTML
+        const editBtn = document.getElementById('editBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const loader = document.querySelector('.loader');
+        const submitBtnContainer = document.querySelector('.submit-btn');
+    
+        function showLoader() {
+            loader.style.display = 'block';
+        }
+    
+        function hideLoader() {
+            loader.style.display = 'none';
+        }
+    
+        function enableInputs() {
+            profileName.disabled = false;
+            profileEmail.disabled = false;
+            profileMobNo.disabled = false;
+            profileCurrentCtc.disabled = false;
+            profileExpectedCtc.disabled = false;
+            profileLocation.disabled = false;
+            profileTotalExp.disabled = false;
+            profileRelevantExp.disabled = false;
+            profileCurrentCompany.disabled = false;
+            willingToRelocate.disabled = false;
+            linkedIn.disabled = false;
+            interestedInOpportunity.disabled = false;
+            callbackRequested.disabled = false;
+            readyToRelocate.disabled = false;
+            attachmentInput.disabled = false;
+        }
+    
+        function disableInputs() {
+            profileName.disabled = true;
+            profileEmail.disabled = true;
+            profileMobNo.disabled = true;
+            profileCurrentCtc.disabled = true;
+            profileExpectedCtc.disabled = true;
+            profileLocation.disabled = true;
+            profileTotalExp.disabled = true;
+            profileRelevantExp.disabled = true;
+            profileCurrentCompany.disabled = true;
+            willingToRelocate.disabled = true;
+            linkedIn.disabled = true;
+            interestedInOpportunity.disabled = true;
+            callbackRequested.disabled = true;
+            readyToRelocate.disabled = true;
+            attachmentInput.disabled = true;
+        }
+    
+        function fetchProfile(profileId) {
+            showLoader();
+            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('jdId').value = data.jdId || ''; // Set jdId
+                    profileName.value = data.name || "Field yet to be filled";
+                    profileEmail.value = data.emailId || "Field yet to be filled";
+                    profileMobNo.value = data.mobNo || "Field yet to be filled";
+                    profileCurrentCtc.value = data.current_ctc || "Field yet to be filled";
+                    profileExpectedCtc.value = data.expected_ctc || "Field yet to be filled";
+                    profileLocation.value = data.current_location || "Field yet to be filled";
+                    profileTotalExp.value = data.totalExp || "Field yet to be filled";
+                    profileRelevantExp.value = data.relevantExp || "Field yet to be filled";
+                    profileCurrentCompany.value = data.currentCompany || "Field yet to be filled";
+                    willingToRelocate.checked = data.willingToRelocate || false;
+                    linkedIn.value = data.linkedIn || "Field yet to be filled";
+                    interestedInOpportunity.checked = data.interested_in_opportunity || false;
+                    callbackRequested.checked = data.call_back || false;
+                    readyToRelocate.checked = data.ready_to_relocate || false;
+    
+                    // Display current attachment if it exists
+                    // Display current attachment if it exists
+                    attachmentLabel.textContent = data.attachment || "No file chosen";
+                    // Set profile name in title
+                    profileTitleName.textContent = data.name || '';
+                    submitBtn.disabled = true; // Disable submit button initially
+                    hideLoader();
+                })
+                .catch(error => {
+                    console.error('Error fetching profile:', error);
+                    hideLoader();
+                });
+        }
+    
+        fetchProfile(profileId);
+    
+        editBtn.addEventListener('click', function() {
+            if (editBtn.textContent === 'Edit') {
+                enableInputs();
+                editBtn.textContent = 'Cancel';
+                submitBtn.disabled = false; // Enable submit button when editing starts
+                submitBtnContainer.style.display = 'block'; // Show submit button container
+            } else {
+                disableInputs();
+                editBtn.textContent = 'Edit';
+                submitBtn.disabled = true; // Disable submit button if editing is canceled
+                submitBtnContainer.style.display = 'none'; // Hide submit button container
+            }
+        });
+    
+        submitBtn.addEventListener('click', function() {
+            const jdId = document.getElementById('jdId').value;
+            const profileData = {
+                id: profileId,
+                jdId: jdId, // Include jdId in the profile data
+                name: profileName.value,
+                emailId: profileEmail.value,
+                mobNo: profileMobNo.value,
+                current_ctc: profileCurrentCtc.value,
+                expected_ctc: profileExpectedCtc.value,
+                current_location: profileLocation.value,
+                totalExp: profileTotalExp.value,
+                relevantExp: profileRelevantExp.value,
+                currentCompany: profileCurrentCompany.value,
+                willingToRelocate: willingToRelocate.checked,
+                linkedIn: linkedIn.value,
+                interested_in_opportunity: interestedInOpportunity.checked,
+                call_back: callbackRequested.checked,
+                ready_to_relocate: readyToRelocate.checked
+            };
+    
+            const formData = new FormData();
+            formData.append('profile', new Blob([JSON.stringify(profileData)], { type: "application/json" }));
+            if (attachmentInput.files[0]) {
+                formData.append('attachment', attachmentInput.files[0]);
+            }
+    
+            showLoader();
+            fetch('http://13.201.90.199:8080/addProfile', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Profile updated:', data);
+                disableInputs(); // Disable inputs after successful submission
+                editBtn.textContent = 'Edit';
+                submitBtn.disabled = true; // Disable submit button after submission
+                submitBtnContainer.style.display = 'none'; // Hide submit button container
+                hideLoader();
+                // Optionally redirect or show success message
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+                hideLoader();
+            });
+        });
+        // Update the attachment label when a file is selected
+        attachmentInput.addEventListener('change', function() {
+            if (attachmentInput.files.length > 0) {
+                attachmentLabel.textContent = attachmentInput.files[0].name;
+            } else {
+                attachmentLabel.textContent = "No file chosen";
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProfileController {
@@ -35,7 +37,26 @@ public class ProfileController {
         }
     }
 
-    @PutMapping("/{id}")
+//    @GetMapping("/profiles/today")
+//    public List<Profile> getProfilesAddedToday() {
+//        return profileService.getProfilesAddedToday();
+//    }
+//
+//    @GetMapping("/profiles/last-week")
+//    public List<Profile> getProfilesAddedInLastWeek() {
+//        return profileService.getProfilesAddedInLastWeek();
+//    }
+
+//    @GetMapping("/profiles/date-range")
+//    public List<Profile> getProfilesWithinDateRange(
+//            @RequestParam("startDate") String startDate,
+//            @RequestParam("endDate") String endDate) {
+//        LocalDateTime start = LocalDateTime.parse(startDate);
+//        LocalDateTime end = LocalDateTime.parse(endDate);
+//        return profileService.getProfilesWithinDateRange(start, end);
+//    }
+
+    @PutMapping("/profile/{id}")
 
     public ResponseEntity<?> updateProfile(@PathVariable String id,
                                            @RequestPart("profile") Profile profileDetails,
@@ -59,5 +80,18 @@ public class ProfileController {
     @GetMapping("/getProfile")
     public Profile getProfileByProfileId(@RequestParam String id){
         return profileRepository.findById(id).get();
+    }
+
+    @GetMapping("/getAllProfile")
+    public List<Profile> getAllProfile(){
+        return profileRepository.findAll();
+    }
+
+    @GetMapping("/profile/count")
+    public Map<String, Long> getProfilesCount() {
+        long total = profileService.getTotalProfiles();
+        long thisWeek = profileService.getProfilesAddedThisWeek().size();
+        long today = profileService.getProfilesAddedToday().size();
+        return Map.of("total", total, "thisWeek", thisWeek, "today", today);
     }
 }

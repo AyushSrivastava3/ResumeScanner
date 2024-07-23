@@ -813,6 +813,7 @@
         <div class="button-container">
             <button type="submit" class="submit">Submit</button>
         </div>
+        <div id="results"></div>
     </form>
 </div>
 
@@ -965,8 +966,18 @@ container.appendChild(subskillGroup);
         .catch((error) => {
             // console.error('Error:', error);
             // alert('Error creating job description');
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`);
+<!--            console.error('Error:', error);-->
+<!--            alert(`Error: ${error.message}`);-->
+
+            console.error("Error:", error);
+            const results=document.querySelector('#results');
+            results.style.backgroundColor = "#f8d7da"; // Light red background for error
+            results.style.color = "#721c24"; // Dark red text color
+            results.style.padding = "10px"; // Some padding for better readability
+            results.style.border = "1px solid #f5c6cb"; // Border to highlight the error
+            results.style.borderRadius = "5px";
+
+            results.innerHTML="Error: ${error.message}"
 
         });
     });

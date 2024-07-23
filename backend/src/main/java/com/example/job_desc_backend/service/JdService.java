@@ -8,6 +8,9 @@ import com.example.job_desc_backend.repository.JdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +25,39 @@ public class JdService {
         if (jdRepository.existsByTitleRegexIgnoreCase(jobDescription.getTitle())) {
             throw new RuntimeException("Job description title already exists");
         }
+        jobDescription.setCreatedDate(LocalDateTime.now());
         return jdRepository.save(jobDescription);
+    }
+
+//    public List<Job_description> getJobDescriptionsAddedToday() {
+//        LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
+//        return jdRepository.findJobDescriptionsAddedToday(todayStart);
+//    }
+//
+//    public List<Job_description> getJobDescriptionsAddedInLastWeek() {
+//        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+//        LocalDateTime now = LocalDateTime.now();
+//        return jdRepository.findJobDescriptionsWithinDateRange(weekAgo, now);
+//    }
+//
+//    public List<Job_description> getJobDescriptionsWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+//        return jdRepository.findJobDescriptionsWithinDateRange(startDate, endDate);
+//    }
+
+
+    public long getTotalJobDescriptions() {
+        return jdRepository.count();
+    }
+
+    public List<Job_description> getJobDescriptionsAddedToday() {
+        LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
+        return jdRepository.findJobDescriptionsAddedToday(todayStart);
+    }
+
+    public List<Job_description> getJobDescriptionsAddedThisWeek() {
+        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+        LocalDateTime now = LocalDateTime.now();
+        return jdRepository.findJobDescriptionsWithinDateRange(weekAgo, now);
     }
 
     public Job_description editJobDescription(Job_description jobDescription){

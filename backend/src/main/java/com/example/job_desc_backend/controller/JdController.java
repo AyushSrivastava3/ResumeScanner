@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -27,6 +29,35 @@ public class JdController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
+    }
+
+//    @GetMapping("/jd/today")
+//    public List<Job_description> getJobDescriptionsAddedToday() {
+//        return jdService.getJobDescriptionsAddedToday();
+//    }
+//
+//    @GetMapping("/jd/last-week")
+//    public List<Job_description> getJobDescriptionsAddedInLastWeek() {
+//        return jdService.getJobDescriptionsAddedInLastWeek();
+//    }
+//
+//    @GetMapping("/jd/date-range")
+//    public List<Job_description> getJobDescriptionsWithinDateRange(
+//            @RequestParam("startDate") String startDate,
+//            @RequestParam("endDate") String endDate) {
+//        LocalDateTime start = LocalDateTime.parse(startDate);
+//        LocalDateTime end = LocalDateTime.parse(endDate);
+//        return jdService.getJobDescriptionsWithinDateRange(start, end);
+//    }
+
+
+
+    @GetMapping("/jd/count")
+    public Map<String, Long> getJobDescriptionsCount() {
+        long total = jdService.getTotalJobDescriptions();
+        long thisWeek = jdService.getJobDescriptionsAddedThisWeek().size();
+        long today = jdService.getJobDescriptionsAddedToday().size();
+        return Map.of("total", total, "thisWeek", thisWeek, "today", today);
     }
 
     @PostMapping("/edit")

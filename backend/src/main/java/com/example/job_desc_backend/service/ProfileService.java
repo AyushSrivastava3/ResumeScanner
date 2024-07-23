@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +20,39 @@ public class ProfileService {
         if (attachment!=null) {
             profile.setAttachment(attachment.getOriginalFilename());
         }
+        profile.setUploadDate(LocalDateTime.now());
         Profile savedPofile=profileRepository.save(profile);
         return savedPofile;
+    }
+
+//    public List<Profile> getProfilesAddedToday() {
+//        LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
+//        return profileRepository.findProfilesAddedToday(todayStart);
+//    }
+//
+//    public List<Profile> getProfilesAddedInLastWeek() {
+//        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+//        LocalDateTime now = LocalDateTime.now();
+//        return profileRepository.findProfilesWithinDateRange(weekAgo, now);
+//    }
+//
+//    public List<Profile> getProfilesWithinDateRange(LocalDateTime startDate, LocalDateTime endDate) {
+//        return profileRepository.findProfilesWithinDateRange(startDate, endDate);
+//    }
+
+    public long getTotalProfiles() {
+        return profileRepository.count();
+    }
+
+    public List<Profile> getProfilesAddedToday() {
+        LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
+        return profileRepository.findProfilesAddedToday(todayStart);
+    }
+
+    public List<Profile> getProfilesAddedThisWeek() {
+        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+        LocalDateTime now = LocalDateTime.now();
+        return profileRepository.findProfilesWithinDateRange(weekAgo, now);
     }
 
     public Profile updateProfile(String id, Profile profileDetails) {

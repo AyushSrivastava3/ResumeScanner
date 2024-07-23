@@ -9,6 +9,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -37,6 +39,7 @@ public class Profile {
     private boolean ready_to_relocate;
     private String linkedIn;
     private String attachment;
+    private LocalDateTime uploadDate;
 
     public String getId() {
         return id;

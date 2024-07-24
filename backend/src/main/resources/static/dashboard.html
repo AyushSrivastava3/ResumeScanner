@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .button-group, .filter-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .button-group button, .filter-form button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-group button:hover, .filter-form button:hover {
+            background-color: #0056b3;
+        }
+        .filter-form input {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="button-group">
+    <button id="togglePending">Show Pending Invoices</button>
+    <button id="toggleAll">Show All Invoices</button>
+</div>
+
+<div class="filter-form">
+    <input type="number" id="year" name="year" placeholder="Year" min="2000" max="2100">
+    <input type="number" id="month" name="month" placeholder="Month" min="1" max="12">
+    <button id="filterButton">Filter</button>
+    <button id="clearButton">Clear</button>
+</div>
+
+<table id="invoiceTable">
+    <thead>
+    <tr>
+        <th>Serial Number</th>
+        <th>Client Name</th>
+        <th>Invoice Number</th>
+        <th>Invoice Value</th>
+        <th>Delayed by</th>
+        <th>Last Follow-up</th>
+        <th>Follow-up Notes</th>
+        <th>Target Date</th>
+        <th>Paid on Date</th>
+        <th>Paid with Delay of</th>
+        <th>Transaction Reference Number</th>
+        <th>Comments</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be populated by JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePendingButton = document.getElementById('togglePending');
+        const toggleAllButton = document.getElementById('toggleAll');
+        const filterButton = document.getElementById('filterButton');
+        const clearButton = document.getElementById('clearButton');
+        const invoiceTableBody = document.querySelector('#invoiceTable tbody');
+        const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
+
+        togglePendingButton.addEventListener('click', function() {
+            fetch('http://13.201.90.199:8080/api/invoices/pending')
+                .then(response => response.json())
+                .then(invoices => populateTable(invoices, false))
+                .catch(error => console.error('Error fetching pending invoices:', error));
+        });
+
+        toggleAllButton.addEventListener('click', function() {
+            fetch('http://13.201.90.199:8080/api/invoices/all')
+                .then(response => response.json())
+                .then(invoices => populateTable(invoices, false))
+                .catch(error => console.error('Error fetching all invoices:', error));
+        });
+
+        filterButton.addEventListener('click', function() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+
+            let url = ':http://13.201.90.199:8080/api/invoices/';
+            if (year && month) {
+                url += `byMonth?year=${year}&month=${month}`;
+            } else if (year) {
+                url += `byYear?year=${year}`;
+            } else {
+                return;
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(invoices => populateTable(invoices, true))
+                .catch(error => console.error('Error fetching filtered invoices:', error));
+        });
+
+        clearButton.addEventListener('click', function() {
+            document.getElementById('year').value = '';
+            document.getElementById('month').value = '';
+            invoiceTableBody.innerHTML = '';
+        });
+
+        function populateTable(invoices, isFilter) {
+            invoiceTableBody.innerHTML = '';
+
+            // Adjust table headers based on filter status
+            if (isFilter) {
+                invoiceTableHead.innerHTML = `
+                    <th>Serial Number</th>
+                    <th>Client Name</th>
+                    <th>Invoice Number</th>
+                    <th>Invoice Value</th>
+                    <th>Paid on Date</th>
+                    <th>Paid with Delay of</th>
+                    <th>Transaction Reference Number</th>
+                    <th>Comments</th>
+                `;
+            } else {
+                invoiceTableHead.innerHTML = `
+                    <th>Serial Number</th>
+                    <th>Client Name</th>
+                    <th>Invoice Number</th>
+                    <th>Invoice Value</th>
+                    <th>Delayed by</th>
+                    <th>Last Follow-up</th>
+                    <th>Follow-up Notes</th>
+                    <th>Target Date</th>
+                `;
+            }
+
+            invoices.forEach((invoice, index) => {
+                const row = document.createElement('tr');
+                if (isFilter) {
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${invoice.clientName}</td>
+                        <td>${invoice.invoiceNumber}</td>
+                        <td>${invoice.invoiceValue}</td>
+                        <td>${invoice.paidOn || ''}</td>
+                        <td>${calculatePaidDelay(invoice.raisedOn, invoice.paidOn)}</td>
+                        <td>${invoice.transactionReferenceNumber || ''}</td>
+                        <td>${invoice.comments || ''}</td>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${invoice.clientName}</td>
+                        <td>${invoice.invoiceNumber}</td>
+                        <td>${invoice.invoiceValue}</td>
+                        <td>${calculateDelay(invoice.raisedOn, invoice.paidOn)}</td>
+                        <td>${invoice.lastFollowUp || ''}</td>
+                        <td>${invoice.followUpNotes || ''}</td>
+                        <td>${invoice.targetDate || ''}</td>
+                    `;
+                }
+                invoiceTableBody.appendChild(row);
+            });
+        }
+
+        function calculateDelay(raisedOn, paidOn) {
+            if (!raisedOn || !paidOn) return '';
+            const raisedDate = new Date(raisedOn);
+            const paidDate = new Date(paidOn);
+            const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
+            return `${delay} days`;
+        }
+
+        function calculatePaidDelay(raisedOn, paidOn) {
+            if (!raisedOn || !paidOn) return '';
+            const raisedDate = new Date(raisedOn);
+            const paidDate = new Date(paidOn);
+            const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
+            return `${delay} days`;
+        }
+    });
+</script>
+
+</body>
+</html>

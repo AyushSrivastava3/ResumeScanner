@@ -31,7 +31,7 @@ public class SpringSecurity {
                         .requestMatchers("/upload","/save","/downloadMatchReportPdf"
                         ,"/allResume","/generateReport"
                         ,"/getProfileInformation","/getResumeFile","/sendReportEmail","/deleteUser"
-                        ,"/create","/edit","/deleteJd","/getJd","/count","/getProfile/**","/profile/**","/addProfile").authenticated()
+                        ,"/create","/edit","/deleteJd","/getJd","/count","/getProfile/**","/profile/**","/addProfile","/api/ocr").authenticated()
                         .requestMatchers("/register","/login").permitAll()// Allow access to /login and /register
                         .anyRequest().permitAll())                      // Authenticate all other requests
                 .csrf(csrf -> csrf.disable())                               // Disable CSRF protection

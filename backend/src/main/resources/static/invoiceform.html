@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px #aaa;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 48%;
+            padding: 10px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 4%;
+        }
+        .form-group .edit-button {
+            background-color: #007bff;
+        }
+        .form-group .edit-button:hover {
+            background-color: #0056b3;
+        }
+        .form-group .save-button {
+            background-color: #28a745;
+        }
+        .form-group .save-button:hover {
+            background-color: #218838;
+        }
+        .form-group .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Create Invoice</h2>
+    <form id="invoiceForm">
+        <div class="form-group">
+            <label for="clientName">Client Name</label>
+            <select id="clientName" name="clientName" required>
+                <option value="">Select Client</option>
+                <!-- Options will be populated by JavaScript -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="invoiceNumber">Invoice Number</label>
+            <input type="text" id="invoiceNumber" name="invoiceNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="invoiceValue">Invoice Value</label>
+            <input type="number" id="invoiceValue" name="invoiceValue" required>
+        </div>
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" name="currency" readonly>
+        </div>
+        <div class="form-group">
+            <label for="month">For the month of</label>
+            <input type="text" id="month" name="month" required>
+        </div>
+        <div class="form-group">
+            <label for="raisedOn">Raised on</label>
+            <input type="date" id="raisedOn" name="raisedOn" required>
+        </div>
+        <div class="form-group">
+            <label for="timeline">Timeline</label>
+            <input type="text" id="timeline" name="timeline" readonly>
+        </div>
+        <div class="form-group">
+            <button type="button" id="editButton" class="edit-button">Edit</button>
+            <button type="submit" id="saveButton" class="save-button hidden">Save</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://13.201.90.199:8080/api/invoices/clients')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(clients => {
+                const clientNameSelect = document.getElementById('clientName');
+                clients.forEach(client => {
+                    const option = document.createElement('option');
+                    option.value = client.clientName;
+                    option.textContent = client.clientName;
+                    clientNameSelect.appendChild(option);
+                });
+
+                clientNameSelect.addEventListener('change', function() {
+                    const selectedClient = clients.find(client => client.clientName === this.value);
+                    if (selectedClient) {
+                        document.getElementById('currency').value = selectedClient.currency;
+                        document.getElementById('timeline').value = selectedClient.timeline;
+                    } else {
+                        document.getElementById('currency').value = '';
+                        document.getElementById('timeline').value = '';
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching client data:', error);
+            });
+
+        const form = document.getElementById('invoiceForm');
+        const formElements = form.querySelectorAll('input, select');
+        const editButton = document.getElementById('editButton');
+        const saveButton = document.getElementById('saveButton');
+
+        // Initially, all inputs are disabled except the dropdown
+        formElements.forEach(element => {
+            if (element.id !== 'clientName') {
+                element.disabled = true;
+            }
+        });
+
+        // Edit button event listener
+        editButton.addEventListener('click', function() {
+            formElements.forEach(element => {
+                if (element.id !== 'clientName') {
+                    element.disabled = false;
+                }
+            });
+            editButton.classList.add('hidden');
+            saveButton.classList.remove('hidden');
+        });
+
+        // Form submit event listener
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const invoiceData = {
+                clientName: event.target.clientName.value,
+                invoiceNumber: event.target.invoiceNumber.value,
+                invoiceValue: event.target.invoiceValue.value,
+                currency: event.target.currency.value,
+                month: event.target.month.value,
+                raisedOn: event.target.raisedOn.value,
+                timeline: event.target.timeline.value
+            };
+
+            fetch('http://13.201.90.199:8080/api/invoices', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(invoiceData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Invoice saved successfully!');
+                form.reset();
+                document.getElementById('currency').value = '';
+                document.getElementById('timeline').value = '';
+                formElements.forEach(element => {
+                    element.disabled = true;
+                });
+                editButton.classList.remove('hidden');
+                saveButton.classList.add('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

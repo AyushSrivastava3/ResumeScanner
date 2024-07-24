@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BillRepository extends MongoRepository<Bill,String> {
+    long countByClientReimbursed(boolean clientReimbursed);
+
+    long countByReimbursed(boolean reimbursed);
+
 }

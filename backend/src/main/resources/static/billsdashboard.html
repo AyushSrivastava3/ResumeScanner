@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Bill Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .dashboard-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            max-width: 600px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.6rem;
+            color: #333;
+        }
+
+        .stat {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #e7f1ff;
+            border: 1px solid #d1e4f7;
+        }
+
+        .stat h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #0056b3;
+        }
+
+        .stat p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .loading {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <h2>Company Bill Dashboard</h2>
+    <div id="totalBills" class="stat">
+        <h3>Total Bills Raised</h3>
+        <p id="totalBillsValue" class="loading">Loading...</p>
+    </div>
+    <div id="totalToBeClaimed" class="stat">
+        <h3>Total Bills to be Claimed from Client</h3>
+        <p id="totalToBeClaimedValue" class="loading">Loading...</p>
+    </div>
+    <div id="pendingReimbursements" class="stat">
+        <h3>Pending Bills to be Reimbursed by Company</h3>
+        <p id="pendingReimbursementsValue" class="loading">Loading...</p>
+    </div>
+</div>
+
+<script>
+    async function fetchDashboardStats() {
+        try {
+            let response = await fetch('http://13.201.90.199:8080/dashboard/stats');
+            let data = await response.json();
+
+            document.getElementById('totalBillsValue').innerText = data.totalBills;
+            document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed;
+            document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements;
+        } catch (error) {
+            console.error('Error fetching dashboard stats:', error);
+            document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');
+        }
+    }
+
+    fetchDashboardStats();
+</script>
+</body>
+</html>

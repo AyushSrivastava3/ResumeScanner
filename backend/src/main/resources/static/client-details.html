@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px #aaa;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Client Details</h2>
+    <form id="clientForm">
+        <div class="form-group">
+            <label for="clientName">Client Name</label>
+            <input type="text" id="clientName" name="clientName" required>
+        </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required>
+        </div>
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" name="currency" required>
+        </div>
+        <div class="form-group">
+            <label for="totalPendingInvoices">Total Pending Invoices</label>
+            <input type="number" id="totalPendingInvoices" name="totalPendingInvoices" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get('id');
+
+        if (clientId) {
+            fetch(`http://localhost:8083/api/clients/${clientId}`)
+                .then(response => response.json())
+                .then(client => {
+                    document.getElementById('clientName').value = client.clientName;
+                    document.getElementById('location').value = client.location;
+                    document.getElementById('currency').value = client.currency;
+                    document.getElementById('totalPendingInvoices').value = client.totalPendingInvoices;
+                })
+                .catch(error => console.error('Error fetching client details:', error));
+        }
+
+        document.getElementById('clientForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const updatedClient = {
+                clientName: document.getElementById('clientName').value,
+                location: document.getElementById('location').value,
+                currency: document.getElementById('currency').value,
+                totalPendingInvoices: document.getElementById('totalPendingInvoices').value
+            };
+
+            fetch(`http://localhost:8083/api/clients/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedClient)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Client details updated successfully!');
+                window.location.href = 'view-clients.html';
+            })
+            .catch(error => console.error('Error updating client details:', error));
+        });
+    });
+</script>
+
+</body>
+</html>

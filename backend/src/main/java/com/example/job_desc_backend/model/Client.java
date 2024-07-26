@@ -13,6 +13,15 @@ public class Client {
     private String accountNumber;
     private String ifscCode;
     private String currency;
+    private int totalPendingInvoices;
+
+    public int getTotalPendingInvoices() {
+        return totalPendingInvoices;
+    }
+
+    public void setTotalPendingInvoices(int totalPendingInvoices) {
+        this.totalPendingInvoices = totalPendingInvoices;
+    }
 
     public String getId() {
         return id;

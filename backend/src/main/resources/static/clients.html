@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Clients</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- Include Header -->
+<div id="header"></div>
+
+<div class="container">
+    <h2>Clients</h2>
+    <table id="clientsTable">
+        <thead>
+        <tr>
+            <th>Serial Number</th>
+            <th>Client Name</th>
+            <th>Location</th>
+            <th>Currency</th>
+            <th>Total Pending Invoices</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows will be added dynamically here -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Include Footer -->
+<div id="footer"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://localhost:8080/api/clients')
+            .then(response => response.json())
+            .then(clients => {
+                const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];
+                clients.forEach((client, index) => {
+                    const row = clientsTable.insertRow();
+                    row.insertCell(0).textContent = index + 1;
+                    const clientNameCell = row.insertCell(1);
+                    const clientLink = document.createElement('a');
+                    clientLink.href = `editClient.html?id=${client.id}`;
+                    clientLink.textContent = client.clientName;
+                    clientNameCell.appendChild(clientLink);
+                    row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
+                    row.insertCell(3).textContent = client.currency;
+                    // Assuming there's an API to get total pending invoices for a client
+                    fetch(`http://localhost:8083/api/invoices/pending/count?clientId=${client.id}`)
+                        .then(response => response.json())
+                        .then(count => {
+                            row.insertCell(4).textContent = count;
+                        })
+                        .catch(error => {
+                            row.insertCell(4).textContent = 'Error fetching count';
+                        });
+                });
+            })
+            .catch(error => console.error('Error fetching clients:', error));
+    });
+
+    // Load header and footer
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+</script>
+</body>
+</html>

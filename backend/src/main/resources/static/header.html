@@ -3,115 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Header</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh; /* Ensure the body takes up full viewport height */
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header .logo img {
+            height: 40px;
+            margin-left: 20px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            position: relative;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            background-color: #444;
+            top: 100%;
+            left: 0;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li:hover ul {
+            display: block;
+        }
+        nav ul li ul li a {
+            padding: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        #content {
+            padding-bottom: 50px; /* Space for footer */
+        }
+    </style>
 </head>
 <body>
 <header>
     <div class="logo">
-        <img src="dq-logo.png" alt="DQ Logo">
+        <img src="./logo.png" alt="DQ Logo">
     </div>
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="clients.html">Clients</a></li>
+            <li><a href="clients.html" id="clients">Clients</a></li>
             <li>
-                <a href="#">Invoices</a>
+                <a href="#" id="invoicesMenu">Invoices</a>
                 <ul>
-                    <li><a href="pending-invoices.html">Pending Invoices</a></li>
-                    <li><a href="all-invoices.html">All Invoices</a></li>
+                    <li><a href="#" id="pendingInvoices">Pending Invoices</a></li>
+                    <li><a href="#" id="allInvoices">All Invoices</a></li>
                 </ul>
             </li>
-            <li><a href="settings.html">Settings</a></li>
         </ul>
     </nav>
-
-    <style>
-        body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-header .logo img {
-    height: 40px;
-    margin-left: 20px;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-nav ul li {
-    position: relative;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    display: block;
-}
-
-nav ul li ul {
-    display: none;
-    position: absolute;
-    background-color: #444;
-    top: 100%;
-    left: 0;
-    padding: 0;
-    margin: 0;
-}
-
-nav ul li:hover ul {
-    display: block;
-}
-
-nav ul li ul li a {
-    padding: 10px;
-}
-
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    width: 100%;
-}
-
-.container {
-    width: 80%;
-    margin: 20px auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    background-color: #f4f4f4;
-}
-
-    </style>
 </header>
+
+<div id="content">
+    <!-- Content will be dynamically loaded here -->
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const clientsButton = document.getElementById('clients');
+        const pendingInvoicesButton = document.getElementById('pendingInvoices');
+        const allInvoicesButton = document.getElementById('allInvoices');
+        const contentDiv = document.getElementById('content');
+
+        function loadContent(url, processData) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data:', data);
+                    contentDiv.innerHTML = ''; // Clear previous content
+                    processData(data); // Process and display new content
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function initializeNavigation() {
+            clientsButton.addEventListener('click', function() {
+                contentDiv.innerHTML = '<p>Loading Clients...</p>'; // Placeholder for loading content
+                loadContent('http://localhost:8080/api/clients', displayClients);
+            });
+
+            pendingInvoicesButton.addEventListener('click', function() {
+                contentDiv.innerHTML = '<p>Loading Pending Invoices...</p>'; // Placeholder for loading content
+                loadContent('http://localhost:8080/api/invoices/pending', displayInvoices);
+            });
+
+            allInvoicesButton.addEventListener('click', function() {
+                contentDiv.innerHTML = '<p>Loading All Invoices...</p>'; // Placeholder for loading content
+                loadContent('http://localhost:8080/api/invoices/all', displayInvoices);
+            });
+        }
+
+        function displayInvoices(invoices) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            const headerRow = document.createElement('tr');
+            const headers = ['Serial Number', 'Client Name', 'Invoice Number', 'Invoice Value', 'Delayed by', 'Last Follow-up', 'Follow-up Notes', 'Target Date'];
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            invoices.forEach((invoice, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${invoice.clientName || ''}</td>
+                    <td>${invoice.invoiceNumber || ''}</td>
+                    <td>${invoice.invoiceValue || ''}</td>
+                    <td>${calculateDelay(invoice.raisedOn, invoice.paidOn) || ''}</td>
+                    <td>${invoice.lastFollowUp || ''}</td>
+                    <td>${invoice.followUpNotes || ''}</td>
+                    <td>${invoice.targetDate || ''}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            contentDiv.appendChild(table);
+        }
+
+        function displayClients(clients) {
+            contentDiv.innerHTML = '<p>Clients will be displayed here.</p>'; // Placeholder
+        }
+
+        function calculateDelay(raisedOn, paidOn) {
+            if (!raisedOn || !paidOn) return '';
+            const raisedDate = new Date(raisedOn);
+            const paidDate = new Date(paidOn);
+            const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
+            return `${delay} days`;
+        }
+
+        initializeNavigation();
+    });
+</script>
 </body>
 </html>

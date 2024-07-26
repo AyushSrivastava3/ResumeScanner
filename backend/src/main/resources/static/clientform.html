@@ -46,7 +46,7 @@
     </style>
 </head>
 <body>
-
+<div id="header"></div>
 <div class="form-container">
     <h2>Create Client</h2>
     <form id="clientForm">
@@ -97,7 +97,7 @@
         </div>
     </form>
 </div>
-
+<div id="footer"></div>
 <script>
     document.getElementById('clientForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -130,6 +130,18 @@
             console.error('Error:', error);
         });
     });
+     // Load header and footer
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
 </script>
 
 </body>

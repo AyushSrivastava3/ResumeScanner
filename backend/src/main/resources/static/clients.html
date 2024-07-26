@@ -48,7 +48,7 @@
                     row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
                     row.insertCell(3).textContent = client.currency;
                     // Assuming there's an API to get total pending invoices for a client
-                    fetch(`http://localhost:8083/api/invoices/pending/count?clientId=${client.id}`)
+                    fetch(`http://localhost:8080/api/invoices/pending/count?clientId=${client.id}`)
                         .then(response => response.json())
                         .then(count => {
                             row.insertCell(4).textContent = count;

@@ -5,41 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Client</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .form-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        .edit-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .edit-button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        .readonly {
+            background-color: #f9f9f9;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
 <!-- Include Header -->
 <div id="header"></div>
 
 <div class="form-container">
-    <h2>Edit Client</h2>
     <form id="clientForm">
+        <h2>Edit Client</h2>
         <div class="form-group">
             <label for="clientName">Client Name</label>
-            <input type="text" id="clientName" name="clientName" required>
+            <input type="text" id="clientName" name="clientName" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="clientAddress">Client Address</label>
-            <input type="text" id="clientAddress" name="clientAddress" required>
+            <input type="text" id="clientAddress" name="clientAddress" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="gstNumber">GST Number</label>
-            <input type="text" id="gstNumber" name="gstNumber" required>
+            <input type="text" id="gstNumber" name="gstNumber" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="accountNumber">Account Number</label>
-            <input type="text" id="accountNumber" name="accountNumber" required>
+            <input type="text" id="accountNumber" name="accountNumber" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="ifscCode">IFSC Code</label>
-            <input type="text" id="ifscCode" name="ifscCode" required>
+            <input type="text" id="ifscCode" name="ifscCode" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="currency">Currency</label>
-            <input type="text" id="currency" name="currency" required>
+            <input type="text" id="currency" name="currency" class="readonly" readonly>
         </div>
         <div class="form-group">
-            <button type="submit">Save</button>
+            <button type="submit" id="saveButton" style="display: none;">Save</button>
         </div>
+        <button type="button" id="editButton" class="edit-button">Edit</button>
     </form>
 </div>
 
@@ -64,6 +149,16 @@
                 })
                 .catch(error => console.error('Error fetching client:', error));
         }
+
+        document.getElementById('editButton').addEventListener('click', function() {
+            const formElements = document.querySelectorAll('#clientForm input');
+            formElements.forEach(input => {
+                input.removeAttribute('readonly');
+                input.classList.remove('readonly');
+            });
+            document.getElementById('saveButton').style.display = 'block';
+            this.style.display = 'none';
+        });
 
         document.getElementById('clientForm').addEventListener('submit', function(event) {
             event.preventDefault();

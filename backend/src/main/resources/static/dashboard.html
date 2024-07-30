@@ -109,7 +109,7 @@
             const year = document.getElementById('year').value;
             const month = document.getElementById('month').value;
 
-            let url = ':http://13.201.90.199:8080/api/invoices/';
+            let url = 'http://13.201.90.199:8080/api/invoices/';
             if (year && month) {
                 url += `byMonth?year=${year}&month=${month}`;
             } else if (year) {

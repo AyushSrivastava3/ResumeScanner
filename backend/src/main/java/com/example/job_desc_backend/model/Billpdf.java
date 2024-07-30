@@ -21,7 +21,7 @@ public class Billpdf {
 
         private String fileName;
         private String contentType;
-
+        private String createdBy;
         private String fileId;
 
 

@@ -40,6 +40,66 @@ public class Profile {
     private String linkedIn;
     private String attachment;
     private LocalDateTime uploadDate;
+    private String createdBy;
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    // New fields for extracted resume sections
+    private String experienceSection;
+    private String educationSection;
+    private String skillsSection;
+    private String projectsSection;
+    private String introductionSection;
+    private String certificationSection;
+    private String extracurricularSection;
+
+    public LocalDateTime getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(LocalDateTime uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    public String getExperienceSection() {
+        return experienceSection;
+    }
+
+    public void setExperienceSection(String experienceSection) {
+        this.experienceSection = experienceSection;
+    }
+
+    public String getEducationSection() {
+        return educationSection;
+    }
+
+    public void setEducationSection(String educationSection) {
+        this.educationSection = educationSection;
+    }
+
+    public String getSkillsSection() {
+        return skillsSection;
+    }
+
+    public void setSkillsSection(String skillsSection) {
+        this.skillsSection = skillsSection;
+    }
+
+    public String getProjectsSection() {
+        return projectsSection;
+    }
+
+    public void setProjectsSection(String projectsSection) {
+        this.projectsSection = projectsSection;
+    }
+
+
 
     public String getId() {
         return id;

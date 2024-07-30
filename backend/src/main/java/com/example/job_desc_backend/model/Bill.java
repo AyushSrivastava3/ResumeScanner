@@ -30,6 +30,7 @@ public class Bill {
         private String reimbursementDate;
 
         private String fileId;
+        private String createdBy;
 
 
 

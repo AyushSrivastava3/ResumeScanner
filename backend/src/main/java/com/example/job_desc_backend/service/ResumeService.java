@@ -689,6 +689,10 @@ public class ResumeService {
         }
         String resumeText = FileTextExtractor.extractTextFromFile(file);
 
+        // Extract sections from the resume text
+        Map<String, String> sections = extractSections(resumeText);
+
+
         // Check if a profile with this email already exists
         //Optional<Resume> existingResumeOptional = resumeRepository.findByEmailId(email);
         Optional<Resume> existingResumeOptional = email != null ? resumeRepository.findByEmailId(email) : Optional.empty();
@@ -708,6 +712,16 @@ public class ResumeService {
             existingResume.setUploadDate(LocalDate.now());
             existingResume.setCandidateName(pdfService.extractName(resumeText));
             existingResume.setEmailId(email);
+
+            // Set sections
+            existingResume.setExperienceSection(sections.getOrDefault("WORK EXPERIENCE", ""));
+            existingResume.setEducationSection(sections.getOrDefault("EDUCATION", ""));
+            existingResume.setSkillsSection(sections.getOrDefault("SKILLS", ""));
+            existingResume.setProjectsSection(sections.getOrDefault("PROJECTS", ""));
+            existingResume.setIntroductionSection(sections.getOrDefault("INTRODUCTION",""));
+            existingResume.setCertificationSection(sections.getOrDefault("CERTIFICATIONS",""));
+            existingResume.setExtracurricularSection(sections.getOrDefault("EXTRACURRICULAR",""));
+
 
             // Save the updated resume
             Resume savedResume = resumeRepository.save(existingResume);
@@ -895,6 +909,17 @@ public class ResumeService {
         resume.setCandidateName(pdfService.extractName(resumeText));
         resume.setUploadDate(LocalDate.now());
         resume.setEmailId(email);
+
+        // Set sections
+        resume.setExperienceSection(sections.getOrDefault("WORK EXPERIENCE", ""));
+        resume.setEducationSection(sections.getOrDefault("EDUCATION", ""));
+        resume.setSkillsSection(sections.getOrDefault("SKILLS", ""));
+        resume.setProjectsSection(sections.getOrDefault("PROJECTS", ""));
+        resume.setIntroductionSection(sections.getOrDefault("INTRODUCTION",""));
+        resume.setCertificationSection(sections.getOrDefault("CERTIFICATIONS",""));
+        resume.setExtracurricularSection(sections.getOrDefault("EXTRACURRICULAR",""));
+
+
 
         // Save the resume
         Resume savedResume = resumeRepository.save(resume);
@@ -1585,6 +1610,235 @@ public class ResumeService {
         return response;
     }
 
+
+//    public static Map<String, String> extractSections(String resumeText) {
+//        Map<String, String> sections = new LinkedHashMap<>();
+//
+//        // Define the section headers and their variations
+//        Map<String, List<String>> sectionHeaders = new LinkedHashMap<>();
+//        sectionHeaders.put("INTRODUCTION", Arrays.asList("INTRODUCTION", "Professional Summary", "Introduction", "Summary"));
+//        sectionHeaders.put("WORK EXPERIENCE", Arrays.asList("WORK EXPERIENCE", "Professional Experience", "Experience", "Work experience"));
+//        sectionHeaders.put("EDUCATION", Arrays.asList("EDUCATION", "Educational Qualification", "Education", "Educational qualification"));
+//        sectionHeaders.put("SKILLS", Arrays.asList("SKILLS", "Skills"));
+//        sectionHeaders.put("PROJECTS", Arrays.asList("PROJECTS", "Projects and Internship", "Projects", "Internship"));
+//        sectionHeaders.put("CERTIFICATIONS", Arrays.asList("CERTIFICATIONS", "Certification", "Certifications"));
+//        sectionHeaders.put("EXTRACURRICULAR", Arrays.asList("EXTRACURRICULAR", "Extra-Curricular Activities", "Extracurricular", "Activities"));
+//
+//        // Create a regex pattern to match the section headers
+//        StringBuilder patternBuilder = new StringBuilder();
+//        for (List<String> headers : sectionHeaders.values()) {
+//            for (String header : headers) {
+//                if (patternBuilder.length() > 0) {
+//                    patternBuilder.append("|");
+//                }
+//                patternBuilder.append("\\b").append(header).append("\\b");
+//            }
+//        }
+//        Pattern pattern = Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
+//
+//        // Find the section headers and their positions in the text
+//        Matcher matcher = pattern.matcher(resumeText);
+//        List<Integer> sectionPositions = new ArrayList<>();
+//        List<String> sectionNames = new ArrayList<>();
+//
+//        while (matcher.find()) {
+//            sectionPositions.add(matcher.start());
+//            sectionNames.add(matcher.group());
+//        }
+//
+//        // Extract sections based on the positions of the headers
+//        for (int i = 0; i < sectionPositions.size(); i++) {
+//            int start = sectionPositions.get(i);
+//            int end = (i < sectionPositions.size() - 1) ? sectionPositions.get(i + 1) : resumeText.length();
+//            String sectionName = sectionNames.get(i);
+//            String sectionContent = resumeText.substring(start + sectionName.length(), end).trim();
+//
+//            // Normalize section name
+//            for (Map.Entry<String, List<String>> entry : sectionHeaders.entrySet()) {
+//                if (entry.getValue().stream().anyMatch(header -> header.equalsIgnoreCase(sectionName))) {
+//                    sections.put(entry.getKey(), sectionContent);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return sections;
+//    }
+
+//    private String extractSection(String text, String sectionName) {
+//        // This method is now obsolete with the new approach, as the main extraction logic handles this.
+//        return "";
+//    }
+//
+//    public static Map<String, String> extractSections(String resumeText) {
+//        Map<String, String> sections = new LinkedHashMap<>();
+//
+//        // Define the section headers and their variations
+//        Map<String, List<String>> sectionHeaders = new LinkedHashMap<>();
+//        sectionHeaders.put("INTRODUCTION", Arrays.asList("INTRODUCTION", "Professional Summary", "Introduction", "Summary","PROFESSIONAL PROFILE"));
+//        sectionHeaders.put("WORK EXPERIENCE", Arrays.asList("WORK EXPERIENCE", "Professional Experience", "Experience", "Work experience","PROFESSIONAL EXPERIENCE","Work Experience"));
+//        sectionHeaders.put("EDUCATION", Arrays.asList("EDUCATION", "Educational Qualification", "Education", "Educational qualification","ACADEMIC AND PROFESSIONAL CREDENTIALS"));
+//        sectionHeaders.put("SKILLS", Arrays.asList("SKILLS", "Skills","TECHNICAL SKILLS","Technical Skills"));
+//        sectionHeaders.put("PROJECTS", Arrays.asList("PROJECTS", "Projects and Internship", "Projects", "Internship"));
+//        sectionHeaders.put("CERTIFICATIONS", Arrays.asList("CERTIFICATIONS", "Certification", "Certifications"));
+//        sectionHeaders.put("EXTRACURRICULAR", Arrays.asList("EXTRACURRICULAR", "Extra-Curricular Activities", "Extracurricular", "Activities"));
+//
+//        // Create a regex pattern to match the section headers that start on a new line
+//        StringBuilder patternBuilder = new StringBuilder();
+//        for (List<String> headers : sectionHeaders.values()) {
+//            for (String header : headers) {
+//                if (patternBuilder.length() > 0) {
+//                    patternBuilder.append("|");
+//                }
+//                patternBuilder.append("(?<=^|\\n)\\s*").append(header).append("\\s*(?=\\n|\\s)");
+//            }
+//        }
+//        Pattern pattern = Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
+//
+//        // Find the section headers and their positions in the text
+//        Matcher matcher = pattern.matcher(resumeText);
+//        List<Integer> sectionPositions = new ArrayList<>();
+//        List<String> sectionNames = new ArrayList<>();
+//
+//        while (matcher.find()) {
+//            sectionPositions.add(matcher.start());
+//            sectionNames.add(matcher.group().trim());
+//        }
+//
+//        // Extract sections based on the positions of the headers
+//        for (int i = 0; i < sectionPositions.size(); i++) {
+//            int start = sectionPositions.get(i);
+//            int end = (i < sectionPositions.size() - 1) ? sectionPositions.get(i + 1) : resumeText.length();
+//            String sectionName = sectionNames.get(i);
+//            String sectionContent = resumeText.substring(start + sectionName.length(), end).trim();
+//
+//            // Normalize section name
+//            for (Map.Entry<String, List<String>> entry : sectionHeaders.entrySet()) {
+//                if (entry.getValue().stream().anyMatch(header -> header.equalsIgnoreCase(sectionName))) {
+//                    sections.put(entry.getKey(), sectionContent);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return sections;
+//    }
+
+//    public static Map<String, String> extractSections(String resumeText) {
+//        Map<String, String> sections = new LinkedHashMap<>();
+//
+//        // Define the section headers and their variations
+//        Map<String, List<String>> sectionHeaders = new LinkedHashMap<>();
+//        sectionHeaders.put("INTRODUCTION", Arrays.asList("INTRODUCTION", "Professional Summary", "Introduction", "Summary", "PROFESSIONAL PROFILE"));
+//        sectionHeaders.put("WORK EXPERIENCE", Arrays.asList("WORK EXPERIENCE", "Professional Experience", "Experience", "Work experience", "PROFESSIONAL EXPERIENCE", "Work Experience"));
+//        sectionHeaders.put("EDUCATION", Arrays.asList("EDUCATION", "Educational Qualification", "Education", "Educational qualification", "ACADEMIC AND PROFESSIONAL CREDENTIALS"));
+//        sectionHeaders.put("SKILLS", Arrays.asList("SKILLS", "Skills", "TECHNICAL SKILLS", "Technical Skills"));
+//        sectionHeaders.put("PROJECTS", Arrays.asList("PROJECTS", "Projects and Internship", "Projects", "Internship"));
+//        sectionHeaders.put("CERTIFICATIONS", Arrays.asList("CERTIFICATIONS", "Certification", "Certifications"));
+//        sectionHeaders.put("EXTRACURRICULAR", Arrays.asList("EXTRACURRICULAR", "Extra-Curricular Activities", "Extracurricular", "Activities"));
+//
+//        // Create a regex pattern to match the section headers that start on a new line
+//        StringBuilder patternBuilder = new StringBuilder();
+//        for (List<String> headers : sectionHeaders.values()) {
+//            for (String header : headers) {
+//                if (patternBuilder.length() > 0) {
+//                    patternBuilder.append("|");
+//                }
+//                patternBuilder.append("(?<=^|\\n)\\s*").append(Pattern.quote(header)).append("\\s*(?=\\n|\\s|:)");
+//            }
+//        }
+//        Pattern pattern = Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
+//
+//        // Find the section headers and their positions in the text
+//        Matcher matcher = pattern.matcher(resumeText);
+//        List<Integer> sectionPositions = new ArrayList<>();
+//        List<String> sectionNames = new ArrayList<>();
+//
+//        while (matcher.find()) {
+//            sectionPositions.add(matcher.start());
+//            sectionNames.add(matcher.group().trim());
+//        }
+//
+//        // Extract sections based on the positions of the headers
+//        for (int i = 0; i < sectionPositions.size(); i++) {
+//            int start = sectionPositions.get(i);
+//            int end = (i < sectionPositions.size() - 1) ? sectionPositions.get(i + 1) : resumeText.length();
+//            String sectionName = sectionNames.get(i);
+//            int contentStart = start + sectionName.length();
+//            String sectionContent = resumeText.substring(contentStart, end).trim();
+//
+//            // Normalize section name
+//            for (Map.Entry<String, List<String>> entry : sectionHeaders.entrySet()) {
+//                if (entry.getValue().stream().anyMatch(header -> header.equalsIgnoreCase(sectionName))) {
+//                    sections.put(entry.getKey(), sectionContent);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return sections;
+//    }
+
+
+
+
+
+
+
+    public static Map<String, String> extractSections(String resumeText) {
+        Map<String, String> sections = new LinkedHashMap<>();
+
+        // Define the section headers and their variations
+        Map<String, List<String>> sectionHeaders = new LinkedHashMap<>();
+        sectionHeaders.put("INTRODUCTION", Arrays.asList("INTRODUCTION", "Professional Summary", "Introduction", "Summary", "PROFESSIONAL PROFILE"));
+        sectionHeaders.put("WORK EXPERIENCE", Arrays.asList("WORK EXPERIENCE", "Professional Experience", "Experience", "Work experience", "PROFESSIONAL EXPERIENCE", "Work Experience"));
+        sectionHeaders.put("EDUCATION", Arrays.asList("EDUCATION", "Educational Qualification", "Education", "Educational qualification", "ACADEMIC AND PROFESSIONAL CREDENTIALS"));
+        sectionHeaders.put("SKILLS", Arrays.asList("SKILLS", "Skills", "TECHNICAL SKILLS", "Technical Skills"));
+        sectionHeaders.put("PROJECTS", Arrays.asList("PROJECTS", "Projects and Internship", "Projects", "Internship"));
+        sectionHeaders.put("CERTIFICATIONS", Arrays.asList("CERTIFICATIONS", "Certification", "Certifications"));
+        sectionHeaders.put("EXTRACURRICULAR", Arrays.asList("EXTRACURRICULAR", "Extra-Curricular Activities", "Extracurricular", "Activities"));
+
+        // Create a regex pattern to match the section headers that start on a new line
+        StringBuilder patternBuilder = new StringBuilder();
+        for (List<String> headers : sectionHeaders.values()) {
+            for (String header : headers) {
+                if (patternBuilder.length() > 0) {
+                    patternBuilder.append("|");
+                }
+                patternBuilder.append("(?<=^|\\n)\\s*").append(Pattern.quote(header)).append("\\s*(?=\\n|\\s|:)");
+            }
+        }
+        Pattern pattern = Pattern.compile(patternBuilder.toString(), Pattern.CASE_INSENSITIVE);
+
+        // Find the section headers and their positions in the text
+        Matcher matcher = pattern.matcher(resumeText);
+        List<Integer> sectionPositions = new ArrayList<>();
+        List<String> sectionNames = new ArrayList<>();
+
+        while (matcher.find()) {
+            sectionPositions.add(matcher.start());
+            sectionNames.add(matcher.group().trim());
+        }
+
+        // Extract sections based on the positions of the headers
+        for (int i = 0; i < sectionPositions.size(); i++) {
+            int start = sectionPositions.get(i);
+            int end = (i < sectionPositions.size() - 1) ? sectionPositions.get(i + 1) : resumeText.length();
+            String sectionName = sectionNames.get(i);
+            int contentStart = start + sectionName.length();
+            String sectionContent = resumeText.substring(contentStart, end).trim();
+
+            // Normalize section name
+            for (Map.Entry<String, List<String>> entry : sectionHeaders.entrySet()) {
+                if (entry.getValue().stream().anyMatch(header -> header.equalsIgnoreCase(sectionName))) {
+                    sections.put(entry.getKey(), sectionContent);
+                    break;
+                }
+            }
+        }
+
+        return sections;
+    }
 
 }
 

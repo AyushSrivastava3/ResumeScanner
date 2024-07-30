@@ -17,8 +17,10 @@ import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
+@Component
 public class FileTextExtractor {
 
 

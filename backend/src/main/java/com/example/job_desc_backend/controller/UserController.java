@@ -35,24 +35,6 @@ public class UserController {
     private static final PasswordEncoder passwordencoder=new BCryptPasswordEncoder();
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody User user) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-////        boolean authenticated = userService.authenticateUser(user.getUsername(), user.getPassword());
-////        if (authenticated) {
-////            return new ResponseEntity<>("Login successful", HttpStatus.OK);
-////        } else {
-////            throw new RuntimeException("Either username or password wrong"+HttpStatus.BAD_REQUEST);
-////            //return new ResponseEntity<>("Login failed", HttpStatus.UNAUTHORIZED);
-////        }
-//        String name= authentication.getName();
-//        String password= (String) authentication.getCredentials();
-//        if (authentication.isAuthenticated()){
-//           return new ResponseEntity<>("Login successful", HttpStatus.OK);
-//        }
-//        else {
-//            throw new RuntimeException("Either username or password wrong"+HttpStatus.BAD_REQUEST);
-//        }
-
-
 
         try{
             authenticationManager.authenticate(
@@ -94,5 +76,22 @@ public class UserController {
         return new ResponseEntity<>("User deleted Successfully",HttpStatus.ACCEPTED);
     }
 }
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+////        boolean authenticated = userService.authenticateUser(user.getUsername(), user.getPassword());
+////        if (authenticated) {
+////            return new ResponseEntity<>("Login successful", HttpStatus.OK);
+////        } else {
+////            throw new RuntimeException("Either username or password wrong"+HttpStatus.BAD_REQUEST);
+////            //return new ResponseEntity<>("Login failed", HttpStatus.UNAUTHORIZED);
+////        }
+//        String name= authentication.getName();
+//        String password= (String) authentication.getCredentials();
+//        if (authentication.isAuthenticated()){
+//           return new ResponseEntity<>("Login successful", HttpStatus.OK);
+//        }
+//        else {
+//            throw new RuntimeException("Either username or password wrong"+HttpStatus.BAD_REQUEST);
+//        }
 
 

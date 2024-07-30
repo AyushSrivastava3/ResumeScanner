@@ -1,10 +1,13 @@
 package com.example.job_desc_backend.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-
+@Getter
+@Setter
 @Document(collection = "invoices")
 public class Invoice {
 
@@ -18,6 +21,7 @@ public class Invoice {
     private String raisedOn;
     private String timeline;
     private LocalDate targetDate;
+    private String createdBy;
 
     public LocalDate getTargetDate() {
         return targetDate;

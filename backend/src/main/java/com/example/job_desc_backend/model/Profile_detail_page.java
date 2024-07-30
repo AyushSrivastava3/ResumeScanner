@@ -23,6 +23,7 @@ public class Profile_detail_page {
     private String resumeId;
     private String candidateName;
     private String uploadedDate;
+    private String createdBy;
     private Map<String,Integer> profile_skill_map;
 
     public String getCandidateName() {

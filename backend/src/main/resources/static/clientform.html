@@ -34,19 +34,19 @@
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: #005149;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         .form-group button:hover {
-            background-color: #218838;
+            background-color: #005149;
         }
     </style>
 </head>
 <body>
-
+<div id="header"></div>
 <div class="form-container">
     <h2>Create Client</h2>
     <form id="clientForm">
@@ -97,7 +97,7 @@
         </div>
     </form>
 </div>
-
+<div id="footer"></div>
 <script>
     document.getElementById('clientForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -114,7 +114,7 @@
             miscellaneous: event.target.miscellaneous.value
         };
 
-        fetch('http://13.201.90.199:8080/api/clients', {
+        fetch('http://localhost:8080/api/clients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -124,12 +124,25 @@
         .then(response => response.json())
         .then(data => {
             alert('Client created successfully!');
+                        window.location.href = 'clients.html'; // Redirect to clients page
             event.target.reset();
         })
         .catch(error => {
             console.error('Error:', error);
         });
     });
+     // Load header and footer
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
 </script>
 
 </body>

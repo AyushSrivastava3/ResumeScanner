@@ -7,17 +7,58 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+        #header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            height: 50px; /* Set a fixed height for the header */
+            line-height: 30px; /* Vertically center the text */
+            z-index: 1000;
+        }
+        #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
         }
         .form-container {
-            width: 300px;
-            margin: auto;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            border: 1px solid #ccc;
+            margin-top: 70px; /* Adjust for header */
+            margin-bottom: 40px; /* Adjust for footer */
+        }
+        form {
+            background: white;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 2px 2px 12px #aaa;
+            width: 100%;
+            max-width: 300px;
+            overflow-y: auto;
         }
-        .form-container h2 {
+        form h2 {
             text-align: center;
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -30,6 +71,8 @@
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         .form-group button {
             width: 48%;
@@ -41,16 +84,16 @@
             margin-right: 4%;
         }
         .form-group .edit-button {
-            background-color: #007bff;
+            background-color: #005149;
         }
         .form-group .edit-button:hover {
-            background-color: #0056b3;
+            background-color: #005149;
         }
         .form-group .save-button {
-            background-color: #28a745;
+            background-color: #005149;
         }
         .form-group .save-button:hover {
-            background-color: #218838;
+            background-color: #005149;
         }
         .form-group .hidden {
             display: none;
@@ -58,10 +101,11 @@
     </style>
 </head>
 <body>
+<div id="header">Header Content</div>
 
 <div class="form-container">
-    <h2>Create Invoice</h2>
     <form id="invoiceForm">
+        <h2>Create Invoice</h2>
         <div class="form-group">
             <label for="clientName">Client Name</label>
             <select id="clientName" name="clientName" required>
@@ -100,9 +144,11 @@
     </form>
 </div>
 
+<div id="footer">Footer Content</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('http://13.201.90.199:8080/api/invoices/clients')
+        fetch('http://localhost:8080/api/invoices/clients')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -170,7 +216,7 @@
                 timeline: event.target.timeline.value
             };
 
-            fetch('http://13.201.90.199:8080/api/invoices', {
+            fetch('http://localhost:8080/api/invoices', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -198,8 +244,20 @@
                 console.error('Error:', error);
             });
         });
+
+        // Load header and footer
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
     });
 </script>
-
 </body>
 </html>

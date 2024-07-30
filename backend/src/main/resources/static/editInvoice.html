@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 12px #aaa;
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #005149;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #005149;
+        }
+    </style>
+</head>
+<body>
+<!-- Include Header -->
+<div id="header"></div>
+
+<div class="form-container">
+    <h2>Edit Invoice</h2>
+    <form id="invoiceForm">
+        <div class="form-group">
+            <label for="invoiceNumber">Invoice Number</label>
+            <input type="text" id="invoiceNumber" name="invoiceNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="clientName">Client Name</label>
+            <input type="text" id="clientName" name="clientName" required>
+        </div>
+        <div class="form-group">
+            <label for="invoiceValue">Invoice Value</label>
+            <input type="number" id="invoiceValue" name="invoiceValue" required>
+        </div>
+        <div class="form-group">
+            <label for="currency">Currency</label>
+            <input type="text" id="currency" name="currency" required>
+        </div>
+        <div class="form-group">
+            <label for="month">For the month of</label>
+            <input type="text" id="month" name="month" required>
+        </div>
+        <div class="form-group">
+            <label for="raisedOn">Raised on</label>
+            <input type="date" id="raisedOn" name="raisedOn" required>
+        </div>
+        <div class="form-group">
+            <label for="timeline">Timeline</label>
+            <input type="text" id="timeline" name="timeline" readonly>
+        </div>
+        <div class="form-group">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</div>
+<!-- Include Footer -->
+<div id="footer"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const invoiceId = urlParams.get('id');
+
+        if (invoiceId) {
+            fetch(`http://localhost:8080/api/invoices/${invoiceId}`)
+                .then(response => response.json())
+                .then(invoice => {
+                    document.getElementById('invoiceNumber').value = invoice.invoiceNumber;
+                    document.getElementById('clientName').value = invoice.clientName;
+                    document.getElementById('invoiceValue').value = invoice.invoiceValue;
+                    document.getElementById('currency').value = invoice.currency;
+                    document.getElementById('month').value = invoice.month;
+                    document.getElementById('raisedOn').value = invoice.raisedOn;
+                    document.getElementById('timeline').value = invoice.timeline;
+                })
+                .catch(error => console.error('Error fetching invoice:', error));
+        }
+
+        document.getElementById('invoiceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const invoiceData = {
+                invoiceNumber: event.target.invoiceNumber.value,
+                clientName: event.target.clientName.value,
+                invoiceValue: event.target.invoiceValue.value,
+                currency: event.target.currency.value,
+                month: event.target.month.value,
+                raisedOn: event.target.raisedOn.value,
+                timeline: event.target.timeline.value
+            };
+
+            fetch(`http://localhost:8080/api/invoices/${invoiceId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(invoiceData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Invoice details updated successfully!');
+                window.location.href = 'all-invoices.html'; // Redirect to all invoices page
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+     // Load header and footer
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+     fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+</script>
+
+</body>
+</html>

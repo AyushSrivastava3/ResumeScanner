@@ -34,14 +34,14 @@
         .form-group button {
             width: 100%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: #005149;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         .form-group button:hover {
-            background-color: #218838;
+            background-color: #005149;
         }
     </style>
 </head>
@@ -124,6 +124,7 @@
         .then(response => response.json())
         .then(data => {
             alert('Client created successfully!');
+                        window.location.href = 'clients.html'; // Redirect to clients page
             event.target.reset();
         })
         .catch(error => {

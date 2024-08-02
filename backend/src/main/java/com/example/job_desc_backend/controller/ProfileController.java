@@ -2,6 +2,7 @@ package com.example.job_desc_backend.controller;
 
 import com.example.job_desc_backend.model.Profile;
 import com.example.job_desc_backend.repository.ProfileRepository;
+import com.example.job_desc_backend.service.ProfileSectionService;
 import com.example.job_desc_backend.service.ProfileService;
 import com.example.job_desc_backend.service.ResumeService;
 import com.example.job_desc_backend.utility.FileTextExtractor;
@@ -31,18 +32,42 @@ public class ProfileController {
     FileTextExtractor fileTextExtractor;
     @Autowired
     ResumeService resumeService;
+    @Autowired
+    ProfileSectionService profileSectionService;
     @PostMapping("/addProfile")
     public ResponseEntity<?> addProfile(@RequestPart("profile") Profile profile,
                                         @RequestPart(value = "attachment", required = false) MultipartFile attachment,
                                         @RequestParam(value = "saveSections", required = false, defaultValue = "false") boolean saveSections) throws IOException, TesseractException {
         try {
-            if (attachment != null  && saveSections ) {//&& !attachment.isEmpty() && saveSections
+            if (attachment != null  && saveSections && profile.getId()!=null) {//&& !attachment.isEmpty() && saveSections
+                String resumeText = fileTextExtractor.extractTextFromFile(attachment);
+                Map<String, String> sections = extractSections(resumeText);
+
+                // Save attachment
+                resumeService.saveResume(attachment, true);
+                
+                //save extracted section to ProfileSectionRepository
+                profileSectionService.saveSections(profile.getId(),sections);
+
+                // Save extracted sections to profile
+                profile.setExperienceSection(sections.getOrDefault("WORK EXPERIENCE", ""));
+                profile.setEducationSection(sections.getOrDefault("EDUCATION", ""));
+                profile.setSkillsSection(sections.getOrDefault("SKILLS", ""));
+                profile.setProjectsSection(sections.getOrDefault("PROJECTS", ""));
+                profile.setIntroductionSection(sections.getOrDefault("INTRODUCTION", ""));
+                profile.setCertificationSection(sections.getOrDefault("CERTIFICATIONS", ""));
+                profile.setExtracurricularSection(sections.getOrDefault("EXTRACURRICULAR", ""));
+            } else if (attachment !=null && saveSections==false && profile.getId()!=null) {
                 String resumeText = fileTextExtractor.extractTextFromFile(attachment);
                 Map<String, String> sections = extractSections(resumeText);
 
                 // Save attachment
                 resumeService.saveResume(attachment, true);
 
+                //save extracted section to ProfileSectionRepository
+                profileSectionService.saveSections(profile.getId(),sections);
+            } else if (saveSections && profile.getId()!=null && attachment==null) {
+                Map<String, String> sections= profileSectionService.getSections(profile.getId());
                 // Save extracted sections to profile
                 profile.setExperienceSection(sections.getOrDefault("WORK EXPERIENCE", ""));
                 profile.setEducationSection(sections.getOrDefault("EDUCATION", ""));

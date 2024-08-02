@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +43,10 @@ public class InvoiceController {
         return ResponseEntity.ok(savedInvoice);
     }
 
-    @GetMapping("/pending")
-    public List<Invoice> getPendingInvoices() {
-        return invoiceRepository.findPendingInvoices();
-    }
+//    @GetMapping("/pending")
+//    public List<Invoice> getPendingInvoices() {
+//        return invoiceRepository.findPendingInvoices();
+//    }
 
     @GetMapping("/all")
     public List<Invoice> getAllInvoices() {
@@ -88,4 +89,18 @@ public class InvoiceController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<Invoice>> getPendingInvoices() {
+        List<Invoice> invoices = invoiceService.getPendingInvoices();
+
+        if (invoices.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(invoices);
+        }
+    }
+
+
 }

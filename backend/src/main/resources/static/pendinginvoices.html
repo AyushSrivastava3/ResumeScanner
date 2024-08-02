@@ -3,50 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Invoices</title>
+    <title>Pending Invoices</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
         }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         th, td {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
+            padding: 15px;
             text-align: left;
+            border: 1px solid #ddd;
         }
         th {
             background-color: #f4f4f4;
         }
-        .container {
-            width: 80%;
-            margin: 20px auto;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
     </style>
 </head>
 <body>
-<div id="header"></div>
 
-<div class="container">
-    <h2>All Invoices</h2>
-    <table id="invoicesTable">
-        <thead>
-        <tr>
-            <th>Invoice Number</th>
-            <th>Client Name</th>
-            <th>Invoice Value</th>
-            <th>Currency</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Rows will be added dynamically here -->
-        </tbody>
-    </table>
-</div>
-<!-- Include Footer -->
-<div id="footer"></div>
+<div id="header">Header Content</div>
+<h1>Pending Invoices</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Client Name</th>
+        <th>Invoice Number</th>
+        <th>Invoice Value</th>
+        <th>Currency</th>
+        <th>Month</th>
+        <th>Raised On</th>
+        <th>Timeline</th>
+    </tr>
+    </thead>
+    <tbody id="invoiceTableBody">
+    <!-- Invoices will be populated here by JavaScript -->
+    </tbody>
+</table>
+<div id="footer">Footer Content</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -98,25 +108,31 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        fetch('http://localhost:8080/api/invoices/all')
+        fetch('http://localhost:8080/api/invoices/pending')
             .then(response => response.json())
             .then(invoices => {
-                const invoicesTable = document.getElementById('invoicesTable').getElementsByTagName('tbody')[0];
+                const tableBody = document.getElementById('invoiceTableBody');
                 invoices.forEach(invoice => {
-                    const row = invoicesTable.insertRow();
-                    const invoiceNumberCell = row.insertCell(0);
-                    const invoiceLink = document.createElement('a');
-                    invoiceLink.href = `editInvoice.html?id=${invoice.id}`;
-                    invoiceLink.textContent = invoice.invoiceNumber;
-                    invoiceNumberCell.appendChild(invoiceLink);
-                    row.insertCell(1).textContent = invoice.clientName; // Assuming invoice contains clientName
-                    row.insertCell(2).textContent = invoice.invoiceValue;
-                    row.insertCell(3).textContent = invoice.currency;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${invoice.clientName}</td>
+                        <td>${invoice.invoiceNumber}</td>
+                        <td>${invoice.invoiceValue}</td>
+                        <td>${invoice.currency}</td>
+                        <td>${invoice.month}</td>
+                        <td>${invoice.raisedOn}</td>
+                        <td>${invoice.timeline}</td>
+                    `;
+                    tableBody.appendChild(row);
                 });
             })
-            .catch(error => console.error('Error fetching invoices:', error));
+            .catch(error => {
+                console.error('Error fetching pending invoices:', error);
+            });
     });
 
+
 </script>
+
 </body>
 </html>

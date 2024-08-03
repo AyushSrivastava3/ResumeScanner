@@ -1,0 +1,918 @@
+Index: backend/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=job_desc_backend\nspring.data.mongodb.host=localhost\nspring.data.mongodb.port=27017\nspring.data.mongodb.database=job_desc\nspring.servlet.multipart.max-file-size=20MB\nspring.servlet.multipart.max-request-size=20MB\n\nspring.mail.host=smtp.gmail.com\nspring.mail.port=587\nspring.mail.username=digiquadayush@gmail.com\nspring.mail.password=njcncyojonyuegxv\nspring.mail.properties.mail.smtp.auth=true\nspring.mail.properties.mail.smtp.starttls.enable=true\n\n\n\n\n#spring.application.name=job_desc_backend\n#spring.data.mongodb.uri=mongodb://root:root1234@13.201.90.199:27017/job_desc?authSource=admin\n#server.port=8080\n#\n#spring.mail.host=smtp.gmail.com\n#spring.mail.port=587\n#spring.mail.username=digiquadayush@gmail.com\n#spring.mail.password=njcncyojonyuegxv\n#spring.mail.properties.mail.smtp.auth=true\n#spring.mail.properties.mail.smtp.starttls.enable=true\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/backend/src/main/resources/application.properties b/backend/src/main/resources/application.properties
+--- a/backend/src/main/resources/application.properties	
++++ b/backend/src/main/resources/application.properties	
+@@ -1,18 +1,18 @@
+-spring.application.name=job_desc_backend
+-spring.data.mongodb.host=localhost
+-spring.data.mongodb.port=27017
+-spring.data.mongodb.database=job_desc
+-spring.servlet.multipart.max-file-size=20MB
+-spring.servlet.multipart.max-request-size=20MB
+-
+-spring.mail.host=smtp.gmail.com
+-spring.mail.port=587
+-spring.mail.username=digiquadayush@gmail.com
+-spring.mail.password=njcncyojonyuegxv
+-spring.mail.properties.mail.smtp.auth=true
+-spring.mail.properties.mail.smtp.starttls.enable=true
++#spring.application.name=job_desc_backend
++#spring.data.mongodb.host=localhost
++#spring.data.mongodb.port=27017
++#spring.data.mongodb.database=job_desc
++#spring.servlet.multipart.max-file-size=20MB
++#spring.servlet.multipart.max-request-size=20MB
++#
++#spring.mail.host=smtp.gmail.com
++#spring.mail.port=587
++#spring.mail.username=digiquadayush@gmail.com
++#spring.mail.password=njcncyojonyuegxv
++#spring.mail.properties.mail.smtp.auth=true
++#spring.mail.properties.mail.smtp.starttls.enable=true
+ 
+-
++spring.profiles.active=prod
+ 
+ 
+ #spring.application.name=job_desc_backend
+Index: backend/src/main/resources/static/billpage.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Quick Fill the Bills</title>\n    <style>\n        /* Existing styles */\n        body {\n            font-family: Arial, sans-serif;\n            background-color: #f7f7f7;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            height: 100vh;\n            margin: 0;\n        }\n\n        .container {\n            background-color: #fff;\n            padding: 20px;\n            border-radius: 8px;\n            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);\n            width: 80%;\n            max-width: 900px;\n        }\n\n        h2 {\n            margin-bottom: 10px;\n            text-align: center;\n            font-size: 1.2rem; /* Reduced font size */\n        }\n\n        .form-group {\n            display: grid;\n            grid-template-columns: 1fr 1fr; /* Two equal columns */\n            gap: 10px; /* Gap between the grid items */\n            margin-bottom: 10px;\n        }\n\n        .form-group label {\n            display: block;\n            font-weight: bold;\n            font-size: 0.85rem; /* Reduced font size */\n            margin-bottom: 5px;\n        }\n\n        .form-group input,\n        .form-group select,\n        .form-group textarea {\n            width: 100%;\n            padding: 4px;\n            border: 1px solid #ccc;\n            border-radius: 4px;\n            box-sizing: border-box;\n            font-size: 0.85rem; /* Reduced font size */\n        }\n\n        .form-group input[type=\"checkbox\"] {\n            width: auto;\n            margin-right: 5px;\n        }\n\n        .form-group .full-width {\n            grid-column: 1 / -1; /* Span across all columns */\n        }\n\n        .button-group {\n            display: flex;\n            justify-content: center;\n            margin-top: 10px;\n        }\n\n        .button-group button {\n            padding: 6px 12px;\n            background-color: #007BFF;\n            color: #fff;\n            border: none;\n            border-radius: 4px;\n            cursor: pointer;\n            margin: 6px;\n            width: 100px; /* Adjusted button width */\n            text-align: center;\n            transition: background-color 0.3s, box-shadow 0.3s;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n        }\n\n        .button-group button:hover {\n            background-color: #0056b3;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n        }\n\n        .save-btn {\n            background-color: #28a745; /* Green color */\n        }\n\n        .save-btn:hover {\n            background-color: #218838;\n        }\n\n        .edit-btn {\n            background-color: #007BFF; /* Blue color */\n        }\n\n        .edit-btn:hover {\n            background-color: #0056b3;\n        }\n\n        .cancel-btn {\n            background-color: #6c757d; /* Grey color */\n        }\n\n        .cancel-btn:hover {\n            background-color: #5a6268;\n        }\n\n        .add-bill-btn {\n            background-color: #17a2b8; /* Teal color */\n        }\n\n        .add-bill-btn:hover {\n            background-color: #138496;\n        }\n\n        .remove-bill-btn {\n            background-color: #dc3545; /* Red color */\n        }\n\n        .remove-bill-btn:hover {\n            background-color: #c82333;\n        }\n\n        .loader {\n            display: none;\n            position: fixed;\n            left: 50%;\n            top: 50%;\n            transform: translate(-50%, -50%);\n            border: 8px solid #f3f3f3;\n            border-top: 8px solid #3498db;\n            border-radius: 50%;\n            width: 50px;\n            height: 50px;\n            animation: spin 1s linear infinite;\n        }\n\n        @keyframes spin {\n            0% { transform: rotate(0deg); }\n            100% { transform: rotate(360deg); }\n        }\n    </style>\n</head>\n<body>\n<div class=\"container\">\n    <h2>Quick Fill the Bills</h2>\n    <div id=\"bill-container\">\n        <form class=\"bill-form\" id=\"billForm\">\n            <div class=\"form-group\">\n                <label for=\"reason\">Reason for the bill:</label>\n                <input type=\"text\" id=\"reason\" name=\"reason\" required>\n                <label for=\"amount\">Bill amount:</label>\n                <input type=\"number\" id=\"amount\" name=\"amount\" required>\n                <label for=\"date\">Bill date:</label>\n                <input type=\"date\" id=\"date\" name=\"date\" required>\n                <label for=\"category\">Category:</label>\n                <select id=\"category\" name=\"category\" required>\n                    <option value=\"travel\">Travel</option>\n                    <option value=\"food\">Food</option>\n                    <option value=\"accommodation\">Accommodation</option>\n                    <option value=\"supplies\">Supplies</option>\n                </select>\n                <label for=\"reimbursed\">Already reimbursed?</label>\n                <input type=\"checkbox\" id=\"reimbursed\" name=\"reimbursed\">\n                <label for=\"submittedBy\">Submitted by:</label>\n                <select id=\"submittedBy\" name=\"submittedBy\" required>\n                    <option value=\"current-user\">Current User</option>\n                    <option value=\"other\">Other User</option>\n                </select>\n                <label for=\"clientReimbursed\">Client Reimbursed:</label>\n                <input type=\"checkbox\" id=\"clientReimbursed\" name=\"clientReimbursed\">\n                <label for=\"file\">Attachment:</label>\n                <input type=\"file\" id=\"file\" name=\"file\" required>\n                <label for=\"reimbursementDate\">Reimbursement Date:</label>\n                <input type=\"date\" id=\"reimbursementDate\" name=\"reimbursementDate\">\n                <label for=\"comments\">Comments:</label>\n                <textarea id=\"comments\" name=\"comments\"></textarea>\n            </div>\n            <div class=\"button-group\">\n                <button type=\"button\" id=\"edit-btn\" class=\"edit-btn\">Edit</button>\n                <button type=\"button\" id=\"cancel-btn\" class=\"cancel-btn\" style=\"display:none;\">Cancel</button>\n                <button type=\"button\" class=\"save-btn\" style=\"display:none;\">Save</button>\n                <button type=\"button\" id=\"add-bill-btn\" class=\"add-bill-btn\">+ Add Bill</button>\n                <button type=\"button\" id=\"remove-bill-btn\" class=\"remove-bill-btn\">- Remove Bill</button>\n            </div>\n        </form>\n    </div>\n    <div id=\"message\"></div>\n    <div class=\"loader\" id=\"loader\"></div>\n</div>\n<script>\n    document.getElementById('edit-btn').addEventListener('click', () => {\n        toggleEditMode(true);\n    });\n\n    document.getElementById('cancel-btn').addEventListener('click', () => {\n        toggleEditMode(false);\n    });\n\n    document.querySelector('.save-btn').addEventListener('click', async () => {\n        const billId = localStorage.getItem('billId'); // Retrieve billId (if still needed elsewhere)\n        await submitForm(document.querySelector('.bill-form'), billId);\n    });\n\n    document.getElementById('add-bill-btn').addEventListener('click', () => {\n        const container = document.getElementById('bill-container');\n        const newBillForm = document.querySelector('.bill-form').cloneNode(true);\n        resetForm(newBillForm); // Reset form fields before appending\n        container.appendChild(newBillForm);\n        addEventListenersToForm(newBillForm);\n    });\n\n    document.getElementById('remove-bill-btn').addEventListener('click', () => {\n        const forms = document.querySelectorAll('.bill-form');\n        if (forms.length > 1) {\n            forms[forms.length - 1].remove();\n        }\n    });\n\n    function addEventListenersToForm(form) {\n        const saveBtn = form.querySelector('.save-btn');\n\n        saveBtn.addEventListener('click', async () => {\n            const billId = localStorage.getItem('billId'); // Retrieve billId (if needed)\n            await submitForm(form, billId);\n        });\n\n        form.addEventListener('submit', async function (event) {\n            event.preventDefault();\n        });\n    }\n\n    document.addEventListener('DOMContentLoaded', (event) => {\n        // Retrieve user details\n        const userDetails = JSON.parse(localStorage.getItem('userDetails'));\n        console.log('Retrieved user details:', userDetails); // Added console log\n\n        if (userDetails) {\n            document.getElementById('reason').value = userDetails.reason;\n            document.getElementById('amount').value = userDetails.amount;\n            document.getElementById('date').value = userDetails.date;\n            document.getElementById('category').value = userDetails.category;\n\n            document.getElementById('reimbursed').checked = userDetails.reimbursed;\n            document.getElementById('submittedBy').value = userDetails.submittedBy;\n            document.getElementById('comments').value = userDetails.comments;\n\n\n            localStorage.setItem('billId', userDetails.id);\n            console.log('billId successfully set in localStorage:', userDetails.id);\n\n        } else {\n            alert('No details found! Please enter details on gopal.html.');\n        }\n\n        // Initialize event listeners for existing forms\n        document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));\n\n        // Initially, disable form fields for read-only mode\n        toggleEditMode(false);\n    });\n\n    async function submitForm(form, billId) {\n        const loader = document.getElementById('loader');\n        loader.style.display = 'block'; // Show loader\n\n        let formData = new FormData();\n        formData.append('bill', new Blob([JSON.stringify({\n            reason: form.querySelector('#reason').value,\n            amount: form.querySelector('#amount').value,\n            date: form.querySelector('#date').value,\n            category: form.querySelector('#category').value,\n            reimbursed: form.querySelector('#reimbursed').checked,\n            submittedBy: form.querySelector('#submittedBy').value,\n            comments: form.querySelector('#comments').value,\n            clientReimbursed: form.querySelector('#clientReimbursed').checked,\n            reimbursementDate: form.querySelector('#reimbursementDate').value\n        })], { type: 'application/json' }));\n        formData.append('file', form.querySelector('#file').files[0]);\n\n        try {\n            let response = await fetch(`http://localhost:8080/api/billing/${billId}`, {\n                method: 'POST',\n                body: formData\n            });\n\n            if (response.ok) {\n                document.getElementById('message').innerText = 'Bill uploaded successfully!';\n                toggleEditMode(false); // Switch back to read-only mode\n            } else {\n                document.getElementById('message').innerText = 'Error uploading bill.';\n            }\n        } catch (error) {\n            document.getElementById('message').innerText = 'Error uploading bill.';\n        } finally {\n            loader.style.display = 'none'; // Hide loader\n        }\n    }\n\n    function toggleEditMode(editMode) {\n        const form = document.querySelector('.bill-form');\n        form.querySelectorAll('input, select, textarea').forEach(input => {\n            input.disabled = !editMode;\n        });\n        document.getElementById('edit-btn').style.display = editMode ? 'none' : 'inline-block';\n        document.getElementById('cancel-btn').style.display = editMode ? 'inline-block' : 'none';\n        document.querySelector('.save-btn').style.display = editMode ? 'inline-block' : 'none';\n    }\n\n    function resetForm(form) {\n        form.querySelectorAll('input, select, textarea').forEach(input => {\n            input.value = '';\n            if (input.type === 'checkbox') {\n                input.checked = false;\n            }\n        });\n    }\n</script>\n\n</body>\n</html>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/resources/static/billpage.html b/backend/src/main/resources/static/billpage.html
+--- a/backend/src/main/resources/static/billpage.html	
++++ b/backend/src/main/resources/static/billpage.html	
+@@ -1,3 +1,676 @@
++<!--<!DOCTYPE html>-->
++<!--<html lang="en">-->
++<!--<head>-->
++<!--    <meta charset="UTF-8">-->
++<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
++<!--    <title>Quick Fill the Bills</title>-->
++<!--    <style>-->
++<!--        /* Existing styles */-->
++<!--        body {-->
++<!--            font-family: Arial, sans-serif;-->
++<!--            background-color: #f7f7f7;-->
++<!--            display: flex;-->
++<!--            justify-content: center;-->
++<!--            align-items: center;-->
++<!--            height: 100vh;-->
++<!--            margin: 0;-->
++<!--        }-->
++
++<!--        .container {-->
++<!--            background-color: #fff;-->
++<!--            padding: 20px;-->
++<!--            border-radius: 8px;-->
++<!--            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);-->
++<!--            width: 80%;-->
++<!--            max-width: 900px;-->
++<!--        }-->
++
++<!--        h2 {-->
++<!--            margin-bottom: 10px;-->
++<!--            text-align: center;-->
++<!--            font-size: 1.2rem; /* Reduced font size */-->
++<!--        }-->
++
++<!--        .form-group {-->
++<!--            display: grid;-->
++<!--            grid-template-columns: 1fr 1fr; /* Two equal columns */-->
++<!--            gap: 10px; /* Gap between the grid items */-->
++<!--            margin-bottom: 10px;-->
++<!--        }-->
++
++<!--        .form-group label {-->
++<!--            display: block;-->
++<!--            font-weight: bold;-->
++<!--            font-size: 0.85rem; /* Reduced font size */-->
++<!--            margin-bottom: 5px;-->
++<!--        }-->
++
++<!--        .form-group input,-->
++<!--        .form-group select,-->
++<!--        .form-group textarea {-->
++<!--            width: 100%;-->
++<!--            padding: 4px;-->
++<!--            border: 1px solid #ccc;-->
++<!--            border-radius: 4px;-->
++<!--            box-sizing: border-box;-->
++<!--            font-size: 0.85rem; /* Reduced font size */-->
++<!--        }-->
++
++<!--        .form-group input[type="checkbox"] {-->
++<!--            width: auto;-->
++<!--            margin-right: 5px;-->
++<!--        }-->
++
++<!--        .form-group .full-width {-->
++<!--            grid-column: 1 / -1; /* Span across all columns */-->
++<!--        }-->
++
++<!--        .button-group {-->
++<!--            display: flex;-->
++<!--            justify-content: center;-->
++<!--            margin-top: 10px;-->
++<!--        }-->
++
++<!--        .button-group button {-->
++<!--            padding: 6px 12px;-->
++<!--            background-color: #007BFF;-->
++<!--            color: #fff;-->
++<!--            border: none;-->
++<!--            border-radius: 4px;-->
++<!--            cursor: pointer;-->
++<!--            margin: 6px;-->
++<!--            width: 100px; /* Adjusted button width */-->
++<!--            text-align: center;-->
++<!--            transition: background-color 0.3s, box-shadow 0.3s;-->
++<!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
++<!--        }-->
++
++<!--        .button-group button:hover {-->
++<!--            background-color: #0056b3;-->
++<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);-->
++<!--        }-->
++
++<!--        .save-btn {-->
++<!--            background-color: #28a745; /* Green color */-->
++<!--        }-->
++
++<!--        .save-btn:hover {-->
++<!--            background-color: #218838;-->
++<!--        }-->
++
++<!--        .edit-btn {-->
++<!--            background-color: #007BFF; /* Blue color */-->
++<!--        }-->
++
++<!--        .edit-btn:hover {-->
++<!--            background-color: #0056b3;-->
++<!--        }-->
++
++<!--        .cancel-btn {-->
++<!--            background-color: #6c757d; /* Grey color */-->
++<!--        }-->
++
++<!--        .cancel-btn:hover {-->
++<!--            background-color: #5a6268;-->
++<!--        }-->
++
++<!--        .add-bill-btn {-->
++<!--            background-color: #17a2b8; /* Teal color */-->
++<!--        }-->
++
++<!--        .add-bill-btn:hover {-->
++<!--            background-color: #138496;-->
++<!--        }-->
++
++<!--        .remove-bill-btn {-->
++<!--            background-color: #dc3545; /* Red color */-->
++<!--        }-->
++
++<!--        .remove-bill-btn:hover {-->
++<!--            background-color: #c82333;-->
++<!--        }-->
++
++<!--        .loader {-->
++<!--            display: none;-->
++<!--            position: fixed;-->
++<!--            left: 50%;-->
++<!--            top: 50%;-->
++<!--            transform: translate(-50%, -50%);-->
++<!--            border: 8px solid #f3f3f3;-->
++<!--            border-top: 8px solid #3498db;-->
++<!--            border-radius: 50%;-->
++<!--            width: 50px;-->
++<!--            height: 50px;-->
++<!--            animation: spin 1s linear infinite;-->
++<!--        }-->
++
++<!--        @keyframes spin {-->
++<!--            0% { transform: rotate(0deg); }-->
++<!--            100% { transform: rotate(360deg); }-->
++<!--        }-->
++<!--    </style>-->
++<!--</head>-->
++<!--<body>-->
++<!--<div class="container">-->
++<!--    <h2>Quick Fill the Bills</h2>-->
++<!--    <div id="bill-container">-->
++<!--        <form class="bill-form" id="billForm">-->
++<!--            <div class="form-group">-->
++<!--                <label for="reason">Reason for the bill:</label>-->
++<!--                <input type="text" id="reason" name="reason" required>-->
++<!--                <label for="amount">Bill amount:</label>-->
++<!--                <input type="number" id="amount" name="amount" required>-->
++<!--                <label for="date">Bill date:</label>-->
++<!--                <input type="date" id="date" name="date" required>-->
++<!--                <label for="category">Category:</label>-->
++<!--                <select id="category" name="category" required>-->
++<!--                    <option value="travel">Travel</option>-->
++<!--                    <option value="food">Food</option>-->
++<!--                    <option value="accommodation">Accommodation</option>-->
++<!--                    <option value="supplies">Supplies</option>-->
++<!--                </select>-->
++<!--                <label for="reimbursed">Already reimbursed?</label>-->
++<!--                <input type="checkbox" id="reimbursed" name="reimbursed">-->
++<!--                <label for="submittedBy">Submitted by:</label>-->
++<!--                <select id="submittedBy" name="submittedBy" required>-->
++<!--                    <option value="current-user">Current User</option>-->
++<!--                    <option value="other">Other User</option>-->
++<!--                </select>-->
++<!--                <label for="clientReimbursed">Client Reimbursed:</label>-->
++<!--                <input type="checkbox" id="clientReimbursed" name="clientReimbursed">-->
++<!--                <label for="file">Attachment:</label>-->
++<!--                <input type="file" id="file" name="file" required>-->
++<!--                <label for="reimbursementDate">Reimbursement Date:</label>-->
++<!--                <input type="date" id="reimbursementDate" name="reimbursementDate">-->
++<!--                <label for="comments">Comments:</label>-->
++<!--                <textarea id="comments" name="comments"></textarea>-->
++<!--            </div>-->
++<!--            <div class="button-group">-->
++<!--                <button type="button" id="edit-btn" class="edit-btn">Edit</button>-->
++<!--                <button type="button" id="cancel-btn" class="cancel-btn" style="display:none;">Cancel</button>-->
++<!--                <button type="button" class="save-btn" style="display:none;">Save</button>-->
++<!--                <button type="button" id="add-bill-btn" class="add-bill-btn">+ Add Bill</button>-->
++<!--                <button type="button" id="remove-bill-btn" class="remove-bill-btn">- Remove Bill</button>-->
++<!--            </div>-->
++<!--        </form>-->
++<!--    </div>-->
++<!--    <div id="message"></div>-->
++<!--    <div class="loader" id="loader"></div>-->
++<!--</div>-->
++<!--<script>-->
++<!--    document.getElementById('edit-btn').addEventListener('click', () => {-->
++<!--        toggleEditMode(true);-->
++<!--    });-->
++
++<!--    document.getElementById('cancel-btn').addEventListener('click', () => {-->
++<!--        toggleEditMode(false);-->
++<!--    });-->
++
++<!--    document.querySelector('.save-btn').addEventListener('click', async () => {-->
++<!--        const billId = localStorage.getItem('billId'); // Retrieve billId (if still needed elsewhere)-->
++<!--        await submitForm(document.querySelector('.bill-form'), billId);-->
++<!--    });-->
++
++<!--    document.getElementById('add-bill-btn').addEventListener('click', () => {-->
++<!--        const container = document.getElementById('bill-container');-->
++<!--        const newBillForm = document.querySelector('.bill-form').cloneNode(true);-->
++<!--        resetForm(newBillForm); // Reset form fields before appending-->
++<!--        container.appendChild(newBillForm);-->
++<!--        addEventListenersToForm(newBillForm);-->
++<!--    });-->
++
++<!--    document.getElementById('remove-bill-btn').addEventListener('click', () => {-->
++<!--        const forms = document.querySelectorAll('.bill-form');-->
++<!--        if (forms.length > 1) {-->
++<!--            forms[forms.length - 1].remove();-->
++<!--        }-->
++<!--    });-->
++
++<!--    function addEventListenersToForm(form) {-->
++<!--        const saveBtn = form.querySelector('.save-btn');-->
++
++<!--        saveBtn.addEventListener('click', async () => {-->
++<!--            const billId = localStorage.getItem('billId'); // Retrieve billId (if needed)-->
++<!--            await submitForm(form, billId);-->
++<!--        });-->
++
++<!--        form.addEventListener('submit', async function (event) {-->
++<!--            event.preventDefault();-->
++<!--        });-->
++<!--    }-->
++
++<!--    document.addEventListener('DOMContentLoaded', (event) => {-->
++<!--        // Retrieve user details-->
++<!--        const userDetails = JSON.parse(localStorage.getItem('userDetails'));-->
++<!--        console.log('Retrieved user details:', userDetails); // Added console log-->
++
++<!--        if (userDetails) {-->
++<!--            document.getElementById('reason').value = userDetails.reason;-->
++<!--            document.getElementById('amount').value = userDetails.amount;-->
++<!--            document.getElementById('date').value = userDetails.date;-->
++<!--            document.getElementById('category').value = userDetails.category;-->
++
++<!--            document.getElementById('reimbursed').checked = userDetails.reimbursed;-->
++<!--            document.getElementById('submittedBy').value = userDetails.submittedBy;-->
++<!--            document.getElementById('comments').value = userDetails.comments;-->
++
++
++<!--            localStorage.setItem('billId', userDetails.id);-->
++<!--            console.log('billId successfully set in localStorage:', userDetails.id);-->
++
++<!--        } else {-->
++<!--            alert('No details found! Please enter details on gopal.html.');-->
++<!--        }-->
++
++<!--        // Initialize event listeners for existing forms-->
++<!--        document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));-->
++
++<!--        // Initially, disable form fields for read-only mode-->
++<!--        toggleEditMode(false);-->
++<!--    });-->
++
++<!--    async function submitForm(form, billId) {-->
++<!--        const loader = document.getElementById('loader');-->
++<!--        loader.style.display = 'block'; // Show loader-->
++
++<!--        let formData = new FormData();-->
++<!--        formData.append('bill', new Blob([JSON.stringify({-->
++<!--            reason: form.querySelector('#reason').value,-->
++<!--            amount: form.querySelector('#amount').value,-->
++<!--            date: form.querySelector('#date').value,-->
++<!--            category: form.querySelector('#category').value,-->
++<!--            reimbursed: form.querySelector('#reimbursed').checked,-->
++<!--            submittedBy: form.querySelector('#submittedBy').value,-->
++<!--            comments: form.querySelector('#comments').value,-->
++<!--            clientReimbursed: form.querySelector('#clientReimbursed').checked,-->
++<!--            reimbursementDate: form.querySelector('#reimbursementDate').value-->
++<!--        })], { type: 'application/json' }));-->
++<!--        formData.append('file', form.querySelector('#file').files[0]);-->
++
++<!--        try {-->
++<!--            let response = await fetch(`http://localhost:8080/api/billing/${billId}`, {-->
++<!--                method: 'POST',-->
++<!--                body: formData-->
++<!--            });-->
++
++<!--            if (response.ok) {-->
++<!--                document.getElementById('message').innerText = 'Bill uploaded successfully!';-->
++<!--                toggleEditMode(false); // Switch back to read-only mode-->
++<!--            } else {-->
++<!--                document.getElementById('message').innerText = 'Error uploading bill.';-->
++<!--            }-->
++<!--        } catch (error) {-->
++<!--            document.getElementById('message').innerText = 'Error uploading bill.';-->
++<!--        } finally {-->
++<!--            loader.style.display = 'none'; // Hide loader-->
++<!--        }-->
++<!--    }-->
++
++<!--    function toggleEditMode(editMode) {-->
++<!--        const form = document.querySelector('.bill-form');-->
++<!--        form.querySelectorAll('input, select, textarea').forEach(input => {-->
++<!--            input.disabled = !editMode;-->
++<!--        });-->
++<!--        document.getElementById('edit-btn').style.display = editMode ? 'none' : 'inline-block';-->
++<!--        document.getElementById('cancel-btn').style.display = editMode ? 'inline-block' : 'none';-->
++<!--        document.querySelector('.save-btn').style.display = editMode ? 'inline-block' : 'none';-->
++<!--    }-->
++
++<!--    function resetForm(form) {-->
++<!--        form.querySelectorAll('input, select, textarea').forEach(input => {-->
++<!--            input.value = '';-->
++<!--            if (input.type === 'checkbox') {-->
++<!--                input.checked = false;-->
++<!--            }-->
++<!--        });-->
++<!--    }-->
++<!--</script>-->
++
++<!--</body>-->
++<!--</html>-->
++
++
++
++
++<!--<!DOCTYPE html>-->
++<!--<html lang="en">-->
++<!--<head>-->
++<!--    <meta charset="UTF-8">-->
++<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
++<!--    <title>Quick Fill the Bills</title>-->
++<!--    <style>-->
++<!--        /* Existing styles */-->
++<!--        body {-->
++<!--            font-family: Arial, sans-serif;-->
++<!--            background-color: #f7f7f7;-->
++<!--            display: flex;-->
++<!--            justify-content: center;-->
++<!--            align-items: center;-->
++<!--            height: 100vh;-->
++<!--            margin: 0;-->
++<!--        }-->
++
++<!--        .container {-->
++<!--            background-color: #fff;-->
++<!--            padding: 20px;-->
++<!--            border-radius: 8px;-->
++<!--            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);-->
++<!--            width: 80%;-->
++<!--            max-width: 900px;-->
++<!--        }-->
++
++<!--        h2 {-->
++<!--            margin-bottom: 10px;-->
++<!--            text-align: center;-->
++<!--            font-size: 1.2rem; /* Reduced font size */-->
++<!--        }-->
++
++<!--        .form-group {-->
++<!--            display: grid;-->
++<!--            grid-template-columns: 1fr 1fr; /* Two equal columns */-->
++<!--            gap: 10px; /* Gap between the grid items */-->
++<!--            margin-bottom: 10px;-->
++<!--        }-->
++
++<!--        .form-group label {-->
++<!--            display: block;-->
++<!--            font-weight: bold;-->
++<!--            font-size: 0.85rem; /* Reduced font size */-->
++<!--            margin-bottom: 5px;-->
++<!--        }-->
++
++<!--        .form-group input,-->
++<!--        .form-group select,-->
++<!--        .form-group textarea {-->
++<!--            width: 100%;-->
++<!--            padding: 4px;-->
++<!--            border: 1px solid #ccc;-->
++<!--            border-radius: 4px;-->
++<!--            box-sizing: border-box;-->
++<!--            font-size: 0.85rem; /* Reduced font size */-->
++<!--        }-->
++
++<!--        .form-group input[type="checkbox"] {-->
++<!--            width: auto;-->
++<!--            margin-right: 5px;-->
++<!--        }-->
++
++<!--        .form-group .full-width {-->
++<!--            grid-column: 1 / -1; /* Span across all columns */-->
++<!--        }-->
++
++<!--        .button-group {-->
++<!--            display: flex;-->
++<!--            justify-content: center;-->
++<!--            margin-top: 10px;-->
++<!--        }-->
++
++<!--        .button-group button {-->
++<!--            padding: 6px 12px;-->
++<!--            background-color: #007BFF;-->
++<!--            color: #fff;-->
++<!--            border: none;-->
++<!--            border-radius: 4px;-->
++<!--            cursor: pointer;-->
++<!--            margin: 6px;-->
++<!--            width: 100px; /* Adjusted button width */-->
++<!--            text-align: center;-->
++<!--            transition: background-color 0.3s, box-shadow 0.3s;-->
++<!--            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
++<!--        }-->
++
++<!--        .button-group button:hover {-->
++<!--            background-color: #0056b3;-->
++<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);-->
++<!--        }-->
++
++<!--        .save-btn {-->
++<!--            background-color: #28a745; /* Green color */-->
++<!--        }-->
++
++<!--        .save-btn:hover {-->
++<!--            background-color: #218838;-->
++<!--        }-->
++
++<!--        .edit-btn {-->
++<!--            background-color: #007BFF; /* Blue color */-->
++<!--        }-->
++
++<!--        .edit-btn:hover {-->
++<!--            background-color: #0056b3;-->
++<!--        }-->
++
++<!--        .cancel-btn {-->
++<!--            background-color: #6c757d; /* Grey color */-->
++<!--        }-->
++
++<!--        .cancel-btn:hover {-->
++<!--            background-color: #5a6268;-->
++<!--        }-->
++
++<!--        .add-bill-btn {-->
++<!--            background-color: #17a2b8; /* Teal color */-->
++<!--        }-->
++
++<!--        .add-bill-btn:hover {-->
++<!--            background-color: #138496;-->
++<!--        }-->
++
++<!--        .remove-bill-btn {-->
++<!--            background-color: #dc3545; /* Red color */-->
++<!--        }-->
++
++<!--        .remove-bill-btn:hover {-->
++<!--            background-color: #c82333;-->
++<!--        }-->
++
++<!--        .loader {-->
++<!--            display: none;-->
++<!--            position: fixed;-->
++<!--            left: 50%;-->
++<!--            top: 50%;-->
++<!--            transform: translate(-50%, -50%);-->
++<!--            border: 8px solid #f3f3f3;-->
++<!--            border-top: 8px solid #3498db;-->
++<!--            border-radius: 50%;-->
++<!--            width: 50px;-->
++<!--            height: 50px;-->
++<!--            animation: spin 1s linear infinite;-->
++<!--        }-->
++
++<!--        @keyframes spin {-->
++<!--            0% { transform: rotate(0deg); }-->
++<!--            100% { transform: rotate(360deg); }-->
++<!--        }-->
++<!--    </style>-->
++<!--</head>-->
++<!--<body>-->
++<!--<div class="container">-->
++<!--    <h2>Quick Fill the Bills</h2>-->
++<!--    <div id="bill-container">-->
++<!--        <form class="bill-form" id="billForm">-->
++<!--            <div class="form-group">-->
++<!--                <label for="reason">Reason for the bill:</label>-->
++<!--                <input type="text" id="reason" name="reason" required>-->
++<!--                <label for="amount">Bill amount:</label>-->
++<!--                <input type="number" id="amount" name="amount" required>-->
++<!--                <label for="date">Bill date:</label>-->
++<!--                <input type="date" id="date" name="date" required>-->
++<!--                <label for="category">Category:</label>-->
++<!--                <select id="category" name="category" required>-->
++<!--                    <option value="travel">Travel</option>-->
++<!--                    <option value="food">Food</option>-->
++<!--                    <option value="accommodation">Accommodation</option>-->
++<!--                    <option value="supplies">Supplies</option>-->
++<!--                </select>-->
++<!--                <label for="reimbursed">Already reimbursed?</label>-->
++<!--                <input type="checkbox" id="reimbursed" name="reimbursed">-->
++<!--                <label for="submittedBy">Submitted by:</label>-->
++<!--                <select id="submittedBy" name="submittedBy" required>-->
++<!--                    <option value="current-user">Current User</option>-->
++<!--                    <option value="other">Other User</option>-->
++<!--                </select>-->
++<!--                <label for="clientReimbursed">Client Reimbursed:</label>-->
++<!--                <input type="checkbox" id="clientReimbursed" name="clientReimbursed">-->
++<!--                <label for="file">Attachment:</label>-->
++<!--                <input type="file" id="file" name="file" required>-->
++<!--                <label for="reimbursementDate">Reimbursement Date:</label>-->
++<!--                <input type="date" id="reimbursementDate" name="reimbursementDate">-->
++<!--                <label for="comments">Comments:</label>-->
++<!--                <textarea id="comments" name="comments"></textarea>-->
++<!--            </div>-->
++<!--            <div class="button-group">-->
++<!--                <button type="button" id="edit-btn" class="edit-btn">Edit</button>-->
++<!--                <button type="button" id="cancel-btn" class="cancel-btn" style="display:none;">Cancel</button>-->
++<!--                <button type="button" class="save-btn" style="display:none;">Save</button>-->
++<!--                <button type="button" id="add-bill-btn" class="add-bill-btn">+ Add Bill</button>-->
++<!--                <button type="button" id="remove-bill-btn" class="remove-bill-btn">- Remove Bill</button>-->
++<!--            </div>-->
++<!--        </form>-->
++<!--    </div>-->
++<!--    <div id="message"></div>-->
++<!--    <div class="loader" id="loader"></div>-->
++<!--</div>-->
++<!--<script>-->
++<!--    document.getElementById('edit-btn').addEventListener('click', () => {-->
++<!--        toggleEditMode(true);-->
++<!--    });-->
++
++<!--    document.getElementById('cancel-btn').addEventListener('click', () => {-->
++<!--        toggleEditMode(false);-->
++<!--    });-->
++
++<!--    document.querySelector('.save-btn').addEventListener('click', async () => {-->
++<!--        const billId = localStorage.getItem('billId'); // Retrieve billId (if still needed elsewhere)-->
++<!--        await submitForm(document.querySelector('.bill-form'), billId);-->
++<!--    });-->
++
++<!--    document.getElementById('add-bill-btn').addEventListener('click', () => {-->
++<!--        const container = document.getElementById('bill-container');-->
++<!--        const newBillForm = document.querySelector('.bill-form').cloneNode(true);-->
++<!--        resetForm(newBillForm); // Reset form fields before appending-->
++<!--        container.appendChild(newBillForm);-->
++<!--        addEventListenersToForm(newBillForm);-->
++<!--    });-->
++
++<!--    document.getElementById('remove-bill-btn').addEventListener('click', () => {-->
++<!--        const forms = document.querySelectorAll('.bill-form');-->
++<!--        if (forms.length > 1) {-->
++<!--            forms[forms.length - 1].remove();-->
++<!--        }-->
++<!--    });-->
++
++<!--    function addEventListenersToForm(form) {-->
++<!--        const saveBtn = form.querySelector('.save-btn');-->
++
++<!--        saveBtn.addEventListener('click', async () => {-->
++<!--            const billId = localStorage.getItem('billId'); // Retrieve billId (if needed)-->
++<!--            await submitForm(form, billId);-->
++<!--        });-->
++
++<!--        form.addEventListener('submit', async function (event) {-->
++<!--            event.preventDefault();-->
++<!--        });-->
++<!--    }-->
++
++<!--    function resetForm(form) {-->
++<!--        form.reset();-->
++<!--        form.querySelector('.save-btn').style.display = 'none';-->
++<!--        form.querySelector('#edit-btn').style.display = 'inline-block';-->
++<!--        form.querySelector('#cancel-btn').style.display = 'none';-->
++<!--    }-->
++
++<!--    function toggleEditMode(enable) {-->
++<!--        const form = document.querySelector('.bill-form');-->
++<!--        const saveBtn = form.querySelector('.save-btn');-->
++<!--        const editBtn = form.querySelector('#edit-btn');-->
++<!--        const cancelBtn = form.querySelector('#cancel-btn');-->
++
++<!--        saveBtn.style.display = enable ? 'inline-block' : 'none';-->
++<!--        editBtn.style.display = enable ? 'none' : 'inline-block';-->
++<!--        cancelBtn.style.display = enable ? 'inline-block' : 'none';-->
++
++<!--        form.querySelectorAll('input, select, textarea').forEach(input => {-->
++<!--            input.disabled = !enable;-->
++<!--        });-->
++<!--    }-->
++
++<!--    async function fetchBillDetails(billId) {-->
++<!--        const url = `http://localhost:8080/api/billing/getBillById?id=${billId}`;-->
++<!--        try {-->
++<!--            const response = await fetch(url);-->
++<!--            if (!response.ok) {-->
++<!--                throw new Error('Failed to fetch bill details');-->
++<!--            }-->
++<!--            const billData = await response.json();-->
++<!--            populateForm(billData);-->
++<!--        } catch (error) {-->
++<!--            console.error('Error fetching bill details:', error);-->
++<!--        }-->
++<!--    }-->
++
++<!--    function populateForm(billData) {-->
++<!--        const form = document.querySelector('.bill-form');-->
++<!--        form.querySelector('#reason').value = billData.reason;-->
++<!--        form.querySelector('#amount').value = billData.amount;-->
++<!--        form.querySelector('#date').value = billData.date;-->
++<!--        form.querySelector('#category').value = billData.category;-->
++<!--        form.querySelector('#reimbursed').checked = billData.reimbursed;-->
++<!--        form.querySelector('#submittedBy').value = billData.submittedBy;-->
++<!--        form.querySelector('#clientReimbursed').checked = billData.clientReimbursed;-->
++<!--        form.querySelector('#reimbursementDate').value = billData.reimbursementDate;-->
++<!--        form.querySelector('#comments').value = billData.comments;-->
++<!--    }-->
++
++<!--    async function submitForm(form, billId) {-->
++<!--        const formData = new FormData(form);-->
++<!--        const url = billId ? `http://localhost:8080/api/billing/updateBill/${billId}` : 'http://localhost:8080/addBill';-->
++
++<!--        try {-->
++<!--            const response = await fetch(url, {-->
++<!--                method: billId ? 'PUT' : 'POST',-->
++<!--                body: formData,-->
++<!--            });-->
++<!--            if (!response.ok) {-->
++<!--                throw new Error('Failed to submit form');-->
++<!--            }-->
++<!--            const message = billId ? 'Bill updated successfully!' : 'Bill added successfully!';-->
++<!--            displayMessage(message);-->
++<!--            toggleEditMode(false);-->
++<!--        } catch (error) {-->
++<!--            console.error('Error submitting form:', error);-->
++<!--        }-->
++<!--    }-->
++
++<!--    function displayMessage(message) {-->
++<!--        const messageDiv = document.getElementById('message');-->
++<!--        messageDiv.textContent = message;-->
++<!--        setTimeout(() => {-->
++<!--            messageDiv.textContent = '';-->
++<!--        }, 3000);-->
++<!--    }-->
++
++<!--    document.addEventListener('DOMContentLoaded', () => {-->
++<!--        const urlParams = new URLSearchParams(window.location.search);-->
++<!--        const billId = urlParams.get('id');-->
++<!--        if (billId) {-->
++<!--            localStorage.setItem('billId', billId);-->
++<!--            fetchBillDetails(billId);-->
++<!--        }-->
++<!--    });-->
++<!--</script>-->
++<!--</body>-->
++<!--</html>-->
++
++
++
++
++
++
++
++
++
++
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+@@ -154,7 +827,7 @@
+ <div class="container">
+     <h2>Quick Fill the Bills</h2>
+     <div id="bill-container">
+-        <form class="bill-form" id="billForm">
++        <form class="bill-form" id="billForm" enctype="multipart/form-data">
+             <div class="form-group">
+                 <label for="reason">Reason for the bill:</label>
+                 <input type="text" id="reason" name="reason" required>
+@@ -179,7 +852,7 @@
+                 <label for="clientReimbursed">Client Reimbursed:</label>
+                 <input type="checkbox" id="clientReimbursed" name="clientReimbursed">
+                 <label for="file">Attachment:</label>
+-                <input type="file" id="file" name="file" required>
++                <input type="file" id="file" name="file">
+                 <label for="reimbursementDate">Reimbursement Date:</label>
+                 <input type="date" id="reimbursementDate" name="reimbursementDate">
+                 <label for="comments">Comments:</label>
+@@ -239,92 +912,105 @@
+         });
+     }
+ 
+-    document.addEventListener('DOMContentLoaded', (event) => {
+-        // Retrieve user details
+-        const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+-        console.log('Retrieved user details:', userDetails); // Added console log
+-
+-        if (userDetails) {
+-            document.getElementById('reason').value = userDetails.reason;
+-            document.getElementById('amount').value = userDetails.amount;
+-            document.getElementById('date').value = userDetails.date;
+-            document.getElementById('category').value = userDetails.category;
++    function resetForm(form) {
++        form.reset();
++        form.querySelector('.save-btn').style.display = 'none';
++        form.querySelector('#edit-btn').style.display = 'inline-block';
++        form.querySelector('#cancel-btn').style.display = 'none';
++    }
+ 
+-            document.getElementById('reimbursed').checked = userDetails.reimbursed;
+-            document.getElementById('submittedBy').value = userDetails.submittedBy;
+-            document.getElementById('comments').value = userDetails.comments;
++    function toggleEditMode(enable) {
++        const form = document.querySelector('.bill-form');
++        const saveBtn = form.querySelector('.save-btn');
++        const editBtn = form.querySelector('#edit-btn');
++        const cancelBtn = form.querySelector('#cancel-btn');
+ 
++        saveBtn.style.display = enable ? 'inline-block' : 'none';
++        editBtn.style.display = enable ? 'none' : 'inline-block';
++        cancelBtn.style.display = enable ? 'inline-block' : 'none';
+ 
+-            localStorage.setItem('billId', userDetails.id);
+-            console.log('billId successfully set in localStorage:', userDetails.id);
++        form.querySelectorAll('input, select, textarea').forEach(input => {
++            input.disabled = !enable;
++        });
++    }
+ 
+-        } else {
+-            alert('No details found! Please enter details on gopal.html.');
++    async function fetchBillDetails(billId) {
++        const url = `http://localhost:8080/api/billing/getBillById?id=${billId}`;
++        try {
++            const response = await fetch(url);
++            if (!response.ok) {
++                throw new Error('Failed to fetch bill details');
++            }
++            const billData = await response.json();
++            populateForm(billData);
++        } catch (error) {
++            console.error('Error fetching bill details:', error);
+         }
++    }
+ 
+-        // Initialize event listeners for existing forms
+-        document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));
++    function populateForm(billData) {
++        const form = document.querySelector('.bill-form');
++        form.querySelector('#reason').value = billData.reason;
++        form.querySelector('#amount').value = billData.amount;
++        form.querySelector('#date').value = billData.date;
++        form.querySelector('#category').value = billData.category;
++        form.querySelector('#reimbursed').checked = billData.reimbursed;
++        form.querySelector('#submittedBy').value = billData.submittedBy;
++        form.querySelector('#clientReimbursed').checked = billData.clientReimbursed;
++        form.querySelector('#reimbursementDate').value = billData.reimbursementDate;
++        form.querySelector('#comments').value = billData.comments;
+ 
+-        // Initially, disable form fields for read-only mode
+-        toggleEditMode(false);
+-    });
++        // Set the file input value if necessary
++        // This line assumes that billData.file is a URL or file name for display purposes.
++        // Adjust if you need to handle file preview or other specific logic.
++    }
+ 
+     async function submitForm(form, billId) {
+-        const loader = document.getElementById('loader');
+-        loader.style.display = 'block'; // Show loader
++        const formData = new FormData(form);
+ 
+-        let formData = new FormData();
+-        formData.append('bill', new Blob([JSON.stringify({
+-            reason: form.querySelector('#reason').value,
+-            amount: form.querySelector('#amount').value,
+-            date: form.querySelector('#date').value,
+-            category: form.querySelector('#category').value,
+-            reimbursed: form.querySelector('#reimbursed').checked,
+-            submittedBy: form.querySelector('#submittedBy').value,
+-            comments: form.querySelector('#comments').value,
+-            clientReimbursed: form.querySelector('#clientReimbursed').checked,
+-            reimbursementDate: form.querySelector('#reimbursementDate').value
+-        })], { type: 'application/json' }));
+-        formData.append('file', form.querySelector('#file').files[0]);
++        // Append the file input if it exists
++        const fileInput = form.querySelector('input[type="file"]');
++        if (fileInput.files.length > 0) {
++            formData.append('file', fileInput.files[0]);
++        }
++
++        const url = billId ? `http://localhost:8080/api/billing/updateBill/${billId}` : 'http://localhost:8080/addBill';
+ 
+         try {
+-            let response = await fetch(`http://localhost:8080/api/billing/${billId}`, {
++            const response = await fetch(url, {
+                 method: 'POST',
+-                body: formData
++                body: formData,
+             });
+ 
+-            if (response.ok) {
+-                document.getElementById('message').innerText = 'Bill uploaded successfully!';
+-                toggleEditMode(false); // Switch back to read-only mode
+-            } else {
+-                document.getElementById('message').innerText = 'Error uploading bill.';
++            if (!response.ok) {
++                throw new Error('Failed to submit form');
+             }
++
++            const message = billId ? 'Bill updated successfully!' : 'Bill added successfully!';
++            displayMessage(message);
++            toggleEditMode(false);
+         } catch (error) {
+-            document.getElementById('message').innerText = 'Error uploading bill.';
+-        } finally {
+-            loader.style.display = 'none'; // Hide loader
++            console.error('Error submitting form:', error);
++            displayMessage('Error submitting form. Please try again.');
+         }
+     }
+ 
+-    function toggleEditMode(editMode) {
+-        const form = document.querySelector('.bill-form');
+-        form.querySelectorAll('input, select, textarea').forEach(input => {
+-            input.disabled = !editMode;
+-        });
+-        document.getElementById('edit-btn').style.display = editMode ? 'none' : 'inline-block';
+-        document.getElementById('cancel-btn').style.display = editMode ? 'inline-block' : 'none';
+-        document.querySelector('.save-btn').style.display = editMode ? 'inline-block' : 'none';
++    function displayMessage(message) {
++        const messageDiv = document.getElementById('message');
++        messageDiv.textContent = message;
++        setTimeout(() => {
++            messageDiv.textContent = '';
++        }, 3000);
+     }
+ 
+-    function resetForm(form) {
+-        form.querySelectorAll('input, select, textarea').forEach(input => {
+-            input.value = '';
+-            if (input.type === 'checkbox') {
+-                input.checked = false;
+-            }
+-        });
+-    }
++    document.addEventListener('DOMContentLoaded', () => {
++        const urlParams = new URLSearchParams(window.location.search);
++        const billId = urlParams.get('id');
++        if (billId) {
++            localStorage.setItem('billId', billId);
++            fetchBillDetails(billId);
++        }
++    });
+ </script>
+-
+ </body>
+ </html>

@@ -129,17 +129,17 @@
         function initializeNavigation() {
             clientsButton.addEventListener('click', function() {
                 contentDiv.innerHTML = '<p>Loading Clients...</p>'; // Placeholder for loading content
-                loadContent('http://localhost:8080/api/clients', displayClients);
+                loadContent('http://43.205.154.85:8080/api/clients', displayClients);
             });
 
             pendingInvoicesButton.addEventListener('click', function() {
                 contentDiv.innerHTML = '<p>Loading Pending Invoices...</p>'; // Placeholder for loading content
-                loadContent('http://localhost:8080/api/invoices/pending', displayInvoices);
+                loadContent('http://43.205.154.85:8080/api/invoices/pending', displayInvoices);
             });
 
             allInvoicesButton.addEventListener('click', function() {
                 contentDiv.innerHTML = '<p>Loading All Invoices...</p>'; // Placeholder for loading content
-                loadContent('http://localhost:8080/api/invoices/all', displayInvoices);
+                loadContent('http://43.205.154.85:8080/api/invoices/all', displayInvoices);
             });
         }
 

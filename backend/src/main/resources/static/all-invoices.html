@@ -98,7 +98,7 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        fetch('http://localhost:8080/api/invoices/all')
+        fetch('http://43.205.154.85:8080/api/invoices/all')
             .then(response => response.json())
             .then(invoices => {
                 const invoicesTable = document.getElementById('invoicesTable').getElementsByTagName('tbody')[0];

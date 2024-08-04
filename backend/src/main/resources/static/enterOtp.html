@@ -104,14 +104,14 @@
           repeatPassword: document.querySelector('input[name="repeatPassword"]').value
       };
 
-      const verifyOtpUrl = "http://13.201.90.199:8080/forgotPassword/verifyOtp/" + formData.otp + "/" + email;
+      const verifyOtpUrl = "http://43.205.154.85:8080/forgotPassword/verifyOtp/" + formData.otp + "/" + email;
 
       fetch(verifyOtpUrl, {
           method: "POST"
       })
       .then(response => {
           if (response.ok) {
-              const changePasswordUrl = "http://13.201.90.199:8080/forgotPassword/changePassword/" + email;
+              const changePasswordUrl = "http://43.205.154.85:8080/forgotPassword/changePassword/" + email;
               return fetch(changePasswordUrl, {
                   method: "POST",
                   headers: {

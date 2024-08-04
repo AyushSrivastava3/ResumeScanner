@@ -65,7 +65,7 @@
 <!--        const fileId = getQueryParam('fileId');-->
 
 <!--        function fetchProfileInformation(fileId) {-->
-<!--            fetch(`http://13.201.90.199:8080/getProfileInformation?fileId=${fileId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getProfileInformation?fileId=${fileId}`)-->
 <!--                .then(response => response.json())-->
 <!--                .then(data => {-->
 <!--                    profileDetailsDiv.innerHTML = `-->
@@ -191,7 +191,7 @@
         const fileId = getQueryParam('fileId');
 
         function fetchProfileInformation(fileId) {
-            fetch(`http://13.201.90.199:8080/getProfileInformation?fileId=${fileId}`, {
+            fetch(`http://43.205.154.85:8080/getProfileInformation?fileId=${fileId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

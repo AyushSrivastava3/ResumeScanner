@@ -295,7 +295,7 @@
 <!--    -->
 <!--        function fetchProfile(profileId) {-->
 <!--            showLoader();-->
-<!--            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getProfile?id=${profileId}`)-->
 <!--                .then(response => response.json())-->
 <!--                .then(data => {-->
 <!--                    document.getElementById('jdId').value = data.jdId || ''; // Set jdId-->
@@ -372,7 +372,7 @@
 <!--            }-->
 <!--    -->
 <!--            showLoader();-->
-<!--            fetch('http://13.201.90.199:8080/addProfile', {-->
+<!--            fetch('http://43.205.154.85:8080/addProfile', {-->
 <!--                method: 'POST',-->
 <!--                body: formData-->
 <!--            })-->
@@ -773,7 +773,7 @@
 <!--    -->
 <!--        function fetchProfile(profileId) {-->
 <!--            showLoader();-->
-<!--            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`, {-->
+<!--            fetch(`http://43.205.154.85:8080/getProfile?id=${profileId}`, {-->
 <!--                -->
 <!--                headers: {-->
 <!--                    "Authorization": `Bearer ${token}`-->
@@ -869,7 +869,7 @@
 <!--            }-->
 <!--    -->
 <!--            showLoader();-->
-<!--            fetch('http://13.201.90.199:8080/addProfile', {-->
+<!--            fetch('http://43.205.154.85:8080/addProfile', {-->
 <!--                method: 'POST',-->
 <!--                headers: {-->
 <!--                    "Authorization": `Bearer ${token}`-->
@@ -1273,7 +1273,7 @@ input[type="checkbox"] {
     
         function fetchProfile(profileId) {
             showLoader();
-            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`, {
+            fetch(`http://43.205.154.85:8080/getProfile?id=${profileId}`, {
                 
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -1375,7 +1375,7 @@ input[type="checkbox"] {
             formData.append('saveSections', saveSections);
     
             showLoader();
-            fetch('http://13.201.90.199:8080/addProfile', {
+            fetch('http://43.205.154.85:8080/addProfile', {
                 method: 'POST',
                 headers: {
                     "Authorization": `Bearer ${token}`

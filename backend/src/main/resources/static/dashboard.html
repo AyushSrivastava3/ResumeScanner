@@ -92,14 +92,14 @@
         const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
 
         togglePendingButton.addEventListener('click', function() {
-            fetch('http://13.201.90.199:8080/api/invoices/pending')
+            fetch('http://43.205.154.85:8080/api/invoices/pending')
                 .then(response => response.json())
                 .then(invoices => populateTable(invoices, false))
                 .catch(error => console.error('Error fetching pending invoices:', error));
         });
 
         toggleAllButton.addEventListener('click', function() {
-            fetch('http://13.201.90.199:8080/api/invoices/all')
+            fetch('http://43.205.154.85:8080/api/invoices/all')
                 .then(response => response.json())
                 .then(invoices => populateTable(invoices, false))
                 .catch(error => console.error('Error fetching all invoices:', error));
@@ -109,7 +109,7 @@
             const year = document.getElementById('year').value;
             const month = document.getElementById('month').value;
 
-            let url = 'http://13.201.90.199:8080/api/invoices/';
+            let url = 'http://43.205.154.85:8080/api/invoices/';
             if (year && month) {
                 url += `byMonth?year=${year}&month=${month}`;
             } else if (year) {

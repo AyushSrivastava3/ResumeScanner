@@ -107,7 +107,7 @@
 <!--});-->
 
 <!--function populateJdFilter() {-->
-<!--    fetch('http://13.201.90.199:8080/jd/getIds')-->
+<!--    fetch('http://43.205.154.85:8080/jd/getIds')-->
 <!--        .then(response => response.json())-->
 <!--        .then(data => {-->
 <!--            data.forEach(item => {-->
@@ -121,7 +121,7 @@
 <!--}-->
 
 <!--function fetchAllProfiles() {-->
-<!--    fetch('http://13.201.90.199:8080/getAllProfile')-->
+<!--    fetch('http://43.205.154.85:8080/getAllProfile')-->
 <!--        .then(response => response.json())-->
 <!--        .then(data => {-->
 <!--            displayProfiles(data);-->
@@ -130,7 +130,7 @@
 <!--}-->
 
 <!--function fetchProfilesByJdId(jdId) {-->
-<!--    fetch(`http://13.201.90.199:8080/jd/${jdId}`)-->
+<!--    fetch(`http://43.205.154.85:8080/jd/${jdId}`)-->
 <!--        .then(response => response.json())-->
 <!--        .then(data => {-->
 <!--            displayProfiles(data);-->
@@ -311,7 +311,7 @@ jdFilter.addEventListener('change', function() {
 });
 
 function populateJdFilter() {
-    fetch('http://13.201.90.199:8080/jd/getIds', {
+    fetch('http://43.205.154.85:8080/jd/getIds', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -329,7 +329,7 @@ function populateJdFilter() {
 }
 
 function fetchAllProfiles() {
-    fetch('http://13.201.90.199:8080/getAllProfile', {
+    fetch('http://43.205.154.85:8080/getAllProfile', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -342,7 +342,7 @@ function fetchAllProfiles() {
 }
 
 function fetchProfilesByJdId(jdId) {
-    fetch(`http://13.201.90.199:8080/jd/${jdId}`, {
+    fetch(`http://43.205.154.85:8080/jd/${jdId}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }

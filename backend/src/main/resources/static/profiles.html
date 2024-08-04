@@ -126,7 +126,7 @@
 <!--&lt;!&ndash;const itemsPerPage = 10;&ndash;&gt;-->
 
 <!--&lt;!&ndash;function fetchProfiles(page) {&ndash;&gt;-->
-<!--&lt;!&ndash;    fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)&ndash;&gt;-->
+<!--&lt;!&ndash;    fetch(`http://43.205.154.85:8080/getReleventProfiles?jdId=${jdId}`)&ndash;&gt;-->
 <!--&lt;!&ndash;        .then(response => response.json())&ndash;&gt;-->
 <!--&lt;!&ndash;        .then(data => {&ndash;&gt;-->
 <!--&lt;!&ndash;            if (data.length === 0) {&ndash;&gt;-->
@@ -198,7 +198,7 @@
 <!--&lt;!&ndash;}&ndash;&gt;-->
 
 <!--&lt;!&ndash;function viewProfile(profileId) {&ndash;&gt;-->
-<!--&lt;!&ndash;    fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)&ndash;&gt;-->
+<!--&lt;!&ndash;    fetch(`http://43.205.154.85:8080/viewResume?resumeId=${profileId}`)&ndash;&gt;-->
 <!--&lt;!&ndash;        .then(response => {&ndash;&gt;-->
 <!--&lt;!&ndash;            if (!response.ok) {&ndash;&gt;-->
 <!--&lt;!&ndash;                throw new Error('Network response was not ok ' + response.statusText);&ndash;&gt;-->
@@ -216,7 +216,7 @@
 <!--&lt;!&ndash;}&ndash;&gt;-->
 
 <!--&lt;!&ndash;function downloadProfile(profileId, fileName) {&ndash;&gt;-->
-<!--&lt;!&ndash;    fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)&ndash;&gt;-->
+<!--&lt;!&ndash;    fetch(`http://43.205.154.85:8080/getResume?resumeId=${profileId}`)&ndash;&gt;-->
 <!--&lt;!&ndash;        .then(response => {&ndash;&gt;-->
 <!--&lt;!&ndash;            if (!response.ok) {&ndash;&gt;-->
 <!--&lt;!&ndash;                throw new Error('Network response was not ok ' + response.statusText);&ndash;&gt;-->
@@ -447,7 +447,7 @@
 <!--        });-->
 
 <!--        function fetchProfiles(page) {-->
-<!--            fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getReleventProfiles?jdId=${jdId}`)-->
 <!--                .then(response => response.json())-->
 <!--                .then(data => {-->
 <!--                    profilesData = data;-->
@@ -581,7 +581,7 @@
 <!--        }-->
 
 <!--        function viewProfile(profileId) {-->
-<!--            fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/viewResume?resumeId=${profileId}`)-->
 <!--                .then(response => {-->
 <!--                    if (!response.ok) {-->
 <!--                        throw new Error('Network response was not ok ' + response.statusText);-->
@@ -599,7 +599,7 @@
 <!--        }-->
 
 <!--        function downloadProfile(profileId, fileName) {-->
-<!--            fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getResume?resumeId=${profileId}`)-->
 <!--                .then(response => {-->
 <!--                    if (!response.ok) {-->
 <!--                        throw new Error('Network response was not ok ' + response.statusText);-->
@@ -835,7 +835,7 @@
         });
 
         function fetchProfiles(page) {
-            fetch(`http://13.201.90.199:8080/getReleventProfiles?jdId=${jdId}`)
+            fetch(`http://43.205.154.85:8080/getReleventProfiles?jdId=${jdId}`)
                 .then(response => response.json())
                 .then(data => {
                     profilesData = data;
@@ -971,7 +971,7 @@
         }
 
         function viewProfile(profileId) {
-            fetch(`http://13.201.90.199:8080/viewResume?resumeId=${profileId}`)
+            fetch(`http://43.205.154.85:8080/viewResume?resumeId=${profileId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
@@ -989,7 +989,7 @@
         }
 
         function downloadProfile(profileId, fileName) {
-            fetch(`http://13.201.90.199:8080/getResume?resumeId=${profileId}`)
+            fetch(`http://43.205.154.85:8080/getResume?resumeId=${profileId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);

@@ -15,6 +15,7 @@ public class Skill {
     private String skill;
     private int experience;
     private List<String> subSkills;
+    private String createdBy;
 
     public String getSkill() {
         return skill;

@@ -117,6 +117,7 @@ public class Job_description {
     private String location;
     private String experienceLevel;
     private LocalDateTime createdDate;
+    private String createdBy;
 
     private List<Skill> mandatorySkills;
     private List<Skill> optionalSkills;

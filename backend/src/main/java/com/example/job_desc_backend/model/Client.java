@@ -1,8 +1,15 @@
 package com.example.job_desc_backend.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Document(collection = "clients")
 public class Client {
     @Id
@@ -106,6 +113,7 @@ public class Client {
     private String location;
     private String timeline;
     private String miscellaneous;
+
 
 
 }

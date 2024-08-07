@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Fill the Bills</title>
     <style>
+        /* Existing styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
@@ -17,49 +18,56 @@
 
         .container {
             background-color: #fff;
-            padding: 10px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-            width: 40%;
-            max-width: 500px;
+            width: 80%;
+            max-width: 900px;
         }
 
         h2 {
             margin-bottom: 10px;
             text-align: center;
-            font-size: 1.4rem;
+            font-size: 1.2rem; /* Reduced font size */
         }
 
         .form-group {
-            margin-bottom: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 10px; /* Gap between the grid items */
+            margin-bottom: 10px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 2px;
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.85rem; /* Reduced font size */
+            margin-bottom: 5px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
-            width: calc(100% - 14px); /* Adjust width for padding */
-            padding: 4px 6px;
+            width: 100%;
+            padding: 4px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            font-size: 0.85rem;
+            font-size: 0.85rem; /* Reduced font size */
         }
 
-        .form-group textarea {
-            height: 40px;
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .form-group .full-width {
+            grid-column: 1 / -1; /* Span across all columns */
         }
 
         .button-group {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
             margin-top: 10px;
         }
 
@@ -71,8 +79,7 @@
             border-radius: 4px;
             cursor: pointer;
             margin: 6px;
-            width: 100%;
-            max-width: 180px;
+            width: 100px; /* Adjusted button width */
             text-align: center;
             transition: background-color 0.3s, box-shadow 0.3s;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -83,34 +90,63 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        #message {
-            margin-top: 10px;
-            text-align: center;
-            font-weight: bold;
+        .save-btn {
+            background-color: #28a745; /* Green color */
         }
 
-        .save-edit-btn {
-            display: inline-block;
-            margin-top: 8px;
-            width: 100%;
-            padding: 8px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        .save-btn:hover {
+            background-color: #218838;
         }
 
-        .save-edit-btn:hover {
+        .edit-btn {
+            background-color: #007BFF; /* Blue color */
+        }
+
+        .edit-btn:hover {
             background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .additional-fields {
+        .cancel-btn {
+            background-color: #6c757d; /* Grey color */
+        }
+
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .add-bill-btn {
+            background-color: #17a2b8; /* Teal color */
+        }
+
+        .add-bill-btn:hover {
+            background-color: #138496;
+        }
+
+        .remove-bill-btn {
+            background-color: #dc3545; /* Red color */
+        }
+
+        .remove-bill-btn:hover {
+            background-color: #c82333;
+        }
+
+        .loader {
             display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -118,65 +154,65 @@
 <div class="container">
     <h2>Quick Fill the Bills</h2>
     <div id="bill-container">
-        <form class="bill-form" id="billForm">
+        <form class="bill-form" id="billForm" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="reason">Reason for the bill:</label>
                 <input type="text" id="reason" name="reason" required>
-            </div>
-            <div class="form-group">
                 <label for="amount">Bill amount:</label>
                 <input type="number" id="amount" name="amount" required>
-            </div>
-            <div class="form-group">
                 <label for="date">Bill date:</label>
                 <input type="date" id="date" name="date" required>
-            </div>
-            <div class="form-group">
                 <label for="category">Category:</label>
                 <select id="category" name="category" required>
-                    <option value="Travel">Travel</option>
-                    <option value="Food">Food</option>
-                    <option value="Office Supplies">Office Supplies</option>
-                    <option value="Miscellaneous">Miscellaneous</option>
+                    <option value="travel">Travel</option>
+                    <option value="food">Food</option>
+                    <option value="accommodation">Accommodation</option>
+                    <option value="supplies">Supplies</option>
                 </select>
-            </div>
-            <div class="form-group">
                 <label for="reimbursed">Already reimbursed?</label>
                 <input type="checkbox" id="reimbursed" name="reimbursed">
-            </div>
-            <div class="form-group">
                 <label for="submittedBy">Submitted by:</label>
                 <select id="submittedBy" name="submittedBy" required>
-                    <option value="Current User">Current User</option>
-                    <!-- Add other user options here -->
+                    <option value="current-user">Current User</option>
+                    <option value="other">Other User</option>
                 </select>
-            </div>
-            <div class="form-group">
+                <label for="clientReimbursed">Client Reimbursed:</label>
+                <input type="checkbox" id="clientReimbursed" name="clientReimbursed">
+                <label for="file">Attachment:</label>
+                <input type="file" id="file" name="file">
+                <label for="reimbursementDate">Reimbursement Date:</label>
+                <input type="date" id="reimbursementDate" name="reimbursementDate">
                 <label for="comments">Comments:</label>
                 <textarea id="comments" name="comments"></textarea>
             </div>
-            <div class="form-group additional-fields">
-                <label for="clientReimbursed">Client Reimbursed:</label>
-                <input type="checkbox" id="clientReimbursed" name="clientReimbursed">
+            <div class="button-group">
+                <button type="button" id="edit-btn" class="edit-btn">Edit</button>
+                <button type="button" id="cancel-btn" class="cancel-btn" style="display:none;">Cancel</button>
+                <button type="button" class="save-btn" style="display:none;">Save</button>
+                <button type="button" id="add-bill-btn" class="add-bill-btn">+ Add Bill</button>
+                <button type="button" id="remove-bill-btn" class="remove-bill-btn">- Remove Bill</button>
             </div>
-            <div class="form-group additional-fields">
-                <label for="file">Attachment:</label>
-                <input type="file" id="file" name="file" required>
-            </div>
-            <div class="form-group additional-fields">
-                <label for="reimbursementDate">Reimbursement Date:</label>
-                <input type="date" id="reimbursementDate" name="reimbursementDate">
-            </div>
-            <button type="button" class="save-edit-btn">Save</button>
         </form>
     </div>
-    <div class="button-group">
-        <button id="add-bill-btn" class="button-style">+ Add Bill</button>
-        <button id="remove-bill-btn" class="button-style">- Remove Bill</button>
-    </div>
     <div id="message"></div>
+    <div class="loader" id="loader"></div>
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const billId = urlParams.get('id');
+        if (billId) {
+            localStorage.setItem('billId', billId);
+            fetchBillDetails(billId);
+        } else {
+            // If there's no billId, ensure the form is non-editable
+            toggleEditMode(false);
+        }
+
+        // Add initial event listeners
+        addEventListenersToForm(document.querySelector('.bill-form'));
+    });
+
     document.getElementById('add-bill-btn').addEventListener('click', () => {
         const container = document.getElementById('bill-container');
         const newBillForm = document.querySelector('.bill-form').cloneNode(true);
@@ -185,25 +221,38 @@
         addEventListenersToForm(newBillForm);
     });
 
-    document.getElementById('remove-bill-btn').addEventListener('click', () => {
-        const forms = document.querySelectorAll('.bill-form');
-        if (forms.length > 1) {
-            forms[forms.length - 1].remove();
-        }
-    });
-
     function addEventListenersToForm(form) {
-        const saveEditBtn = form.querySelector('.save-edit-btn');
+        const saveBtn = form.querySelector('.save-btn');
+        const editBtn = form.querySelector('#edit-btn');
+        const cancelBtn = form.querySelector('#cancel-btn');
+        const addBillBtn = form.querySelector('#add-bill-btn');
+        const removeBillBtn = form.querySelector('#remove-bill-btn');
 
-        saveEditBtn.addEventListener('click', () => {
-            if (saveEditBtn.textContent === 'Save') {
-                // Save logic here
-                toggleFormFields(form, true);
-                saveEditBtn.textContent = 'Edit';
-                submitForm(form); // Submit the form on Save
-            } else {
-                toggleFormFields(form, false);
-                saveEditBtn.textContent = 'Save';
+        saveBtn.addEventListener('click', async () => {
+            const billId = localStorage.getItem('billId'); // Retrieve billId (if needed)
+            await submitForm(form, billId);
+        });
+
+        editBtn.addEventListener('click', () => {
+            toggleEditMode(true, form);
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            toggleEditMode(false, form);
+        });
+
+        addBillBtn.addEventListener('click', () => {
+            const container = document.getElementById('bill-container');
+            const newBillForm = form.cloneNode(true);
+            resetForm(newBillForm); // Reset form fields before appending
+            container.appendChild(newBillForm);
+            addEventListenersToForm(newBillForm);
+        });
+
+        removeBillBtn.addEventListener('click', () => {
+            const forms = document.querySelectorAll('.bill-form');
+            if (forms.length > 1) {
+                form.remove();
             }
         });
 
@@ -212,7 +261,61 @@
         });
     }
 
-    async function submitForm(form) {
+    function resetForm(form) {
+        form.reset();
+        form.querySelector('.save-btn').style.display = 'none';
+        form.querySelector('#edit-btn').style.display = 'inline-block';
+        form.querySelector('#cancel-btn').style.display = 'none';
+    }
+
+    function toggleEditMode(enable, form) {
+        const saveBtn = form.querySelector('.save-btn');
+        const editBtn = form.querySelector('#edit-btn');
+        const cancelBtn = form.querySelector('#cancel-btn');
+
+        saveBtn.style.display = enable ? 'inline-block' : 'none';
+        editBtn.style.display = enable ? 'none' : 'inline-block';
+        cancelBtn.style.display = enable ? 'inline-block' : 'none';
+
+        form.querySelectorAll('input, select, textarea').forEach(input => {
+            input.disabled = !enable;
+        });
+    }
+
+    async function fetchBillDetails(billId) {
+        const url = `http://43.205.154.85:8080/getBillById?id=${billId}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Failed to fetch bill details');
+            }
+            const billData = await response.json();
+            populateForm(billData);
+        } catch (error) {
+            console.error('Error fetching bill details:', error);
+        }
+    }
+
+    function populateForm(billData) {
+        const form = document.querySelector('.bill-form');
+        form.querySelector('#reason').value = billData.reason;
+        form.querySelector('#amount').value = billData.amount;
+        form.querySelector('#date').value = billData.date;
+        form.querySelector('#category').value = billData.category;
+        form.querySelector('#reimbursed').checked = billData.reimbursed;
+        form.querySelector('#submittedBy').value = billData.submittedBy;
+        form.querySelector('#clientReimbursed').checked = billData.clientReimbursed;
+        form.querySelector('#reimbursementDate').value = billData.reimbursementDate;
+        form.querySelector('#comments').value = billData.comments;
+
+        // Set the form to non-editable by default
+        toggleEditMode(false, form);
+    }
+
+    async function submitForm(form, billId) {
+        const loader = document.getElementById('loader');
+        loader.style.display = 'block'; // Show loader
+
         let formData = new FormData();
         formData.append('bill', new Blob([JSON.stringify({
             reason: form.querySelector('#reason').value,
@@ -228,49 +331,34 @@
         formData.append('file', form.querySelector('#file').files[0]);
 
         try {
-            let response = await fetch('http://43.205.154.85:8080/upload/Bill', {
+            let response = await fetch(`http://43.205.154.85:8080/api/billing/updateBill/${billId}`, {
                 method: 'POST',
                 body: formData
             });
 
             if (response.ok) {
                 document.getElementById('message').innerText = 'Bill uploaded successfully!';
+                toggleEditMode(false, form); // Switch back to read-only mode
             } else {
-                document.getElementById('message').innerText = 'Click on edit , fill the details.';
+                document.getElementById('message').innerText = 'Error uploading bill.';
             }
         } catch (error) {
             document.getElementById('message').innerText = 'Error uploading bill.';
+        } finally {
+            loader.style.display = 'none'; // Hide loader
         }
     }
 
-    function toggleFormFields(form, disable) {
-        form.querySelectorAll('input, select, textarea').forEach(input => {
-            input.disabled =
-
- disable;
-        });
-        form.querySelectorAll('.additional-fields').forEach(field => {
-            field.style.display = disable ? 'none' : 'block';
-        });
-        form.querySelectorAll('.additional-fields input').forEach(input => {
-            input.disabled = disable;
-        });
+    function displayMessage(message) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = message;
+        setTimeout(() => {
+            messageDiv.textContent = '';
+        }, 3000);
     }
-
-    function resetForm(form) {
-        form.querySelectorAll('input, select, textarea').forEach(input => {
-            input.value = '';
-            input.disabled = false;
-        });
-        form.querySelector('.save-edit-btn').textContent = 'Save';
-        form.querySelectorAll('.additional-fields').forEach(field => {
-            field.style.display = 'none';
-        });
-    }
-
-    // Initialize event listeners for existing forms
-    document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));
 </script>
+
+
+
 </body>
 </html>
-```

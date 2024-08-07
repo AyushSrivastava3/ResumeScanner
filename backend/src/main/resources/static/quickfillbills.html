@@ -35,17 +35,21 @@
             height: 100%;
             width: 100%;
         }
+
+
         .nav-bar a {
-            margin-left: 10px;
-            text-decoration: none;
-            color: #343a40;
-            padding: 10px 20px;
-            background-color: #17a2b8;
-            border-radius: 4px;
-        }
-        .nav-bar a:hover {
-            background-color: #138496;
-        }
+    margin-left: 10px;
+    text-decoration: none;
+    color: #343a40;
+    padding: 10px 20px;
+    background-color: #17a2b8;
+    border-radius: 4px;
+}
+
+.nav-bar a:hover {
+    background-color: #138496;
+}
+
         .footer {
             position: fixed;
             bottom: 0;
@@ -188,6 +192,25 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
+#importButton {
+            background-color: #17a2b8; /* Green background */
+            border: none;            /* Remove borders */
+            color: white;            /* White text */
+            padding: 15px 32px;      /* Some padding */
+            text-align: center;      /* Centered text */
+            text-decoration: none;   /* Remove underline */
+            display: inline-block;   /* Get it to display inline-block */
+            font-size: 16px;         /* Increase font size */
+            margin: 4px 2px;         /* Some margin */
+            cursor: pointer;         /* Pointer/hand icon */
+            border-radius: 12px;     /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+        #importButton:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
         .dashboard-button:hover {
             background-color: #138496;
         }
@@ -219,12 +242,17 @@
     </style>
 </head>
 <body>
-<header class="header">
+
     <nav class="nav-bar">
         <a href="index.html" class="button">Home</a>
         <a href="billsdashboard.html" class="button">Dashboard</a>
+        <a id="export-btn" class="button">Export</a>
+        <input type="file" id="file-input" accept=".csv">
+        <button id="importButton">Import</button>
+
+
     </nav>
-</header>
+
 <div class="container">
     <div class="main-title">Quick Fill the Bills</div>
     <div id="bill-container">
@@ -387,7 +415,7 @@
                comments: comments
            };
 
-           fetch('http://43.205.154.85:8080/api/billing', {
+           fetch('http://localhost:8080/api/billing', {
                method: 'POST',
                headers: {
                    'Content-Type': 'application/json'
@@ -545,7 +573,7 @@
         comments: comments
     };
 
-    fetch(`http://43.205.154.85:8080/api/billing/${billId}`, {
+    fetch(`http://localhost:8080/api/billing/${billId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -574,6 +602,62 @@
         console.error('Error:', error);
     });
 }
+
+
+function exportBills() {
+        fetch('http://localhost:8080/api/billing/export/bills')
+            .then(response => response.blob()) // Handle the response as a blob (for file download)
+            .then(blob => {
+                // Create a link element and simulate a click to download the file
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'bills_export.csv'; // Adjust the filename as needed
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error exporting bills');
+            });
+
+    }
+
+          document.getElementById('export-btn').addEventListener('click', exportBills);
+
+
+           function importBills() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file to import.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('http://localhost:8080/api/billing/import/bills', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('File imported successfully.');
+                // Optionally, you can refresh the bill list here
+                fetchAllBills();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error importing file.');
+            });
+        }
+
+                    document.getElementById('importButton').addEventListener('click', importBills);
+
 
 
        function displayAllBills(bills) {
@@ -611,7 +695,7 @@
        }
 
        function fetchAllBills() {
-           fetch('http://43.205.154.85:8080/api/billing')
+           fetch('http://localhost:8080/api/billing')
                .then(response => response.json())
                .then(data => {
                    console.log('Bills:', data);
@@ -629,6 +713,8 @@
            form.querySelector('#add-bill-btn').addEventListener('click', addNewBillForm);
            form.querySelector('#remove-bill-btn').addEventListener('click', removeLastBillForm);
            form.querySelector('#see-all-bills-btn').addEventListener('click', fetchAllBills);
+
+
        }
 
        // Attach event listeners to the initial form

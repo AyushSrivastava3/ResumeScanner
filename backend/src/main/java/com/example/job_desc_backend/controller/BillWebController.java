@@ -3,6 +3,7 @@ package com.example.job_desc_backend.controller;
 
 
 import com.example.job_desc_backend.model.BillEntity;
+import com.example.job_desc_backend.service.ExportImportService;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.InputStreamSource;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.apache.poi.hwpf.model.FileInformationBlock.logger;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -82,6 +84,41 @@ public class BillWebController {
         BillEntity bill=billRepository.findById(id).get();
         return ResponseEntity.ok(bill);
     }
+
+    @GetMapping("/export/bills")
+    public String exportbillsToExcel() {
+        try {
+            List<BillEntity> bill = billRepository.findAll();
+
+            ExportImportService<BillEntity> exporter = new ExportImportService<>();
+            String filePath = "D:\\exportimport/profiles.xlsx"; // Change this to your desired path
+            exporter.exportToExcel(bill, filePath);
+            return "Excel file created successfully at: " + filePath;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Failed to create Excel file: " + e.getMessage();
+        }
+    }
+
+
+    @PostMapping("/import/bills")
+    public ResponseEntity<?> importbillsFromCSV(@RequestParam("file") MultipartFile file) {
+        try {
+            ExportImportService<BillEntity> importer = new ExportImportService<>();
+            List<BillEntity> bills = importer.importFromCSV(file, BillEntity.class);
+            billRepository.saveAll(bills);
+            return ResponseEntity.ok(bills);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Failed to import CSV file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorResponse);
+        }
+    }
+
+
 
     @GetMapping("/dashboard/stats")
     public ResponseEntity<Map<String, Long>> getDashboardStats() {
@@ -147,6 +184,7 @@ public class BillWebController {
         // Return the saved bill entity with a 200 OK response
         return ResponseEntity.ok(savedBill);
     }
+
 
 
 

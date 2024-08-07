@@ -11,10 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -26,7 +23,9 @@ import java.util.List;
 
 @Service
 public class ExportImportService<T> {
-    public void exportToExcel(List<T> data, String filePath) throws IOException, IllegalAccessException {
+
+
+    public void exportToExcel(List<T> data, OutputStream outputStream) throws IOException, IllegalAccessException {
         if (data == null || data.isEmpty()) {
             throw new IllegalArgumentException("No data to export");
         }
@@ -42,7 +41,7 @@ public class ExportImportService<T> {
             cell.setCellValue(fields[i].getName());
         }
 
-        // Fill data
+        // Fill data rows
         int rowNum = 1;
         for (T item : data) {
             Row row = sheet.createRow(rowNum++);
@@ -64,13 +63,14 @@ public class ExportImportService<T> {
             }
         }
 
-        // Write the output to a file
-        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-            workbook.write(fileOut);
+        // Write to OutputStream and close resources
+        try {
+            workbook.write(outputStream);
+        } finally {
+            workbook.close();
+            outputStream.close();
         }
-        workbook.close();
     }
-
 
 
     public List<T> importFromCSV(MultipartFile file, Class<T> clazz) throws IOException, InstantiationException, IllegalAccessException {
@@ -94,6 +94,9 @@ public class ExportImportService<T> {
                     String header = field.getName();
                     String value = getValueOrDefault(csvRecord, header);
 
+                    if (header.equalsIgnoreCase("id")) {
+                        continue;
+                    }
                     if (field.getType().equals(String.class)) {
                         field.set(instance, value);
                     } else if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {

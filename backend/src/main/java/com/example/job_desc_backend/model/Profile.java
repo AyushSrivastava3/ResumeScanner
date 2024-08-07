@@ -41,15 +41,6 @@ public class Profile {
     private String attachment;
     private LocalDateTime uploadDate;
     private String createdBy;
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
     // New fields for extracted resume sections
     private String experienceSection;
     private String educationSection;
@@ -243,5 +234,14 @@ public class Profile {
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

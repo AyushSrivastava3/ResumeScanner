@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="add remaining xml file">
+    <list default="true" id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="adding export and import">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ExportImportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ExportImportService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jd3.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jd3.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,19 +49,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.JobDescBackendApplication.executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Maven.job_desc_backend [clean].executor": "Run",
-    "Maven.job_desc_backend [install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "dev",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/dq-mac-m2-1/my-combined-project/backend/src/main/resources"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.JobDescBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.job_desc_backend [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.job_desc_backend [install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/dq-mac-m2-1/my-combined-project/backend/src/main/resources&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.job_desc_backend.dto" />
@@ -297,7 +296,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722666587756</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="adding export and import">
+      <option name="closed" value="true" />
+      <created>1722948883066</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1722948883066</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -325,7 +332,8 @@
     <MESSAGE value="added profile section to extract more information" />
     <MESSAGE value="add remaining xml file" />
     <MESSAGE value="Changes done in bill" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changes done in bill" />
+    <MESSAGE value="adding export and import" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding export and import" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -372,6 +380,21 @@
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
           <line>23</line>
           <option name="timeStamp" value="256" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
+          <line>194</line>
+          <option name="timeStamp" value="259" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
+          <line>191</line>
+          <option name="timeStamp" value="261" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

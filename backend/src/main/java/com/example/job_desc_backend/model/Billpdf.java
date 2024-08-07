@@ -56,4 +56,7 @@ public class Billpdf {
     public void setFileId(String fileId) {
         this.fileId = fileId;
     }
+
+    public void setCreatedBy(String username) {
+    }
 }

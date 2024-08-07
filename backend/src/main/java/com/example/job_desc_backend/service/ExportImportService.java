@@ -94,6 +94,10 @@ public class ExportImportService<T> {
                     String header = field.getName();
                     String value = getValueOrDefault(csvRecord, header);
 
+                    if (header.equalsIgnoreCase("id")) {
+                        continue;
+                    }
+
                     if (field.getType().equals(String.class)) {
                         field.set(instance, value);
                     } else if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {

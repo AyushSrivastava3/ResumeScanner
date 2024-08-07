@@ -114,6 +114,7 @@ public class BillEntity {
     }
 
 
-
+    public void setCreatedBy(String username) {
+    }
 }
 

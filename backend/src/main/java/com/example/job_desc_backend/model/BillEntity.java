@@ -2,15 +2,18 @@ package com.example.job_desc_backend.model;
 
 
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "bills")
 public class BillEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String reason;
-    private double amount;
+    private String amount;
     private String date;
     private String category;
 
@@ -62,11 +65,11 @@ public class BillEntity {
         this.reason = reason;
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -111,7 +114,6 @@ public class BillEntity {
     }
 
 
-    public void setCreatedBy(String username) {
-    }
+
 }
 

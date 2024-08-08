@@ -200,7 +200,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const billId = urlParams.get('id');
+        console.log('URL Parameters:', window.location.search); // Log the full query string
+       const billId = urlParams.get('id');
+       console.log('Extracted billId:', billId);
         if (billId) {
             localStorage.setItem('billId', billId);
             fetchBillDetails(billId);

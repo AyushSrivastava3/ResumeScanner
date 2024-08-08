@@ -169,6 +169,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
 
+
     // Load header and footer
         fetch('header.html')
             .then(response => response.text())
@@ -216,6 +217,7 @@
             document.getElementById('closeModal').style.borderRadius = '5px';
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
+
 
         fetch('http://43.205.154.85:8080/api/invoices/clients')
             .then(response => {

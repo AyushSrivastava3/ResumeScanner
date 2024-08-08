@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="add remaining xml file">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/BillWebController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/BillEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/repository/BillMongoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/BillDataService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/quickfillbills.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/viewbills.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_08_24__6_37pm__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_08_24__6_37pm__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_08_24__6_37pm__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_08_24__6_37pm__Changes_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/BillController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Bill.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/repository/BillRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/billpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/billpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/billsdashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/billsdashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Record" />
+        <option value="HTML File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2hvRAETWPg2CtnMTon6HzBNiZKO" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.JobDescBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.job_desc_backend [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.job_desc_backend [install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/dq-mac-m2-1/my-combined-project/backend/src/main/resources&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.job_desc_backend.dto" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/static" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.example.job_desc_backend.utility" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="17" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.example.job_desc_backend.JobDescBackendApplication" />
+      <module name="job_desc_backend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="" />
+      <created>1718472419974</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718472419974</updated>
+    </task>
+    <task id="LOCAL-00001" summary="FIRST COMMIT AFTER CHANGES">
+      <option name="closed" value="true" />
+      <created>1718546558741</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1718546558741</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add date pattern class to make code more modular and move skill pattern to utility class">
+      <option name="closed" value="true" />
+      <created>1718600369722</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718600369722</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add required years in output">
+      <option name="closed" value="true" />
+      <created>1718609824438</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718609824439</updated>
+    </task>
+    <task id="LOCAL-00004" summary="done the required changes">
+      <option name="closed" value="true" />
+      <created>1718637741020</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1718637741020</updated>
+    </task>
+    <task id="LOCAL-00005" summary="done the required changes in durations">
+      <option name="closed" value="true" />
+      <created>1718672890267</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1718672890267</updated>
+    </task>
+    <task id="LOCAL-00006" summary="done the required changes in durations">
+      <option name="closed" value="true" />
+      <created>1719037819581</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1719037819581</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added the relevent profile features in this">
+      <option name="closed" value="true" />
+      <created>1719206192381</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1719206192381</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added the relevent profile information">
+      <option name="closed" value="true" />
+      <created>1719292000184</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1719292000184</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Add login and registration functionalities">
+      <option name="closed" value="true" />
+      <created>1719832264262</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1719832264262</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add login and registration functionalities">
+      <option name="closed" value="true" />
+      <created>1719832288924</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1719832288924</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Add functionality to directly upload jd also">
+      <option name="closed" value="true" />
+      <created>1719913714913</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1719913714913</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add functionality of forgot password">
+      <option name="closed" value="true" />
+      <created>1720079644055</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1720079644055</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Add functionality sending feedback in email">
+      <option name="closed" value="true" />
+      <created>1720155481058</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1720155481058</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Add functionality sending Match report">
+      <option name="closed" value="true" />
+      <created>1720173953351</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1720173953351</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add functionality of downloading report">
+      <option name="closed" value="true" />
+      <created>1720185151705</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1720185151705</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Add functionality of sending feedback to candidate">
+      <option name="closed" value="true" />
+      <created>1720259987086</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1720259987086</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Changed whole ui interface color , add rover and modal for showing errors">
+      <option name="closed" value="true" />
+      <created>1720418340518</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1720418340518</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added security + Jwt authentication for our application.">
+      <option name="closed" value="true" />
+      <created>1720872748622</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1720872748622</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Adding the profiles based on jds">
+      <option name="closed" value="true" />
+      <created>1721370115835</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1721370115835</updated>
+    </task>
+    <task id="LOCAL-00020" summary="added bill">
+      <option name="closed" value="true" />
+      <created>1721721101204</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1721721101204</updated>
+    </task>
+    <task id="LOCAL-00021" summary="add profiles htmls pages">
+      <option name="closed" value="true" />
+      <created>1721722011760</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1721722011760</updated>
+    </task>
+    <task id="LOCAL-00022" summary="add bill and client">
+      <option name="closed" value="true" />
+      <created>1721817509991</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1721817509991</updated>
+    </task>
+    <task id="LOCAL-00023" summary="add created by properties added">
+      <option name="closed" value="true" />
+      <created>1722321206869</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1722321206869</updated>
+    </task>
+    <task id="LOCAL-00024" summary="added profile section to extract more information">
+      <option name="closed" value="true" />
+      <created>1722599487867</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1722599487867</updated>
+    </task>
+    <task id="LOCAL-00025" summary="add remaining xml file">
+      <option name="closed" value="true" />
+      <created>1722666587756</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1722666587756</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="FIRST COMMIT AFTER CHANGES" />
+    <MESSAGE value="Add date pattern class to make code more modular and move skill pattern to utility class" />
+    <MESSAGE value="Add required years in output" />
+    <MESSAGE value="done the required changes" />
+    <MESSAGE value="done the required changes in durations" />
+    <MESSAGE value="Added the relevent profile features in this" />
+    <MESSAGE value="Added the relevent profile information" />
+    <MESSAGE value="Add login and registration functionalities" />
+    <MESSAGE value="Add functionality to directly upload jd also" />
+    <MESSAGE value="Add functionality of forgot password" />
+    <MESSAGE value="Add functionality sending feedback in email" />
+    <MESSAGE value="Add functionality sending Match report" />
+    <MESSAGE value="Add functionality of downloading report" />
+    <MESSAGE value="Add functionality of sending feedback to candidate" />
+    <MESSAGE value="Changed whole ui interface color , add rover and modal for showing errors" />
+    <MESSAGE value="Added security + Jwt authentication for our application." />
+    <MESSAGE value="Adding the profiles based on jds" />
+    <MESSAGE value="added bill" />
+    <MESSAGE value="add profiles htmls pages" />
+    <MESSAGE value="add bill and client" />
+    <MESSAGE value="add created by properties added" />
+    <MESSAGE value="added profile section to extract more information" />
+    <MESSAGE value="add remaining xml file" />
+    <MESSAGE value="Changes done in bill" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes done in bill" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/utility/DatePatternMatcher.java</url>
+          <line>235</line>
+          <properties class="com.example.job_desc_backend.utility.DatePatternMatcher">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>18</line>
+          <properties class="com.example.job_desc_backend.service.ProfileService">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/PdfService.java</url>
+          <line>127</line>
+          <option name="timeStamp" value="215" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/PdfService.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="216" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="255" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="256" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="experience.description" language="JAVA" />
+        <watch expression="endDateStr" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

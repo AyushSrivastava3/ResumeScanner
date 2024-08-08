@@ -192,7 +192,7 @@
 
 <!--        // Fetch job descriptions for the current page-->
 <!--        function fetchJobDescriptions(page) {-->
-<!--            fetch(`http://13.201.90.199:8080/jd/getIds`)-->
+<!--            fetch(`http://43.205.154.85:8080/jd/getIds`)-->
 <!--                .then(response => response.json())-->
 <!--                .then(data => {-->
 <!--                    const totalItems = data.length;-->
@@ -213,7 +213,7 @@
 
 <!--                    pageData.forEach((jd, index) => {-->
 <!--                        // Fetch additional details for each job description-->
-<!--                        fetch(`http://13.201.90.199:8080/getJd?id=${jd.id}`)-->
+<!--                        fetch(`http://43.205.154.85:8080/getJd?id=${jd.id}`)-->
 <!--                            .then(response => response.json())-->
 <!--                            .then(details => {-->
 <!--                                const jdItem = document.createElement('div');-->
@@ -281,7 +281,7 @@
 
 <!--        // Delete job description-->
 <!--        function deleteJD() {-->
-<!--            fetch(`http://13.201.90.199:8080/deleteJd?id=${selectedIdToDelete}`, {-->
+<!--            fetch(`http://43.205.154.85:8080/deleteJd?id=${selectedIdToDelete}`, {-->
 <!--                method: 'DELETE'-->
 <!--            })-->
 <!--            .then(() => {-->
@@ -534,7 +534,7 @@
 
 <!--        // Fetch job descriptions for the current page-->
 <!--        function fetchJobDescriptions(page) {-->
-<!--            fetch(`http://13.201.90.199:8080/jd/getIds`)-->
+<!--            fetch(`http://43.205.154.85:8080/jd/getIds`)-->
 <!--                .then(response => response.json())-->
 <!--                .then(data => {-->
 <!--                    const totalItems = data.length;-->
@@ -555,7 +555,7 @@
 
 <!--                    pageData.forEach((jd, index) => {-->
 <!--                        // Fetch additional details for each job description-->
-<!--                        fetch(`http://13.201.90.199:8080/getJd?id=${jd.id}`)-->
+<!--                        fetch(`http://43.205.154.85:8080/getJd?id=${jd.id}`)-->
 <!--                            .then(response => response.json())-->
 <!--                            .then(details => {-->
 <!--                                const jdItem = document.createElement('div');-->
@@ -623,7 +623,7 @@
 
 <!--        // Delete job description-->
 <!--        function deleteJD() {-->
-<!--            fetch(`http://13.201.90.199:8080/deleteJd?id=${selectedIdToDelete}`, {-->
+<!--            fetch(`http://43.205.154.85:8080/deleteJd?id=${selectedIdToDelete}`, {-->
 <!--                method: 'DELETE'-->
 <!--            })-->
 <!--            .then(() => {-->
@@ -892,7 +892,7 @@
 
         // Fetch job descriptions for the current page
         function fetchJobDescriptions(page) {
-            fetch('http://13.201.90.199:8080/jd/getIds', {
+            fetch('http://43.205.154.85:8080/jd/getIds', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -917,7 +917,7 @@
 
                     pageData.forEach((jd, index) => {
                         // Fetch additional details for each job description
-                        fetch(`http://13.201.90.199:8080/getJd?id=${jd.id}`, {
+                        fetch(`http://43.205.154.85:8080/getJd?id=${jd.id}`, {
                                         headers: {
                                             'Authorization': `Bearer ${token}`
                                         }
@@ -987,7 +987,7 @@
 
         // Delete job description
         function deleteJD() {
-            fetch(`http://13.201.90.199:8080/deleteJd?id=${selectedIdToDelete}`, {
+            fetch(`http://43.205.154.85:8080/deleteJd?id=${selectedIdToDelete}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

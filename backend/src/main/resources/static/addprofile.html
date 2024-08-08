@@ -214,7 +214,7 @@
 <!--            const formData = new FormData();-->
 <!--            formData.append('profile', new Blob([JSON.stringify(profileData)], { type: "application/json" }));-->
 
-<!--            fetch('http://13.201.90.199:8080/addProfile', {-->
+<!--            fetch('http://43.205.154.85:8080/addProfile', {-->
 <!--                method: 'POST',-->
 <!--                body: formData-->
 <!--            })-->
@@ -294,7 +294,7 @@
 <!--        }-->
 
 <!--        function fetchProfiles(jdId) {-->
-<!--            fetch(`http://13.201.90.199:8080/jd/${jdId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/jd/${jdId}`)-->
 <!--            .then(response => response.json())-->
 <!--            .then(data => {-->
 <!--                profilesContainer.innerHTML = '';-->
@@ -324,7 +324,7 @@
 <!--        }-->
 
 <!--        function fetchProfileById(profileId) {-->
-<!--            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getProfile?id=${profileId}`)-->
 <!--            .then(response => response.json())-->
 <!--            .then(profile => {-->
 <!--                let table = profilesContainer.querySelector('table');-->
@@ -390,7 +390,7 @@
 <!--                const formData = new FormData();-->
 <!--                formData.append('profile', new Blob([JSON.stringify(updatedProfile)], { type: "application/json" }));-->
 
-<!--                fetch(`http://13.201.90.199:8080/profile/${profile.id}`, {-->
+<!--                fetch(`http://43.205.154.85:8080/profile/${profile.id}`, {-->
 <!--                    method: 'PUT',-->
 <!--                    body: formData-->
 <!--                })-->
@@ -423,7 +423,7 @@
 <!--            row.querySelector('.submitBtn').style.display = 'none';-->
 <!--        }-->
 
-<!--        fetch('http://13.201.90.199:8080/jd/getIds')-->
+<!--        fetch('http://43.205.154.85:8080/jd/getIds')-->
 <!--            .then(response => response.json())-->
 <!--            .then(data => {-->
 <!--                showLoader();-->
@@ -671,7 +671,7 @@ td input[type="text"], td input[type="email"] {
             const formData = new FormData();
             formData.append('profile', new Blob([JSON.stringify(profileData)], { type: "application/json" }));
     
-            fetch('http://13.201.90.199:8080/addProfile', {
+            fetch('http://43.205.154.85:8080/addProfile', {
                 method: 'POST',
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -754,7 +754,7 @@ td input[type="text"], td input[type="email"] {
         }
     
         function fetchProfiles(jdId) {
-            fetch(`http://13.201.90.199:8080/jd/${jdId}`, {
+            fetch(`http://43.205.154.85:8080/jd/${jdId}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -788,7 +788,7 @@ td input[type="text"], td input[type="email"] {
         }
     
         function fetchProfileById(profileId) {
-            fetch(`http://13.201.90.199:8080/getProfile?id=${profileId}`, {
+            fetch(`http://43.205.154.85:8080/getProfile?id=${profileId}`, {
                 headers: {
                     "Authorization": `Bearer ${token}`
                 }
@@ -858,7 +858,7 @@ td input[type="text"], td input[type="email"] {
                 const formData = new FormData();
                 formData.append('profile', new Blob([JSON.stringify(updatedProfile)], { type: "application/json" }));
     
-                fetch(`http://13.201.90.199:8080/${profile.id}`, {
+                fetch(`http://43.205.154.85:8080/${profile.id}`, {
                     method: 'PUT',
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -894,7 +894,7 @@ td input[type="text"], td input[type="email"] {
             row.querySelector('.submitBtn').style.display = 'none';
         }
     
-        fetch('http://13.201.90.199:8080/jd/getIds', {
+        fetch('http://43.205.154.85:8080/jd/getIds', {
             headers: {
                 "Authorization": `Bearer ${token}`
             }

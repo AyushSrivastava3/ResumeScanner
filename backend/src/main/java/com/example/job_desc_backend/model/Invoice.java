@@ -113,4 +113,7 @@ public class Invoice {
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
+
+    public void setCreatedBy(String username) {
+    }
 }

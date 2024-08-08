@@ -171,4 +171,6 @@ public class Job_description {
     }
 
 
+    public void setCreatedBy(String username) {
+    }
 }

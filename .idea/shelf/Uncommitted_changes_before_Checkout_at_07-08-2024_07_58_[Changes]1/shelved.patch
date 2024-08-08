@@ -1,0 +1,2937 @@
+Index: backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.job_desc_backend.repository;\r\n\r\nimport com.example.job_desc_backend.model.Billpdf;\r\nimport org.springframework.data.mongodb.repository.MongoRepository;\r\nimport org.springframework.stereotype.Repository;\r\n\r\n@Repository\r\npublic interface BillPdfRepository extends MongoRepository<Billpdf,String> {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java b/backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java
+--- a/backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java	
++++ b/backend/src/main/java/com/example/job_desc_backend/repository/BillPdfRepository.java	
+@@ -3,7 +3,13 @@
+ import com.example.job_desc_backend.model.Billpdf;
+ import org.springframework.data.mongodb.repository.MongoRepository;
+ import org.springframework.stereotype.Repository;
++import java.util.Optional;
+ 
+ @Repository
+ public interface BillPdfRepository extends MongoRepository<Billpdf,String> {
++    Optional<Billpdf> findByFileId(String fileId);
++
++
++
++
+ }
+Index: backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.job_desc_backend.model;\r\n\r\nimport jakarta.persistence.GeneratedValue;\r\nimport jakarta.persistence.GenerationType;\r\nimport jakarta.persistence.Id;\r\nimport lombok.AllArgsConstructor;\r\nimport lombok.Getter;\r\nimport lombok.NoArgsConstructor;\r\nimport lombok.Setter;\r\nimport org.springframework.data.mongodb.core.mapping.Document;\r\n@Getter\r\n@Setter\r\n@NoArgsConstructor\r\n@AllArgsConstructor\r\n@Document(collection = \"BillPdf\")\r\npublic class Billpdf {\r\n\r\n        @Id\r\n        @GeneratedValue(strategy = GenerationType.AUTO)\r\n        private String Id;\r\n\r\n        private String fileName;\r\n        private String contentType;\r\n        private String createdBy;\r\n        private String fileId;\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java b/backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java
+--- a/backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java	
++++ b/backend/src/main/java/com/example/job_desc_backend/model/Billpdf.java	
+@@ -8,6 +8,7 @@
+ import lombok.NoArgsConstructor;
+ import lombok.Setter;
+ import org.springframework.data.mongodb.core.mapping.Document;
++
+ @Getter
+ @Setter
+ @NoArgsConstructor
+@@ -15,14 +16,44 @@
+ @Document(collection = "BillPdf")
+ public class Billpdf {
+ 
+-        @Id
+-        @GeneratedValue(strategy = GenerationType.AUTO)
+-        private String Id;
++    @Id
++    @GeneratedValue(strategy = GenerationType.AUTO)
++    private String id; // changed from Id to id
+ 
+-        private String fileName;
+-        private String contentType;
+-        private String createdBy;
+-        private String fileId;
++    private String fileName;
++    private String contentType;
++    private String fileId;
+ 
++    // Getters and Setters
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
++
++    public String getFileName() {
++        return fileName;
++    }
++
++    public void setFileName(String fileName) {
++        this.fileName = fileName;
++    }
++
++    public String getContentType() {
++        return contentType;
++    }
+ 
++    public void setContentType(String contentType) {
++        this.contentType = contentType;
++    }
++
++    public String getFileId() {
++        return fileId;
++    }
++
++    public void setFileId(String fileId) {
++        this.fileId = fileId;
++    }
+ }
+Index: backend/src/main/java/com/example/job_desc_backend/model/Bill.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/model/Bill.java b/backend/src/main/java/com/example/job_desc_backend/model/Bill.java
+deleted file mode 100644
+--- a/backend/src/main/java/com/example/job_desc_backend/model/Bill.java	
++++ /dev/null	
+@@ -1,37 +0,0 @@
+-package com.example.job_desc_backend.model;
+-
+-import jakarta.persistence.GeneratedValue;
+-import jakarta.persistence.GenerationType;
+-import jakarta.persistence.Id;
+-import lombok.AllArgsConstructor;
+-import lombok.Getter;
+-import lombok.NoArgsConstructor;
+-import lombok.Setter;
+-import org.springframework.data.mongodb.core.mapping.Document;
+-import org.springframework.web.multipart.MultipartFile;
+-@Getter
+-@Setter
+-@NoArgsConstructor
+-@AllArgsConstructor
+-@Document(collection = "Bill")
+-public class Bill {
+-
+-        @Id
+-        @GeneratedValue(strategy = GenerationType.AUTO)
+-        private String id;
+-        private String reason;
+-        private double amount;
+-        private String date;
+-        private String category;
+-        private boolean reimbursed;
+-        private String submittedBy;
+-        private String comments;
+-        private boolean clientReimbursed;
+-        private String reimbursementDate;
+-
+-        private String fileId;
+-        private String createdBy;
+-
+-
+-
+-}
+Index: backend/src/main/java/com/example/job_desc_backend/repository/BillRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/repository/BillRepository.java b/backend/src/main/java/com/example/job_desc_backend/repository/BillRepository.java
+deleted file mode 100644
+--- a/backend/src/main/java/com/example/job_desc_backend/repository/BillRepository.java	
++++ /dev/null	
+@@ -1,13 +0,0 @@
+-package com.example.job_desc_backend.repository;
+-
+-import com.example.job_desc_backend.model.Bill;
+-import org.springframework.data.mongodb.repository.MongoRepository;
+-import org.springframework.stereotype.Repository;
+-
+-@Repository
+-public interface BillRepository extends MongoRepository<Bill,String> {
+-    long countByClientReimbursed(boolean clientReimbursed);
+-
+-    long countByReimbursed(boolean reimbursed);
+-
+-}
+Index: backend/src/main/java/com/example/job_desc_backend/controller/BillController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/controller/BillController.java b/backend/src/main/java/com/example/job_desc_backend/controller/BillController.java
+deleted file mode 100644
+--- a/backend/src/main/java/com/example/job_desc_backend/controller/BillController.java	
++++ /dev/null	
+@@ -1,60 +0,0 @@
+-package com.example.job_desc_backend.controller;
+-
+-import com.example.job_desc_backend.model.Bill;
+-import com.example.job_desc_backend.model.Billpdf;
+-import com.example.job_desc_backend.repository.BillPdfRepository;
+-import com.example.job_desc_backend.repository.BillRepository;
+-import org.bson.types.ObjectId;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+-import org.springframework.http.ResponseEntity;
+-import org.springframework.web.bind.annotation.*;
+-import org.springframework.web.multipart.MultipartFile;
+-
+-import java.io.IOException;
+-import java.util.HashMap;
+-import java.util.Map;
+-
+-@RestController
+-public class BillController {
+-    @Autowired
+-    BillRepository billRepository;
+-    @Autowired
+-    BillPdfRepository billPdfRepository;
+-    @Autowired
+-    GridFsTemplate gridFsTemplate;
+-    @PostMapping("/upload/Bill")
+-    private Bill uploadbill(@RequestPart("bill") Bill bill, @RequestPart("file") MultipartFile file) throws IOException {
+-        ObjectId fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+-        Billpdf billpdf=new Billpdf();
+-        billpdf.setFileId(String.valueOf(fileId));
+-        billpdf.setContentType(file.getContentType());
+-        billpdf.setFileName(file.getOriginalFilename());
+-        billPdfRepository.save(billpdf);
+-        bill.setFileId(String.valueOf(fileId));
+-        return billRepository.save(bill);
+-    }
+-
+-
+-    @RestController
+-    public class DashboardController {
+-
+-        @Autowired
+-        private BillRepository billRepository;
+-
+-        @GetMapping("/dashboard/stats")
+-        public ResponseEntity<Map<String, Long>> getDashboardStats() {
+-            long totalBills = billRepository.count();
+-            long totalToBeClaimed = billRepository.countByClientReimbursed(false);
+-            long pendingReimbursements = billRepository.countByReimbursed(false);
+-
+-            Map<String, Long> stats = new HashMap<>();
+-            stats.put("totalBills", totalBills);
+-            stats.put("totalToBeClaimed", totalToBeClaimed);
+-            stats.put("pendingReimbursements", pendingReimbursements);
+-
+-            return ResponseEntity.ok(stats);
+-        }
+-    }
+-
+-}
+\ No newline at end of file
+Index: backend/src/main/resources/static/billsdashboard.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Company Bill Dashboard</title>\r\n    <style>\r\n        body {\r\n            font-family: Arial, sans-serif;\r\n            background-color: #f7f7f7;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            height: 100vh;\r\n            margin: 0;\r\n        }\r\n\r\n        .dashboard-container {\r\n            background-color: #fff;\r\n            padding: 20px;\r\n            border-radius: 8px;\r\n            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);\r\n            width: 50%;\r\n            max-width: 600px;\r\n        }\r\n\r\n        h2 {\r\n            margin-bottom: 20px;\r\n            text-align: center;\r\n            font-size: 1.6rem;\r\n            color: #333;\r\n        }\r\n\r\n        .stat {\r\n            margin-bottom: 15px;\r\n            padding: 15px;\r\n            border-radius: 4px;\r\n            background-color: #e7f1ff;\r\n            border: 1px solid #d1e4f7;\r\n        }\r\n\r\n        .stat h3 {\r\n            margin: 0;\r\n            font-size: 1.2rem;\r\n            color: #0056b3;\r\n        }\r\n\r\n        .stat p {\r\n            margin: 5px 0 0;\r\n            font-size: 1rem;\r\n            color: #333;\r\n        }\r\n\r\n        .loading {\r\n            color: #007bff;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"dashboard-container\">\r\n    <h2>Company Bill Dashboard</h2>\r\n    <div id=\"totalBills\" class=\"stat\">\r\n        <h3>Total Bills Raised</h3>\r\n        <p id=\"totalBillsValue\" class=\"loading\">Loading...</p>\r\n    </div>\r\n    <div id=\"totalToBeClaimed\" class=\"stat\">\r\n        <h3>Total Bills to be Claimed from Client</h3>\r\n        <p id=\"totalToBeClaimedValue\" class=\"loading\">Loading...</p>\r\n    </div>\r\n    <div id=\"pendingReimbursements\" class=\"stat\">\r\n        <h3>Pending Bills to be Reimbursed by Company</h3>\r\n        <p id=\"pendingReimbursementsValue\" class=\"loading\">Loading...</p>\r\n    </div>\r\n</div>\r\n\r\n<script>\r\n    async function fetchDashboardStats() {\r\n        try {\r\n            let response = await fetch('http://13.201.90.199:8080/dashboard/stats');\r\n            let data = await response.json();\r\n\r\n            document.getElementById('totalBillsValue').innerText = data.totalBills;\r\n            document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed;\r\n            document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements;\r\n        } catch (error) {\r\n            console.error('Error fetching dashboard stats:', error);\r\n            document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');\r\n        }\r\n    }\r\n\r\n    fetchDashboardStats();\r\n</script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/resources/static/billsdashboard.html b/backend/src/main/resources/static/billsdashboard.html
+--- a/backend/src/main/resources/static/billsdashboard.html	
++++ b/backend/src/main/resources/static/billsdashboard.html	
+@@ -76,7 +76,7 @@
+ <script>
+     async function fetchDashboardStats() {
+         try {
+-            let response = await fetch('http://13.201.90.199:8080/dashboard/stats');
++            let response = await fetch('http://43.205.154.85:8080/api/billing/dashboard/stats');
+             let data = await response.json();
+ 
+             document.getElementById('totalBillsValue').innerText = data.totalBills;
+Index: backend/src/main/resources/static/quickfillbills.html
+===================================================================
+diff --git a/backend/src/main/resources/static/quickfillbills.html b/backend/src/main/resources/static/quickfillbills.html
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/resources/static/quickfillbills.html	
+@@ -0,0 +1,641 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Quick Fill the Bills</title>
++    <style>
++        body {
++            font-family: Arial, sans-serif;
++            background-color: #f8f9fa;
++            margin: 0;
++            padding: 0;
++            overflow: auto; /* Ensure body is scrollable */
++        }
++        .header, .footer {
++            background-color: #ffffff;
++            color: #343a40;
++            padding: 5px 20px;
++            text-align: center;
++            display: flex;
++            justify-content: center;
++            align-items: center;
++        }
++        .header {
++            height: 70px;
++        }
++        .header img {
++            height: 50px;
++            margin-right: 20px;
++        }
++        .nav-bar {
++            display: flex;
++            justify-content: flex-end;
++            align-items: center;
++            height: 100%;
++            width: 100%;
++        }
++        .nav-bar a {
++            margin-left: 10px;
++            text-decoration: none;
++            color: #343a40;
++            padding: 10px 20px;
++            background-color: #17a2b8;
++            border-radius: 4px;
++        }
++        .nav-bar a:hover {
++            background-color: #138496;
++        }
++        .footer {
++            position: fixed;
++            bottom: 0;
++            left: 0;
++            width: 100%;
++            text-align: center;
++            height: 50px;
++            line-height: 50px;
++        }
++        .container {
++            max-width: 800px;
++            margin: auto;
++            padding: 20px;
++            background-color: #fff;
++            border-radius: 8px;
++            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
++            position: relative;
++            margin-top: 20px;
++            margin-bottom: 70px; /* Adjusted for footer */
++        }
++        .main-title {
++            text-align: center;
++            margin-bottom: 20px;
++            font-size: 24px;
++        }
++        .bill-form {
++            display: flex;
++            flex-direction: column;
++            align-items: flex-start;
++        }
++        .form-row {
++            display: flex;
++            width: 100%;
++            flex-wrap: wrap;
++            margin-bottom: 10px;
++        }
++        .form-row label,
++        .form-row input,
++        .form-row select,
++        .form-row textarea {
++            margin-right: 10px;
++            margin-bottom: 10px;
++        }
++        .form-row label {
++            flex: 1;
++            text-align: right;
++        }
++        .form-row input,
++        .form-row select,
++        .form-row textarea {
++            flex: 2;
++            padding: 5px;
++            border: 1px solid #ccc;
++            border-radius: 4px;
++            width: 100%;
++            max-width: 150px;
++        }
++        .button {
++            padding: 10px 20px;
++            border: none;
++            color: #fff;
++            cursor: pointer;
++            margin: 5px;
++            text-decoration: none;
++            border-radius: 4px;
++        }
++        .gopal {
++            padding: 10px 20px;
++            width: 100px;
++            border: none;
++            color: #fff;
++            cursor: pointer;
++            margin: 5px;
++            text-decoration: none;
++            border-radius: 4px;
++        }
++        .button:hover {
++            opacity: 0.9;
++        }
++        #fill-more-btn {
++            background-color: #007bff;
++        }
++        #edit-save-btn {
++            background-color: #28a745;
++        }
++        #add-bill-btn {
++            background-color: #17a2b8;
++        }
++        #add-bill-btns {
++            background-color: #17a2b8;
++        }
++        #remove-bill-btn {
++            background-color: #dc3545;
++        }
++        #see-all-bills-btn {
++            background-color: #6c757d;
++        }
++        .hidden-fields {
++            display: none;
++            flex-wrap: wrap;
++            width: 100%;
++            margin-bottom: 10px;
++        }
++        .buttons {
++            text-align: center;
++            padding-left: 170px;
++        }
++        .buttons .button {
++            margin: 5px;
++        }
++        .buttons .buttoni {
++            margin: 20px;
++        }
++        .bill-list {
++            margin-top: 20px;
++        }
++        table {
++            width: 100%;
++            border-collapse: collapse;
++            margin-top: 20px;
++        }
++        table, th, td {
++            border: 1px solid #ccc;
++        }
++        th, td {
++            padding: 10px;
++            text-align: left;
++        }
++        th {
++            background-color: #f4f4f4;
++        }
++        .dashboard-button {
++            position: absolute;
++            top: 20px;
++            left: 20px;
++            padding: 10px 20px;
++            background-color: #17a2b8;
++            color: white;
++            border: none;
++            border-radius: 4px;
++            cursor: pointer;
++        }
++        .dashboard-button:hover {
++            background-color: #138496;
++        }
++        .edit-button, .save-button {
++            padding: 5px 10px;
++            background-color: #007bff;
++            color: white;
++            border: none;
++            border-radius: 4px;
++            cursor: pointer;
++        }
++        .edit-button:hover, .save-button:hover {
++            background-color: #0056b3;
++        }
++        /* Adjust input fields size in the table */
++        table input[type="text"],
++        table input[type="number"],
++        table input[type="date"],
++        table input[type="checkbox"],
++        table textarea {
++            width: 80px;
++            padding: 3px;
++            border-radius: 4px;
++        }
++        .container {
++            width: auto;
++            max-width: 60%;
++        }
++    </style>
++</head>
++<body>
++<header class="header">
++    <nav class="nav-bar">
++        <a href="index.html" class="button">Home</a>
++        <a href="billsdashboard.html" class="button">Dashboard</a>
++    </nav>
++</header>
++<div class="container">
++    <div class="main-title">Quick Fill the Bills</div>
++    <div id="bill-container">
++        <div class="bill-form">
++            <div class="form-row">
++                <label class="label-reason" for="reason">Reason for the bill:</label>
++                <input class="input-reason" type="text" id="reason" name="reason">
++                <label class="label-amount" for="amount">Bill amount:</label>
++                <input class="input-amount" type="number" id="amount" name="amount">
++                <label class="label-date" for="date">Bill date:</label>
++                <input class="input-date" type="date" id="date" name="date">
++            </div>
++            <div id="more-fields" class="hidden-fields">
++                <div class="form-row">
++                    <label class="label-category" for="category">Category:</label>
++                    <select class="select-category" id="category" name="category">
++                        <option value="travel">Travel</option>
++                        <option value="food">Food</option>
++                        <option value="accommodation">Accommodation</option>
++                        <option value="supplies">Supplies</option>
++                    </select>
++                    <label class="label-reimbursed" for="reimbursed">Already reimbursed?</label>
++                    <input class="input-reimbursed" type="checkbox" id="reimbursed" name="reimbursed">
++                    <label class="label-submitted-by" for="submitted-by">Submitted by:</label>
++                    <select class="select-submitted-by" id="submitted-by" name="submitted-by">
++                        <option value="current-user">Current User</option>
++                        <option value="other">Other User</option>
++                    </select>
++                    <label class="label-comments" for="comments">Comments:</label>
++                    <textarea class="textarea-comments" id="comments" name="comments"></textarea>
++                </div>
++            </div>
++            <div class="buttons">
++                <button class="button" id="fill-more-btn">Fill More</button>
++                <button class="button" id="add-bill-btns" onclick="saveDetails()">Save</button>
++                <button class="button" id="add-bill-btn">+ Add Bill</button>
++                <button class="button" id="remove-bill-btn">- Remove Bill</button>
++                <button class="button" id="see-all-bills-btn">See All Bills</button>
++            </div>
++        </div>
++    </div>
++    <div id="bill-list" class="bill-list">
++        <table id="bill-table">
++            <thead>
++            <tr>
++                <th>Reason</th>
++                <th>Amount</th>
++                <th>Date</th>
++                <th>Category</th>
++                <th>Reimbursed</th>
++                <th>Submitted By</th>
++                <th>Comments</th>
++                <th>Actions</th>
++            </tr>
++            </thead>
++            <tbody>
++            <!-- Rows will be added here dynamically -->
++            </tbody>
++        </table>
++    </div>
++</div>
++<footer class="footer">
++    &copy; 2024 Quick Fill the Bills. All rights reserved.
++</footer>
++<script>
++    document.addEventListener('DOMContentLoaded', function() {
++       let isFillMore = true;  // Start with fields hidden
++
++       function toggleFillMoreFields(event) {
++           const form = event.target.closest('.bill-form');
++           const moreFields = form.querySelector('#more-fields');
++           if (isFillMore) {
++               moreFields.classList.remove('hidden-fields');
++               event.target.textContent = 'Fill Less';
++           } else {
++               moreFields.classList.add('hidden-fields');
++               event.target.textContent = 'Fill More';
++           }
++           isFillMore = !isFillMore;
++       }
++
++       function getFormValues(form) {
++           const reason = form.querySelector('[id^="reason"]').value;
++           const amount = form.querySelector('[id^="amount"]').value;
++           const date = form.querySelector('[id^="date"]').value;
++           const category = form.querySelector('[id^="category"]').value;
++           const reimbursed = form.querySelector('[id^="reimbursed"]').checked;
++           const submittedBy = form.querySelector('[id^="submitted-by"]').value;
++           const comments = form.querySelector('[id^="comments"]').value;
++
++           return { reason, amount, date, category, reimbursed, submittedBy, comments };
++       }
++
++       function saveBill(event) {
++           const form = event.target.closest('.bill-form');
++           const { reason, amount, date, category, reimbursed, submittedBy, comments } = getFormValues(form);
++
++           const billTable = document.getElementById('bill-table').getElementsByTagName('tbody')[0];
++           const newRow = billTable.insertRow();
++
++           const reasonCell = newRow.insertCell(0);
++           const amountCell = newRow.insertCell(1);
++           const dateCell = newRow.insertCell(2);
++           const categoryCell = newRow.insertCell(3);
++           const reimbursedCell = newRow.insertCell(4);
++           const submittedByCell = newRow.insertCell(5);
++           const commentsCell = newRow.insertCell(6);
++           const actionCell = newRow.insertCell(7);
++
++           const reasonLink = document.createElement('a');
++           reasonLink.href = '#'; // Replace with the actual path you want to navigate to
++           reasonLink.textContent = reason;
++           reasonLink.style.textDecoration = 'none';
++           reasonLink.style.color = '#007bff'; // Optional: color for the link
++           reasonCell.appendChild(reasonLink);
++
++
++           amountCell.textContent = amount;
++           dateCell.textContent = date;
++           categoryCell.textContent = category;
++           reimbursedCell.textContent = reimbursed ? 'Yes' : 'No';
++           submittedByCell.textContent = submittedBy;
++           commentsCell.textContent = comments;
++
++           const editButton = document.createElement('button');
++           editButton.className = 'edit-button';
++           editButton.textContent = 'Edit';
++           editButton.onclick = function () {
++               editBill(this);
++           };
++           actionCell.appendChild(editButton);
++
++           const saveButton = document.createElement('button');
++           saveButton.className = 'save-button';
++           saveButton.textContent = 'Save';
++           saveButton.style.display = 'none';
++           saveButton.onclick = function () {
++               saveBillEdits(this);
++           };
++           actionCell.appendChild(saveButton);
++
++           // Clear the form fields manually
++           form.querySelectorAll('input, select, textarea').forEach(element => {
++               if (element.type === 'checkbox') {
++                   element.checked = false;
++               } else if (element.type === 'select-one') {
++                   element.selectedIndex = 0;
++               } else {
++                   element.value = '';
++               }
++           });
++
++           const billData = {
++               reason: reason,
++               amount: amount,
++               date: date,
++               category: category,
++               reimbursed: reimbursed,
++               submittedBy: submittedBy,
++               comments: comments
++           };
++
++           fetch('http://43.205.154.85:8080/api/billing', {
++               method: 'POST',
++               headers: {
++                   'Content-Type': 'application/json'
++               },
++               body: JSON.stringify(billData)
++           })
++           .then(response => {
++               if (!response.ok) {
++                   return response.json().then(err => { throw err });
++               }
++               return response.json();
++           })
++           .then(data => {
++               console.log('Success:', data);
++
++
++                const id = data.id;
++                reasonLink.setAttribute('href', `billpage.html?id=${id}`); // Set the link with the id parameter
++                reasonLink.setAttribute('data-id', id);
++
++           })
++           .catch((error) => {
++               console.error('Error:', error);
++           });
++       }
++
++       let formCounter = 1; // Start with 1 for the first cloned form
++
++       function addNewBillForm() {
++           const container = document.getElementById('bill-container');
++           const newBillForm = document.querySelector('.bill-form').cloneNode(true);
++
++           formCounter++;
++
++           // Update IDs and names for the new form elements
++           newBillForm.querySelectorAll('input, select, textarea').forEach((element) => {
++               const id = element.getAttribute('id');
++               if (id) {
++                   const newId = `${id}-${formCounter}`;
++                   element.setAttribute('id', newId);
++                   element.setAttribute('name', newId);
++               }
++               // Clear the values of the cloned form elements
++               if (element.type === 'checkbox') {
++                   element.checked = false;
++               } else if (element.type === 'select-one') {
++                   element.selectedIndex = 0;
++               } else {
++                   element.value = '';
++               }
++           });
++
++           container.appendChild(newBillForm);
++           attachEventListenersToForm(newBillForm);  // Attach event listeners to the new form
++       }
++
++       function removeLastBillForm() {
++           const forms = document.querySelectorAll('.bill-form');
++           if (forms.length > 1) {
++               forms[forms.length - 1].remove();
++           }
++       }
++
++
++    window.saveDetails = function() {
++        const reason = document.getElementById('reason').value;
++        console.log('Reason:', reason); // Log reason
++
++        const amount = document.getElementById('amount').value;
++        const date = document.getElementById('date').value;
++        const category = document.getElementById('category').value;
++        const reimbursed = document.getElementById('reimbursed').checked;
++        const submittedBy = document.getElementById('submitted-by').value;
++        const comments = document.getElementById('comments').value;
++
++        const details = {
++            reason: reason,
++            amount: amount,
++            date: date,
++            category: category,
++            reimbursed: reimbursed,
++            submittedBy: submittedBy,
++            comments: comments
++        };
++        console.log('Details to save:', details); // Log details object
++
++        localStorage.setItem('userDetails', JSON.stringify(details));
++        alert('Details saved successfully!');
++    }
++
++
++
++
++   function editBill(button) {
++         const row = button.closest('tr');
++         const cells = row.getElementsByTagName('td');
++
++         const reasonLink = cells[0].querySelector('a');
++         const amount = cells[1].textContent;
++         const date = cells[2].textContent;
++         const category = cells[3].textContent;
++         const reimbursed = cells[4].textContent === 'Yes';
++         const submittedBy = cells[5].textContent;
++         const comments = cells[6].textContent;
++
++         cells[1].innerHTML = `<input type="number" value="${amount}">`;
++         cells[2].innerHTML = `<input type="date" value="${date}">`;
++         cells[3].innerHTML = `
++             <select>
++                 <option value="travel"${category === 'travel' ? ' selected' : ''}>Travel</option>
++                 <option value="food"${category === 'food' ? ' selected' : ''}>Food</option>
++                 <option value="accommodation"${category === 'accommodation' ? ' selected' : ''}>Accommodation</option>
++                 <option value="supplies"${category === 'supplies' ? ' selected' : ''}>Supplies</option>
++             </select>`;
++         cells[4].innerHTML = `<input type="checkbox"${reimbursed ? ' checked' : ''}>`;
++         cells[5].innerHTML = `
++             <select>
++                 <option value="current-user"${submittedBy === 'current-user' ? ' selected' : ''}>Current User</option>
++                 <option value="other"${submittedBy === 'other' ? ' selected' : ''}>Other User</option>
++             </select>`;
++         cells[6].innerHTML = `<textarea>${comments}</textarea>`;
++
++         button.style.display = 'none';
++         row.querySelector('.save-button').style.display = 'inline';
++     }
++
++       function saveBillEdits(button) {
++    const row = button.closest('tr');
++    const cells = row.getElementsByTagName('td');
++    const reasonLink = cells[0].querySelector('a');
++    const billId = reasonLink.getAttribute('data-id');
++    console.log("billId:", billId);
++
++    if (!billId) {
++        console.error('No bill ID found.');
++        return;
++    }
++
++    const reason = reasonLink.textContent;
++    const amount = cells[1].querySelector('input').value;
++    const date = cells[2].querySelector('input').value;
++    const category = cells[3].querySelector('select').value;
++    const reimbursed = cells[4].querySelector('input').checked ? 'Yes' : 'No';
++    const submittedBy = cells[5].querySelector('select').value;
++    const comments = cells[6].querySelector('textarea').value;
++
++    const updatedBill = {
++        id: billId,
++        reason: reason,
++        amount: amount,
++        date: date,
++        category: category,
++        reimbursed: reimbursed === 'Yes',
++        submittedBy: submittedBy,
++        comments: comments
++    };
++
++    fetch(`http://43.205.154.85:8080/api/billing/${billId}`, {
++        method: 'PUT',
++        headers: {
++            'Content-Type': 'application/json'
++        },
++        body: JSON.stringify(updatedBill)
++    })
++    .then(response => response.json())
++    .then(data => {
++        console.log('Success:', data);
++
++        cells[1].textContent = amount;
++        cells[2].textContent = date;
++        cells[3].textContent = category;
++        cells[4].textContent = reimbursed;
++        cells[5].textContent = submittedBy;
++        cells[6].textContent = comments;
++
++        // Update local storage with the new details
++        localStorage.setItem('userDetails', JSON.stringify(updatedBill));
++        console.log('Updated Details to save:', updatedBill);
++
++        button.style.display = 'none';
++        row.querySelector('.edit-button').style.display = 'inline';
++    })
++    .catch((error) => {
++        console.error('Error:', error);
++    });
++}
++
++
++       function displayAllBills(bills) {
++           const billTableBody = document.querySelector('#bill-table tbody');
++           billTableBody.innerHTML = '';
++           bills.forEach(bill => {
++               const billRow = document.createElement('tr');
++               billRow.innerHTML = `
++                   <td><a href="billpage.html" data-id="${bill.id}">${bill.reason}</a></td>
++                   <td>${bill.amount}</td>
++                   <td>${bill.date}</td>
++                   <td>${bill.category}</td>
++                   <td>${bill.reimbursed ? 'Yes' : 'No'}</td>
++                   <td>${bill.submittedBy}</td>
++                   <td>${bill.comments}</td>
++                   <td>
++                       <button class="edit-button">Edit</button>
++                       <button class="save-button" style="display:none;">Save</button>
++                   </td>
++               `;
++               billTableBody.appendChild(billRow);
++
++               // Attach event listeners to the buttons in the new row
++               const editButton = billRow.querySelector('.edit-button');
++               const saveButton = billRow.querySelector('.save-button');
++
++               editButton.addEventListener('click', function () {
++                   editBill(editButton);
++               });
++
++               saveButton.addEventListener('click', function () {
++                   saveBillEdits(saveButton);
++               });
++           });
++       }
++
++       function fetchAllBills() {
++           fetch('http://43.205.154.85:8080/api/billing')
++               .then(response => response.json())
++               .then(data => {
++                   console.log('Bills:', data);
++                   displayAllBills(data);
++               })
++               .catch((error) => {
++                   console.error('Error:', error);
++                   alert('Error fetching bills');
++               });
++       }
++
++       function attachEventListenersToForm(form) {
++           form.querySelector('#fill-more-btn').addEventListener('click', toggleFillMoreFields);
++           form.querySelector('#add-bill-btns').addEventListener('click', saveBill);
++           form.querySelector('#add-bill-btn').addEventListener('click', addNewBillForm);
++           form.querySelector('#remove-bill-btn').addEventListener('click', removeLastBillForm);
++           form.querySelector('#see-all-bills-btn').addEventListener('click', fetchAllBills);
++       }
++
++       // Attach event listeners to the initial form
++       attachEventListenersToForm(document.querySelector('.bill-form'));
++   });
++
++
++</script>
++</body>
++</html>
+Index: backend/src/main/resources/static/viewbills.html
+===================================================================
+diff --git a/backend/src/main/resources/static/viewbills.html b/backend/src/main/resources/static/viewbills.html
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/resources/static/viewbills.html	
+@@ -0,0 +1,309 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>All Bills</title>
++    <style>
++        body {
++            font-family: 'Roboto', sans-serif;
++            background-color: #f0f2f5;
++            margin: 0;
++            padding: 0;
++            overflow: auto;
++        }
++        .header, .footer {
++            background-color: #ffffff;
++            color: #333;
++            padding: 15px 20px;
++            text-align: center;
++            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
++        }
++        .header {
++            height: 70px;
++            display: flex;
++            justify-content: space-between;
++            align-items: center;
++        }
++        .nav-bar {
++            display: flex;
++            justify-content: flex-end;
++            align-items: center;
++            height: 100%;
++        }
++        .nav-bar a {
++            margin-left: 10px;
++            text-decoration: none;
++            color: #fff;
++            padding: 10px 20px;
++            background-color: #17a2b8;
++            border-radius: 4px;
++        }
++        .nav-bar a:hover {
++            background-color: #138496;
++        }
++        .footer {
++            position: fixed;
++            bottom: 0;
++            left: 0;
++            width: 100%;
++            height: 50px;
++            line-height: 50px;
++        }
++        .container {
++            max-width: 1000px;
++            margin: 40px auto;
++            padding: 20px;
++            background-color: #ffffff;
++            border-radius: 8px;
++            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
++        }
++        .main-title {
++            text-align: center;
++            margin-bottom: 20px;
++            font-size: 28px;
++            color: #333;
++        }
++        .bill-list {
++            margin-top: 20px;
++        }
++        table {
++            width: 100%;
++            border-collapse: collapse;
++            margin-top: 20px;
++        }
++        table, th, td {
++            border: 1px solid #ccc;
++        }
++        th, td {
++            padding: 10px;
++            text-align: left;
++        }
++        th {
++            background-color: #f8f9fa;
++        }
++        tr:hover {
++            background-color: #f1f1f1;
++        }
++        .button {
++            padding: 8px 12px;
++            background-color: #17a2b8;
++            color: white;
++            border: none;
++            border-radius: 4px;
++            cursor: pointer;
++            text-align: center;
++        }
++        .button:hover {
++            background-color: #138496;
++        }
++    </style>
++</head>
++<body>
++<!--<div class="header">-->
++<!--    <h1 id="bills-title">Sell All Bills</h1>-->
++<!--</div>-->
++<div class="container">
++    <div class="main-title">Bills List</div>
++    <table id="bill-table">
++        <thead>
++        <tr>
++            <th>Reason</th>
++            <th>Amount</th>
++            <th>Date</th>
++            <th>Category</th>
++            <th>Reimbursed</th>
++            <th>Submitted By</th>
++            <th>Comments</th>
++            <th>Files</th>
++            <th>Actions</th>
++        </tr>
++        </thead>
++        <tbody>
++        <!-- Bill rows will be dynamically inserted here -->
++        </tbody>
++    </table>
++</div>
++<div class="footer">
++    &copy; 2024 Your Company
++</div>
++<script>
++    function displayAllBills(bills) {
++        const billTableBody = document.querySelector('#bill-table tbody');
++        billTableBody.innerHTML = '';
++        bills.forEach(bill => {
++            const billRow = document.createElement('tr');
++            billRow.innerHTML = `
++                <td><a href="billpage.html" data-id="${bill.id}">${bill.reason}</a></td>
++                <td>${bill.amount}</td>
++                <td>${bill.date}</td>
++                <td>${bill.category}</td>
++                <td>${bill.reimbursed ? 'Yes' : 'No'}</td>
++                <td>${bill.submittedBy}</td>
++                <td>${bill.comments}</td>
++                <td><a href="#" class="view-files-link" data-id="${bill.id}">View File</a></td>
++                <td>
++                    <button class="button edit-button">Edit</button>
++                    <button class="button save-button" style="display:none;">Save</button>
++                </td>
++            `;
++            billTableBody.appendChild(billRow);
++
++            const editButton = billRow.querySelector('.edit-button');
++            const saveButton = billRow.querySelector('.save-button');
++            const viewFilesLink = billRow.querySelector('.view-files-link');
++
++            editButton.addEventListener('click', function () {
++                editBill(editButton);
++            });
++
++            saveButton.addEventListener('click', function () {
++                saveBillEdits(saveButton);
++            });
++
++            viewFilesLink.addEventListener('click', function (event) {
++                event.preventDefault();
++                viewFile(viewFilesLink.getAttribute('data-id'));
++            });
++        });
++    }
++
++    function fetchAllBills() {
++        fetch('http://localhost:8080/api/billing')
++            .then(response => response.json())
++            .then(data => {
++                console.log('Bills:', data);
++                displayAllBills(data);
++            })
++            .catch((error) => {
++                console.error('Error:', error);
++                alert('Error fetching bills');
++            });
++    }
++
++    function editBill(button) {
++        const row = button.closest('tr');
++        const cells = row.getElementsByTagName('td');
++
++        const reasonLink = cells[0].querySelector('a');
++        const amount = cells[1].textContent;
++        const date = cells[2].textContent;
++        const category = cells[3].textContent;
++        const reimbursed = cells[4].textContent === 'Yes';
++        const submittedBy = cells[5].textContent;
++        const comments = cells[6].textContent;
++
++        cells[1].innerHTML = `<input type="number" value="${amount}">`;
++        cells[2].innerHTML = `<input type="date" value="${date}">`;
++        cells[3].innerHTML = `
++            <select>
++                <option value="travel"${category === 'travel' ? ' selected' : ''}>Travel</option>
++                <option value="food"${category === 'food' ? ' selected' : ''}>Food</option>
++                <option value="accommodation"${category === 'accommodation' ? ' selected' : ''}>Accommodation</option>
++                <option value="supplies"${category === 'supplies' ? ' selected' : ''}>Supplies</option>
++            </select>`;
++        cells[4].innerHTML = `<input type="checkbox"${reimbursed ? ' checked' : ''}>`;
++        cells[5].innerHTML = `
++            <select>
++                <option value="current-user"${submittedBy === 'current-user' ? ' selected' : ''}>Current User</option>
++                <option value="other"${submittedBy === 'other' ? ' selected' : ''}>Other User</option>
++            </select>`;
++        cells[6].innerHTML = `<textarea>${comments}</textarea>`;
++
++        button.style.display = 'none';
++        row.querySelector('.save-button').style.display = 'inline';
++    }
++
++    function saveBillEdits(button) {
++        const row = button.closest('tr');
++        const cells = row.getElementsByTagName('td');
++        const reasonLink = cells[0].querySelector('a');
++        const billId = reasonLink.getAttribute('data-id');
++
++        const reason = reasonLink.textContent;
++        const amount = cells[1].querySelector('input').value;
++        const date = cells[2].querySelector('input').value;
++        const category = cells[3].querySelector('select').value;
++        const reimbursed = cells[4].querySelector('input').checked ? 'Yes' : 'No';
++        const submittedBy = cells[5].querySelector('select').value;
++        const comments = cells[6].querySelector('textarea').value;
++
++        const updatedBill = {
++            id: billId,
++            reason: reason,
++            amount: amount,
++            date: date,
++            category: category,
++            reimbursed: reimbursed === 'Yes',
++            submittedBy: submittedBy,
++            comments: comments
++        };
++
++        fetch(`http://43.205.154.85:8080/api/billing/${billId}`, {
++            method: 'PUT',
++            headers: {
++                'Content-Type': 'application/json',
++            },
++            body: JSON.stringify(updatedBill),
++        })
++            .then(response => response.json())
++            .then(data => {
++                console.log('Updated Bill:', data);
++                cells[1].textContent = amount;
++                cells[2].textContent = date;
++                cells[3].textContent = category;
++                cells[4].textContent = reimbursed;
++                cells[5].textContent = submittedBy;
++                cells[6].textContent = comments;
++
++                button.style.display = 'none';
++                row.querySelector('.edit-button').style.display = 'inline';
++            })
++            .catch((error) => {
++                console.error('Error:', error);
++                alert('Error updating bill');
++            });
++    }
++
++    function viewFile(billId) {
++        fetch(`http://43.205.154.85:8080/api/billing/${billId}`)
++            .then(response => response.json())
++            .then(bill => {
++                if (bill.fileId) {
++                    console.log('File ID:', bill.fileId);
++                    viewProfile(bill.fileId);
++                } else {
++                    alert('File not uploaded');
++                }
++            })
++            .catch((error) => {
++                console.error('Error fetching bill:', error);
++                alert('Error fetching bill. Please try again.');
++            });
++    }
++
++    function viewProfile(fileId) {
++        console.log('viewProfile File ID:', fileId);
++        fetch(`http://43.205.154.85:8080/api/billing/viewPdf/${fileId}`)
++            .then(response => {
++                if (!response.ok) {
++                    throw new Error('Network response was not ok ' + response.statusText);
++                }
++                return response.blob();
++            })
++            .then(blob => {
++                const url = window.URL.createObjectURL(blob);
++                window.open(url);
++            })
++            .catch(error => {
++                console.error('Error viewing profile:', error);
++                alert('Error viewing profile. Please try again.');
++            });
++    }
++
++    document.addEventListener('DOMContentLoaded', function() {
++        fetchAllBills();
++    });
++</script>
++</body>
++</html>
+Index: backend/src/main/java/com/example/job_desc_backend/repository/BillMongoRepository.java
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/repository/BillMongoRepository.java b/backend/src/main/java/com/example/job_desc_backend/repository/BillMongoRepository.java
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/java/com/example/job_desc_backend/repository/BillMongoRepository.java	
+@@ -0,0 +1,15 @@
++package com.example.job_desc_backend.repository;
++
++
++
++import com.example.job_desc_backend.model.BillEntity;
++import org.springframework.data.mongodb.repository.MongoRepository;
++import org.springframework.stereotype.Repository;
++
++@Repository
++public interface BillMongoRepository extends MongoRepository<BillEntity, String> {
++    long countByClientReimbursed(boolean clientReimbursed);
++
++    long countByReimbursed(boolean reimbursed);
++
++}
+Index: backend/src/main/java/com/example/job_desc_backend/service/BillDataService.java
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/service/BillDataService.java b/backend/src/main/java/com/example/job_desc_backend/service/BillDataService.java
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/java/com/example/job_desc_backend/service/BillDataService.java	
+@@ -0,0 +1,35 @@
++package com.example.job_desc_backend.service;
++
++
++
++import com.example.job_desc_backend.model.BillEntity;
++import com.example.job_desc_backend.repository.BillMongoRepository;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++import java.util.List;
++
++@Service
++public class BillDataService {
++
++    @Autowired
++    private BillMongoRepository billRepository;
++
++    public BillEntity saveBill(BillEntity bill) {
++        return billRepository.save(bill);
++    }
++
++
++    public List<BillEntity> getAllBills() {
++        return billRepository.findAll();
++    }
++
++    public void deleteBill(String id) {
++        billRepository.deleteById(id);
++    }
++
++    public BillEntity getBillById(String id) {
++        return billRepository.findById(id).orElse(null);
++    }
++
++
++}
+Index: backend/src/main/resources/static/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n<!--<!DOCTYPE html>-->\r\n<!--<html lang=\"en\">-->\r\n<!--<head>-->\r\n<!--    <meta charset=\"UTF-8\">-->\r\n<!--    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">-->\r\n<!--    <title>Dashboard</title>-->\r\n<!--    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap\" rel=\"stylesheet\">-->\r\n<!--    <style>-->\r\n<!--        body {-->\r\n<!--            font-family: 'Roboto', sans-serif;-->\r\n<!--            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);-->\r\n<!--            margin: 0;-->\r\n<!--            padding: 0;-->\r\n<!--            color: #333;-->\r\n<!--            overflow-x: hidden;-->\r\n<!--        }-->\r\n\r\n<!--        header {-->\r\n<!--            background: #005149;-->\r\n<!--            color: white;-->\r\n<!--            padding: 15px 30px;-->\r\n<!--            display: flex;-->\r\n<!--            justify-content: space-between;-->\r\n<!--            align-items: center;-->\r\n<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->\r\n<!--            position: fixed;-->\r\n<!--            width: 100%;-->\r\n<!--            top: 0;-->\r\n<!--            left: 0;-->\r\n<!--            z-index: 1000;-->\r\n<!--        }-->\r\n\r\n<!--        header h1 {-->\r\n<!--            margin: 0;-->\r\n<!--            font-size: 2.5em;-->\r\n<!--        }-->\r\n\r\n<!--        .nav-button, .dropdown-button {-->\r\n<!--            padding: 10px 20px;-->\r\n<!--            font-size: 16px;-->\r\n<!--            background: #f5b501;-->\r\n<!--            color: #091521;-->\r\n<!--            border: 2px solid #f5b501;-->\r\n<!--            border-radius: 25px;-->\r\n<!--            cursor: pointer;-->\r\n<!--            transition: all 0.3s ease;-->\r\n<!--        }-->\r\n\r\n<!--        .nav-button:hover, .dropdown-button:hover {-->\r\n<!--            background: #3a7a74;-->\r\n<!--            color: white;-->\r\n<!--            border-color: #3a7a74;-->\r\n<!--        }-->\r\n<!--        .dropdown {-->\r\n<!--            position: relative;-->\r\n<!--            padding-right: 40px;-->\r\n\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu {-->\r\n<!--            display: none;-->\r\n<!--            position: absolute;-->\r\n<!--            background: #ffffff;-->\r\n<!--            border-radius: 8px;-->\r\n<!--            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);-->\r\n<!--            width: 150px;-->\r\n<!--            right: 0;-->\r\n<!--            top: 60px;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu.show {-->\r\n<!--            display: block;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu a {-->\r\n<!--            display: block;-->\r\n<!--            padding: 12px;-->\r\n<!--            color: #091521;-->\r\n<!--            text-decoration: none;-->\r\n<!--            font-size: 14px;-->\r\n<!--            transition: background 0.3s ease;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu a:hover {-->\r\n<!--            background: #3a7a74;-->\r\n<!--            color: white;-->\r\n<!--        }-->\r\n\r\n<!--        main {-->\r\n<!--            margin-top: 80px; /* Space for fixed header */-->\r\n<!--            padding: 20px;-->\r\n<!--            overflow: auto;-->\r\n<!--        }-->\r\n\r\n<!--        .container {-->\r\n<!--            display: flex;-->\r\n<!--            flex-wrap: wrap;-->\r\n<!--            gap: 20px;-->\r\n<!--        }-->\r\n\r\n<!--        .dashboard-container, .today-container {-->\r\n<!--            background: #ffffff;-->\r\n<!--            padding: 30px;-->\r\n<!--            border-radius: 10px;-->\r\n<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->\r\n<!--            flex: 1;-->\r\n<!--            min-width: 300px;-->\r\n<!--            max-width: 48%;-->\r\n<!--        }-->\r\n\r\n<!--        .dashboard-container {-->\r\n<!--            flex: 2;-->\r\n<!--        }-->\r\n\r\n<!--        .today-container {-->\r\n<!--            flex: 1;-->\r\n<!--        }-->\r\n\r\n<!--        h1, h2 {-->\r\n<!--            color: #005149;-->\r\n<!--            margin: 0 0 15px;-->\r\n<!--        }-->\r\n\r\n<!--        p {-->\r\n<!--            margin: 10px 0;-->\r\n<!--            font-size: 18px;-->\r\n<!--            color: #333;-->\r\n<!--        }-->\r\n\r\n<!--        #detail {-->\r\n<!--            display: flex;-->\r\n<!--            flex-direction: column;-->\r\n<!--            align-items: flex-start;-->\r\n<!--            background: #ffffff;-->\r\n<!--            border-radius: 10px;-->\r\n<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->\r\n<!--            padding: 20px;-->\r\n<!--            margin-bottom: 20px;-->\r\n<!--        }-->\r\n\r\n<!--        #currentDate, #lastLogin {-->\r\n<!--            font-size: 1.2em;-->\r\n<!--            color: #005149;-->\r\n<!--        }-->\r\n\r\n<!--        #lastLoginContainer {-->\r\n<!--            display: flex;-->\r\n<!--            justify-content: flex-end;-->\r\n<!--            width: 100%;-->\r\n<!--        }-->\r\n<!--        #heading {-->\r\n<!--            color: white;-->\r\n<!--        }-->\r\n\r\n<!--        .summary, .this-week {-->\r\n<!--            margin-top: 20px;-->\r\n<!--        }-->\r\n\r\n<!--        .this-week-container {-->\r\n<!--            background: #f9f9f9;-->\r\n<!--            padding: 20px;-->\r\n<!--            border-radius: 10px;-->\r\n<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->\r\n<!--            margin-top: 20px;-->\r\n<!--            max-width: 49.5%;-->\r\n<!--        }-->\r\n<!--    </style>-->\r\n<!--</head>-->\r\n<!--<body>-->\r\n<!--<header>-->\r\n<!--    <h1 id=\"heading\">Pro-Square</h1>-->\r\n<!--    <button class=\"nav-button\" onclick=\"navigateToPractice9()\">Upload and Download Resume</button>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button class=\"dropdown-button\" onclick=\"toggleDropdown('jdDropdown')\">JD Actions</button>-->\r\n<!--        <div id=\"jdDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"jd3.html\">Create JD</a>-->\r\n<!--            <a href=\"list5.html\">View JD</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button class=\"dropdown-button\" onclick=\"toggleDropdown('profileDropdown')\">Profile</button>-->\r\n<!--        <div id=\"profileDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"addprofile.html\">Add Profile</a>-->\r\n<!--            <a href=\"allprofiles.html\">View Profiles</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <button class=\"nav-button\" onclick=\"navigateToResumeMatcher()\">Resume Matcher</button>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button id=\"loginRegisterButton\" class=\"dropdown-button\" onclick=\"toggleDropdown('loginRegisterDropdown')\">Login/Register</button>-->\r\n<!--        <div id=\"loginRegisterDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"login.html\">Login</a>-->\r\n<!--            <a href=\"register.html\">Register</a>-->\r\n<!--            <a href=\"#\" id=\"signOutButton\" onclick=\"signOut()\" style=\"display: none;\">Sign Out</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--</header>-->\r\n<!--<main>-->\r\n<!--    <div id=\"detail\">-->\r\n<!--        <h2>Hi User, Good Morning</h2>-->\r\n<!--        <div id=\"currentDate\"></div>-->\r\n<!--        <div id=\"lastLoginContainer\">-->\r\n<!--            <p id=\"lastLogin\">Last login: Not available</p>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n\r\n<!--    <div class=\"container\">-->\r\n<!--        <div class=\"dashboard-container\">-->\r\n<!--            <h1>Your Dashboard</h1>-->\r\n<!--            <div class=\"summary\">-->\r\n<!--                <p>Total Profiles: <span id=\"totalProfiles\">0</span></p>-->\r\n<!--                <p>Total JDs: <span id=\"totalJDs\">0</span></p>-->\r\n<!--            </div>-->\r\n<!--        </div>-->\r\n<!--        <div class=\"today-container\">-->\r\n<!--            <h2>Today's Updates</h2>-->\r\n<!--            <p>Profiles Added: <span id=\"profilesToday\">0</span></p>-->\r\n<!--            <p>JDs Added: <span id=\"jdsToday\">0</span></p>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <div class=\"this-week-container\">-->\r\n<!--        <h2>This Week</h2>-->\r\n<!--        <p>Profiles Added: <span id=\"profilesThisWeek\">0</span></p>-->\r\n<!--        <p>JDs Added: <span id=\"jdsThisWeek\">0</span></p>-->\r\n<!--    </div>-->\r\n<!--</main>-->\r\n<!--<script>-->\r\n\r\n<!--    function toggleDropdown(id) {-->\r\n<!--            var dropdown = document.getElementById(id);-->\r\n<!--            if (dropdown.classList.contains('show')) {-->\r\n<!--                dropdown.classList.remove('show');-->\r\n<!--            } else {-->\r\n<!--                dropdown.classList.add('show');-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        function navigateToPractice9() {-->\r\n<!--            window.location.href = 'practice9.html';-->\r\n<!--        }-->\r\n\r\n<!--        function navigateToResumeMatcher() {-->\r\n<!--            window.location.href = 'home.html';-->\r\n<!--        }-->\r\n\r\n<!--        function signOut() {-->\r\n<!--            console.log('Signing out...');-->\r\n<!--            localStorage.removeItem('accessToken');-->\r\n<!--            localStorage.setItem('isLoggedIn', 'false');-->\r\n<!--            localStorage.removeItem('username');-->\r\n<!--            window.location.reload();-->\r\n<!--        }-->\r\n<!--    document.addEventListener('DOMContentLoaded', () => {-->\r\n<!--        const token = localStorage.getItem('accessToken');-->\r\n<!--        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';-->\r\n<!--        const username = localStorage.getItem('username');-->\r\n<!--        const lastLogin = localStorage.getItem('lastLogin');-->\r\n<!--        console.log(\"lastlogin\",lastLogin);-->\r\n<!--        const signOutButton = document.getElementById('signOutButton');-->\r\n\r\n<!--        function updateDisplay() {-->\r\n<!--            const today = new Date();-->\r\n<!--            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->\r\n<!--            const currentDateElement = document.getElementById('currentDate');-->\r\n<!--            if (currentDateElement) {-->\r\n<!--                currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->\r\n<!--            }-->\r\n\r\n<!--            const lastLoginElement = document.getElementById('lastLogin');-->\r\n<!--            if (lastLoginElement) {-->\r\n<!--                lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        // Call updateDisplay initially to set the current date and last login-->\r\n<!--        updateDisplay();-->\r\n\r\n\r\n<!--        function handleInvalidToken() {-->\r\n<!--            showModal(\"Session expired. Please log in again.\");-->\r\n<!--            const loginButton = document.getElementById('loginRegisterButton');-->\r\n<!--            if (loginButton) {-->\r\n<!--                loginButton.innerText = 'Login/Register';-->\r\n<!--            }-->\r\n<!--            if (signOutButton) {-->\r\n<!--                signOutButton.style.display = 'none';-->\r\n<!--            }-->\r\n<!--            localStorage.removeItem('accessToken');-->\r\n<!--            localStorage.setItem('isLoggedIn', 'false');-->\r\n<!--            localStorage.removeItem('username');-->\r\n<!--        }-->\r\n\r\n\r\n\r\n\r\n\r\n<!--        if (!token) {-->\r\n<!--            showModal(\"You have not yet logged in. Kindly login first\");-->\r\n<!--            return;-->\r\n<!--        }-->\r\n\r\n<!--        if (isLoggedIn) {-->\r\n<!--            const loginButton = document.getElementById('loginRegisterButton');-->\r\n<!--            if (loginButton) {-->\r\n<!--                loginButton.innerText = `Logged In as ${username}`;-->\r\n<!--            }-->\r\n<!--            const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');-->\r\n<!--            if (loginDropdownMenu) {-->\r\n<!--                loginDropdownMenu.style.display = 'none';-->\r\n<!--            }-->\r\n<!--            if (signOutButton) {-->\r\n<!--                signOutButton.style.display = 'block';-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        if (lastLogin) {-->\r\n<!--            const lastLoginElement = document.getElementById('lastLogin');-->\r\n<!--            if (lastLoginElement) {-->\r\n<!--                lastLoginElement.innerText = `Last login: ${lastLogin}`;-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        const today = new Date();-->\r\n<!--        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->\r\n<!--        const currentDateElement = document.getElementById('currentDate');-->\r\n<!--        if (currentDateElement) {-->\r\n<!--            currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->\r\n<!--        }-->\r\n\r\n<!--        fetch('http://13.201.90.199:8080/profile/count', {-->\r\n<!--            headers: {-->\r\n<!--                \"Authorization\": `Bearer ${token}`-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .then(response => response.json())-->\r\n<!--        .then(data => {-->\r\n<!--            const totalProfilesElement = document.getElementById('totalProfiles');-->\r\n<!--            const profilesThisWeekElement = document.getElementById('profilesThisWeek');-->\r\n<!--            const profilesTodayElement = document.getElementById('profilesToday');-->\r\n<!--            if (totalProfilesElement) {-->\r\n<!--                totalProfilesElement.innerText = data.total;-->\r\n<!--            }-->\r\n<!--            if (profilesThisWeekElement) {-->\r\n<!--                profilesThisWeekElement.innerText = data.thisWeek;-->\r\n<!--            }-->\r\n<!--            if (profilesTodayElement) {-->\r\n<!--                profilesTodayElement.innerText = data.today;-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .catch(error => {-->\r\n<!--            console.error('Error fetching profile count:', error);-->\r\n<!--            signOut();-->\r\n<!--        });-->\r\n\r\n<!--        fetch('http://13.201.90.199:8080/jd/count', {-->\r\n<!--            headers: {-->\r\n<!--                \"Authorization\": `Bearer ${token}`-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .then(response => response.json())-->\r\n<!--        .then(data => {-->\r\n<!--            const totalJDsElement = document.getElementById('totalJDs');-->\r\n<!--            const jdsThisWeekElement = document.getElementById('jdsThisWeek');-->\r\n<!--            const jdsTodayElement = document.getElementById('jdsToday');-->\r\n<!--            if (totalJDsElement) {-->\r\n<!--                totalJDsElement.innerText = data.total;-->\r\n<!--            }-->\r\n<!--            if (jdsThisWeekElement) {-->\r\n<!--                jdsThisWeekElement.innerText = data.thisWeek;-->\r\n<!--            }-->\r\n<!--            if (jdsTodayElement) {-->\r\n<!--                jdsTodayElement.innerText = data.today;-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .catch(error => {-->\r\n<!--            console.error('Error fetching JD count:', error);-->\r\n<!--            signOut();-->\r\n<!--        });-->\r\n<!--    });-->\r\n<!--</script>-->\r\n<!--</body>-->\r\n<!--</html>-->\r\n\r\n\r\n\r\n\r\n<!--<!DOCTYPE html>-->\r\n<!--<html lang=\"en\">-->\r\n<!--<head>-->\r\n<!--    <meta charset=\"UTF-8\">-->\r\n<!--    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">-->\r\n<!--    <title>Dashboard</title>-->\r\n<!--    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap\" rel=\"stylesheet\">-->\r\n<!--    <style>-->\r\n<!--        body {-->\r\n<!--            font-family: 'Roboto', sans-serif;-->\r\n<!--            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);-->\r\n<!--            margin: 0;-->\r\n<!--            padding: 0;-->\r\n<!--            color: #333;-->\r\n<!--            overflow-x: hidden;-->\r\n<!--        }-->\r\n\r\n<!--        header {-->\r\n<!--            background: #005149;-->\r\n<!--            color: white;-->\r\n<!--            padding: 15px 30px;-->\r\n<!--            display: flex;-->\r\n<!--            justify-content: space-between;-->\r\n<!--            align-items: center;-->\r\n<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->\r\n<!--            position: fixed;-->\r\n<!--            width: 100%;-->\r\n<!--            top: 0;-->\r\n<!--            left: 0;-->\r\n<!--            z-index: 1000;-->\r\n<!--        }-->\r\n\r\n<!--        header h1 {-->\r\n<!--            margin: 0;-->\r\n<!--            font-size: 2.5em;-->\r\n<!--        }-->\r\n\r\n<!--        .nav-button, .dropdown-button {-->\r\n<!--            padding: 10px 20px;-->\r\n<!--            font-size: 16px;-->\r\n<!--            background: #f5b501;-->\r\n<!--            color: #091521;-->\r\n<!--            border: 2px solid #f5b501;-->\r\n<!--            border-radius: 25px;-->\r\n<!--            cursor: pointer;-->\r\n<!--            transition: all 0.3s ease;-->\r\n<!--        }-->\r\n\r\n<!--        .nav-button:hover, .dropdown-button:hover {-->\r\n<!--            background: #3a7a74;-->\r\n<!--            color: white;-->\r\n<!--            border-color: #3a7a74;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown {-->\r\n<!--            position: relative;-->\r\n<!--            padding-right: 40px;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu {-->\r\n<!--            display: none;-->\r\n<!--            position: absolute;-->\r\n<!--            background: #ffffff;-->\r\n<!--            border-radius: 8px;-->\r\n<!--            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);-->\r\n<!--            width: 150px;-->\r\n<!--            right: 0;-->\r\n<!--            top: 60px;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu.show {-->\r\n<!--            display: block;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu a {-->\r\n<!--            display: block;-->\r\n<!--            padding: 12px;-->\r\n<!--            color: #091521;-->\r\n<!--            text-decoration: none;-->\r\n<!--            font-size: 14px;-->\r\n<!--            transition: background 0.3s ease;-->\r\n<!--        }-->\r\n\r\n<!--        .dropdown-menu a:hover {-->\r\n<!--            background: #3a7a74;-->\r\n<!--            color: white;-->\r\n<!--        }-->\r\n\r\n<!--        main {-->\r\n<!--            margin-top: 80px; /* Space for fixed header */-->\r\n<!--            padding: 20px;-->\r\n<!--            overflow: auto;-->\r\n<!--        }-->\r\n\r\n<!--        .container {-->\r\n<!--            display: flex;-->\r\n<!--            flex-wrap: wrap;-->\r\n<!--            gap: 20px;-->\r\n<!--        }-->\r\n\r\n<!--        .dashboard-container, .today-container {-->\r\n<!--            background: #ffffff;-->\r\n<!--            padding: 30px;-->\r\n<!--            border-radius: 10px;-->\r\n<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->\r\n<!--            flex: 1;-->\r\n<!--            min-width: 300px;-->\r\n<!--            max-width: 48%;-->\r\n<!--        }-->\r\n\r\n<!--        .dashboard-container {-->\r\n<!--            flex: 2;-->\r\n<!--        }-->\r\n\r\n<!--        .today-container {-->\r\n<!--            flex: 1;-->\r\n<!--        }-->\r\n\r\n<!--        h1, h2 {-->\r\n<!--            color: #005149;-->\r\n<!--            margin: 0 0 15px;-->\r\n<!--        }-->\r\n\r\n<!--        p {-->\r\n<!--            margin: 10px 0;-->\r\n<!--            font-size: 18px;-->\r\n<!--            color: #333;-->\r\n<!--        }-->\r\n\r\n<!--        #detail {-->\r\n<!--            display: flex;-->\r\n<!--            flex-direction: column;-->\r\n<!--            align-items: flex-start;-->\r\n<!--            background: #ffffff;-->\r\n<!--            border-radius: 10px;-->\r\n<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->\r\n<!--            padding: 20px;-->\r\n<!--            margin-bottom: 20px;-->\r\n<!--        }-->\r\n\r\n<!--        #currentDate, #lastLogin {-->\r\n<!--            font-size: 1.2em;-->\r\n<!--            color: #005149;-->\r\n<!--        }-->\r\n\r\n<!--        #lastLoginContainer {-->\r\n<!--            display: flex;-->\r\n<!--            justify-content: flex-end;-->\r\n<!--            width: 100%;-->\r\n<!--        }-->\r\n\r\n<!--        #heading {-->\r\n<!--            color: white;-->\r\n<!--        }-->\r\n\r\n<!--        .summary, .this-week {-->\r\n<!--            margin-top: 20px;-->\r\n<!--        }-->\r\n\r\n<!--        .this-week-container {-->\r\n<!--            background: #f9f9f9;-->\r\n<!--            padding: 20px;-->\r\n<!--            border-radius: 10px;-->\r\n<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->\r\n<!--            margin-top: 20px;-->\r\n<!--            max-width: 49.5%;-->\r\n<!--        }-->\r\n<!--    </style>-->\r\n<!--</head>-->\r\n<!--<body>-->\r\n<!--<header>-->\r\n<!--    <h1 id=\"heading\">Pro-Square</h1>-->\r\n<!--    <button class=\"nav-button\" onclick=\"navigateToPractice9()\">Upload and Download Resume</button>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button class=\"dropdown-button\" onclick=\"toggleDropdown('jdDropdown')\">JD Actions</button>-->\r\n<!--        <div id=\"jdDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"jd3.html\">Create JD</a>-->\r\n<!--            <a href=\"list5.html\">View JD</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button class=\"dropdown-button\" onclick=\"toggleDropdown('profileDropdown')\">Profile</button>-->\r\n<!--        <div id=\"profileDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"addprofile.html\">Add Profile</a>-->\r\n<!--            <a href=\"allprofiles.html\">View Profiles</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button class=\"dropdown-button\" onclick=\"toggleDropdown('billDropdown')\">Bill</button>-->\r\n<!--        <div id=\"billDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"billpage.html\">Bill Page</a>-->\r\n<!--            <a href=\"billsdashboard.html\">Bills Dashboard</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <button class=\"nav-button\" onclick=\"navigateToResumeMatcher()\">Resume Matcher</button>-->\r\n<!--    <div class=\"dropdown\">-->\r\n<!--        <button id=\"loginRegisterButton\" class=\"dropdown-button\" onclick=\"toggleDropdown('loginRegisterDropdown')\">Login/Register</button>-->\r\n<!--        <div id=\"loginRegisterDropdown\" class=\"dropdown-menu\">-->\r\n<!--            <a href=\"login.html\">Login</a>-->\r\n<!--            <a href=\"register.html\">Register</a>-->\r\n<!--            <a href=\"#\" id=\"signOutButton\" onclick=\"signOut()\" style=\"display: none;\">Sign Out</a>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--</header>-->\r\n<!--<main>-->\r\n<!--    <div id=\"detail\">-->\r\n<!--        <h2>Hi User, Good Morning</h2>-->\r\n<!--        <div id=\"currentDate\"></div>-->\r\n<!--        <div id=\"lastLoginContainer\">-->\r\n<!--            <p id=\"lastLogin\">Last login: Not available</p>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n\r\n<!--    <div class=\"container\">-->\r\n<!--        <div class=\"dashboard-container\">-->\r\n<!--            <h1>Your Dashboard</h1>-->\r\n<!--            <div class=\"summary\">-->\r\n<!--                <p>Total Profiles: <span id=\"totalProfiles\">0</span></p>-->\r\n<!--                <p>Total JDs: <span id=\"totalJDs\">0</span></p>-->\r\n<!--            </div>-->\r\n<!--        </div>-->\r\n<!--        <div class=\"today-container\">-->\r\n<!--            <h2>Today's Updates</h2>-->\r\n<!--            <p>Profiles Added: <span id=\"profilesToday\">0</span></p>-->\r\n<!--            <p>JDs Added: <span id=\"jdsToday\">0</span></p>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--    <div class=\"this-week-container\">-->\r\n<!--        <h2>This Week</h2>-->\r\n<!--        <p>Profiles Added: <span id=\"profilesThisWeek\">0</span></p>-->\r\n<!--        <p>JDs Added: <span id=\"jdsThisWeek\">0</span></p>-->\r\n<!--    </div>-->\r\n<!--</main>-->\r\n<!--<script>-->\r\n<!--    function toggleDropdown(id) {-->\r\n<!--        var dropdown = document.getElementById(id);-->\r\n<!--        if (dropdown.classList.contains('show')) {-->\r\n<!--            dropdown.classList.remove('show');-->\r\n<!--        } else {-->\r\n<!--            dropdown.classList.add('show');-->\r\n<!--        }-->\r\n<!--    }-->\r\n\r\n<!--    function navigateToPractice9() {-->\r\n<!--        window.location.href = 'practice9.html';-->\r\n<!--    }-->\r\n\r\n<!--    function navigateToResumeMatcher() {-->\r\n<!--        window.location.href = 'home.html';-->\r\n<!--    }-->\r\n\r\n<!--    function signOut() {-->\r\n<!--        console.log('Signing out...');-->\r\n<!--        localStorage.removeItem('accessToken');-->\r\n<!--        localStorage.setItem('isLoggedIn', 'false');-->\r\n<!--        localStorage.removeItem('username');-->\r\n<!--        window.location.reload();-->\r\n<!--    }-->\r\n\r\n<!--    document.addEventListener('DOMContentLoaded', () => {-->\r\n<!--        const token = localStorage.getItem('accessToken');-->\r\n<!--        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';-->\r\n<!--        const username = localStorage.getItem('username');-->\r\n<!--        const lastLogin = localStorage.getItem('lastLogin');-->\r\n<!--        console.log(\"lastlogin\", lastLogin);-->\r\n<!--        const signOutButton = document.getElementById('signOutButton');-->\r\n\r\n<!--        function updateDisplay() {-->\r\n<!--            const today = new Date();-->\r\n<!--            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->\r\n<!--            const currentDateElement = document.getElementById('currentDate');-->\r\n<!--            if (currentDateElement) {-->\r\n<!--                currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->\r\n<!--            }-->\r\n\r\n<!--            const lastLoginElement = document.getElementById('lastLogin');-->\r\n<!--            if (lastLoginElement) {-->\r\n<!--                lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        // Call updateDisplay initially to set the current date and last login-->\r\n<!--        updateDisplay();-->\r\n\r\n<!--        function handleInvalidToken() {-->\r\n<!--            showModal(\"Session expired. Please log in again.\");-->\r\n<!--            const loginButton = document.getElementById('loginRegisterButton');-->\r\n<!--            if (loginButton) {-->\r\n<!--                loginButton.innerText = 'Login/Register';-->\r\n<!--            }-->\r\n<!--            if (signOutButton) {-->\r\n<!--                signOutButton.style.display = 'none';-->\r\n<!--            }-->\r\n<!--            localStorage.removeItem('accessToken');-->\r\n<!--            localStorage.setItem('isLoggedIn', 'false');-->\r\n<!--            localStorage.removeItem('username');-->\r\n<!--        }-->\r\n\r\n<!--        if (!token) {-->\r\n<!--            showModal(\"You have not yet logged in. Kindly login first\");-->\r\n<!--            return;-->\r\n<!--        }-->\r\n\r\n<!--        if (isLoggedIn) {-->\r\n<!--            const loginButton = document.getElementById('loginRegisterButton');-->\r\n<!--            if (loginButton) {-->\r\n<!--                loginButton.innerText = `Logged In as ${username}`;-->\r\n<!--            }-->\r\n<!--            const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');-->\r\n<!--            if (loginDropdownMenu) {-->\r\n<!--                loginDropdownMenu.style.display = 'none';-->\r\n<!--            }-->\r\n<!--            if (signOutButton) {-->\r\n<!--                signOutButton.style.display = 'block';-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        if (lastLogin) {-->\r\n<!--            const lastLoginElement = document.getElementById('lastLogin');-->\r\n<!--            if (lastLoginElement) {-->\r\n<!--                lastLoginElement.innerText = `Last login: ${lastLogin}`;-->\r\n<!--            }-->\r\n<!--        }-->\r\n\r\n<!--        const today = new Date();-->\r\n<!--        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->\r\n<!--        const currentDateElement = document.getElementById('currentDate');-->\r\n<!--        if (currentDateElement) {-->\r\n<!--            currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->\r\n<!--        }-->\r\n\r\n<!--        fetch('http://13.201.90.199:8080/profile/count', {-->\r\n<!--            headers: {-->\r\n<!--                \"Authorization\": `Bearer ${token}`-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .then(response => response.json())-->\r\n<!--        .then(data => {-->\r\n<!--            const totalProfilesElement = document.getElementById('totalProfiles');-->\r\n<!--            const profilesThisWeekElement = document.getElementById('profilesThisWeek');-->\r\n<!--            const profilesTodayElement = document.getElementById('profilesToday');-->\r\n<!--            if (totalProfilesElement) {-->\r\n<!--                totalProfilesElement.innerText = data.total;-->\r\n<!--            }-->\r\n<!--            if (profilesThisWeekElement) {-->\r\n<!--                profilesThisWeekElement.innerText = data.thisWeek;-->\r\n<!--            }-->\r\n<!--            if (profilesTodayElement) {-->\r\n<!--                profilesTodayElement.innerText = data.today;-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .catch(error => {-->\r\n<!--            console.error('Error fetching profile count:', error);-->\r\n<!--            signOut();-->\r\n<!--        });-->\r\n\r\n<!--        fetch('http://13.201.90.199:8080/jd/count', {-->\r\n<!--            headers: {-->\r\n<!--                \"Authorization\": `Bearer ${token}`-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .then(response => response.json())-->\r\n<!--        .then(data => {-->\r\n<!--            const totalJDsElement = document.getElementById('totalJDs');-->\r\n<!--            const jdsThisWeekElement = document.getElementById('jdsThisWeek');-->\r\n<!--            const jdsTodayElement = document.getElementById('jdsToday');-->\r\n<!--            if (totalJDsElement) {-->\r\n<!--                totalJDsElement.innerText = data.total;-->\r\n<!--            }-->\r\n<!--            if (jdsThisWeekElement) {-->\r\n<!--                jdsThisWeekElement.innerText = data.thisWeek;-->\r\n<!--            }-->\r\n<!--            if (jdsTodayElement) {-->\r\n<!--                jdsTodayElement.innerText = data.today;-->\r\n<!--            }-->\r\n<!--        })-->\r\n<!--        .catch(error => {-->\r\n<!--            console.error('Error fetching JD count:', error);-->\r\n<!--            signOut();-->\r\n<!--        });-->\r\n<!--    });-->\r\n<!--</script>-->\r\n<!--</body>-->\r\n<!--</html>-->\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Dashboard</title>\r\n    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap\" rel=\"stylesheet\">\r\n    <style>\r\n        body {\r\n            font-family: 'Roboto', sans-serif;\r\n            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);\r\n            margin: 0;\r\n            padding: 0;\r\n            color: #333;\r\n            overflow-x: hidden;\r\n        }\r\n\r\n        header {\r\n            background: #005149;\r\n            color: white;\r\n            padding: 15px 30px;\r\n            display: flex;\r\n            justify-content: space-between;\r\n            align-items: center;\r\n            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n            position: fixed;\r\n            width: 100%;\r\n            top: 0;\r\n            left: 0;\r\n            z-index: 1000;\r\n        }\r\n\r\n        header h1 {\r\n            margin: 0;\r\n            font-size: 2.5em;\r\n        }\r\n\r\n        .nav-button, .dropdown-button {\r\n            padding: 10px 20px;\r\n            font-size: 16px;\r\n            background: #f5b501;\r\n            color: #091521;\r\n            border: 2px solid #f5b501;\r\n            border-radius: 25px;\r\n            cursor: pointer;\r\n            transition: all 0.3s ease;\r\n        }\r\n\r\n        .nav-button:hover, .dropdown-button:hover {\r\n            background: #3a7a74;\r\n            color: white;\r\n            border-color: #3a7a74;\r\n        }\r\n\r\n        .dropdown {\r\n            position: relative;\r\n            padding-right: 40px;\r\n        }\r\n\r\n        .dropdown-menu {\r\n            display: none;\r\n            position: absolute;\r\n            background: #ffffff;\r\n            border-radius: 8px;\r\n            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);\r\n            width: 150px;\r\n            right: 0;\r\n            top: 60px;\r\n        }\r\n\r\n        .dropdown-menu.show {\r\n            display: block;\r\n        }\r\n\r\n        .dropdown-menu a {\r\n            display: block;\r\n            padding: 12px;\r\n            color: #091521;\r\n            text-decoration: none;\r\n            font-size: 14px;\r\n            transition: background 0.3s ease;\r\n        }\r\n\r\n        .dropdown-menu a:hover {\r\n            background: #3a7a74;\r\n            color: white;\r\n        }\r\n\r\n        main {\r\n            margin-top: 80px; /* Space for fixed header */\r\n            padding: 20px;\r\n            overflow: auto;\r\n        }\r\n\r\n        .container {\r\n            display: flex;\r\n            flex-wrap: wrap;\r\n            gap: 20px;\r\n        }\r\n\r\n        .dashboard-container, .today-container {\r\n            background: #ffffff;\r\n            padding: 30px;\r\n            border-radius: 10px;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n            flex: 1;\r\n            min-width: 300px;\r\n            max-width: 48%;\r\n        }\r\n\r\n        .dashboard-container {\r\n            flex: 2;\r\n        }\r\n\r\n        .today-container {\r\n            flex: 1;\r\n        }\r\n\r\n        h1, h2 {\r\n            color: #005149;\r\n            margin: 0 0 15px;\r\n        }\r\n\r\n        p {\r\n            margin: 10px 0;\r\n            font-size: 18px;\r\n            color: #333;\r\n        }\r\n\r\n        #detail {\r\n            display: flex;\r\n            flex-direction: column;\r\n            align-items: flex-start;\r\n            background: #ffffff;\r\n            border-radius: 10px;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n            padding: 20px;\r\n            margin-bottom: 20px;\r\n        }\r\n\r\n        #currentDate, #lastLogin {\r\n            font-size: 1.2em;\r\n            color: #005149;\r\n        }\r\n\r\n        #lastLoginContainer {\r\n            display: flex;\r\n            justify-content: flex-end;\r\n            width: 100%;\r\n        }\r\n\r\n        #heading {\r\n            color: white;\r\n        }\r\n\r\n        .summary, .this-week {\r\n            margin-top: 20px;\r\n        }\r\n\r\n        .this-week-container {\r\n            background: #f9f9f9;\r\n            padding: 20px;\r\n            border-radius: 10px;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n            margin-top: 20px;\r\n            max-width: 49.5%;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<header>\r\n    <h1 id=\"heading\">Pro-Square</h1>\r\n    <button class=\"nav-button\" onclick=\"navigateToPractice9()\">Upload and Download Resume</button>\r\n    <div class=\"dropdown\">\r\n        <button class=\"dropdown-button\" onclick=\"toggleDropdown('jdDropdown')\">JD Actions</button>\r\n        <div id=\"jdDropdown\" class=\"dropdown-menu\">\r\n            <a href=\"jd3.html\">Create JD</a>\r\n            <a href=\"list5.html\">View JD</a>\r\n        </div>\r\n    </div>\r\n    <div class=\"dropdown\">\r\n        <button class=\"dropdown-button\" onclick=\"toggleDropdown('profileDropdown')\">Profile</button>\r\n        <div id=\"profileDropdown\" class=\"dropdown-menu\">\r\n            <a href=\"addprofile.html\">Add Profile</a>\r\n            <a href=\"allprofiles.html\">View Profiles</a>\r\n        </div>\r\n    </div>\r\n    <div class=\"dropdown\">\r\n        <button class=\"dropdown-button\" onclick=\"toggleDropdown('clientDropdown')\">Client</button>\r\n        <div id=\"clientDropdown\" class=\"dropdown-menu\">\r\n            <a href=\"clientform.html\">Create Client</a>\r\n            <a href=\"invoiceform.html\">Create Invoice</a>\r\n            <a href=\"dashboard.html\">View Dashboard</a>\r\n        </div>\r\n    </div>\r\n    <div class=\"dropdown\">\r\n        <button class=\"dropdown-button\" onclick=\"toggleDropdown('billDropdown')\">Bill</button>\r\n        <div id=\"billDropdown\" class=\"dropdown-menu\">\r\n            <a href=\"billpage.html\">Bill Page</a>\r\n            <a href=\"billsdashboard.html\">Bills Dashboard</a>\r\n        </div>\r\n    </div>\r\n    <button class=\"nav-button\" onclick=\"navigateToResumeMatcher()\">Resume Matcher</button>\r\n    <div class=\"dropdown\">\r\n        <button id=\"loginRegisterButton\" class=\"dropdown-button\" onclick=\"toggleDropdown('loginRegisterDropdown')\">Login/Register</button>\r\n        <div id=\"loginRegisterDropdown\" class=\"dropdown-menu\">\r\n            <a href=\"login.html\">Login</a>\r\n            <a href=\"register.html\">Register</a>\r\n            <a href=\"#\" id=\"signOutButton\" onclick=\"signOut()\" style=\"display: none;\">Sign Out</a>\r\n        </div>\r\n    </div>\r\n</header>\r\n<main>\r\n    <div id=\"detail\">\r\n        <h2>Hi User, Good Morning</h2>\r\n        <div id=\"currentDate\"></div>\r\n        <div id=\"lastLoginContainer\">\r\n            <p id=\"lastLogin\">Last login: Not available</p>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"container\">\r\n        <div class=\"dashboard-container\">\r\n            <h1>Your Dashboard</h1>\r\n            <div class=\"summary\">\r\n                <p>Total Profiles: <span id=\"totalProfiles\">0</span></p>\r\n                <p>Total JDs: <span id=\"totalJDs\">0</span></p>\r\n            </div>\r\n        </div>\r\n        <div class=\"today-container\">\r\n            <h2>Today's Updates</h2>\r\n            <p>Profiles Added: <span id=\"profilesToday\">0</span></p>\r\n            <p>JDs Added: <span id=\"jdsToday\">0</span></p>\r\n        </div>\r\n    </div>\r\n    <div class=\"this-week-container\">\r\n        <h2>This Week</h2>\r\n        <p>Profiles Added: <span id=\"profilesThisWeek\">0</span></p>\r\n        <p>JDs Added: <span id=\"jdsThisWeek\">0</span></p>\r\n    </div>\r\n</main>\r\n<script>\r\n    function toggleDropdown(id) {\r\n        var dropdown = document.getElementById(id);\r\n        if (dropdown.classList.contains('show')) {\r\n            dropdown.classList.remove('show');\r\n        } else {\r\n            dropdown.classList.add('show');\r\n        }\r\n    }\r\n\r\n    function navigateToPractice9() {\r\n        window.location.href = 'practice9.html';\r\n    }\r\n\r\n    function navigateToResumeMatcher() {\r\n        window.location.href = 'home.html';\r\n    }\r\n\r\n    function signOut() {\r\n        console.log('Signing out...');\r\n        localStorage.removeItem('accessToken');\r\n        localStorage.setItem('isLoggedIn', 'false');\r\n        localStorage.removeItem('username');\r\n        window.location.reload();\r\n    }\r\n\r\n    document.addEventListener('DOMContentLoaded', () => {\r\n        const token = localStorage.getItem('accessToken');\r\n        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';\r\n        const username = localStorage.getItem('username');\r\n        const lastLogin = localStorage.getItem('lastLogin');\r\n        console.log(\"lastlogin\", lastLogin);\r\n        const signOutButton = document.getElementById('signOutButton');\r\n\r\n        function updateDisplay() {\r\n            const today = new Date();\r\n            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };\r\n            const currentDateElement = document.getElementById('currentDate');\r\n            if (currentDateElement) {\r\n                currentDateElement.innerText = today.toLocaleDateString('en-US', options);\r\n            }\r\n\r\n            const lastLoginElement = document.getElementById('lastLogin');\r\n            if (lastLoginElement) {\r\n                lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';\r\n            }\r\n        }\r\n\r\n        // Call updateDisplay initially to set the current date and last login\r\n        updateDisplay();\r\n\r\n        function handleInvalidToken() {\r\n            showModal(\"Session expired. Please log in again.\");\r\n            const loginButton = document.getElementById('loginRegisterButton');\r\n            if (loginButton) {\r\n                loginButton.innerText = 'Login/Register';\r\n            }\r\n            if (signOutButton) {\r\n                signOutButton.style.display = 'none';\r\n            }\r\n            localStorage.removeItem('accessToken');\r\n            localStorage.setItem('isLoggedIn', 'false');\r\n            localStorage.removeItem('username');\r\n        }\r\n\r\n        if (!token) {\r\n            showModal(\"You have not yet logged in. Kindly login first\");\r\n            return;\r\n        }\r\n\r\n        if (isLoggedIn) {\r\n            const loginButton = document.getElementById('loginRegisterButton');\r\n            if (loginButton) {\r\n                loginButton.innerText = `Logged In as ${username}`;\r\n            }\r\n            const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');\r\n            if (loginDropdownMenu) {\r\n                loginDropdownMenu.style.display = 'none';\r\n            }\r\n            if (signOutButton) {\r\n                signOutButton.style.display = 'block';\r\n            }\r\n        }\r\n\r\n        if (lastLogin) {\r\n            const lastLoginElement = document.getElementById('lastLogin');\r\n            if (lastLoginElement) {\r\n                lastLoginElement.innerText = `Last login: ${lastLogin}`;\r\n            }\r\n        }\r\n\r\n        const today = new Date();\r\n        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };\r\n        const currentDateElement = document.getElementById('currentDate');\r\n        if (currentDateElement) {\r\n            currentDateElement.innerText = today.toLocaleDateString('en-US', options);\r\n        }\r\n\r\n        fetch('http://13.201.90.199:8080/profile/count', {\r\n            headers: {\r\n                \"Authorization\": `Bearer ${token}`\r\n            }\r\n        })\r\n        .then(response => response.json())\r\n        .then(data => {\r\n            const totalProfilesElement = document.getElementById('totalProfiles');\r\n            const profilesThisWeekElement = document.getElementById('profilesThisWeek');\r\n            const profilesTodayElement = document.getElementById('profilesToday');\r\n            if (totalProfilesElement) {\r\n                totalProfilesElement.innerText = data.total;\r\n            }\r\n            if (profilesThisWeekElement) {\r\n                profilesThisWeekElement.innerText = data.thisWeek;\r\n            }\r\n            if (profilesTodayElement) {\r\n                profilesTodayElement.innerText = data.today;\r\n            }\r\n        })\r\n        .catch(error => {\r\n            console.error('Error fetching profile count:', error);\r\n            signOut();\r\n        });\r\n\r\n        fetch('http://13.201.90.199:8080/jd/count', {\r\n            headers: {\r\n                \"Authorization\": `Bearer ${token}`\r\n            }\r\n        })\r\n        .then(response => response.json())\r\n        .then(data => {\r\n            const totalJDsElement = document.getElementById('totalJDs');\r\n            const jdsThisWeekElement = document.getElementById('jdsThisWeek');\r\n            const jdsTodayElement = document.getElementById('jdsToday');\r\n            if (totalJDsElement) {\r\n                totalJDsElement.innerText = data.total;\r\n            }\r\n            if (jdsThisWeekElement) {\r\n                jdsThisWeekElement.innerText = data.thisWeek;\r\n            }\r\n            if (jdsTodayElement) {\r\n                jdsTodayElement.innerText = data.today;\r\n            }\r\n        })\r\n        .catch(error => {\r\n            console.error('Error fetching JD count:', error);\r\n            signOut();\r\n        });\r\n    });\r\n</script>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/resources/static/index.html b/backend/src/main/resources/static/index.html
+--- a/backend/src/main/resources/static/index.html	
++++ b/backend/src/main/resources/static/index.html	
+@@ -1,779 +1,3 @@
+-
+-<!--<!DOCTYPE html>-->
+-<!--<html lang="en">-->
+-<!--<head>-->
+-<!--    <meta charset="UTF-8">-->
+-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+-<!--    <title>Dashboard</title>-->
+-<!--    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">-->
+-<!--    <style>-->
+-<!--        body {-->
+-<!--            font-family: 'Roboto', sans-serif;-->
+-<!--            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);-->
+-<!--            margin: 0;-->
+-<!--            padding: 0;-->
+-<!--            color: #333;-->
+-<!--            overflow-x: hidden;-->
+-<!--        }-->
+-
+-<!--        header {-->
+-<!--            background: #005149;-->
+-<!--            color: white;-->
+-<!--            padding: 15px 30px;-->
+-<!--            display: flex;-->
+-<!--            justify-content: space-between;-->
+-<!--            align-items: center;-->
+-<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+-<!--            position: fixed;-->
+-<!--            width: 100%;-->
+-<!--            top: 0;-->
+-<!--            left: 0;-->
+-<!--            z-index: 1000;-->
+-<!--        }-->
+-
+-<!--        header h1 {-->
+-<!--            margin: 0;-->
+-<!--            font-size: 2.5em;-->
+-<!--        }-->
+-
+-<!--        .nav-button, .dropdown-button {-->
+-<!--            padding: 10px 20px;-->
+-<!--            font-size: 16px;-->
+-<!--            background: #f5b501;-->
+-<!--            color: #091521;-->
+-<!--            border: 2px solid #f5b501;-->
+-<!--            border-radius: 25px;-->
+-<!--            cursor: pointer;-->
+-<!--            transition: all 0.3s ease;-->
+-<!--        }-->
+-
+-<!--        .nav-button:hover, .dropdown-button:hover {-->
+-<!--            background: #3a7a74;-->
+-<!--            color: white;-->
+-<!--            border-color: #3a7a74;-->
+-<!--        }-->
+-<!--        .dropdown {-->
+-<!--            position: relative;-->
+-<!--            padding-right: 40px;-->
+-
+-<!--        }-->
+-
+-<!--        .dropdown-menu {-->
+-<!--            display: none;-->
+-<!--            position: absolute;-->
+-<!--            background: #ffffff;-->
+-<!--            border-radius: 8px;-->
+-<!--            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);-->
+-<!--            width: 150px;-->
+-<!--            right: 0;-->
+-<!--            top: 60px;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu.show {-->
+-<!--            display: block;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu a {-->
+-<!--            display: block;-->
+-<!--            padding: 12px;-->
+-<!--            color: #091521;-->
+-<!--            text-decoration: none;-->
+-<!--            font-size: 14px;-->
+-<!--            transition: background 0.3s ease;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu a:hover {-->
+-<!--            background: #3a7a74;-->
+-<!--            color: white;-->
+-<!--        }-->
+-
+-<!--        main {-->
+-<!--            margin-top: 80px; /* Space for fixed header */-->
+-<!--            padding: 20px;-->
+-<!--            overflow: auto;-->
+-<!--        }-->
+-
+-<!--        .container {-->
+-<!--            display: flex;-->
+-<!--            flex-wrap: wrap;-->
+-<!--            gap: 20px;-->
+-<!--        }-->
+-
+-<!--        .dashboard-container, .today-container {-->
+-<!--            background: #ffffff;-->
+-<!--            padding: 30px;-->
+-<!--            border-radius: 10px;-->
+-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+-<!--            flex: 1;-->
+-<!--            min-width: 300px;-->
+-<!--            max-width: 48%;-->
+-<!--        }-->
+-
+-<!--        .dashboard-container {-->
+-<!--            flex: 2;-->
+-<!--        }-->
+-
+-<!--        .today-container {-->
+-<!--            flex: 1;-->
+-<!--        }-->
+-
+-<!--        h1, h2 {-->
+-<!--            color: #005149;-->
+-<!--            margin: 0 0 15px;-->
+-<!--        }-->
+-
+-<!--        p {-->
+-<!--            margin: 10px 0;-->
+-<!--            font-size: 18px;-->
+-<!--            color: #333;-->
+-<!--        }-->
+-
+-<!--        #detail {-->
+-<!--            display: flex;-->
+-<!--            flex-direction: column;-->
+-<!--            align-items: flex-start;-->
+-<!--            background: #ffffff;-->
+-<!--            border-radius: 10px;-->
+-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+-<!--            padding: 20px;-->
+-<!--            margin-bottom: 20px;-->
+-<!--        }-->
+-
+-<!--        #currentDate, #lastLogin {-->
+-<!--            font-size: 1.2em;-->
+-<!--            color: #005149;-->
+-<!--        }-->
+-
+-<!--        #lastLoginContainer {-->
+-<!--            display: flex;-->
+-<!--            justify-content: flex-end;-->
+-<!--            width: 100%;-->
+-<!--        }-->
+-<!--        #heading {-->
+-<!--            color: white;-->
+-<!--        }-->
+-
+-<!--        .summary, .this-week {-->
+-<!--            margin-top: 20px;-->
+-<!--        }-->
+-
+-<!--        .this-week-container {-->
+-<!--            background: #f9f9f9;-->
+-<!--            padding: 20px;-->
+-<!--            border-radius: 10px;-->
+-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+-<!--            margin-top: 20px;-->
+-<!--            max-width: 49.5%;-->
+-<!--        }-->
+-<!--    </style>-->
+-<!--</head>-->
+-<!--<body>-->
+-<!--<header>-->
+-<!--    <h1 id="heading">Pro-Square</h1>-->
+-<!--    <button class="nav-button" onclick="navigateToPractice9()">Upload and Download Resume</button>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button class="dropdown-button" onclick="toggleDropdown('jdDropdown')">JD Actions</button>-->
+-<!--        <div id="jdDropdown" class="dropdown-menu">-->
+-<!--            <a href="jd3.html">Create JD</a>-->
+-<!--            <a href="list5.html">View JD</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button class="dropdown-button" onclick="toggleDropdown('profileDropdown')">Profile</button>-->
+-<!--        <div id="profileDropdown" class="dropdown-menu">-->
+-<!--            <a href="addprofile.html">Add Profile</a>-->
+-<!--            <a href="allprofiles.html">View Profiles</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <button class="nav-button" onclick="navigateToResumeMatcher()">Resume Matcher</button>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button id="loginRegisterButton" class="dropdown-button" onclick="toggleDropdown('loginRegisterDropdown')">Login/Register</button>-->
+-<!--        <div id="loginRegisterDropdown" class="dropdown-menu">-->
+-<!--            <a href="login.html">Login</a>-->
+-<!--            <a href="register.html">Register</a>-->
+-<!--            <a href="#" id="signOutButton" onclick="signOut()" style="display: none;">Sign Out</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--</header>-->
+-<!--<main>-->
+-<!--    <div id="detail">-->
+-<!--        <h2>Hi User, Good Morning</h2>-->
+-<!--        <div id="currentDate"></div>-->
+-<!--        <div id="lastLoginContainer">-->
+-<!--            <p id="lastLogin">Last login: Not available</p>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-
+-<!--    <div class="container">-->
+-<!--        <div class="dashboard-container">-->
+-<!--            <h1>Your Dashboard</h1>-->
+-<!--            <div class="summary">-->
+-<!--                <p>Total Profiles: <span id="totalProfiles">0</span></p>-->
+-<!--                <p>Total JDs: <span id="totalJDs">0</span></p>-->
+-<!--            </div>-->
+-<!--        </div>-->
+-<!--        <div class="today-container">-->
+-<!--            <h2>Today's Updates</h2>-->
+-<!--            <p>Profiles Added: <span id="profilesToday">0</span></p>-->
+-<!--            <p>JDs Added: <span id="jdsToday">0</span></p>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <div class="this-week-container">-->
+-<!--        <h2>This Week</h2>-->
+-<!--        <p>Profiles Added: <span id="profilesThisWeek">0</span></p>-->
+-<!--        <p>JDs Added: <span id="jdsThisWeek">0</span></p>-->
+-<!--    </div>-->
+-<!--</main>-->
+-<!--<script>-->
+-
+-<!--    function toggleDropdown(id) {-->
+-<!--            var dropdown = document.getElementById(id);-->
+-<!--            if (dropdown.classList.contains('show')) {-->
+-<!--                dropdown.classList.remove('show');-->
+-<!--            } else {-->
+-<!--                dropdown.classList.add('show');-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        function navigateToPractice9() {-->
+-<!--            window.location.href = 'practice9.html';-->
+-<!--        }-->
+-
+-<!--        function navigateToResumeMatcher() {-->
+-<!--            window.location.href = 'home.html';-->
+-<!--        }-->
+-
+-<!--        function signOut() {-->
+-<!--            console.log('Signing out...');-->
+-<!--            localStorage.removeItem('accessToken');-->
+-<!--            localStorage.setItem('isLoggedIn', 'false');-->
+-<!--            localStorage.removeItem('username');-->
+-<!--            window.location.reload();-->
+-<!--        }-->
+-<!--    document.addEventListener('DOMContentLoaded', () => {-->
+-<!--        const token = localStorage.getItem('accessToken');-->
+-<!--        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';-->
+-<!--        const username = localStorage.getItem('username');-->
+-<!--        const lastLogin = localStorage.getItem('lastLogin');-->
+-<!--        console.log("lastlogin",lastLogin);-->
+-<!--        const signOutButton = document.getElementById('signOutButton');-->
+-
+-<!--        function updateDisplay() {-->
+-<!--            const today = new Date();-->
+-<!--            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
+-<!--            const currentDateElement = document.getElementById('currentDate');-->
+-<!--            if (currentDateElement) {-->
+-<!--                currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
+-<!--            }-->
+-
+-<!--            const lastLoginElement = document.getElementById('lastLogin');-->
+-<!--            if (lastLoginElement) {-->
+-<!--                lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        // Call updateDisplay initially to set the current date and last login-->
+-<!--        updateDisplay();-->
+-
+-
+-<!--        function handleInvalidToken() {-->
+-<!--            showModal("Session expired. Please log in again.");-->
+-<!--            const loginButton = document.getElementById('loginRegisterButton');-->
+-<!--            if (loginButton) {-->
+-<!--                loginButton.innerText = 'Login/Register';-->
+-<!--            }-->
+-<!--            if (signOutButton) {-->
+-<!--                signOutButton.style.display = 'none';-->
+-<!--            }-->
+-<!--            localStorage.removeItem('accessToken');-->
+-<!--            localStorage.setItem('isLoggedIn', 'false');-->
+-<!--            localStorage.removeItem('username');-->
+-<!--        }-->
+-
+-
+-
+-
+-
+-<!--        if (!token) {-->
+-<!--            showModal("You have not yet logged in. Kindly login first");-->
+-<!--            return;-->
+-<!--        }-->
+-
+-<!--        if (isLoggedIn) {-->
+-<!--            const loginButton = document.getElementById('loginRegisterButton');-->
+-<!--            if (loginButton) {-->
+-<!--                loginButton.innerText = `Logged In as ${username}`;-->
+-<!--            }-->
+-<!--            const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');-->
+-<!--            if (loginDropdownMenu) {-->
+-<!--                loginDropdownMenu.style.display = 'none';-->
+-<!--            }-->
+-<!--            if (signOutButton) {-->
+-<!--                signOutButton.style.display = 'block';-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        if (lastLogin) {-->
+-<!--            const lastLoginElement = document.getElementById('lastLogin');-->
+-<!--            if (lastLoginElement) {-->
+-<!--                lastLoginElement.innerText = `Last login: ${lastLogin}`;-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        const today = new Date();-->
+-<!--        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
+-<!--        const currentDateElement = document.getElementById('currentDate');-->
+-<!--        if (currentDateElement) {-->
+-<!--            currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
+-<!--        }-->
+-
+-<!--        fetch('http://13.201.90.199:8080/profile/count', {-->
+-<!--            headers: {-->
+-<!--                "Authorization": `Bearer ${token}`-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .then(response => response.json())-->
+-<!--        .then(data => {-->
+-<!--            const totalProfilesElement = document.getElementById('totalProfiles');-->
+-<!--            const profilesThisWeekElement = document.getElementById('profilesThisWeek');-->
+-<!--            const profilesTodayElement = document.getElementById('profilesToday');-->
+-<!--            if (totalProfilesElement) {-->
+-<!--                totalProfilesElement.innerText = data.total;-->
+-<!--            }-->
+-<!--            if (profilesThisWeekElement) {-->
+-<!--                profilesThisWeekElement.innerText = data.thisWeek;-->
+-<!--            }-->
+-<!--            if (profilesTodayElement) {-->
+-<!--                profilesTodayElement.innerText = data.today;-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .catch(error => {-->
+-<!--            console.error('Error fetching profile count:', error);-->
+-<!--            signOut();-->
+-<!--        });-->
+-
+-<!--        fetch('http://13.201.90.199:8080/jd/count', {-->
+-<!--            headers: {-->
+-<!--                "Authorization": `Bearer ${token}`-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .then(response => response.json())-->
+-<!--        .then(data => {-->
+-<!--            const totalJDsElement = document.getElementById('totalJDs');-->
+-<!--            const jdsThisWeekElement = document.getElementById('jdsThisWeek');-->
+-<!--            const jdsTodayElement = document.getElementById('jdsToday');-->
+-<!--            if (totalJDsElement) {-->
+-<!--                totalJDsElement.innerText = data.total;-->
+-<!--            }-->
+-<!--            if (jdsThisWeekElement) {-->
+-<!--                jdsThisWeekElement.innerText = data.thisWeek;-->
+-<!--            }-->
+-<!--            if (jdsTodayElement) {-->
+-<!--                jdsTodayElement.innerText = data.today;-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .catch(error => {-->
+-<!--            console.error('Error fetching JD count:', error);-->
+-<!--            signOut();-->
+-<!--        });-->
+-<!--    });-->
+-<!--</script>-->
+-<!--</body>-->
+-<!--</html>-->
+-
+-
+-
+-
+-<!--<!DOCTYPE html>-->
+-<!--<html lang="en">-->
+-<!--<head>-->
+-<!--    <meta charset="UTF-8">-->
+-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+-<!--    <title>Dashboard</title>-->
+-<!--    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">-->
+-<!--    <style>-->
+-<!--        body {-->
+-<!--            font-family: 'Roboto', sans-serif;-->
+-<!--            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);-->
+-<!--            margin: 0;-->
+-<!--            padding: 0;-->
+-<!--            color: #333;-->
+-<!--            overflow-x: hidden;-->
+-<!--        }-->
+-
+-<!--        header {-->
+-<!--            background: #005149;-->
+-<!--            color: white;-->
+-<!--            padding: 15px 30px;-->
+-<!--            display: flex;-->
+-<!--            justify-content: space-between;-->
+-<!--            align-items: center;-->
+-<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+-<!--            position: fixed;-->
+-<!--            width: 100%;-->
+-<!--            top: 0;-->
+-<!--            left: 0;-->
+-<!--            z-index: 1000;-->
+-<!--        }-->
+-
+-<!--        header h1 {-->
+-<!--            margin: 0;-->
+-<!--            font-size: 2.5em;-->
+-<!--        }-->
+-
+-<!--        .nav-button, .dropdown-button {-->
+-<!--            padding: 10px 20px;-->
+-<!--            font-size: 16px;-->
+-<!--            background: #f5b501;-->
+-<!--            color: #091521;-->
+-<!--            border: 2px solid #f5b501;-->
+-<!--            border-radius: 25px;-->
+-<!--            cursor: pointer;-->
+-<!--            transition: all 0.3s ease;-->
+-<!--        }-->
+-
+-<!--        .nav-button:hover, .dropdown-button:hover {-->
+-<!--            background: #3a7a74;-->
+-<!--            color: white;-->
+-<!--            border-color: #3a7a74;-->
+-<!--        }-->
+-
+-<!--        .dropdown {-->
+-<!--            position: relative;-->
+-<!--            padding-right: 40px;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu {-->
+-<!--            display: none;-->
+-<!--            position: absolute;-->
+-<!--            background: #ffffff;-->
+-<!--            border-radius: 8px;-->
+-<!--            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);-->
+-<!--            width: 150px;-->
+-<!--            right: 0;-->
+-<!--            top: 60px;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu.show {-->
+-<!--            display: block;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu a {-->
+-<!--            display: block;-->
+-<!--            padding: 12px;-->
+-<!--            color: #091521;-->
+-<!--            text-decoration: none;-->
+-<!--            font-size: 14px;-->
+-<!--            transition: background 0.3s ease;-->
+-<!--        }-->
+-
+-<!--        .dropdown-menu a:hover {-->
+-<!--            background: #3a7a74;-->
+-<!--            color: white;-->
+-<!--        }-->
+-
+-<!--        main {-->
+-<!--            margin-top: 80px; /* Space for fixed header */-->
+-<!--            padding: 20px;-->
+-<!--            overflow: auto;-->
+-<!--        }-->
+-
+-<!--        .container {-->
+-<!--            display: flex;-->
+-<!--            flex-wrap: wrap;-->
+-<!--            gap: 20px;-->
+-<!--        }-->
+-
+-<!--        .dashboard-container, .today-container {-->
+-<!--            background: #ffffff;-->
+-<!--            padding: 30px;-->
+-<!--            border-radius: 10px;-->
+-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+-<!--            flex: 1;-->
+-<!--            min-width: 300px;-->
+-<!--            max-width: 48%;-->
+-<!--        }-->
+-
+-<!--        .dashboard-container {-->
+-<!--            flex: 2;-->
+-<!--        }-->
+-
+-<!--        .today-container {-->
+-<!--            flex: 1;-->
+-<!--        }-->
+-
+-<!--        h1, h2 {-->
+-<!--            color: #005149;-->
+-<!--            margin: 0 0 15px;-->
+-<!--        }-->
+-
+-<!--        p {-->
+-<!--            margin: 10px 0;-->
+-<!--            font-size: 18px;-->
+-<!--            color: #333;-->
+-<!--        }-->
+-
+-<!--        #detail {-->
+-<!--            display: flex;-->
+-<!--            flex-direction: column;-->
+-<!--            align-items: flex-start;-->
+-<!--            background: #ffffff;-->
+-<!--            border-radius: 10px;-->
+-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+-<!--            padding: 20px;-->
+-<!--            margin-bottom: 20px;-->
+-<!--        }-->
+-
+-<!--        #currentDate, #lastLogin {-->
+-<!--            font-size: 1.2em;-->
+-<!--            color: #005149;-->
+-<!--        }-->
+-
+-<!--        #lastLoginContainer {-->
+-<!--            display: flex;-->
+-<!--            justify-content: flex-end;-->
+-<!--            width: 100%;-->
+-<!--        }-->
+-
+-<!--        #heading {-->
+-<!--            color: white;-->
+-<!--        }-->
+-
+-<!--        .summary, .this-week {-->
+-<!--            margin-top: 20px;-->
+-<!--        }-->
+-
+-<!--        .this-week-container {-->
+-<!--            background: #f9f9f9;-->
+-<!--            padding: 20px;-->
+-<!--            border-radius: 10px;-->
+-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+-<!--            margin-top: 20px;-->
+-<!--            max-width: 49.5%;-->
+-<!--        }-->
+-<!--    </style>-->
+-<!--</head>-->
+-<!--<body>-->
+-<!--<header>-->
+-<!--    <h1 id="heading">Pro-Square</h1>-->
+-<!--    <button class="nav-button" onclick="navigateToPractice9()">Upload and Download Resume</button>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button class="dropdown-button" onclick="toggleDropdown('jdDropdown')">JD Actions</button>-->
+-<!--        <div id="jdDropdown" class="dropdown-menu">-->
+-<!--            <a href="jd3.html">Create JD</a>-->
+-<!--            <a href="list5.html">View JD</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button class="dropdown-button" onclick="toggleDropdown('profileDropdown')">Profile</button>-->
+-<!--        <div id="profileDropdown" class="dropdown-menu">-->
+-<!--            <a href="addprofile.html">Add Profile</a>-->
+-<!--            <a href="allprofiles.html">View Profiles</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button class="dropdown-button" onclick="toggleDropdown('billDropdown')">Bill</button>-->
+-<!--        <div id="billDropdown" class="dropdown-menu">-->
+-<!--            <a href="billpage.html">Bill Page</a>-->
+-<!--            <a href="billsdashboard.html">Bills Dashboard</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <button class="nav-button" onclick="navigateToResumeMatcher()">Resume Matcher</button>-->
+-<!--    <div class="dropdown">-->
+-<!--        <button id="loginRegisterButton" class="dropdown-button" onclick="toggleDropdown('loginRegisterDropdown')">Login/Register</button>-->
+-<!--        <div id="loginRegisterDropdown" class="dropdown-menu">-->
+-<!--            <a href="login.html">Login</a>-->
+-<!--            <a href="register.html">Register</a>-->
+-<!--            <a href="#" id="signOutButton" onclick="signOut()" style="display: none;">Sign Out</a>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--</header>-->
+-<!--<main>-->
+-<!--    <div id="detail">-->
+-<!--        <h2>Hi User, Good Morning</h2>-->
+-<!--        <div id="currentDate"></div>-->
+-<!--        <div id="lastLoginContainer">-->
+-<!--            <p id="lastLogin">Last login: Not available</p>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-
+-<!--    <div class="container">-->
+-<!--        <div class="dashboard-container">-->
+-<!--            <h1>Your Dashboard</h1>-->
+-<!--            <div class="summary">-->
+-<!--                <p>Total Profiles: <span id="totalProfiles">0</span></p>-->
+-<!--                <p>Total JDs: <span id="totalJDs">0</span></p>-->
+-<!--            </div>-->
+-<!--        </div>-->
+-<!--        <div class="today-container">-->
+-<!--            <h2>Today's Updates</h2>-->
+-<!--            <p>Profiles Added: <span id="profilesToday">0</span></p>-->
+-<!--            <p>JDs Added: <span id="jdsToday">0</span></p>-->
+-<!--        </div>-->
+-<!--    </div>-->
+-<!--    <div class="this-week-container">-->
+-<!--        <h2>This Week</h2>-->
+-<!--        <p>Profiles Added: <span id="profilesThisWeek">0</span></p>-->
+-<!--        <p>JDs Added: <span id="jdsThisWeek">0</span></p>-->
+-<!--    </div>-->
+-<!--</main>-->
+-<!--<script>-->
+-<!--    function toggleDropdown(id) {-->
+-<!--        var dropdown = document.getElementById(id);-->
+-<!--        if (dropdown.classList.contains('show')) {-->
+-<!--            dropdown.classList.remove('show');-->
+-<!--        } else {-->
+-<!--            dropdown.classList.add('show');-->
+-<!--        }-->
+-<!--    }-->
+-
+-<!--    function navigateToPractice9() {-->
+-<!--        window.location.href = 'practice9.html';-->
+-<!--    }-->
+-
+-<!--    function navigateToResumeMatcher() {-->
+-<!--        window.location.href = 'home.html';-->
+-<!--    }-->
+-
+-<!--    function signOut() {-->
+-<!--        console.log('Signing out...');-->
+-<!--        localStorage.removeItem('accessToken');-->
+-<!--        localStorage.setItem('isLoggedIn', 'false');-->
+-<!--        localStorage.removeItem('username');-->
+-<!--        window.location.reload();-->
+-<!--    }-->
+-
+-<!--    document.addEventListener('DOMContentLoaded', () => {-->
+-<!--        const token = localStorage.getItem('accessToken');-->
+-<!--        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';-->
+-<!--        const username = localStorage.getItem('username');-->
+-<!--        const lastLogin = localStorage.getItem('lastLogin');-->
+-<!--        console.log("lastlogin", lastLogin);-->
+-<!--        const signOutButton = document.getElementById('signOutButton');-->
+-
+-<!--        function updateDisplay() {-->
+-<!--            const today = new Date();-->
+-<!--            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
+-<!--            const currentDateElement = document.getElementById('currentDate');-->
+-<!--            if (currentDateElement) {-->
+-<!--                currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
+-<!--            }-->
+-
+-<!--            const lastLoginElement = document.getElementById('lastLogin');-->
+-<!--            if (lastLoginElement) {-->
+-<!--                lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        // Call updateDisplay initially to set the current date and last login-->
+-<!--        updateDisplay();-->
+-
+-<!--        function handleInvalidToken() {-->
+-<!--            showModal("Session expired. Please log in again.");-->
+-<!--            const loginButton = document.getElementById('loginRegisterButton');-->
+-<!--            if (loginButton) {-->
+-<!--                loginButton.innerText = 'Login/Register';-->
+-<!--            }-->
+-<!--            if (signOutButton) {-->
+-<!--                signOutButton.style.display = 'none';-->
+-<!--            }-->
+-<!--            localStorage.removeItem('accessToken');-->
+-<!--            localStorage.setItem('isLoggedIn', 'false');-->
+-<!--            localStorage.removeItem('username');-->
+-<!--        }-->
+-
+-<!--        if (!token) {-->
+-<!--            showModal("You have not yet logged in. Kindly login first");-->
+-<!--            return;-->
+-<!--        }-->
+-
+-<!--        if (isLoggedIn) {-->
+-<!--            const loginButton = document.getElementById('loginRegisterButton');-->
+-<!--            if (loginButton) {-->
+-<!--                loginButton.innerText = `Logged In as ${username}`;-->
+-<!--            }-->
+-<!--            const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');-->
+-<!--            if (loginDropdownMenu) {-->
+-<!--                loginDropdownMenu.style.display = 'none';-->
+-<!--            }-->
+-<!--            if (signOutButton) {-->
+-<!--                signOutButton.style.display = 'block';-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        if (lastLogin) {-->
+-<!--            const lastLoginElement = document.getElementById('lastLogin');-->
+-<!--            if (lastLoginElement) {-->
+-<!--                lastLoginElement.innerText = `Last login: ${lastLogin}`;-->
+-<!--            }-->
+-<!--        }-->
+-
+-<!--        const today = new Date();-->
+-<!--        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
+-<!--        const currentDateElement = document.getElementById('currentDate');-->
+-<!--        if (currentDateElement) {-->
+-<!--            currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
+-<!--        }-->
+-
+-<!--        fetch('http://13.201.90.199:8080/profile/count', {-->
+-<!--            headers: {-->
+-<!--                "Authorization": `Bearer ${token}`-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .then(response => response.json())-->
+-<!--        .then(data => {-->
+-<!--            const totalProfilesElement = document.getElementById('totalProfiles');-->
+-<!--            const profilesThisWeekElement = document.getElementById('profilesThisWeek');-->
+-<!--            const profilesTodayElement = document.getElementById('profilesToday');-->
+-<!--            if (totalProfilesElement) {-->
+-<!--                totalProfilesElement.innerText = data.total;-->
+-<!--            }-->
+-<!--            if (profilesThisWeekElement) {-->
+-<!--                profilesThisWeekElement.innerText = data.thisWeek;-->
+-<!--            }-->
+-<!--            if (profilesTodayElement) {-->
+-<!--                profilesTodayElement.innerText = data.today;-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .catch(error => {-->
+-<!--            console.error('Error fetching profile count:', error);-->
+-<!--            signOut();-->
+-<!--        });-->
+-
+-<!--        fetch('http://13.201.90.199:8080/jd/count', {-->
+-<!--            headers: {-->
+-<!--                "Authorization": `Bearer ${token}`-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .then(response => response.json())-->
+-<!--        .then(data => {-->
+-<!--            const totalJDsElement = document.getElementById('totalJDs');-->
+-<!--            const jdsThisWeekElement = document.getElementById('jdsThisWeek');-->
+-<!--            const jdsTodayElement = document.getElementById('jdsToday');-->
+-<!--            if (totalJDsElement) {-->
+-<!--                totalJDsElement.innerText = data.total;-->
+-<!--            }-->
+-<!--            if (jdsThisWeekElement) {-->
+-<!--                jdsThisWeekElement.innerText = data.thisWeek;-->
+-<!--            }-->
+-<!--            if (jdsTodayElement) {-->
+-<!--                jdsTodayElement.innerText = data.today;-->
+-<!--            }-->
+-<!--        })-->
+-<!--        .catch(error => {-->
+-<!--            console.error('Error fetching JD count:', error);-->
+-<!--            signOut();-->
+-<!--        });-->
+-<!--    });-->
+-<!--</script>-->
+-<!--</body>-->
+-<!--</html>-->
+-
+-
+-
+-
+-
+-
+ 
+ 
+ 
+@@ -976,8 +200,10 @@
+     <div class="dropdown">
+         <button class="dropdown-button" onclick="toggleDropdown('billDropdown')">Bill</button>
+         <div id="billDropdown" class="dropdown-menu">
+-            <a href="billpage.html">Bill Page</a>
++            <a href="quickfillbills.html">Bill Page</a>
+             <a href="billsdashboard.html">Bills Dashboard</a>
++            <a href="viewbills.html">View All Bills</a>
++
+         </div>
+     </div>
+     <button class="nav-button" onclick="navigateToResumeMatcher()">Resume Matcher</button>
+@@ -1117,7 +343,7 @@
+             currentDateElement.innerText = today.toLocaleDateString('en-US', options);
+         }
+ 
+-        fetch('http://13.201.90.199:8080/profile/count', {
++        fetch('http://43.205.154.85:8080/profile/count', {
+             headers: {
+                 "Authorization": `Bearer ${token}`
+             }
+@@ -1142,7 +368,8 @@
+             signOut();
+         });
+ 
+-        fetch('http://13.201.90.199:8080/jd/count', {
++        fetch('http://43.205.154.85:8080/jd/count', {
++
+             headers: {
+                 "Authorization": `Bearer ${token}`
+             }
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Central Repository\" />\r\n      <option name=\"url\" value=\"https://repo.maven.apache.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+--- a/.idea/jarRepositories.xml	
++++ b/.idea/jarRepositories.xml	
+@@ -7,6 +7,11 @@
+       <option name="url" value="https://repo.maven.apache.org/maven2" />
+     </remote-repository>
+     <remote-repository>
++      <option name="id" value="adobe" />
++      <option name="name" value="Nexus Proxy Repository" />
++      <option name="url" value="https://repo.adobe.com/nexus/content/groups/public/" />
++    </remote-repository>
++    <remote-repository>
+       <option name="id" value="central" />
+       <option name="name" value="Maven Central repository" />
+       <option name="url" value="https://repo1.maven.org/maven2" />
+Index: backend/src/main/java/com/example/job_desc_backend/model/BillEntity.java
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/model/BillEntity.java b/backend/src/main/java/com/example/job_desc_backend/model/BillEntity.java
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/java/com/example/job_desc_backend/model/BillEntity.java	
+@@ -0,0 +1,116 @@
++package com.example.job_desc_backend.model;
++
++
++
++import org.springframework.data.annotation.Id;
++import org.springframework.data.mongodb.core.mapping.Document;
++
++@Document(collection = "bills")
++public class BillEntity {
++    @Id
++    private String id;
++    private String reason;
++    private double amount;
++    private String date;
++    private String category;
++
++    private boolean reimbursed;
++    private String submittedBy;
++    private String comments;
++
++    private boolean clientReimbursed;
++    private String reimbursementDate;
++
++    public boolean isClientReimbursed() {
++        return clientReimbursed;
++    }
++
++    public void setClientReimbursed(boolean clientReimbursed) {
++        this.clientReimbursed = clientReimbursed;
++    }
++
++    public String getReimbursementDate() {
++        return reimbursementDate;
++    }
++
++    public void setReimbursementDate(String reimbursementDate) {
++        this.reimbursementDate = reimbursementDate;
++    }
++
++    public String getFileId() {
++        return fileId;
++    }
++
++    public void setFileId(String fileId) {
++        this.fileId = fileId;
++    }
++
++    private String fileId;
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
++
++    public String getReason() {
++        return reason;
++    }
++
++    public void setReason(String reason) {
++        this.reason = reason;
++    }
++
++    public double getAmount() {
++        return amount;
++    }
++
++    public void setAmount(double amount) {
++        this.amount = amount;
++    }
++
++    public String getDate() {
++        return date;
++    }
++
++    public void setDate(String date) {
++        this.date = date;
++    }
++
++    public String getCategory() {
++        return category;
++    }
++
++    public void setCategory(String category) {
++        this.category = category;
++    }
++
++    public boolean isReimbursed() {
++        return reimbursed;
++    }
++
++    public void setReimbursed(boolean reimbursed) {
++        this.reimbursed = reimbursed;
++    }
++
++    public String getSubmittedBy() {
++        return submittedBy;
++    }
++
++    public void setSubmittedBy(String submittedBy) {
++        this.submittedBy = submittedBy;
++    }
++
++    public String getComments() {
++        return comments;
++    }
++
++    public void setComments(String comments) {
++        this.comments = comments;
++    }
++
++
++
++}
++
+Index: backend/src/main/java/com/example/job_desc_backend/controller/BillWebController.java
+===================================================================
+diff --git a/backend/src/main/java/com/example/job_desc_backend/controller/BillWebController.java b/backend/src/main/java/com/example/job_desc_backend/controller/BillWebController.java
+new file mode 100644
+--- /dev/null	
++++ b/backend/src/main/java/com/example/job_desc_backend/controller/BillWebController.java	
+@@ -0,0 +1,192 @@
++package com.example.job_desc_backend.controller;
++
++
++
++import com.example.job_desc_backend.model.BillEntity;
++import com.example.job_desc_backend.model.Billpdf;
++import com.mongodb.client.gridfs.model.GridFSFile;
++import org.springframework.core.io.InputStreamResource;
++import org.springframework.http.*;
++
++import com.example.job_desc_backend.repository.BillMongoRepository;
++import com.example.job_desc_backend.repository.BillPdfRepository;
++import com.example.job_desc_backend.service.BillDataService;
++import org.bson.types.ObjectId;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.data.mongodb.gridfs.GridFsResource;
++import org.springframework.data.mongodb.gridfs.GridFsTemplate;
++import org.springframework.web.bind.annotation.*;
++import org.springframework.web.multipart.MultipartFile;
++
++import java.io.IOException;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Optional;
++
++import static org.springframework.data.mongodb.core.query.Criteria.where;
++import static org.springframework.data.mongodb.core.query.Query.query;
++
++@RestController
++@RequestMapping("/api/billing")
++public class BillWebController {
++
++    @Autowired
++    private BillDataService billService;
++
++    @PostMapping
++    public ResponseEntity<BillEntity> createBill(@RequestBody BillEntity bill) {
++        BillEntity savedBill = billService.saveBill(bill);
++        return ResponseEntity.ok(savedBill);
++    }
++
++    @GetMapping
++    public ResponseEntity<List<BillEntity>> getAllBills() {
++        List<BillEntity> bills = billService.getAllBills();
++        return ResponseEntity.ok(bills);
++    }
++
++    @PutMapping("/{id}")
++    public ResponseEntity<BillEntity> updateBill(@PathVariable String id, @RequestBody BillEntity updatedBill) {
++        BillEntity existingBill = billService.getBillById(id);
++        if (existingBill == null) {
++            return ResponseEntity.notFound().build();
++        }
++
++        updatedBill.setId(id);
++        BillEntity savedBill = billService.saveBill(updatedBill);
++        return ResponseEntity.ok(savedBill);
++    }
++
++
++
++    @GetMapping("/{id}")
++    public ResponseEntity<BillEntity> getBillId(@PathVariable String id) {
++        Optional<BillEntity> billOpt = billRepository.findById(id);
++        if (billOpt.isEmpty()) {
++            return ResponseEntity.notFound().build();
++        }
++        return ResponseEntity.ok(billOpt.get());
++    }
++
++
++    @DeleteMapping("/{id}")
++    public ResponseEntity<Void> deleteBill(@PathVariable String id) {
++        billService.deleteBill(id);
++        return ResponseEntity.noContent().build();
++    }
++
++    @GetMapping("/getBillById")
++    public ResponseEntity<BillEntity> getBillById(@RequestParam String id){
++        BillEntity bill=billRepository.findById(id).get();
++        return ResponseEntity.ok(bill);
++    }
++
++    @GetMapping("/dashboard/stats")
++    public ResponseEntity<Map<String, Long>> getDashboardStats() {
++        long totalBills = billRepository.count();
++        long totalToBeClaimed = billRepository.countByClientReimbursed(false);
++        long pendingReimbursements = billRepository.countByReimbursed(false);
++
++        Map<String, Long> stats = new HashMap<>();
++        stats.put("totalBills", totalBills);
++        stats.put("totalToBeClaimed", totalToBeClaimed);
++        stats.put("pendingReimbursements", pendingReimbursements);
++
++        return ResponseEntity.ok(stats);
++    }
++
++    @Autowired
++    BillPdfRepository billPdfRepository;
++    @Autowired
++    GridFsTemplate gridFsTemplate;
++
++
++
++    @Autowired
++    private BillMongoRepository billRepository;
++
++    @PostMapping("/updateBill/{id}")
++    public ResponseEntity<BillEntity> uploadBill(
++            @PathVariable String id,
++            @RequestPart("bill") BillEntity bill,
++            @RequestPart(value = "file", required = false) MultipartFile file
++    ) throws IOException {
++
++        // Verify if the bill with the given ID exists
++        BillEntity existingBill = billService.getBillById(id);
++        if (existingBill == null) {
++            return ResponseEntity.notFound().build();
++        }
++
++        // If a file is provided, process and store it
++        if (file != null && !file.isEmpty()) {
++            // Store the file in GridFS and get the file ID
++            ObjectId fileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
++
++            // Create a Billpdf object and set its properties
++            Billpdf billpdf = new Billpdf();
++            billpdf.setFileId(fileId.toString());
++            billpdf.setContentType(file.getContentType());
++            billpdf.setFileName(file.getOriginalFilename());
++
++            // Save the Billpdf object in the repository
++            billPdfRepository.save(billpdf);
++
++            // Set the file ID in the bill entity
++            bill.setFileId(fileId.toString());
++        }
++
++        // Ensure the ID of the updated bill matches the existing one
++        bill.setId(id);
++
++        // Save the updated bill entity
++        BillEntity savedBill = billRepository.save(bill);
++
++        // Return the saved bill entity with a 200 OK response
++        return ResponseEntity.ok(savedBill);
++    }
++
++
++
++
++    @GetMapping("/viewPdf/{fileId}")
++    public ResponseEntity<InputStreamResource> viewBillPdf(@PathVariable String fileId) {
++        // Retrieve the Billpdf document from the repository
++        Optional<Billpdf> billPdfOpt = billPdfRepository.findByFileId(fileId);
++        if (billPdfOpt.isEmpty()) {
++            return ResponseEntity.notFound().build();
++        }
++
++        Billpdf billPdf = billPdfOpt.get();
++
++        // Retrieve the file from GridFS using the stored fileId
++        GridFSFile gridFsFile = gridFsTemplate.findOne(query(where("_id").is(new ObjectId(billPdf.getFileId()))));
++        if (gridFsFile == null) {
++            return ResponseEntity.notFound().build();
++        }
++
++        GridFsResource resource = gridFsTemplate.getResource(gridFsFile);
++        if (!resource.exists()) {
++            return ResponseEntity.notFound().build();
++        }
++
++        try {
++            InputStreamResource inputStreamResource = new InputStreamResource(resource.getInputStream());
++
++            // Prepare HTTP headers
++            HttpHeaders headers = new HttpHeaders();
++            headers.setContentType(MediaType.parseMediaType(billPdf.getContentType()));
++            headers.setContentDisposition(ContentDisposition.builder("inline").filename(billPdf.getFileName()).build());
++
++            return ResponseEntity.ok()
++                    .headers(headers)
++                    .body(inputStreamResource);
++        } catch (IOException e) {
++            e.printStackTrace();
++            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
++        }
++    }
++
++
++}
+Index: backend/src/main/resources/static/billpage.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Quick Fill the Bills</title>\r\n    <style>\r\n        body {\r\n            font-family: Arial, sans-serif;\r\n            background-color: #f7f7f7;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            height: 100vh;\r\n            margin: 0;\r\n        }\r\n\r\n        .container {\r\n            background-color: #fff;\r\n            padding: 10px;\r\n            border-radius: 8px;\r\n            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);\r\n            width: 40%;\r\n            max-width: 500px;\r\n        }\r\n\r\n        h2 {\r\n            margin-bottom: 10px;\r\n            text-align: center;\r\n            font-size: 1.4rem;\r\n        }\r\n\r\n        .form-group {\r\n            margin-bottom: 8px;\r\n        }\r\n\r\n        .form-group label {\r\n            display: block;\r\n            margin-bottom: 2px;\r\n            font-weight: bold;\r\n            font-size: 0.85rem;\r\n        }\r\n\r\n        .form-group input,\r\n        .form-group select,\r\n        .form-group textarea {\r\n            width: calc(100% - 14px); /* Adjust width for padding */\r\n            padding: 4px 6px;\r\n            border: 1px solid #ccc;\r\n            border-radius: 4px;\r\n            box-sizing: border-box;\r\n            font-size: 0.85rem;\r\n        }\r\n\r\n        .form-group textarea {\r\n            height: 40px;\r\n        }\r\n\r\n        .button-group {\r\n            display: flex;\r\n            flex-direction: column;\r\n            align-items: center;\r\n            margin-top: 10px;\r\n        }\r\n\r\n        .button-group button {\r\n            padding: 6px 12px;\r\n            background-color: #007BFF;\r\n            color: #fff;\r\n            border: none;\r\n            border-radius: 4px;\r\n            cursor: pointer;\r\n            margin: 6px;\r\n            width: 100%;\r\n            max-width: 180px;\r\n            text-align: center;\r\n            transition: background-color 0.3s, box-shadow 0.3s;\r\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\r\n        }\r\n\r\n        .button-group button:hover {\r\n            background-color: #0056b3;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\r\n        }\r\n\r\n        #message {\r\n            margin-top: 10px;\r\n            text-align: center;\r\n            font-weight: bold;\r\n        }\r\n\r\n        .save-edit-btn {\r\n            display: inline-block;\r\n            margin-top: 8px;\r\n            width: 100%;\r\n            padding: 8px;\r\n            background-color: #007BFF;\r\n            color: #fff;\r\n            border: none;\r\n            border-radius: 4px;\r\n            cursor: pointer;\r\n            text-align: center;\r\n            transition: background-color 0.3s, box-shadow 0.3s;\r\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\r\n        }\r\n\r\n        .save-edit-btn:hover {\r\n            background-color: #0056b3;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\r\n        }\r\n\r\n        .additional-fields {\r\n            display: none;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n    <h2>Quick Fill the Bills</h2>\r\n    <div id=\"bill-container\">\r\n        <form class=\"bill-form\" id=\"billForm\">\r\n            <div class=\"form-group\">\r\n                <label for=\"reason\">Reason for the bill:</label>\r\n                <input type=\"text\" id=\"reason\" name=\"reason\" required>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"amount\">Bill amount:</label>\r\n                <input type=\"number\" id=\"amount\" name=\"amount\" required>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"date\">Bill date:</label>\r\n                <input type=\"date\" id=\"date\" name=\"date\" required>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"category\">Category:</label>\r\n                <select id=\"category\" name=\"category\" required>\r\n                    <option value=\"Travel\">Travel</option>\r\n                    <option value=\"Food\">Food</option>\r\n                    <option value=\"Office Supplies\">Office Supplies</option>\r\n                    <option value=\"Miscellaneous\">Miscellaneous</option>\r\n                </select>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"reimbursed\">Already reimbursed?</label>\r\n                <input type=\"checkbox\" id=\"reimbursed\" name=\"reimbursed\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"submittedBy\">Submitted by:</label>\r\n                <select id=\"submittedBy\" name=\"submittedBy\" required>\r\n                    <option value=\"Current User\">Current User</option>\r\n                    <!-- Add other user options here -->\r\n                </select>\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <label for=\"comments\">Comments:</label>\r\n                <textarea id=\"comments\" name=\"comments\"></textarea>\r\n            </div>\r\n            <div class=\"form-group additional-fields\">\r\n                <label for=\"clientReimbursed\">Client Reimbursed:</label>\r\n                <input type=\"checkbox\" id=\"clientReimbursed\" name=\"clientReimbursed\">\r\n            </div>\r\n            <div class=\"form-group additional-fields\">\r\n                <label for=\"file\">Attachment:</label>\r\n                <input type=\"file\" id=\"file\" name=\"file\" required>\r\n            </div>\r\n            <div class=\"form-group additional-fields\">\r\n                <label for=\"reimbursementDate\">Reimbursement Date:</label>\r\n                <input type=\"date\" id=\"reimbursementDate\" name=\"reimbursementDate\">\r\n            </div>\r\n            <button type=\"button\" class=\"save-edit-btn\">Save</button>\r\n        </form>\r\n    </div>\r\n    <div class=\"button-group\">\r\n        <button id=\"add-bill-btn\" class=\"button-style\">+ Add Bill</button>\r\n        <button id=\"remove-bill-btn\" class=\"button-style\">- Remove Bill</button>\r\n    </div>\r\n    <div id=\"message\"></div>\r\n</div>\r\n<script>\r\n    document.getElementById('add-bill-btn').addEventListener('click', () => {\r\n        const container = document.getElementById('bill-container');\r\n        const newBillForm = document.querySelector('.bill-form').cloneNode(true);\r\n        resetForm(newBillForm); // Reset form fields before appending\r\n        container.appendChild(newBillForm);\r\n        addEventListenersToForm(newBillForm);\r\n    });\r\n\r\n    document.getElementById('remove-bill-btn').addEventListener('click', () => {\r\n        const forms = document.querySelectorAll('.bill-form');\r\n        if (forms.length > 1) {\r\n            forms[forms.length - 1].remove();\r\n        }\r\n    });\r\n\r\n    function addEventListenersToForm(form) {\r\n        const saveEditBtn = form.querySelector('.save-edit-btn');\r\n\r\n        saveEditBtn.addEventListener('click', () => {\r\n            if (saveEditBtn.textContent === 'Save') {\r\n                // Save logic here\r\n                toggleFormFields(form, true);\r\n                saveEditBtn.textContent = 'Edit';\r\n                submitForm(form); // Submit the form on Save\r\n            } else {\r\n                toggleFormFields(form, false);\r\n                saveEditBtn.textContent = 'Save';\r\n            }\r\n        });\r\n\r\n        form.addEventListener('submit', async function (event) {\r\n            event.preventDefault();\r\n        });\r\n    }\r\n\r\n    async function submitForm(form) {\r\n        let formData = new FormData();\r\n        formData.append('bill', new Blob([JSON.stringify({\r\n            reason: form.querySelector('#reason').value,\r\n            amount: form.querySelector('#amount').value,\r\n            date: form.querySelector('#date').value,\r\n            category: form.querySelector('#category').value,\r\n            reimbursed: form.querySelector('#reimbursed').checked,\r\n            submittedBy: form.querySelector('#submittedBy').value,\r\n            comments: form.querySelector('#comments').value,\r\n            clientReimbursed: form.querySelector('#clientReimbursed').checked,\r\n            reimbursementDate: form.querySelector('#reimbursementDate').value\r\n        })], { type: 'application/json' }));\r\n        formData.append('file', form.querySelector('#file').files[0]);\r\n\r\n        try {\r\n            let response = await fetch('http://13.201.90.199:8080/upload/Bill', {\r\n                method: 'POST',\r\n                body: formData\r\n            });\r\n\r\n            if (response.ok) {\r\n                document.getElementById('message').innerText = 'Bill uploaded successfully!';\r\n            } else {\r\n                document.getElementById('message').innerText = 'Click on edit , fill the details.';\r\n            }\r\n        } catch (error) {\r\n            document.getElementById('message').innerText = 'Error uploading bill.';\r\n        }\r\n    }\r\n\r\n    function toggleFormFields(form, disable) {\r\n        form.querySelectorAll('input, select, textarea').forEach(input => {\r\n            input.disabled =\r\n\r\n disable;\r\n        });\r\n        form.querySelectorAll('.additional-fields').forEach(field => {\r\n            field.style.display = disable ? 'none' : 'block';\r\n        });\r\n        form.querySelectorAll('.additional-fields input').forEach(input => {\r\n            input.disabled = disable;\r\n        });\r\n    }\r\n\r\n    function resetForm(form) {\r\n        form.querySelectorAll('input, select, textarea').forEach(input => {\r\n            input.value = '';\r\n            input.disabled = false;\r\n        });\r\n        form.querySelector('.save-edit-btn').textContent = 'Save';\r\n        form.querySelectorAll('.additional-fields').forEach(field => {\r\n            field.style.display = 'none';\r\n        });\r\n    }\r\n\r\n    // Initialize event listeners for existing forms\r\n    document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));\r\n</script>\r\n</body>\r\n</html>\r\n```
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/main/resources/static/billpage.html b/backend/src/main/resources/static/billpage.html
+--- a/backend/src/main/resources/static/billpage.html	
++++ b/backend/src/main/resources/static/billpage.html	
+@@ -5,6 +5,7 @@
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Quick Fill the Bills</title>
+     <style>
++        /* Existing styles */
+         body {
+             font-family: Arial, sans-serif;
+             background-color: #f7f7f7;
+@@ -17,49 +18,56 @@
+ 
+         .container {
+             background-color: #fff;
+-            padding: 10px;
++            padding: 20px;
+             border-radius: 8px;
+             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+-            width: 40%;
+-            max-width: 500px;
++            width: 80%;
++            max-width: 900px;
+         }
+ 
+         h2 {
+             margin-bottom: 10px;
+             text-align: center;
+-            font-size: 1.4rem;
++            font-size: 1.2rem; /* Reduced font size */
+         }
+ 
+         .form-group {
+-            margin-bottom: 8px;
++            display: grid;
++            grid-template-columns: 1fr 1fr; /* Two equal columns */
++            gap: 10px; /* Gap between the grid items */
++            margin-bottom: 10px;
+         }
+ 
+         .form-group label {
+             display: block;
+-            margin-bottom: 2px;
+             font-weight: bold;
+-            font-size: 0.85rem;
++            font-size: 0.85rem; /* Reduced font size */
++            margin-bottom: 5px;
+         }
+ 
+         .form-group input,
+         .form-group select,
+         .form-group textarea {
+-            width: calc(100% - 14px); /* Adjust width for padding */
+-            padding: 4px 6px;
++            width: 100%;
++            padding: 4px;
+             border: 1px solid #ccc;
+             border-radius: 4px;
+             box-sizing: border-box;
+-            font-size: 0.85rem;
++            font-size: 0.85rem; /* Reduced font size */
++        }
++
++        .form-group input[type="checkbox"] {
++            width: auto;
++            margin-right: 5px;
+         }
+ 
+-        .form-group textarea {
+-            height: 40px;
++        .form-group .full-width {
++            grid-column: 1 / -1; /* Span across all columns */
+         }
+ 
+         .button-group {
+             display: flex;
+-            flex-direction: column;
+-            align-items: center;
++            justify-content: center;
+             margin-top: 10px;
+         }
+ 
+@@ -71,8 +79,7 @@
+             border-radius: 4px;
+             cursor: pointer;
+             margin: 6px;
+-            width: 100%;
+-            max-width: 180px;
++            width: 100px; /* Adjusted button width */
+             text-align: center;
+             transition: background-color 0.3s, box-shadow 0.3s;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+@@ -83,34 +90,63 @@
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+         }
+ 
+-        #message {
+-            margin-top: 10px;
+-            text-align: center;
+-            font-weight: bold;
++        .save-btn {
++            background-color: #28a745; /* Green color */
++        }
++
++        .save-btn:hover {
++            background-color: #218838;
+         }
+ 
+-        .save-edit-btn {
+-            display: inline-block;
+-            margin-top: 8px;
+-            width: 100%;
+-            padding: 8px;
+-            background-color: #007BFF;
+-            color: #fff;
+-            border: none;
+-            border-radius: 4px;
+-            cursor: pointer;
+-            text-align: center;
+-            transition: background-color 0.3s, box-shadow 0.3s;
+-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
++        .edit-btn {
++            background-color: #007BFF; /* Blue color */
+         }
+ 
+-        .save-edit-btn:hover {
++        .edit-btn:hover {
+             background-color: #0056b3;
+-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
++        }
++
++        .cancel-btn {
++            background-color: #6c757d; /* Grey color */
++        }
++
++        .cancel-btn:hover {
++            background-color: #5a6268;
++        }
++
++        .add-bill-btn {
++            background-color: #17a2b8; /* Teal color */
++        }
++
++        .add-bill-btn:hover {
++            background-color: #138496;
++        }
++
++        .remove-bill-btn {
++            background-color: #dc3545; /* Red color */
+         }
+ 
+-        .additional-fields {
++        .remove-bill-btn:hover {
++            background-color: #c82333;
++        }
++
++        .loader {
+             display: none;
++            position: fixed;
++            left: 50%;
++            top: 50%;
++            transform: translate(-50%, -50%);
++            border: 8px solid #f3f3f3;
++            border-top: 8px solid #3498db;
++            border-radius: 50%;
++            width: 50px;
++            height: 50px;
++            animation: spin 1s linear infinite;
++        }
++
++        @keyframes spin {
++            0% { transform: rotate(0deg); }
++            100% { transform: rotate(360deg); }
+         }
+     </style>
+ </head>
+@@ -118,65 +154,65 @@
+ <div class="container">
+     <h2>Quick Fill the Bills</h2>
+     <div id="bill-container">
+-        <form class="bill-form" id="billForm">
++        <form class="bill-form" id="billForm" enctype="multipart/form-data">
+             <div class="form-group">
+                 <label for="reason">Reason for the bill:</label>
+                 <input type="text" id="reason" name="reason" required>
+-            </div>
+-            <div class="form-group">
+                 <label for="amount">Bill amount:</label>
+                 <input type="number" id="amount" name="amount" required>
+-            </div>
+-            <div class="form-group">
+                 <label for="date">Bill date:</label>
+                 <input type="date" id="date" name="date" required>
+-            </div>
+-            <div class="form-group">
+                 <label for="category">Category:</label>
+                 <select id="category" name="category" required>
+-                    <option value="Travel">Travel</option>
+-                    <option value="Food">Food</option>
+-                    <option value="Office Supplies">Office Supplies</option>
+-                    <option value="Miscellaneous">Miscellaneous</option>
++                    <option value="travel">Travel</option>
++                    <option value="food">Food</option>
++                    <option value="accommodation">Accommodation</option>
++                    <option value="supplies">Supplies</option>
+                 </select>
+-            </div>
+-            <div class="form-group">
+                 <label for="reimbursed">Already reimbursed?</label>
+                 <input type="checkbox" id="reimbursed" name="reimbursed">
+-            </div>
+-            <div class="form-group">
+                 <label for="submittedBy">Submitted by:</label>
+                 <select id="submittedBy" name="submittedBy" required>
+-                    <option value="Current User">Current User</option>
+-                    <!-- Add other user options here -->
++                    <option value="current-user">Current User</option>
++                    <option value="other">Other User</option>
+                 </select>
+-            </div>
+-            <div class="form-group">
+-                <label for="comments">Comments:</label>
+-                <textarea id="comments" name="comments"></textarea>
+-            </div>
+-            <div class="form-group additional-fields">
+                 <label for="clientReimbursed">Client Reimbursed:</label>
+                 <input type="checkbox" id="clientReimbursed" name="clientReimbursed">
+-            </div>
+-            <div class="form-group additional-fields">
+                 <label for="file">Attachment:</label>
+-                <input type="file" id="file" name="file" required>
+-            </div>
+-            <div class="form-group additional-fields">
++                <input type="file" id="file" name="file">
+                 <label for="reimbursementDate">Reimbursement Date:</label>
+                 <input type="date" id="reimbursementDate" name="reimbursementDate">
++                <label for="comments">Comments:</label>
++                <textarea id="comments" name="comments"></textarea>
++            </div>
++            <div class="button-group">
++                <button type="button" id="edit-btn" class="edit-btn">Edit</button>
++                <button type="button" id="cancel-btn" class="cancel-btn" style="display:none;">Cancel</button>
++                <button type="button" class="save-btn" style="display:none;">Save</button>
++                <button type="button" id="add-bill-btn" class="add-bill-btn">+ Add Bill</button>
++                <button type="button" id="remove-bill-btn" class="remove-bill-btn">- Remove Bill</button>
+             </div>
+-            <button type="button" class="save-edit-btn">Save</button>
+         </form>
+     </div>
+-    <div class="button-group">
+-        <button id="add-bill-btn" class="button-style">+ Add Bill</button>
+-        <button id="remove-bill-btn" class="button-style">- Remove Bill</button>
+-    </div>
+     <div id="message"></div>
++    <div class="loader" id="loader"></div>
+ </div>
+ <script>
++    document.addEventListener('DOMContentLoaded', () => {
++        const urlParams = new URLSearchParams(window.location.search);
++        const billId = urlParams.get('id');
++        if (billId) {
++            localStorage.setItem('billId', billId);
++            fetchBillDetails(billId);
++        } else {
++            // If there's no billId, ensure the form is non-editable
++            toggleEditMode(false);
++        }
++
++        // Add initial event listeners
++        addEventListenersToForm(document.querySelector('.bill-form'));
++    });
++
+     document.getElementById('add-bill-btn').addEventListener('click', () => {
+         const container = document.getElementById('bill-container');
+         const newBillForm = document.querySelector('.bill-form').cloneNode(true);
+@@ -185,25 +221,38 @@
+         addEventListenersToForm(newBillForm);
+     });
+ 
+-    document.getElementById('remove-bill-btn').addEventListener('click', () => {
+-        const forms = document.querySelectorAll('.bill-form');
+-        if (forms.length > 1) {
+-            forms[forms.length - 1].remove();
+-        }
+-    });
+-
+-    function addEventListenersToForm(form) {
+-        const saveEditBtn = form.querySelector('.save-edit-btn');
+-
+-        saveEditBtn.addEventListener('click', () => {
+-            if (saveEditBtn.textContent === 'Save') {
+-                // Save logic here
+-                toggleFormFields(form, true);
+-                saveEditBtn.textContent = 'Edit';
+-                submitForm(form); // Submit the form on Save
+-            } else {
+-                toggleFormFields(form, false);
+-                saveEditBtn.textContent = 'Save';
++    function addEventListenersToForm(form) {
++        const saveBtn = form.querySelector('.save-btn');
++        const editBtn = form.querySelector('#edit-btn');
++        const cancelBtn = form.querySelector('#cancel-btn');
++        const addBillBtn = form.querySelector('#add-bill-btn');
++        const removeBillBtn = form.querySelector('#remove-bill-btn');
++
++        saveBtn.addEventListener('click', async () => {
++            const billId = localStorage.getItem('billId'); // Retrieve billId (if needed)
++            await submitForm(form, billId);
++        });
++
++        editBtn.addEventListener('click', () => {
++            toggleEditMode(true, form);
++        });
++
++        cancelBtn.addEventListener('click', () => {
++            toggleEditMode(false, form);
++        });
++
++        addBillBtn.addEventListener('click', () => {
++            const container = document.getElementById('bill-container');
++            const newBillForm = form.cloneNode(true);
++            resetForm(newBillForm); // Reset form fields before appending
++            container.appendChild(newBillForm);
++            addEventListenersToForm(newBillForm);
++        });
++
++        removeBillBtn.addEventListener('click', () => {
++            const forms = document.querySelectorAll('.bill-form');
++            if (forms.length > 1) {
++                form.remove();
+             }
+         });
+ 
+@@ -212,7 +261,61 @@
+         });
+     }
+ 
+-    async function submitForm(form) {
++    function resetForm(form) {
++        form.reset();
++        form.querySelector('.save-btn').style.display = 'none';
++        form.querySelector('#edit-btn').style.display = 'inline-block';
++        form.querySelector('#cancel-btn').style.display = 'none';
++    }
++
++    function toggleEditMode(enable, form) {
++        const saveBtn = form.querySelector('.save-btn');
++        const editBtn = form.querySelector('#edit-btn');
++        const cancelBtn = form.querySelector('#cancel-btn');
++
++        saveBtn.style.display = enable ? 'inline-block' : 'none';
++        editBtn.style.display = enable ? 'none' : 'inline-block';
++        cancelBtn.style.display = enable ? 'inline-block' : 'none';
++
++        form.querySelectorAll('input, select, textarea').forEach(input => {
++            input.disabled = !enable;
++        });
++    }
++
++    async function fetchBillDetails(billId) {
++        const url = `http://43.205.154.85:8080/api/billing/getBillById?id=${billId}`;
++        try {
++            const response = await fetch(url);
++            if (!response.ok) {
++                throw new Error('Failed to fetch bill details');
++            }
++            const billData = await response.json();
++            populateForm(billData);
++        } catch (error) {
++            console.error('Error fetching bill details:', error);
++        }
++    }
++
++    function populateForm(billData) {
++        const form = document.querySelector('.bill-form');
++        form.querySelector('#reason').value = billData.reason;
++        form.querySelector('#amount').value = billData.amount;
++        form.querySelector('#date').value = billData.date;
++        form.querySelector('#category').value = billData.category;
++        form.querySelector('#reimbursed').checked = billData.reimbursed;
++        form.querySelector('#submittedBy').value = billData.submittedBy;
++        form.querySelector('#clientReimbursed').checked = billData.clientReimbursed;
++        form.querySelector('#reimbursementDate').value = billData.reimbursementDate;
++        form.querySelector('#comments').value = billData.comments;
++
++        // Set the form to non-editable by default
++        toggleEditMode(false, form);
++    }
++
++    async function submitForm(form, billId) {
++        const loader = document.getElementById('loader');
++        loader.style.display = 'block'; // Show loader
++
+         let formData = new FormData();
+         formData.append('bill', new Blob([JSON.stringify({
+             reason: form.querySelector('#reason').value,
+@@ -228,49 +331,34 @@
+         formData.append('file', form.querySelector('#file').files[0]);
+ 
+         try {
+-            let response = await fetch('http://13.201.90.199:8080/upload/Bill', {
++            let response = await fetch(`http://43.205.154.85:8080/api/billing/updateBill/${billId}`, {
+                 method: 'POST',
+                 body: formData
+             });
+ 
+             if (response.ok) {
+                 document.getElementById('message').innerText = 'Bill uploaded successfully!';
++                toggleEditMode(false, form); // Switch back to read-only mode
+             } else {
+-                document.getElementById('message').innerText = 'Click on edit , fill the details.';
++                document.getElementById('message').innerText = 'Error uploading bill.';
+             }
+         } catch (error) {
+             document.getElementById('message').innerText = 'Error uploading bill.';
++        } finally {
++            loader.style.display = 'none'; // Hide loader
+         }
+     }
+-
+-    function toggleFormFields(form, disable) {
+-        form.querySelectorAll('input, select, textarea').forEach(input => {
+-            input.disabled =
+-
+- disable;
+-        });
+-        form.querySelectorAll('.additional-fields').forEach(field => {
+-            field.style.display = disable ? 'none' : 'block';
+-        });
+-        form.querySelectorAll('.additional-fields input').forEach(input => {
+-            input.disabled = disable;
+-        });
+-    }
+ 
+-    function resetForm(form) {
+-        form.querySelectorAll('input, select, textarea').forEach(input => {
+-            input.value = '';
+-            input.disabled = false;
+-        });
+-        form.querySelector('.save-edit-btn').textContent = 'Save';
+-        form.querySelectorAll('.additional-fields').forEach(field => {
+-            field.style.display = 'none';
+-        });
++    function displayMessage(message) {
++        const messageDiv = document.getElementById('message');
++        messageDiv.textContent = message;
++        setTimeout(() => {
++            messageDiv.textContent = '';
++        }, 3000);
+     }
+-
+-    // Initialize event listeners for existing forms
+-    document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));
+ </script>
++
++
++
+ </body>
+-</html>
+-```
+\ No newline at end of file
++</html>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/backend/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_17\" default=\"true\" project-jdk-name=\"corretto-17\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	
++++ b/.idea/misc.xml	
+@@ -8,7 +8,7 @@
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="17" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file

@@ -1,0 +1,16 @@
+Index: .idea/runConfigurations/JobDescBackendApplication.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"ProjectRunConfigurationManager\">\r\n  <configuration default=\"false\" name=\"JobDescBackendApplication\" type=\"Application\" factoryName=\"Application\" nameIsGenerated=\"true\">\r\n    <option name=\"MAIN_CLASS_NAME\" value=\"com.example.job_desc_backend.JobDescBackendApplication\" />\r\n    <module name=\"job_desc_backend\" />\r\n    <extension name=\"coverage\">\r\n      <pattern>\r\n        <option name=\"PATTERN\" value=\"com.example.job_desc_backend.*\" />\r\n        <option name=\"ENABLED\" value=\"true\" />\r\n      </pattern>\r\n    </extension>\r\n    <method v=\"2\">\r\n      <option name=\"Make\" enabled=\"true\" />\r\n    </method>\r\n  </configuration>\r\n</component>
+===================================================================
+diff --git a/.idea/runConfigurations/JobDescBackendApplication.xml b/.idea/runConfigurations/JobDescBackendApplication.xml
+--- a/.idea/runConfigurations/JobDescBackendApplication.xml	
++++ b/.idea/runConfigurations/JobDescBackendApplication.xml	
+@@ -1,5 +1,7 @@
+ <component name="ProjectRunConfigurationManager">
+   <configuration default="false" name="JobDescBackendApplication" type="Application" factoryName="Application" nameIsGenerated="true">
++    <option name="ALTERNATIVE_JRE_PATH" value="17" />
++    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+     <option name="MAIN_CLASS_NAME" value="com.example.job_desc_backend.JobDescBackendApplication" />
+     <module name="job_desc_backend" />
+     <extension name="coverage">

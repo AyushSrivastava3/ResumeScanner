@@ -65,4 +65,7 @@ public class Profile_detail_page {
     public void setResumeId(String resumeId) {
         this.resumeId = resumeId;
     }
+
+    public void setCreatedBy(String username) {
+    }
 }

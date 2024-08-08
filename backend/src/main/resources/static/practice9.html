@@ -85,7 +85,7 @@
 <!--    <script>-->
 <!--        document.addEventListener('DOMContentLoaded', function() {-->
 <!--            // Fetch all resumes from the server and populate the dropdown-->
-<!--            fetch('http://13.201.90.199:8080/allResume')-->
+<!--            fetch('http://43.205.154.85:8080/allResume')-->
 <!--                .then(response => {-->
 <!--                    if (!response.ok) {-->
 <!--                        throw new Error('Network response was not ok ' + response.statusText);-->
@@ -110,7 +110,7 @@
 <!--            const formData = new FormData();-->
 <!--            formData.append('file', document.getElementById('fileInput').files[0]);-->
 
-<!--            fetch('http://13.201.90.199:8080/save', {-->
+<!--            fetch('http://43.205.154.85:8080/save', {-->
 <!--                method: 'POST',-->
 <!--                body: formData-->
 <!--            })-->
@@ -134,7 +134,7 @@
 <!--        document.getElementById('downloadResumeBtn').addEventListener('click', function() {-->
 <!--            const selectedResumeId = document.getElementById('resumeSelect').value;-->
 <!--            if (selectedResumeId) {-->
-<!--                fetch(`http://13.201.90.199:8080/getResume?resumeId=${selectedResumeId}`)-->
+<!--                fetch(`http://43.205.154.85:8080/getResume?resumeId=${selectedResumeId}`)-->
 <!--                .then(response => {-->
 <!--                    if (!response.ok) {-->
 <!--                        throw new Error('Network response was not ok ' + response.statusText);-->
@@ -257,7 +257,7 @@
 <!--<script>-->
 <!--    document.addEventListener('DOMContentLoaded', function() {-->
 <!--        // Fetch all resumes from the server and populate the dropdown-->
-<!--        fetch('http://13.201.90.199:8080/allResume')-->
+<!--        fetch('http://43.205.154.85:8080/allResume')-->
 <!--            .then(response => {-->
 <!--                if (!response.ok) {-->
 <!--                    throw new Error('Network response was not ok ' + response.statusText);-->
@@ -282,7 +282,7 @@
 <!--        const formData = new FormData();-->
 <!--        formData.append('file', document.getElementById('fileInput').files[0]);-->
 
-<!--        fetch('http://13.201.90.199:8080/save', {-->
+<!--        fetch('http://43.205.154.85:8080/save', {-->
 <!--            method: 'POST',-->
 <!--            body: formData-->
 <!--        })-->
@@ -306,7 +306,7 @@
 <!--    document.getElementById('downloadResumeBtn').addEventListener('click', function() {-->
 <!--        const selectedResumeId = document.getElementById('resumeSelect').value;-->
 <!--        if (selectedResumeId) {-->
-<!--            fetch(`http://13.201.90.199:8080/getResume?resumeId=${selectedResumeId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getResume?resumeId=${selectedResumeId}`)-->
 <!--            .then(response => {-->
 <!--                if (!response.ok) {-->
 <!--                    throw new Error('Network response was not ok ' + response.statusText);-->
@@ -517,7 +517,7 @@
 <!--<script>-->
 <!--    document.addEventListener('DOMContentLoaded', function() {-->
 <!--        // Fetch all resumes from the server and populate the dropdown-->
-<!--        fetch('http://13.201.90.199:8080/allResume')-->
+<!--        fetch('http://43.205.154.85:8080/allResume')-->
 <!--            .then(response => {-->
 <!--                if (!response.ok) {-->
 <!--                    throw new Error('Network response was not ok ' + response.statusText);-->
@@ -590,7 +590,7 @@
 <!--        formData.append('file', document.getElementById('fileInput').files[0]);-->
 <!--        showLoader();-->
 
-<!--        fetch('http://13.201.90.199:8080/save', {-->
+<!--        fetch('http://43.205.154.85:8080/save', {-->
 <!--        method: 'POST',-->
 <!--        body: formData-->
 <!--    })-->
@@ -648,7 +648,7 @@
 <!--    document.getElementById('downloadResumeBtn').addEventListener('click', function() {-->
 <!--        const selectedResumeId = document.getElementById('resumeSelect').value;-->
 <!--        if (selectedResumeId) {-->
-<!--            fetch(`http://13.201.90.199:8080/getResume?resumeId=${selectedResumeId}`)-->
+<!--            fetch(`http://43.205.154.85:8080/getResume?resumeId=${selectedResumeId}`)-->
 <!--            .then(response => {-->
 <!--                if (!response.ok) {-->
 <!--                    throw new Error('Network response was not ok ' + response.statusText);-->
@@ -975,7 +975,7 @@
                 return;
             }
         // Fetch all resumes from the server and populate the dropdown
-        fetch('http://13.201.90.199:8080/allResume', {
+        fetch('http://43.205.154.85:8080/allResume', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -1057,7 +1057,7 @@
         formData.append('file', document.getElementById('fileInput').files[0]);
         showLoader();
 
-        fetch('http://13.201.90.199:8080/save', {
+        fetch('http://43.205.154.85:8080/save', {
         method: 'POST',
         headers: {
                     'Authorization': `Bearer ${token}`
@@ -1164,7 +1164,7 @@
             hideModal();
             formData.append('override', 'true'); // Add override flag to the form data
             showLoader();
-            fetch('http://13.201.90.199:8080/save', {
+            fetch('http://43.205.154.85:8080/save', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -1209,7 +1209,7 @@
                 return;
             }
         if (selectedResumeId) {
-            fetch(`http://13.201.90.199:8080/getResume?resumeId=${selectedResumeId}`, {
+            fetch(`http://43.205.154.85:8080/getResume?resumeId=${selectedResumeId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

@@ -135,6 +135,21 @@
             `;
             document.body.appendChild(modal);
 
+        fetch('http://43.205.154.85:8080/api/clients', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clientData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Client created successfully!');
+            event.target.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+
             document.getElementById('closeModal').addEventListener('click', function() {
                 modal.remove();
                 window.location.href = 'login.html'; // Redirect to login page
@@ -180,6 +195,7 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+
         });
     });
 </script>

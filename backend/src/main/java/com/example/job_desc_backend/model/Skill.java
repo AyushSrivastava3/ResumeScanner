@@ -40,4 +40,7 @@ public class Skill {
     public void setSubSkills(List<String> subSkills) {
         this.subSkills = subSkills;
     }
+
+    public void setCreatedBy(String username) {
+    }
 }

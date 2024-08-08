@@ -266,7 +266,7 @@
 <!--                formData.optionalSkills.push(optionalSkill);-->
 <!--            }-->
 
-<!--            fetch('http://13.201.90.199:8080/create', {-->
+<!--            fetch('http://43.205.154.85:8080/create', {-->
 <!--                method: 'POST',-->
 <!--                headers: {-->
 <!--                    'Content-Type': 'application/json',-->
@@ -579,7 +579,7 @@
 <!--            formData.optionalSkills.push(optionalSkill);-->
 <!--        }-->
 
-<!--        fetch('http://13.201.90.199:8080/create', {-->
+<!--        fetch('http://43.205.154.85:8080/create', {-->
 <!--            method: 'POST',-->
 <!--            headers: {-->
 <!--                'Content-Type': 'application/json',-->
@@ -933,7 +933,7 @@ container.appendChild(subskillGroup);
                 return;
             }
 
-        fetch('http://13.201.90.199:8080/create', {
+        fetch('http://43.205.154.85:8080/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -977,7 +977,7 @@ container.appendChild(subskillGroup);
             results.style.border = "1px solid #f5c6cb"; // Border to highlight the error
             results.style.borderRadius = "5px";
 
-            results.innerHTML="Error: ${error.message}"
+            results.innerHTML=`Error: ${error.message}`
 
         });
     });

@@ -20,14 +20,14 @@ public class Client {
     private String accountNumber;
     private String ifscCode;
     private String currency;
-    private String createdBy;
+    private int totalPendingInvoices;
 
-    public String getCreatedBy() {
-        return createdBy;
+    public int getTotalPendingInvoices() {
+        return totalPendingInvoices;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setTotalPendingInvoices(int totalPendingInvoices) {
+        this.totalPendingInvoices = totalPendingInvoices;
     }
 
     public String getId() {

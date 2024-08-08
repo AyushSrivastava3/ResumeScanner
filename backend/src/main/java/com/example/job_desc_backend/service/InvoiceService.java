@@ -40,4 +40,13 @@ public class InvoiceService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<Invoice> getPendingInvoices() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String currentDateString = LocalDate.now().format(formatter);
+
+        List<Invoice> invoices = invoiceRepository.findPendingInvoices(currentDateString);
+
+        return invoices;
+    }
 }

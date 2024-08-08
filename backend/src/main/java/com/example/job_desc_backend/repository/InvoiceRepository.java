@@ -14,5 +14,6 @@ public interface InvoiceRepository extends MongoRepository<Invoice,String> {
 
     List<Invoice> findByRaisedOnBetween(LocalDate start, LocalDate end);
 
-
+    @Query("{ 'timeline': { $lt: ?0 }, 'raisedOn': { $lte: ?0 }, 'status': { $ne: 'completed' } }")
+    List<Invoice> findPendingInvoices(String currentDate);
 }

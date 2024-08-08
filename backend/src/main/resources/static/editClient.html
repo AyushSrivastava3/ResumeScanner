@@ -3,20 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Client</title>
+    <title>Edit Client</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .form-container {
-            width: 300px;
-            margin: auto;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 12px #aaa;
+            background-color: #f9f9f9;
         }
-        .form-container h2 {
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 {
+            margin-bottom: 20px;
             text-align: center;
         }
         .form-group {
@@ -25,11 +40,13 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
+            font-weight: bold;
         }
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         .form-group button {
             width: 100%;
@@ -37,70 +54,86 @@
             background-color: #005149;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
+            font-size: 16px;
             cursor: pointer;
         }
         .form-group button:hover {
-            background-color: #003f3a;
+            background-color: #005149;
+        }
+        .edit-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #005149;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .edit-button:hover {
+            background-color: #005149;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+        .readonly {
+            background-color: #f9f9f9;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
+<!-- Include Header -->
 <div id="header"></div>
+
 <div class="form-container">
-    <h2>Create Client</h2>
     <form id="clientForm">
+        <h2>Client Information</h2>
         <div class="form-group">
             <label for="clientName">Client Name</label>
-            <input type="text" id="clientName" name="clientName" required>
+            <input type="text" id="clientName" name="clientName" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="clientAddress">Client Address</label>
-            <input type="text" id="clientAddress" name="clientAddress" required>
+            <input type="text" id="clientAddress" name="clientAddress" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="gstNumber">GST Number</label>
-            <input type="text" id="gstNumber" name="gstNumber">
+            <input type="text" id="gstNumber" name="gstNumber" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="accountNumber">Account Number</label>
-            <input type="text" id="accountNumber" name="accountNumber">
+            <input type="text" id="accountNumber" name="accountNumber" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="ifscCode">IFSC Code</label>
-            <input type="text" id="ifscCode" name="ifscCode">
+            <input type="text" id="ifscCode" name="ifscCode" class="readonly" readonly>
         </div>
         <div class="form-group">
             <label for="currency">Currency</label>
-            <select id="currency" name="currency" required>
-                <option value="">Select Currency</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="INR">INR</option>
-                <!-- Add more currencies as needed -->
-            </select>
+            <input type="text" id="currency" name="currency" class="readonly" readonly>
         </div>
         <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location">
+            <button type="submit" id="saveButton" style="display: none;">Save</button>
         </div>
-        <div class="form-group">
-            <label for="timeline">Timeline</label>
-            <input type="text" id="timeline" name="timeline">
-        </div>
-        <div class="form-group">
-            <label for="miscellaneous">Miscellaneous</label>
-            <input type="text" id="miscellaneous" name="miscellaneous">
-        </div>
-        <div class="form-group">
-            <button type="submit">Submit</button>
-        </div>
+        <button type="button" id="editButton" class="edit-button">Edit</button>
     </form>
 </div>
+
+<!-- Include Footer -->
 <div id="footer"></div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Load header and footer
+    // Load header and footer
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -113,7 +146,7 @@
                 document.getElementById('footer').innerHTML = data;
             });
 
-        const token = localStorage.getItem('accessToken');
+            const token = localStorage.getItem('accessToken');
 
         if (!token) {
             showModal("You have not yet logged in. Kindly login first.");
@@ -135,21 +168,6 @@
             `;
             document.body.appendChild(modal);
 
-        fetch('http://43.205.154.85:8080/api/clients', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(clientData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Client created successfully!');
-            event.target.reset();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-
             document.getElementById('closeModal').addEventListener('click', function() {
                 modal.remove();
                 window.location.href = 'login.html'; // Redirect to login page
@@ -163,7 +181,33 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        // Rest of your clientform.js functionality goes here...
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get('id');
+
+        if (clientId) {
+            fetch(`http://43.205.154.85:8080/api/clients/${clientId}`)
+                .then(response => response.json())
+                .then(client => {
+                    document.getElementById('clientName').value = client.clientName;
+                    document.getElementById('clientAddress').value = client.clientAddress;
+                    document.getElementById('gstNumber').value = client.gstNumber;
+                    document.getElementById('accountNumber').value = client.accountNumber;
+                    document.getElementById('ifscCode').value = client.ifscCode;
+                    document.getElementById('currency').value = client.currency;
+                })
+                .catch(error => console.error('Error fetching client:', error));
+        }
+
+        document.getElementById('editButton').addEventListener('click', function() {
+            const formElements = document.querySelectorAll('#clientForm input');
+            formElements.forEach(input => {
+                input.removeAttribute('readonly');
+                input.classList.remove('readonly');
+            });
+            document.getElementById('saveButton').style.display = 'block';
+            this.style.display = 'none';
+        });
+
         document.getElementById('clientForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -173,30 +217,32 @@
                 gstNumber: event.target.gstNumber.value,
                 accountNumber: event.target.accountNumber.value,
                 ifscCode: event.target.ifscCode.value,
-                currency: event.target.currency.value,
-                location: event.target.location.value,
-                timeline: event.target.timeline.value,
-                miscellaneous: event.target.miscellaneous.value
+                currency: event.target.currency.value
             };
 
-            fetch('http://43.205.154.85:8080/api/clients', {
-                method: 'POST',
+            fetch(`http://43.205.154.85:8080/api/clients/${clientId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(clientData)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
-                alert('Client created successfully!');
+                alert('Client details updated successfully!');
                 window.location.href = 'clients.html'; // Redirect to clients page
-                event.target.reset();
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-
         });
+
+
     });
 </script>
 </body>

@@ -115,5 +115,6 @@ public class Client {
     private String miscellaneous;
 
 
-
+    public void setCreatedBy(String username) {
+    }
 }

@@ -185,7 +185,7 @@
         const clientId = urlParams.get('id');
 
         if (clientId) {
-            fetch(`http://43.205.154.85:8080/api/clients/${clientId}`)
+            fetch(`http://localhost:8080/api/clients/${clientId}`)
                 .then(response => response.json())
                 .then(client => {
                     document.getElementById('clientName').value = client.clientName;
@@ -220,7 +220,7 @@
                 currency: event.target.currency.value
             };
 
-            fetch(`http://43.205.154.85:8080/api/clients/${clientId}`, {
+            fetch(`http://localhost:8080/api/clients/${clientId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

@@ -7,41 +7,65 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
         .form-container {
-            width: 300px;
-            margin: auto;
+            max-width: 400px;
+            margin: 50px auto;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 12px #aaa;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .form-container h2 {
             text-align: center;
+            color: #333;
+            margin-bottom: 20px;
         }
         .form-group {
             margin-bottom: 15px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: #555;
         }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
+        .form-group input,
+        .form-group select,
         .form-group button {
             width: 100%;
             padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group button:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+        }
+        .form-group button {
             background-color: #005149;
-            color: white;
+            color: #fff;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
         .form-group button:hover {
-            background-color: #003f3a;
+            background-color: #005149;
+        }
+        .form-group .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            color: white;
+            background-color: #28a745;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
         }
     </style>
 </head>
@@ -95,6 +119,14 @@
         <div class="form-group">
             <button type="submit">Submit</button>
         </div>
+        <!-- CSV Import Section -->
+        <div class="form-group">
+            <label for="csvUpload">Add Profile Using CSV:</label>
+            <input type="file" id="csvUpload" accept=".csv">
+            <button type="button" id="importCsvBtn" disabled>Import from CSV</button>
+        </div>
+        <!-- Feedback message -->
+        <div class="form-group feedback" id="feedbackMessage">Profiles imported successfully!</div>
     </form>
 </div>
 <div id="footer"></div>
@@ -148,7 +180,7 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        // Rest of your clientform.js functionality goes here...
+        // Handle form submission
         document.getElementById('clientForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -164,7 +196,7 @@
                 miscellaneous: event.target.miscellaneous.value
             };
 
-            fetch('http://43.205.154.85:8080/api/clients', {
+            fetch('http://localhost:8080/api/clients', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -181,7 +213,51 @@
                 console.error('Error:', error);
             });
         });
-    });
+
+        // CSV Import functionality
+        const csvUpload = document.getElementById('csvUpload');
+        const importCsvBtn = document.getElementById('importCsvBtn');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        csvUpload.addEventListener('change', function() {
+            importCsvBtn.disabled = !csvUpload.files.length;
+        });
+
+        importCsvBtn.addEventListener('click', function() {
+            const file = csvUpload.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('http://localhost:8080/profile/import', {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: formData
+                })
+                .then(response => response.json()) // Expect JSON response
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        console.log('Profiles imported:', data);
+                        data.forEach(profile => {
+                            fetchProfileById(profile.id); // Display each imported profile
+                        });
+                        feedbackMessage.style.display = 'block';
+                        setTimeout(() => {
+                            feedbackMessage.style.display = 'none';
+                        }, 3000); // Hide message after 3 seconds
+                    } else {
+                        console.error('Error importing profiles:', data.message);
+                    }
+                    csvUpload.value = ''; // Clear the file input
+                    importCsvBtn.disabled = true; // Disable the Import button
+                })
+                .catch(error => console.error('Error:', error));
+}
+});
+});
 </script>
+
 </body>
 </html>

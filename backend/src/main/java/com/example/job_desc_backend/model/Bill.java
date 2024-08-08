@@ -33,5 +33,6 @@ public class Bill {
         private String createdBy;
 
 
-
+    public void setCreatedBy(String username) {
+    }
 }

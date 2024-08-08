@@ -94,7 +94,7 @@
         const invoiceId = urlParams.get('id');
 
         if (invoiceId) {
-            fetch(`http://43.205.154.85:8080/api/invoices/${invoiceId}`)
+            fetch(`http://localhost:8080/api/invoices/${invoiceId}`)
                 .then(response => response.json())
                 .then(invoice => {
                     document.getElementById('invoiceNumber').value = invoice.invoiceNumber;
@@ -121,7 +121,7 @@
                 timeline: event.target.timeline.value
             };
 
-            fetch(`http://43.205.154.85:8080/api/invoices/${invoiceId}`, {
+            fetch(`http://localhost:8080/api/invoices/${invoiceId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

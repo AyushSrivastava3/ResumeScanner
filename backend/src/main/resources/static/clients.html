@@ -12,6 +12,7 @@
 
 <div class="container">
     <h2>Clients</h2>
+    <button id="exportBtn">Export Clients</button> <!-- Export button -->
     <table id="clientsTable">
         <thead>
         <tr>
@@ -81,7 +82,7 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        fetch('http://43.205.154.85:8080/api/clients')
+        fetch('http://localhost:8080/api/clients')
             .then(response => response.json())
             .then(clients => {
                 const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];
@@ -96,7 +97,7 @@
                     row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
                     row.insertCell(3).textContent = client.currency;
                     // Assuming there's an API to get total pending invoices for a client
-                    fetch(`http://43.205.154.85:8080/api/invoices/pending/count?clientId=${client.id}`)
+                    fetch(`http://localhost:8080/api/invoices/pending/count?clientId=${client.id}`)
                         .then(response => response.json())
                         .then(count => {
                             row.insertCell(4).textContent = count;
@@ -107,6 +108,31 @@
                 });
             })
             .catch(error => console.error('Error fetching clients:', error));
+
+
+
+             // Export profile functionality
+        function exportClients() {
+            fetch(`http://localhost:8080/api/clients/clients/export`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'client_export.xlsx'; // Set the file name for the export
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error exporting profile data:', error));
+        }
+
+        // Add event listener to export button
+        document.getElementById('exportBtn').addEventListener('click', exportClients);
     });
 
 

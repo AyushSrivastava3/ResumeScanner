@@ -25,4 +25,6 @@ public class Billpdf {
         private String fileId;
 
 
+    public void setCreatedBy(String username) {
+    }
 }

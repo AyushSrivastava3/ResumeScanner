@@ -217,7 +217,7 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        fetch('http://localhost:8080/api/invoices/clients')
+        fetch('http://43.205.154.85:8080/api/invoices/clients')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -285,7 +285,7 @@
                 timeline: event.target.timeline.value
             };
 
-            fetch('http://localhost:8080/api/invoices', {
+            fetch('http://43.205.154.85:8080/api/invoices', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

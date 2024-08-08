@@ -196,7 +196,7 @@
                 miscellaneous: event.target.miscellaneous.value
             };
 
-            fetch('http://localhost:8080/api/clients', {
+            fetch('http://43.205.154.85:8080/api/clients', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -229,7 +229,7 @@
                 const formData = new FormData();
                 formData.append('file', file);
 
-                fetch('http://localhost:8080/profile/import', {
+                fetch('http://43.205.154.85:8080/profile/import', {
                     method: 'POST',
                     headers: {
                         "Authorization": `Bearer ${token}`

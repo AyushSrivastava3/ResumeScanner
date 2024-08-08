@@ -108,7 +108,7 @@
             document.getElementById('closeModal').style.cursor = 'pointer';
         }
 
-        fetch('http://localhost:8080/api/invoices/pending')
+        fetch('http://43.205.154.85:8080/api/invoices/pending')
             .then(response => response.json())
             .then(invoices => {
                 const tableBody = document.getElementById('invoiceTableBody');

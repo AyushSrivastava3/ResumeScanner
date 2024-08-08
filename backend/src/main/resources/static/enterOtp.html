@@ -58,7 +58,8 @@
   </style>
 </head>
 <body>
-
+<div id="header"></div>
+<div id="header-include"></div>
 <div class="container">
   <h2 class="title">Enter OTP</h2>
   <form id="otpForm">
@@ -79,65 +80,80 @@
   </form>
 </div>
 
+<div id="footer"></div>
+
 <script>
-  function togglePasswordVisibility() {
-      const newPassword = document.querySelector('input[name="newPassword"]');
-      const repeatPassword = document.querySelector('input[name="repeatPassword"]');
-      if (newPassword.type === "password" && repeatPassword.type === "password") {
-          newPassword.type = "text";
-          repeatPassword.type = "text";
-      } else {
-          newPassword.type = "password";
-          repeatPassword.type = "password";
-      }
+
+      fetch('header.html')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('header').innerHTML = data;
+          });
+
+      fetch('footer.html')
+          .then(response => response.text())
+          .then(data => {
+              document.getElementById('footer').innerHTML = data;
+          });
+
+function togglePasswordVisibility() {
+  const newPassword = document.querySelector('input[name="newPassword"]');
+  const repeatPassword = document.querySelector('input[name="repeatPassword"]');
+  if (newPassword.type === "password" && repeatPassword.type === "password") {
+      newPassword.type = "text";
+      repeatPassword.type = "text";
+  } else {
+      newPassword.type = "password";
+      repeatPassword.type = "password";
   }
+}
 
-  document.getElementById("otpForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+document.getElementById("otpForm").addEventListener("submit", function(event) {
+  event.preventDefault();
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const email = urlParams.get('email');
+  const urlParams = new URLSearchParams(window.location.search);
+  const email = urlParams.get('email');
 
-      const formData = {
-          otp: document.querySelector('input[name="otp"]').value,
-          newPassword: document.querySelector('input[name="newPassword"]').value,
-          repeatPassword: document.querySelector('input[name="repeatPassword"]').value
-      };
+  const formData = {
+      otp: document.querySelector('input[name="otp"]').value,
+      newPassword: document.querySelector('input[name="newPassword"]').value,
+      repeatPassword: document.querySelector('input[name="repeatPassword"]').value
+  };
 
-      const verifyOtpUrl = "http://43.205.154.85:8080/forgotPassword/verifyOtp/" + formData.otp + "/" + email;
+  const verifyOtpUrl = "http://43.205.154.85:8080/forgotPassword/verifyOtp/" + formData.otp + "/" + email;
 
-      fetch(verifyOtpUrl, {
-          method: "POST"
-      })
-      .then(response => {
-          if (response.ok) {
-              const changePasswordUrl = "http://43.205.154.85:8080/forgotPassword/changePassword/" + email;
-              return fetch(changePasswordUrl, {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({ password: formData.newPassword, repeatPassword: formData.repeatPassword })
-              });
-          } else {
-              throw new Error("Invalid OTP");
-          }
-      })
-      .then(response => {
-          if (response.ok) {
-              alert("Password has been changed successfully.");
-              window.location.replace("index.html");
-          } else {
-              response.json().then(data => {
-                  alert("Error: " + data.message);
-              });
-          }
-      })
-      .catch(error => {
-          console.error("Error:", error);
-          alert("An error occurred. Please try again later.");
-      });
+  fetch(verifyOtpUrl, {
+      method: "POST"
+  })
+  .then(response => {
+      if (response.ok) {
+          const changePasswordUrl = "http://43.205.154.85:8080/forgotPassword/changePassword/" + email;
+          return fetch(changePasswordUrl, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ password: formData.newPassword, repeatPassword: formData.repeatPassword })
+          });
+      } else {
+          throw new Error("Invalid OTP");
+      }
+  })
+  .then(response => {
+      if (response.ok) {
+          alert("Password has been changed successfully.");
+          window.location.replace("index.html");
+      } else {
+          response.json().then(data => {
+              alert("Error: " + data.message);
+          });
+      }
+  })
+  .catch(error => {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again later.");
   });
+});
 </script>
 
 </body>

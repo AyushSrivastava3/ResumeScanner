@@ -72,6 +72,7 @@
     </style>
 </head>
 <body>
+<div id="header"></div>
 <div class="container">
     <div class="jd-details" id="jdDetails">
         <div class="header">
@@ -81,7 +82,22 @@
     </div>
 </div>
 
+<div id="footer"></div>
+
 <script>
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
     document.addEventListener('DOMContentLoaded', () => {
         const jdDetailsDiv = document.getElementById('jdDetails');
         const token = localStorage.getItem('accessToken');

@@ -1,684 +1,3 @@
-<!--&lt;!&ndash; <!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Edit Job Description</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background-color: #f4f4f4;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            display: flex;-->
-<!--            justify-content: center;-->
-<!--            align-items: center;-->
-<!--            height: 100vh;-->
-<!--            flex-direction: column;-->
-<!--        }-->
-
-<!--        .container {-->
-<!--            background-color: #fff;-->
-<!--            padding: 20px;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
-<!--            width: 400px;-->
-<!--            margin-bottom: 20px;-->
-<!--            max-height: 90vh; /* Ensure the container does not exceed the viewport height */-->
-<!--            overflow-y: auto;-->
-<!--        }-->
-
-<!--        h1 {-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        .form-group {-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-
-<!--        .form-group label {-->
-<!--            display: block;-->
-<!--            margin-bottom: 5px;-->
-<!--        }-->
-
-<!--        .form-group input {-->
-<!--            width: 100%;-->
-<!--            padding: 8px;-->
-<!--            border: 1px solid #ccc;-->
-<!--            border-radius: 4px;-->
-<!--        }-->
-
-<!--        button {-->
-<!--            width: 100%;-->
-<!--            padding: 10px;-->
-<!--            border: none;-->
-<!--            background-color: #007bff;-->
-<!--            color: #fff;-->
-<!--            font-size: 16px;-->
-<!--            cursor: pointer;-->
-<!--            border-radius: 4px;-->
-<!--            margin-bottom: 10px;-->
-<!--        }-->
-
-<!--        button:hover {-->
-<!--            background-color: #10559f;-->
-<!--        }-->
-
-<!--        .response-container {-->
-<!--            background-color: #fff;-->
-<!--            padding: 20px;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
-<!--            width: 400px;-->
-<!--            display: none;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        .response-container h2 {-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 20px;-->
-<!--            color: #333;-->
-<!--        }-->
-
-<!--        .response-container p {-->
-<!--            margin: 10px 0;-->
-<!--        }-->
-
-<!--        .skills-container {-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-
-<!--        .skill-group {-->
-<!--            margin-bottom: 20px;-->
-<!--            border-bottom: 1px solid #ccc;-->
-<!--            padding-bottom: 10px;-->
-<!--        }-->
-
-<!--        .skill-group input {-->
-<!--            width: calc(50% - 5px);-->
-<!--            margin-right: 10px;-->
-<!--        }-->
-
-<!--        .skill-group .subskill-group {-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            margin-top: 10px;-->
-<!--        }-->
-
-<!--        .skill-group .subskill-group input {-->
-<!--            width: 100%;-->
-<!--            margin-right: 5px;-->
-<!--        }-->
-
-<!--        .add-subskill-btn {-->
-<!--            background-color: #acb4bb;-->
-<!--            margin-top: 10px;-->
-<!--        }-->
-
-<!--        .add-subskill-btn:hover {-->
-<!--            background-color: #307fd3;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <div class="container">-->
-<!--        <h1>Edit Job Description</h1>-->
-<!--        <form id="jobDescriptionForm">-->
-<!--            <div class="form-group">-->
-<!--                <label for="title">Title:</label>-->
-<!--                <input type="text" id="title" name="title" required>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label>Mandatory Skills:</label>-->
-<!--                <div id="mandatorySkillsContainer" class="skills-container"></div>-->
-<!--                <button type="button" onclick="addMandatorySkill()">Add Mandatory Skill</button>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label>Optional Skills:</label>-->
-<!--                <div id="optionalSkillsContainer" class="skills-container"></div>-->
-<!--                <button type="button" onclick="addOptionalSkill()">Add Optional Skill</button>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label for="location">Location:</label>-->
-<!--                <input type="text" id="location" name="location" required>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label for="experienceLevel">Experience Level:</label>-->
-<!--                <input type="text" id="experienceLevel" name="experienceLevel" required>-->
-<!--            </div>-->
-
-<!--            <button type="submit">Update Job Description</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
-<!--    <div class="response-container" id="responseContainer">-->
-<!--        <h2>Job Description Updated</h2>-->
-<!--        <p><strong>Title:</strong> <span id="responseTitle"></span></p>-->
-<!--        <p><strong>Mandatory Skills:</strong> <span id="responseMandatorySkills"></span></p>-->
-<!--        <p><strong>Optional Skills:</strong> <span id="responseOptionalSkills"></span></p>-->
-<!--        <p><strong>Location:</strong> <span id="responseLocation"></span></p>-->
-<!--        <p><strong>Experience Level:</strong> <span id="responseExperienceLevel"></span></p>-->
-<!--        <p><strong>Job ID:</strong> <span id="responseId"></span></p>-->
-<!--    </div>-->
-
-<!--    <script>-->
-<!--        let mandatorySkillCount = 0;-->
-<!--        let optionalSkillCount = 0;-->
-
-<!--        // Get job description ID from URL-->
-<!--        const urlParams = new URLSearchParams(window.location.search);-->
-<!--        const jdId = urlParams.get('id');-->
-
-<!--        // Fetch job description details and populate form-->
-<!--        fetch(`http://43.205.154.85:8080/getJd?id=${jdId}`)-->
-<!--            .then(response => response.json())-->
-<!--            .then(data => {-->
-<!--                document.getElementById('title').value = data.title;-->
-<!--                document.getElementById('location').value = data.location;-->
-<!--                document.getElementById('experienceLevel').value = data.experienceLevel;-->
-
-<!--                data.mandatorySkills.forEach(skill => {-->
-<!--                    addMandatorySkill(skill);-->
-<!--                });-->
-
-<!--                data.optionalSkills.forEach(skill => {-->
-<!--                    addOptionalSkill(skill);-->
-<!--                });-->
-<!--            })-->
-<!--            .catch(error => console.error('Error fetching job description:', error));-->
-
-<!--        function addMandatorySkill(skill) {-->
-<!--            mandatorySkillCount++;-->
-<!--            const container = document.getElementById('mandatorySkillsContainer');-->
-<!--            const skillGroup = document.createElement('div');-->
-<!--            skillGroup.className = 'skill-group';-->
-<!--            skillGroup.innerHTML = `-->
-<!--                <input type="text" name="mandatorySkill${mandatorySkillCount}" placeholder="Skill" value="${skill ? skill.skill : ''}" required>-->
-<!--                <input type="text" name="mandatoryExperience${mandatorySkillCount}" placeholder="Experience (years)" value="${skill ? skill.experience : ''}" required>-->
-<!--                <div class="subskills-container" id="mandatorySubskills${mandatorySkillCount}">-->
-<!--                    ${skill && skill.subSkills ? skill.subSkills.map((subSkill, index) => `-->
-<!--                        <div class="subskill-group">-->
-<!--                            <input type="text" name="mandatorySubSkill${mandatorySkillCount}_${index + 1}" placeholder="Subskill" value="${subSkill}" required>-->
-<!--                        </div>-->
-<!--                    `).join('') : ''}-->
-<!--                </div>-->
-<!--                <button type="button" class="add-subskill-btn" onclick="addMandatorySubSkill(${mandatorySkillCount})">Add Subskill</button>-->
-<!--            `;-->
-<!--            container.appendChild(skillGroup);-->
-<!--        }-->
-
-<!--        function addMandatorySubSkill(skillIndex) {-->
-<!--            const container = document.getElementById(`mandatorySubskills${skillIndex}`);-->
-<!--            const subskillCount = container.children.length + 1;-->
-<!--            const subskillGroup = document.createElement('div');-->
-<!--            subskillGroup.className = 'subskill-group';-->
-<!--            subskillGroup.innerHTML = `-->
-<!--                <input type="text" name="mandatorySubSkill${skillIndex}_${subskillCount}" placeholder="Subskill" required>-->
-<!--            `;-->
-<!--            container.appendChild(subskillGroup);-->
-<!--        }-->
-
-<!--        function addOptionalSkill(skill) {-->
-<!--            optionalSkillCount++;-->
-<!--            const container = document.getElementById('optionalSkillsContainer');-->
-<!--            const skillGroup = document.createElement('div');-->
-<!--            skillGroup.className = 'skill-group';-->
-<!--            skillGroup.innerHTML = `-->
-<!--                <input type="text" name="optionalSkill${optionalSkillCount}" placeholder="Skill" value="${skill ? skill.skill : ''}" required>-->
-<!--                <input type="text" name="optionalExperience${optionalSkillCount}" placeholder="Experience (years)" value="${skill ? skill.experience : ''}" required>-->
-<!--                <div class="subskills-container" id="optionalSubskills${optionalSkillCount}">-->
-<!--                    ${skill && skill.subSkills ? skill.subSkills.map((subSkill, index) => `-->
-<!--                        <div class="subskill-group">-->
-<!--                            <input type="text" name="optionalSubSkill${optionalSkillCount}_${index + 1}" placeholder="Subskill" value="${subSkill}" required>-->
-<!--                        </div>-->
-<!--                    `).join('') : ''}-->
-<!--                </div>-->
-<!--                <button type="button" class="add-subskill-btn" onclick="addOptionalSubSkill(${optionalSkillCount})">Add Subskill</button>-->
-<!--            `;-->
-<!--            container.appendChild(skillGroup);-->
-<!--        }-->
-
-<!--        function addOptionalSubSkill(skillIndex) {-->
-<!--            const container = document.getElementById(`optionalSubskills${skillIndex}`);-->
-<!--            const subskillCount = container.children.length + 1;-->
-<!--            const subskillGroup = document.createElement('div');-->
-<!--            subskillGroup.className = 'subskill-group';-->
-<!--            subskillGroup.innerHTML = `-->
-<!--                <input type="text" name="optionalSubSkill${skillIndex}_${subskillCount}" placeholder="Subskill" required>-->
-<!--            `;-->
-<!--            container.appendChild(subskillGroup);-->
-<!--        }-->
-
-<!--        document.getElementById('jobDescriptionForm').addEventListener('submit', function(event) {-->
-<!--            event.preventDefault();-->
-
-<!--            const formData = {-->
-<!--                id: jdId,-->
-<!--                title: document.getElementById('title').value,-->
-<!--                location: document.getElementById('location').value,-->
-<!--                experienceLevel: document.getElementById('experienceLevel').value,-->
-<!--                mandatorySkills: [],-->
-<!--                optionalSkills: []-->
-<!--            };-->
-
-<!--            for (let i = 1; i <= mandatorySkillCount; i++) {-->
-<!--                const mandatorySkill = {-->
-<!--                    skill: document.querySelector(`input[name="mandatorySkill${i}"]`).value,-->
-<!--                    experience: document.querySelector(`input[name="mandatoryExperience${i}"]`).value,-->
-<!--                    subSkills: []-->
-<!--                };-->
-
-<!--                const subskillsContainer = document.getElementById(`mandatorySubskills${i}`);-->
-<!--                for (let j = 1; j <= subskillsContainer.children.length; j++) {-->
-<!--                    mandatorySkill.subSkills.push(document.querySelector(`input[name="mandatorySubSkill${i}_${j}"]`).value);-->
-<!--                }-->
-
-<!--                formData.mandatorySkills.push(mandatorySkill);-->
-<!--            }-->
-
-<!--            for (let i = 1; i <= optionalSkillCount; i++) {-->
-<!--                const optionalSkill = {-->
-<!--                    skill: document.querySelector(`input[name="optionalSkill${i}"]`).value,-->
-<!--                    experience: document.querySelector(`input[name="optionalExperience${i}"]`).value,-->
-<!--                    subSkills: []-->
-<!--                };-->
-
-<!--                const subskillsContainer = document.getElementById(`optionalSubskills${i}`);-->
-<!--                for (let j = 1; j <= subskillsContainer.children.length; j++) {-->
-<!--                    optionalSkill.subSkills.push(document.querySelector(`input[name="optionalSubSkill${i}_${j}"]`).value);-->
-<!--                }-->
-
-<!--                formData.optionalSkills.push(optionalSkill);-->
-<!--            }-->
-
-<!--            fetch('http://43.205.154.85:8080/edit', {-->
-<!--                method: 'POST',-->
-<!--                headers: {-->
-<!--                    'Content-Type': 'application/json',-->
-<!--                },-->
-<!--                body: JSON.stringify(formData),-->
-<!--            })-->
-<!--            .then(response => response.json())-->
-<!--            .then(data => {-->
-<!--                console.log('Success:', data);-->
-<!--                alert('Successfully updated jd')-->
-<!--                document.getElementById('responseId').innerText = data.id;-->
-<!--                document.getElementById('responseTitle').innerText = data.title;-->
-
-<!--                const mandatorySkillsList = data.mandatorySkills.map(skill => `${skill.skill} (${skill.experience} years) - Subskills: ${skill.subSkills.join(', ')}`).join(', ');-->
-<!--                document.getElementById('responseMandatorySkills').innerText = mandatorySkillsList;-->
-
-<!--                const optionalSkillsList = data.optionalSkills.map(skill => `${skill.skill} (${skill.experience} years) - Subskills: ${skill.subSkills.join(', ')}`).join(', ');-->
-<!--                document.getElementById('responseOptionalSkills').innerText = optionalSkillsList;-->
-
-<!--                document.getElementById('responseLocation').innerText = data.location;-->
-<!--                document.getElementById('responseExperienceLevel').innerText = data.experienceLevel;-->
-<!--                -->
-<!--                document.getElementById('responseContainer').style.display = 'block';-->
-<!--                //responseDiv.textContent = 'Job description Updated successfully';-->
-<!--            })-->
-<!--            .catch((error) => {-->
-<!--                console.error('Error:', error);-->
-<!--                alert('Error updating job description');-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
-<!--</body>-->
-<!--</html> &ndash;&gt;-->
-
-
-
-
-
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Edit Job Description</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            background-color: #f4f4f4;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            display: flex;-->
-<!--            justify-content: center;-->
-<!--            align-items: center;-->
-<!--            height: 100vh;-->
-<!--            flex-direction: column;-->
-<!--        }-->
-
-<!--        .container {-->
-<!--            background-color: #fff;-->
-<!--            padding: 20px;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
-<!--            width: 400px;-->
-<!--            margin-bottom: 20px;-->
-<!--            overflow-y: auto;-->
-<!--        }-->
-
-<!--        h1 {-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        .form-group {-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-
-<!--        .form-group label {-->
-<!--            display: block;-->
-<!--            margin-bottom: 5px;-->
-<!--        }-->
-
-<!--        .form-group input {-->
-<!--            width: 100%;-->
-<!--            padding: 8px;-->
-<!--            border: 1px solid #ccc;-->
-<!--            border-radius: 4px;-->
-<!--        }-->
-
-<!--        button {-->
-<!--            width: 100%;-->
-<!--            padding: 10px;-->
-<!--            border: none;-->
-<!--            background-color: #007bff;-->
-<!--            color: #fff;-->
-<!--            font-size: 16px;-->
-<!--            cursor: pointer;-->
-<!--            border-radius: 4px;-->
-<!--            margin-bottom: 10px;-->
-<!--        }-->
-
-<!--        button:hover {-->
-<!--            background-color: #1864b6;-->
-<!--        }-->
-
-<!--        .response-container {-->
-<!--            background-color: #fff;-->
-<!--            padding: 20px;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
-<!--            width: 400px;-->
-<!--            display: none;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        .response-container h2 {-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 20px;-->
-<!--            color: #333;-->
-<!--        }-->
-
-<!--        .response-container p {-->
-<!--            margin: 10px 0;-->
-<!--        }-->
-
-<!--        .skills-container {-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-
-<!--        .skill-group {-->
-<!--            margin-bottom: 20px;-->
-<!--            border-bottom: 1px solid #ccc;-->
-<!--            padding-bottom: 10px;-->
-<!--        }-->
-
-<!--        .skill-group input {-->
-<!--            width: calc(50% - 5px);-->
-<!--            margin-right: 10px;-->
-<!--        }-->
-
-<!--        .skill-group .subskill-group {-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            margin-top: 10px;-->
-<!--        }-->
-
-<!--        .skill-group .subskill-group input {-->
-<!--            width: 100%;-->
-<!--            margin-right: 5px;-->
-<!--        }-->
-
-<!--        .add-subskill-btn {-->
-<!--            background-color: #5bc0de;-->
-<!--            margin-top: 10px;-->
-<!--        }-->
-
-<!--        .add-subskill-btn:hover {-->
-<!--            background-color: #31b0d5;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <div class="container">-->
-<!--        <h1>Edit Job Description</h1>-->
-<!--        <form id="jobDescriptionForm">-->
-<!--            <div class="form-group">-->
-<!--                <label for="title">Title:</label>-->
-<!--                <input type="text" id="title" name="title" required>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label>Mandatory Skills:</label>-->
-<!--                <div id="mandatorySkillsContainer" class="skills-container"></div>-->
-<!--                <button type="button" onclick="addMandatorySkill()">Add Mandatory Skill</button>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label>Optional Skills:</label>-->
-<!--                <div id="optionalSkillsContainer" class="skills-container"></div>-->
-<!--                <button type="button" onclick="addOptionalSkill()">Add Optional Skill</button>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label for="location">Location:</label>-->
-<!--                <input type="text" id="location" name="location" required>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label for="experienceLevel">Experience Level:</label>-->
-<!--                <input type="text" id="experienceLevel" name="experienceLevel" required>-->
-<!--            </div>-->
-
-<!--            <button type="submit">Update Job Description</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
-<!--    <div class="response-container" id="responseContainer">-->
-<!--        <h2>Job Description Updated</h2>-->
-<!--        <p><strong>Title:</strong> <span id="responseTitle"></span></p>-->
-<!--        <p><strong>Mandatory Skills:</strong> <span id="responseMandatorySkills"></span></p>-->
-<!--        <p><strong>Optional Skills:</strong> <span id="responseOptionalSkills"></span></p>-->
-<!--        <p><strong>Location:</strong> <span id="responseLocation"></span></p>-->
-<!--        <p><strong>Experience Level:</strong> <span id="responseExperienceLevel"></span></p>-->
-<!--        <p><strong>Job ID:</strong> <span id="responseId"></span></p>-->
-<!--    </div>-->
-
-<!--    <script>-->
-<!--        let mandatorySkillCount = 0;-->
-<!--        let optionalSkillCount = 0;-->
-
-<!--        // Get job description ID from URL-->
-<!--        const urlParams = new URLSearchParams(window.location.search);-->
-<!--        const jdId = urlParams.get('id');-->
-
-<!--        // Fetch job description details and populate form-->
-<!--        fetch(`http://43.205.154.85:8080/getJd?id=${jdId}`)-->
-<!--            .then(response => response.json())-->
-<!--            .then(data => {-->
-<!--                document.getElementById('title').value = data.title;-->
-<!--                document.getElementById('location').value = data.location;-->
-<!--                document.getElementById('experienceLevel').value = data.experienceLevel;-->
-
-<!--                data.mandatorySkills.forEach(skill => {-->
-<!--                    addMandatorySkill(skill);-->
-<!--                });-->
-
-<!--                data.optionalSkills.forEach(skill => {-->
-<!--                    addOptionalSkill(skill);-->
-<!--                });-->
-<!--            })-->
-<!--            .catch(error => console.error('Error fetching job description:', error));-->
-
-<!--        function addMandatorySkill(skill) {-->
-<!--            mandatorySkillCount++;-->
-<!--            const container = document.getElementById('mandatorySkillsContainer');-->
-<!--            const skillGroup = document.createElement('div');-->
-<!--            skillGroup.className = 'skill-group';-->
-<!--            skillGroup.innerHTML = `-->
-<!--                <input type="text" name="mandatorySkill${mandatorySkillCount}" placeholder="Skill" value="${skill ? skill.skill : ''}" required>-->
-<!--                <input type="text" name="mandatoryExperience${mandatorySkillCount}" placeholder="Experience (years)" value="${skill ? skill.experience : ''}" required>-->
-<!--                <div class="subskills-container" id="mandatorySubskills${mandatorySkillCount}">-->
-<!--                    ${skill && skill.subSkills ? skill.subSkills.map((subSkill, index) => `-->
-<!--                        <div class="subskill-group">-->
-<!--                            <input type="text" name="mandatorySubSkill${mandatorySkillCount}_${index + 1}" placeholder="Subskill" value="${subSkill}" required>-->
-<!--                        </div>-->
-<!--                    `).join('') : ''}-->
-<!--                </div>-->
-<!--                <button type="button" class="add-subskill-btn" onclick="addMandatorySubSkill(${mandatorySkillCount})">Add Subskill</button>-->
-<!--            `;-->
-<!--            container.appendChild(skillGroup);-->
-<!--        }-->
-
-<!--        function addMandatorySubSkill(skillIndex) {-->
-<!--            const container = document.getElementById(`mandatorySubskills${skillIndex}`);-->
-<!--            const subskillCount = container.children.length + 1;-->
-<!--            const subskillGroup = document.createElement('div');-->
-<!--            subskillGroup.className = 'subskill-group';-->
-<!--            subskillGroup.innerHTML = `-->
-<!--                <input type="text" name="mandatorySubSkill${skillIndex}_${subskillCount}" placeholder="Subskill" required>-->
-<!--            `;-->
-<!--            container.appendChild(subskillGroup);-->
-<!--        }-->
-
-<!--        function addOptionalSkill(skill) {-->
-<!--            optionalSkillCount++;-->
-<!--            const container = document.getElementById('optionalSkillsContainer');-->
-<!--            const skillGroup = document.createElement('div');-->
-<!--            skillGroup.className = 'skill-group';-->
-<!--            skillGroup.innerHTML = `-->
-<!--                <input type="text" name="optionalSkill${optionalSkillCount}" placeholder="Skill" value="${skill ? skill.skill : ''}" required>-->
-<!--                <input type="text" name="optionalExperience${optionalSkillCount}" placeholder="Experience (years)" value="${skill ? skill.experience : ''}" required>-->
-<!--                <div class="subskills-container" id="optionalSubskills${optionalSkillCount}">-->
-<!--                    ${skill && skill.subSkills ? skill.subSkills.map((subSkill, index) => `-->
-<!--                        <div class="subskill-group">-->
-<!--                            <input type="text" name="optionalSubSkill${optionalSkillCount}_${index + 1}" placeholder="Subskill" value="${subSkill}" required>-->
-<!--                        </div>-->
-<!--                    `).join('') : ''}-->
-<!--                </div>-->
-<!--                <button type="button" class="add-subskill-btn" onclick="addOptionalSubSkill(${optionalSkillCount})">Add Subskill</button>-->
-<!--            `;-->
-<!--            container.appendChild(skillGroup);-->
-<!--        }-->
-
-<!--        function addOptionalSubSkill(skillIndex) {-->
-<!--            const container = document.getElementById(`optionalSubskills${skillIndex}`);-->
-<!--            const subskillCount = container.children.length + 1;-->
-<!--            const subskillGroup = document.createElement('div');-->
-<!--            subskillGroup.className = 'subskill-group';-->
-<!--            subskillGroup.innerHTML = `-->
-<!--                <input type="text" name="optionalSubSkill${skillIndex}_${subskillCount}" placeholder="Subskill" required>-->
-<!--            `;-->
-<!--            container.appendChild(subskillGroup);-->
-<!--        }-->
-
-<!--        document.getElementById('jobDescriptionForm').addEventListener('submit', function(event) {-->
-<!--            event.preventDefault();-->
-
-<!--            const formData = {-->
-<!--                id: jdId,-->
-<!--                title: document.getElementById('title').value,-->
-<!--                location: document.getElementById('location').value,-->
-<!--                experienceLevel: document.getElementById('experienceLevel').value,-->
-<!--                mandatorySkills: [],-->
-<!--                optionalSkills: []-->
-<!--            };-->
-
-<!--            for (let i = 1; i <= mandatorySkillCount; i++) {-->
-<!--                const mandatorySkill = {-->
-<!--                    skill: document.querySelector(`input[name="mandatorySkill${i}"]`).value,-->
-<!--                    experience: document.querySelector(`input[name="mandatoryExperience${i}"]`).value,-->
-<!--                    subSkills: []-->
-<!--                };-->
-
-<!--                const subskillsContainer = document.getElementById(`mandatorySubskills${i}`);-->
-<!--                for (let j = 1; j <= subskillsContainer.children.length; j++) {-->
-<!--                    mandatorySkill.subSkills.push(document.querySelector(`input[name="mandatorySubSkill${i}_${j}"]`).value);-->
-<!--                }-->
-
-<!--                formData.mandatorySkills.push(mandatorySkill);-->
-<!--            }-->
-
-<!--            for (let i = 1; i <= optionalSkillCount; i++) {-->
-<!--                const optionalSkill = {-->
-<!--                    skill: document.querySelector(`input[name="optionalSkill${i}"]`).value,-->
-<!--                    experience: document.querySelector(`input[name="optionalExperience${i}"]`).value,-->
-<!--                    subSkills: []-->
-<!--                };-->
-
-<!--                const subskillsContainer = document.getElementById(`optionalSubskills${i}`);-->
-<!--                for (let j = 1; j <= subskillsContainer.children.length; j++) {-->
-<!--                    optionalSkill.subSkills.push(document.querySelector(`input[name="optionalSubSkill${i}_${j}"]`).value);-->
-<!--                }-->
-
-<!--                formData.optionalSkills.push(optionalSkill);-->
-<!--            }-->
-
-<!--            fetch('http://43.205.154.85:8080/edit', {-->
-<!--                method: 'POST',-->
-<!--                headers: {-->
-<!--                    'Content-Type': 'application/json',-->
-<!--                },-->
-<!--                body: JSON.stringify(formData),-->
-<!--            })-->
-<!--            .then(response => {-->
-<!--                if (!response.ok) {-->
-<!--                return response.text().then(text => { throw new Error(text) });-->
-<!--                }-->
-<!--                return response.json();-->
-<!--            })-->
-<!--            .then(data => {-->
-<!--                console.log('Success:', data);-->
-<!--                alert('Successfully updated jd')-->
-<!--                document.getElementById('responseId').innerText = data.id;-->
-<!--                document.getElementById('responseTitle').innerText = data.title;-->
-
-<!--                const mandatorySkillsList = data.mandatorySkills.map(skill => `${skill.skill} (${skill.experience} years) - Subskills: ${skill.subSkills.join(', ')}`).join(', ');-->
-<!--                document.getElementById('responseMandatorySkills').innerText = mandatorySkillsList;-->
-
-<!--                const optionalSkillsList = data.optionalSkills.map(skill => `${skill.skill} (${skill.experience} years) - Subskills: ${skill.subSkills.join(', ')}`).join(', ');-->
-<!--                document.getElementById('responseOptionalSkills').innerText = optionalSkillsList;-->
-
-<!--                document.getElementById('responseLocation').innerText = data.location;-->
-<!--                document.getElementById('responseExperienceLevel').innerText = data.experienceLevel;-->
-<!--                -->
-<!--                document.getElementById('responseContainer').style.display = 'block';-->
-<!--                //responseDiv.textContent = 'Job description Updated successfully';-->
-<!--            })-->
-<!--            .catch((error) => {-->
-<!--                console.error('Error:', error);-->
-<!--                alert(`Error: ${error.message}`);-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
-<!--</body>-->
-<!--</html>-->
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -692,10 +11,14 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: space-between; /* This ensures header and footer are spaced out */
+        }
+
+        #header, #footer {
+            width: 100%;
         }
 
         .container {
@@ -704,8 +27,12 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
-            margin-bottom: 20px;
-            overflow-y: auto;
+            margin-top: 90px;
+            margin-bottom: 90px;
+            flex-grow: 1; /* Allows the container to grow and take up available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centers the content inside the container */
         }
 
         h1 {
@@ -723,7 +50,7 @@
         }
 
         .form-group input {
-            width: 100%;
+            width: 95%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -751,8 +78,9 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            margin-top: 20px;
+            margin-bottom: 90px;
             display: none;
-            margin-bottom: 20px;
         }
 
         .response-container h2 {
@@ -804,7 +132,6 @@
             text-align: center; /* Centers the button horizontally */
         }
 
-
         .submit {
             width: auto; /* Adjusts the width to the content */
             display: inline-block; /* Ensures the button is only as wide as its content */
@@ -821,6 +148,8 @@
     </style>
 </head>
 <body>
+<div id="header"></div>
+
 <div class="container">
     <h1>Edit Job Description</h1>
     <form id="jobDescriptionForm">
@@ -867,7 +196,22 @@
     <p><strong>Job ID:</strong> <span id="responseId"></span></p>
 </div>
 
+<div id="footer"></div>
+
 <script>
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
     let mandatorySkillCount = 0;
     let optionalSkillCount = 0;
 
@@ -881,7 +225,7 @@
 <!--            }-->
 
 <!--    // Fetch job description details and populate form-->
-<!--    fetch(`http://43.205.154.85:8080/getJd?id=${jdId}`, {-->
+<!--    fetch(`http://13.201.90.199:8080/getJd?id=${jdId}`, {-->
 <!--        headers: {-->
 <!--           'Authorization': `Bearer ${token}`-->
 <!--        }-->
@@ -1071,5 +415,6 @@ if (!token) {
         });
     });
 </script>
+
 </body>
 </html>

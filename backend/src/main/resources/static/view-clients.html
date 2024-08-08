@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Clients</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div id="header"></div>
+<div class="container">
+    <h1>View Clients</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Serial Number</th>
+            <th>Client Name</th>
+            <th>Location</th>
+            <th>Currency</th>
+            <th>Total Pending Invoices</th>
+        </tr>
+        </thead>
+        <tbody id="clientsTableBody">
+        <!-- Client rows will be populated here by JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<div id="footer"></div>
+
+<script>
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('http://localhost:8080/api/clients') // Fetch clients from the backend
+            .then(response => response.json())
+            .then(clients => {
+                const tbody = document.getElementById('clientsTableBody');
+                clients.forEach((client, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td><a href="client-details.html?id=${client.id}">${client.clientName}</a></td>
+                        <td>${client.location}</td>
+                        <td>${client.currency}</td>
+                        <td>${client.totalPendingInvoices}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching clients:', error));
+    });
+</script>
+</body>
+</html>

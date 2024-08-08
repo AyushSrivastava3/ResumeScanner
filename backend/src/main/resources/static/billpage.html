@@ -9,8 +9,8 @@
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            justify-content: space-between;
             height: 100vh;
             margin: 0;
         }
@@ -22,6 +22,10 @@
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             width: 40%;
             max-width: 500px;
+            margin: 20px auto;
+           overflow-y: auto;
+           margin-top: 90px;
+           margin-bottom: 90px;
         }
 
         h2 {
@@ -44,7 +48,7 @@
         .form-group input,
         .form-group select,
         .form-group textarea {
-            width: calc(100% - 14px); /* Adjust width for padding */
+            width: calc(100% - 14px);
             padding: 4px 6px;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -112,9 +116,21 @@
         .additional-fields {
             display: none;
         }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 10px 20px;
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
+<div id="header"></div>
 <div class="container">
     <h2>Quick Fill the Bills</h2>
     <div id="bill-container">
@@ -176,101 +192,117 @@
     </div>
     <div id="message"></div>
 </div>
+
+<footer id="footer"></footer>
+
 <script>
-    document.getElementById('add-bill-btn').addEventListener('click', () => {
-        const container = document.getElementById('bill-container');
-        const newBillForm = document.querySelector('.bill-form').cloneNode(true);
-        resetForm(newBillForm); // Reset form fields before appending
-        container.appendChild(newBillForm);
-        addEventListenersToForm(newBillForm);
-    });
 
-    document.getElementById('remove-bill-btn').addEventListener('click', () => {
-        const forms = document.querySelectorAll('.bill-form');
-        if (forms.length > 1) {
-            forms[forms.length - 1].remove();
-        }
-    });
-
-    function addEventListenersToForm(form) {
-        const saveEditBtn = form.querySelector('.save-edit-btn');
-
-        saveEditBtn.addEventListener('click', () => {
-            if (saveEditBtn.textContent === 'Save') {
-                // Save logic here
-                toggleFormFields(form, true);
-                saveEditBtn.textContent = 'Edit';
-                submitForm(form); // Submit the form on Save
-            } else {
-                toggleFormFields(form, false);
-                saveEditBtn.textContent = 'Save';
-            }
-        });
-
-        form.addEventListener('submit', async function (event) {
-            event.preventDefault();
-        });
-    }
-
-    async function submitForm(form) {
-        let formData = new FormData();
-        formData.append('bill', new Blob([JSON.stringify({
-            reason: form.querySelector('#reason').value,
-            amount: form.querySelector('#amount').value,
-            date: form.querySelector('#date').value,
-            category: form.querySelector('#category').value,
-            reimbursed: form.querySelector('#reimbursed').checked,
-            submittedBy: form.querySelector('#submittedBy').value,
-            comments: form.querySelector('#comments').value,
-            clientReimbursed: form.querySelector('#clientReimbursed').checked,
-            reimbursementDate: form.querySelector('#reimbursementDate').value
-        })], { type: 'application/json' }));
-        formData.append('file', form.querySelector('#file').files[0]);
-
-        try {
-            let response = await fetch('http://43.205.154.85:8080/upload/Bill', {
-                method: 'POST',
-                body: formData
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
             });
 
-            if (response.ok) {
-                document.getElementById('message').innerText = 'Bill uploaded successfully!';
-            } else {
-                document.getElementById('message').innerText = 'Click on edit , fill the details.';
-            }
-        } catch (error) {
-            document.getElementById('message').innerText = 'Error uploading bill.';
-        }
-    }
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
 
-    function toggleFormFields(form, disable) {
-        form.querySelectorAll('input, select, textarea').forEach(input => {
-            input.disabled =
 
- disable;
-        });
-        form.querySelectorAll('.additional-fields').forEach(field => {
-            field.style.display = disable ? 'none' : 'block';
-        });
-        form.querySelectorAll('.additional-fields input').forEach(input => {
-            input.disabled = disable;
-        });
-    }
+   document.getElementById('add-bill-btn').addEventListener('click', () => {
+       const container = document.getElementById('bill-container');
+       const newBillForm = document.querySelector('.bill-form').cloneNode(true);
+       resetForm(newBillForm); // Reset form fields before appending
+       container.appendChild(newBillForm);
+       addEventListenersToForm(newBillForm);
+   });
 
-    function resetForm(form) {
-        form.querySelectorAll('input, select, textarea').forEach(input => {
-            input.value = '';
-            input.disabled = false;
-        });
-        form.querySelector('.save-edit-btn').textContent = 'Save';
-        form.querySelectorAll('.additional-fields').forEach(field => {
-            field.style.display = 'none';
-        });
-    }
+   document.getElementById('remove-bill-btn').addEventListener('click', () => {
+       const forms = document.querySelectorAll('.bill-form');
+       if (forms.length > 1) {
+           forms[forms.length - 1].remove();
+       }
+   });
 
-    // Initialize event listeners for existing forms
-    document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));
+   function addEventListenersToForm(form) {
+       const saveEditBtn = form.querySelector('.save-edit-btn');
+
+       saveEditBtn.addEventListener('click', () => {
+           if (saveEditBtn.textContent === 'Save') {
+               // Save logic here
+               toggleFormFields(form, true);
+               saveEditBtn.textContent = 'Edit';
+               submitForm(form); // Submit the form on Save
+           } else {
+               toggleFormFields(form, false);
+               saveEditBtn.textContent = 'Save';
+           }
+       });
+
+       form.addEventListener('submit', async function (event) {
+           event.preventDefault();
+       });
+   }
+
+   async function submitForm(form) {
+       let formData = new FormData();
+       formData.append('bill', new Blob([JSON.stringify({
+           reason: form.querySelector('#reason').value,
+           amount: form.querySelector('#amount').value,
+           date: form.querySelector('#date').value,
+           category: form.querySelector('#category').value,
+           reimbursed: form.querySelector('#reimbursed').checked,
+           submittedBy: form.querySelector('#submittedBy').value,
+           comments: form.querySelector('#comments').value,
+           clientReimbursed: form.querySelector('#clientReimbursed').checked,
+           reimbursementDate: form.querySelector('#reimbursementDate').value
+       })], { type: 'application/json' }));
+       formData.append('file', form.querySelector('#file').files[0]);
+
+       try {
+           let response = await fetch('http://13.201.90.199:8080/upload/Bill', {
+               method: 'POST',
+               body: formData
+           });
+
+           if (response.ok) {
+               document.getElementById('message').innerText = 'Bill uploaded successfully!';
+           } else {
+               document.getElementById('message').innerText = 'Click on edit , fill the details.';
+           }
+       } catch (error) {
+           document.getElementById('message').innerText = 'Error uploading bill.';
+       }
+   }
+
+   function toggleFormFields(form, disable) {
+       form.querySelectorAll('input, select, textarea').forEach(input => {
+           input.disabled =
+
+disable;
+       });
+       form.querySelectorAll('.additional-fields').forEach(field => {
+           field.style.display = disable ? 'none' : 'block';
+       });
+       form.querySelectorAll('.additional-fields input').forEach(input => {
+           input.disabled = disable;
+       });
+   }
+
+   function resetForm(form) {
+       form.querySelectorAll('input, select, textarea').forEach(input => {
+           input.value = '';
+           input.disabled = false;
+       });
+       form.querySelector('.save-edit-btn').textContent = 'Save';
+       form.querySelectorAll('.additional-fields').forEach(field => {
+           field.style.display = 'none';
+       });
+   }
+
+   // Initialize event listeners for existing forms
+   document.querySelectorAll('.bill-form').forEach(form => addEventListenersToForm(form));
 </script>
 </body>
 </html>
-```

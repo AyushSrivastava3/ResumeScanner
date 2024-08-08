@@ -4,12 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="adding export and import">
+    <list default="true" id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="Export import task done for profile class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ExportImportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ExportImportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/addprofile.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/addprofile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/allprofiles.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/allprofiles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/billpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/billpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/billsdashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/billsdashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/clientform.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/clientform.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/editjd.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/editjd.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/editprofile.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/editprofile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/enterOtp.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/enterOtp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/forgotPassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/forgotPassword.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/invoiceform.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/invoiceform.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jd3.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jd3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jddetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jddetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jobDescription.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jobDescription.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/list5.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/list5.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/practice9.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/practice9.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/profileDesc.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/profileDesc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/profileMatcher.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/profileMatcher.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/profiles.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/profiles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,19 +70,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.JobDescBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Maven.job_desc_backend [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.job_desc_backend [install].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/dq-mac-m2-1/my-combined-project/backend/src/main/resources&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.JobDescBackendApplication.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.job_desc_backend [clean].executor": "Run",
+    "Maven.job_desc_backend [install].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dev",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/dq-mac-m2-1/my-combined-project/backend/src/main/resources"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.example.job_desc_backend.dto" />
@@ -304,11 +325,18 @@
       <option name="project" value="LOCAL" />
       <updated>1722948883066</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Export import task done for profile class">
+      <option name="closed" value="true" />
+      <created>1723010554156</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1723010554156</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="FIRST COMMIT AFTER CHANGES" />
     <MESSAGE value="Add date pattern class to make code more modular and move skill pattern to utility class" />
     <MESSAGE value="Add required years in output" />
     <MESSAGE value="done the required changes" />
@@ -333,7 +361,8 @@
     <MESSAGE value="add remaining xml file" />
     <MESSAGE value="Changes done in bill" />
     <MESSAGE value="adding export and import" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding export and import" />
+    <MESSAGE value="Export import task done for profile class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Export import task done for profile class" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -355,6 +384,24 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>51</line>
+          <properties class="com.example.job_desc_backend.service.ProfileService" method="getProfilesAddedThisWeek">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="259" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>46</line>
+          <properties class="com.example.job_desc_backend.service.ProfileService" method="getProfilesAddedToday">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="262" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/PdfService.java</url>
@@ -383,18 +430,43 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>194</line>
-          <option name="timeStamp" value="259" />
+          <line>153</line>
+          <option name="timeStamp" value="257" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>195</line>
-          <option name="timeStamp" value="260" />
+          <line>154</line>
+          <option name="timeStamp" value="258" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="263" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>48</line>
+          <option name="timeStamp" value="264" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>191</line>
-          <option name="timeStamp" value="261" />
+          <line>155</line>
+          <option name="timeStamp" value="265" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>54</line>
+          <option name="timeStamp" value="266" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="267" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ProfileService.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="268" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

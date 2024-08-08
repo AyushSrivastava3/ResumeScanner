@@ -1,5 +1,5 @@
 package com.example.job_desc_backend.service;
-
+import java.time.ZoneOffset;
 import com.example.job_desc_backend.model.Profile;
 import com.example.job_desc_backend.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class ProfileService {
 //        return profileRepository.findProfilesAddedToday(todayStart);
 //    }
 //
-//    public List<Profile> getProfilesAddedInLastWeek() {
+//    public List<Profile> getProfilesAddedThisWeek() {
 //        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
 //        LocalDateTime now = LocalDateTime.now();
 //        return profileRepository.findProfilesWithinDateRange(weekAgo, now);
@@ -44,6 +44,18 @@ public class ProfileService {
         return profileRepository.count();
     }
 
+//    public List<Profile> getProfilesAddedToday() {
+//        LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
+//        return profileRepository.findProfilesAddedToday(todayStart);
+//    }
+//
+//    public List<Profile> getProfilesAddedThisWeek() {
+//        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+//        LocalDateTime now = LocalDateTime.now();
+//        return profileRepository.findProfilesWithinDateRange(weekAgo, now);
+//    }
+
+
     public List<Profile> getProfilesAddedToday() {
         LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
         return profileRepository.findProfilesAddedToday(todayStart);
@@ -54,6 +66,21 @@ public class ProfileService {
         LocalDateTime now = LocalDateTime.now();
         return profileRepository.findProfilesWithinDateRange(weekAgo, now);
     }
+
+
+
+//    public List<Profile> getProfilesAddedToday() {
+//        LocalDateTime todayStart = LocalDateTime.now(ZoneOffset.UTC).with(LocalTime.MIN);
+//        return profileRepository.findProfilesAddedToday(todayStart);
+//    }
+//
+//    public List<Profile> getProfilesAddedThisWeek() {
+//        LocalDateTime weekAgo = LocalDateTime.now(ZoneOffset.UTC).minusWeeks(1).with(LocalTime.MIN);
+//        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+//        return profileRepository.findProfilesWithinDateRange(weekAgo, now);
+//    }
+
+
 
     public Profile updateProfile(String id, Profile profileDetails) {
         Optional<Profile> optionalProfile = profileRepository.findById(id);

@@ -66,10 +66,66 @@
             float: left;
             padding-top: 16px;
         }
+                        header {
+            background: white;
+            color: #333;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            margin-right: 20px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
+<header>
+    <img src="logo.png" alt="Header Image">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
 <div class="main">
     <h2>Registration Form</h2>
     <form id="registrationForm">
@@ -93,12 +149,30 @@
         <div id="errors"></div>
 
         <div class="container" style="background-color:#f1f1f1">
-            <span class="psw">Already have an account ?  <a href="login.html">Sign in</a></span>
+            <span class="psw">Already have an account ?  <a href="index.html">Sign in</a></span>
         </div>
     </form>
 </div>
 
+<footer>
+    <p>&copy; 2024 DigiQuad. All rights reserved.</p>
+</footer>
+
+
 <script>
+
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+            });
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
     // Handle form submission
     document.getElementById("registrationForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission

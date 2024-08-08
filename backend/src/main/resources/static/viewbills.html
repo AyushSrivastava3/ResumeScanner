@@ -134,7 +134,7 @@
         bills.forEach(bill => {
             const billRow = document.createElement('tr');
             billRow.innerHTML = `
-                <td><a href="billpage.html" data-id="${bill.id}">${bill.reason}</a></td>
+                <td>${bill.reason}</a></td>
                 <td>${bill.amount}</td>
                 <td>${bill.date}</td>
                 <td>${bill.category}</td>

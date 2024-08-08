@@ -160,6 +160,15 @@
             <button type="button" id="editButton" class="edit-button">Edit</button>
             <button type="submit" id="saveButton" class="save-button hidden">Save</button>
         </div>
+        <!-- CSV Import Section -->
+        <div class="form-group">
+            <label for="csvUpload">Add Invoices Using CSV:</label>
+            <input type="file" id="csvUpload" accept=".csv">
+            <button type="button" id="importCsvBtn" disabled>Import from CSV</button>
+        </div>
+
+        <!-- Feedback message -->
+        <div class="form-group feedback" id="feedbackMessage">Invoices imported successfully!</div>
     </form>
 </div>
 
@@ -313,6 +322,48 @@
                 console.error('Error:', error);
             });
         });
+
+// CSV Import functionality
+        const csvUpload = document.getElementById('csvUpload');
+        const importCsvBtn = document.getElementById('importCsvBtn');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        csvUpload.addEventListener('change', function() {
+            importCsvBtn.disabled = !csvUpload.files.length;
+        });
+
+        importCsvBtn.addEventListener('click', function() {
+            const file = csvUpload.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('http://localhost:8080/api/invoices/import/invoices', {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: formData
+                })
+                .then(response => response.json()) // Expect JSON response
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        console.log('Profiles imported:', data);
+                        data.forEach(profile => {
+                        });
+                        feedbackMessage.style.display = 'block';
+                        setTimeout(() => {
+                            feedbackMessage.style.display = 'none';
+                        }, 3000); // Hide message after 3 seconds
+                    } else {
+                        console.error('Error importing profiles:', data.message);
+                    }
+                    csvUpload.value = ''; // Clear the file input
+                    importCsvBtn.disabled = true; // Disable the Import button
+                })
+                 .catch(error => console.error('Error:', error));
+}
+});
 
 
     });

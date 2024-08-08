@@ -31,6 +31,7 @@
 
 <div class="container">
     <h2>All Invoices</h2>
+    <button id="exportBtn">Export Invoices</button> <!-- Export button -->
     <table id="invoicesTable">
         <thead>
         <tr>
@@ -115,7 +116,32 @@
                 });
             })
             .catch(error => console.error('Error fetching invoices:', error));
+
+
+             // Export profile functionality
+        function exportClients() {
+            fetch(`http://43.205.154.85:8080/api/invoices/export/invoices`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'invoices_export.xlsx'; // Set the file name for the export
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error exporting profile data:', error));
+        }
+
+        // Add event listener to export button
+        document.getElementById('exportBtn').addEventListener('click', exportClients);
     });
+
 
 </script>
 </body>

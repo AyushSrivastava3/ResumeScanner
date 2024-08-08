@@ -415,7 +415,7 @@
                comments: comments
            };
 
-           fetch('http://localhost:8080/api/billing', {
+           fetch('http://43.205.154.85:8080/api/billing', {
                method: 'POST',
                headers: {
                    'Content-Type': 'application/json'
@@ -573,7 +573,7 @@
         comments: comments
     };
 
-    fetch(`http://localhost:8080/api/billing/${billId}`, {
+    fetch(`http://43.205.154.85:8080/api/billing/${billId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -605,7 +605,7 @@
 
 
 function exportBills() {
-        fetch('http://localhost:8080/api/billing/export/bills')
+        fetch('http://43.205.154.85:8080/api/billing/export/bills')
             .then(response => response.blob()) // Handle the response as a blob (for file download)
             .then(blob => {
                 // Create a link element and simulate a click to download the file
@@ -639,7 +639,7 @@ function exportBills() {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('http://localhost:8080/api/billing/import/bills', {
+            fetch('http://43.205.154.85:8080/api/billing/import/bills', {
                 method: 'POST',
                 body: formData
             })
@@ -695,7 +695,7 @@ function exportBills() {
        }
 
        function fetchAllBills() {
-           fetch('http://localhost:8080/api/billing')
+           fetch('http://43.205.154.85:8080/api/billing')
                .then(response => response.json())
                .then(data => {
                    console.log('Bills:', data);

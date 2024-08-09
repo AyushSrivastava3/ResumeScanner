@@ -662,7 +662,7 @@ function exportBills() {
 
 
       function fetchAllBills() {
-    fetch('http://localhost:8080/api/billing')
+    fetch('http://43.205.154.85:8080/api/billing')
         .then(response => response.json())
         .then(data => {
             console.log('Bills:', data);

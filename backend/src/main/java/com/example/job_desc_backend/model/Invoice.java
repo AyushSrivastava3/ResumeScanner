@@ -1,5 +1,7 @@
 package com.example.job_desc_backend.model;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -12,10 +14,11 @@ import java.time.LocalDate;
 public class Invoice {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String clientName;
     private String invoiceNumber;
-    private double invoiceValue;
+    private String invoiceValue;
     private String currency;
     private String month;
     private String raisedOn;
@@ -98,11 +101,11 @@ public class Invoice {
         this.currency = currency;
     }
 
-    public double getInvoiceValue() {
+    public String getInvoiceValue() {
         return invoiceValue;
     }
 
-    public void setInvoiceValue(double invoiceValue) {
+    public void setInvoiceValue(String invoiceValue) {
         this.invoiceValue = invoiceValue;
     }
 
@@ -112,5 +115,8 @@ public class Invoice {
 
     public void setInvoiceNumber(String invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
+    }
+
+    public void setCreatedBy(String username) {
     }
 }

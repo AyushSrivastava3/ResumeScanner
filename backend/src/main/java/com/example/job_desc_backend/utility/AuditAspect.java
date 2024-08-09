@@ -43,8 +43,8 @@ public class AuditAspect {
                     ((Resume) arg).setCreatedBy(username);
                 } else if (arg instanceof Client) {
                     ((Client) arg).setCreatedBy(username);
-                } else if (arg instanceof Bill) {
-                    ((Bill) arg).setCreatedBy(username);
+                } else if (arg instanceof BillEntity) {
+                    ((BillEntity) arg).setCreatedBy(username);
                 } else if (arg instanceof Billpdf) {
                     ((Billpdf) arg).setCreatedBy(username);
                 } else if (arg instanceof Invoice) {

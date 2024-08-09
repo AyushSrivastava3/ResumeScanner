@@ -1,3 +1,256 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>All Profiles</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f4f4f4;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
+
+
+<!--        .main-content {-->
+<!--            flex: 1;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            padding: 20px;-->
+<!--            margin-top: 30px;-->
+<!--            margin-bottom: 60px;-->
+<!--        }-->
+
+<!--        .filter-container {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .filter-container label {-->
+<!--            font-weight: bold;-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+
+<!--        select, input[type="text"], input[type="email"] {-->
+<!--            width: 300px; /* Fixed width to keep select element centered */-->
+<!--            padding: 8px;-->
+<!--            box-sizing: border-box;-->
+<!--            margin-bottom: 10px; /* Add spacing between input elements */-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            width: 100%;-->
+<!--            max-width: 1250px;-->
+<!--            background-color: #fff;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
+<!--            padding: 20px;-->
+<!--            margin: 0 20px;-->
+<!--        }-->
+
+<!--        h1 {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        table, td, th {-->
+<!--            border: 1px solid #ccc;-->
+<!--            padding: 10px;-->
+<!--            text-align: left;-->
+<!--        }-->
+
+<!--        td label {-->
+<!--            display: inline-block;-->
+<!--            width: 100px;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        .center-align {-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        button {-->
+<!--            padding: 10px 20px;-->
+<!--            margin: 5px;-->
+<!--            border: none;-->
+<!--            border-radius: 4px;-->
+<!--            background-color: #005149;-->
+<!--            color: #fff;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        button:disabled {-->
+<!--            background-color: #ccc;-->
+<!--            cursor: not-allowed;-->
+<!--        }-->
+
+<!--        .loader {-->
+<!--            text-align: center;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="main-content">-->
+<!--    <h1>All Profiles</h1>-->
+<!--    <div class="filter-container">-->
+<!--        <label for="jdFilter">Select Job Description:</label>-->
+<!--        <select id="jdFilter">-->
+<!--            <option value="">All</option>-->
+<!--        </select>-->
+<!--    </div>-->
+<!--    <div class="container">-->
+<!--        <div id="profilesContainer"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+<!--        fetch('header.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('header').innerHTML = data;-->
+<!--            });-->
+
+<!--        fetch('footer.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('footer').innerHTML = data;-->
+<!--            });-->
+
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const jdFilter = document.getElementById('jdFilter');-->
+<!--        const profilesContainer = document.getElementById('profilesContainer');-->
+<!--        const token = localStorage.getItem('accessToken');-->
+
+<!--        jdFilter.addEventListener('change', function() {-->
+<!--            const jdId = jdFilter.value;-->
+<!--            if (jdId) {-->
+<!--                fetchProfilesByJdId(jdId);-->
+<!--            } else {-->
+<!--                fetchAllProfiles();-->
+<!--            }-->
+<!--        });-->
+
+<!--        function populateJdFilter() {-->
+<!--            fetch('http://43.205.154.85:8080/jd/getIds', {-->
+<!--                headers: {-->
+<!--                    'Authorization': `Bearer ${token}`-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                data.forEach(item => {-->
+<!--                    const option = document.createElement('option');-->
+<!--                    option.value = item.id;-->
+<!--                    option.textContent = item.title;-->
+<!--                    jdFilter.appendChild(option);-->
+<!--                });-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching job descriptions:', error));-->
+<!--        }-->
+
+<!--        function fetchAllProfiles() {-->
+<!--            fetch('http://43.205.154.85:8080/getAllProfile', {-->
+<!--                headers: {-->
+<!--                    'Authorization': `Bearer ${token}`-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                displayProfiles(data);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching all profiles:', error));-->
+<!--        }-->
+
+<!--        function fetchProfilesByJdId(jdId) {-->
+<!--            fetch(`http://43.205.154.85:8080/jd/${jdId}`, {-->
+<!--                headers: {-->
+<!--                    'Authorization': `Bearer ${token}`-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                displayProfiles(data);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching profiles by JD:', error));-->
+<!--        }-->
+
+<!--        function displayProfiles(profiles) {-->
+<!--            profilesContainer.innerHTML = '';-->
+<!--            if (profiles.length > 0) {-->
+<!--                const table = document.createElement('table');-->
+<!--                table.classList.add('profiles-table');-->
+<!--                table.innerHTML = `-->
+<!--                    <tr>-->
+<!--                        <th>Name</th>-->
+<!--                        <th>Email ID</th>-->
+<!--                        <th>Mobile No</th>-->
+<!--                        <th>Current CTC</th>-->
+<!--                        <th>Expected CTC</th>-->
+<!--                        <th>Location</th>-->
+<!--                        <th>Actions</th>-->
+<!--                    </tr>-->
+<!--                `;-->
+<!--                profiles.forEach(profile => {-->
+<!--                    const row = document.createElement('tr');-->
+<!--                    row.innerHTML = `-->
+<!--                        <td>${profile.name}</td>-->
+<!--                        <td>${profile.emailId}</td>-->
+<!--                        <td>${profile.mobNo}</td>-->
+<!--                        <td>${profile.current_ctc || ''}</td>-->
+<!--                        <td>${profile.expected_ctc || ''}</td>-->
+<!--                        <td>${profile.current_location || ''}</td>-->
+<!--                        <td>-->
+<!--                            <button class="editBtn" data-profile-id="${profile.id}">Edit</button>-->
+<!--                        </td>-->
+<!--                    `;-->
+<!--                    table.appendChild(row);-->
+<!--                });-->
+<!--                profilesContainer.appendChild(table);-->
+
+<!--                document.querySelectorAll('.editBtn').forEach(button => {-->
+<!--                    button.addEventListener('click', function() {-->
+<!--                        const profileId = this.getAttribute('data-profile-id');-->
+<!--                        window.location.href = `editprofile.html?id=${profileId}`;-->
+<!--                    });-->
+<!--                });-->
+<!--            } else {-->
+<!--                profilesContainer.innerHTML = '<p>No profiles found.</p>';-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Initialize-->
+<!--        populateJdFilter();-->
+<!--        fetchAllProfiles();-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +266,6 @@
             flex-direction: column;
             min-height: 100vh;
         }
-
 
         .main-content {
             flex: 1;
@@ -34,6 +286,16 @@
         .filter-container label {
             font-weight: bold;
             margin-right: 10px;
+        }
+
+        #jdFilter, #exportBtn {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        #exportBtn {
+            margin-left: 10px;
+            cursor: pointer;
         }
 
         select, input[type="text"], input[type="email"] {
@@ -101,7 +363,6 @@
             padding: 20px;
         }
 
-
     </style>
 </head>
 <body>
@@ -113,31 +374,34 @@
         <select id="jdFilter">
             <option value="">All</option>
         </select>
+        <button id="exportBtn" disabled>Export</button>
+    </div>
+    <div>
+        <input type="text" id="searchInput" placeholder="Search profiles..." />
     </div>
     <div class="container">
         <div id="profilesContainer"></div>
     </div>
 </div>
 
-
 <div id="footer"></div>
 
 <script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
 
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
 
     document.addEventListener('DOMContentLoaded', function() {
         const jdFilter = document.getElementById('jdFilter');
+        const exportBtn = document.getElementById('exportBtn');
         const profilesContainer = document.getElementById('profilesContainer');
         const token = localStorage.getItem('accessToken');
 
@@ -145,9 +409,28 @@
             const jdId = jdFilter.value;
             if (jdId) {
                 fetchProfilesByJdId(jdId);
+                exportBtn.disabled = false;
             } else {
                 fetchAllProfiles();
+                exportBtn.disabled = true;
             }
+        });
+
+        exportBtn.addEventListener('click', function() {
+            const jdId = jdFilter.value;
+            if (jdId) {
+                exportProfilesByJdId(jdId);
+            }
+        });
+
+        searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredProfiles = allProfiles.filter(profile => {
+            return profile.name.toLowerCase().includes(searchTerm) ||
+                   profile.emailId.toLowerCase().includes(searchTerm) ||
+                   profile.mobNo.includes(searchTerm);
+        });
+        displayProfiles(filteredProfiles);
         });
 
         function populateJdFilter() {
@@ -156,16 +439,16 @@
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.title;
-                    jdFilter.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching job descriptions:', error));
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.title;
+                        jdFilter.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching job descriptions:', error));
         }
 
         function fetchAllProfiles() {
@@ -174,11 +457,12 @@
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                displayProfiles(data);
-            })
-            .catch(error => console.error('Error fetching all profiles:', error));
+                .then(response => response.json())
+                .then(data => {
+                    allProfiles = data;  // Store all profiles
+                    displayProfiles(data);
+                })
+                .catch(error => console.error('Error fetching all profiles:', error));
         }
 
         function fetchProfilesByJdId(jdId) {
@@ -187,11 +471,59 @@
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                displayProfiles(data);
+                .then(response => response.json())
+                .then(data => {
+                    allProfiles = data;  // Store all profiles
+                    displayProfiles(data);
+                })
+                .catch(error => console.error('Error fetching profiles by JD:', error));
+        }
+
+        function exportProfilesByJdId(jdId) {
+            fetch(`http://43.205.154.85:8080/profile/export/jdid?jdid=${jdId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
-            .catch(error => console.error('Error fetching profiles by JD:', error));
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'profiles_by_id_export.xlsx'; // Set the file name for the export
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error exporting profile data:', error));
+        }
+
+        function downloadProfile(profileId) {
+            fetch(`http://43.205.154.85:8080/downloadProfile?id=${profileId}`, {
+
+        method: 'GET',
+        headers: {
+
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob(); // Read the response as a Blob (binary data)
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob); // Create a URL for the Blob
+        const a = document.createElement('a'); // Create a link element
+        a.href = url;
+        a.download = 'profiles_export.docx'; // Name of the downloaded file
+        document.body.appendChild(a); // Append the link to the body
+        a.click(); // Trigger a click on the link to start the download
+        window.URL.revokeObjectURL(url); // Clean up the URL object
+        document.body.removeChild(a); // Remove the link element
+    })
+    .catch(error => console.error('Error downloading .docx file:', error));
         }
 
         function displayProfiles(profiles) {
@@ -208,12 +540,13 @@
                         <th>Expected CTC</th>
                         <th>Location</th>
                         <th>Actions</th>
+                        <th>Download</th>
                     </tr>
                 `;
                 profiles.forEach(profile => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${profile.name}</td>
+                        <td><a href="profile.html?id=${profile.id}" class="editable-name">${profile.name}</a></td>
                         <td>${profile.emailId}</td>
                         <td>${profile.mobNo}</td>
                         <td>${profile.current_ctc || ''}</td>
@@ -221,6 +554,9 @@
                         <td>${profile.current_location || ''}</td>
                         <td>
                             <button class="editBtn" data-profile-id="${profile.id}">Edit</button>
+                        </td>
+                        <td>
+                            <button class="downloadBtn" data-profile-id="${profile.id}">Download</button>
                         </td>
                     `;
                     table.appendChild(row);
@@ -230,6 +566,22 @@
                 document.querySelectorAll('.editBtn').forEach(button => {
                     button.addEventListener('click', function() {
                         const profileId = this.getAttribute('data-profile-id');
+                        window.location.href = `editprofile.html?id=${profileId}`;
+                    });
+                });
+
+                document.querySelectorAll('.downloadBtn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const profileId = this.getAttribute('data-profile-id');
+                        downloadProfile(profileId);
+                    });
+                });
+
+                // Add event listener for name links (optional, if you need any additional functionality)
+                document.querySelectorAll('.editable-name').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault(); // Prevent default link behavior if needed
+                        const profileId = this.getAttribute('href').split('=')[1];
                         window.location.href = `editprofile.html?id=${profileId}`;
                     });
                 });

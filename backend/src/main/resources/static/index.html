@@ -1,456 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Dashboard</title>-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: 'Roboto', sans-serif;-->
-<!--            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            color: #333;-->
-<!--            overflow-x: hidden;-->
-<!--        }-->
-
-<!--        header {-->
-<!--            background: white;-->
-<!--            color: #333;-->
-<!--            padding: 5px 20px; /* Reduced padding */-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            align-items: center;-->
-<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
-<!--            position: fixed;-->
-<!--            width: 100%;-->
-<!--            top: 0;-->
-<!--            left: 0;-->
-<!--            z-index: 1000;-->
-<!--        }-->
-
-<!--        .secondary-nav {-->
-<!--            background: white;-->
-<!--            color: #333;-->
-<!--            padding: 10px 30px;-->
-<!--            display: flex;-->
-<!--            justify-content: space-around;-->
-<!--            align-items: center;-->
-<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
-<!--            position: fixed;-->
-<!--            width: 100%;-->
-<!--            top: 50px; /* Adjusted to position below the main header */-->
-<!--            left: 0;-->
-<!--            z-index: 999;-->
-<!--        }-->
-
-<!--        header h1 {-->
-<!--            margin: 0;-->
-<!--            font-size: 1.8em; /* Reduced font size */-->
-<!--            color: #005149;-->
-<!--            font-weight: 700;-->
-<!--        }-->
-
-<!--        .logo {-->
-<!--            width: 120px; /* Reduced logo size */-->
-<!--            height: auto;-->
-<!--        }-->
-
-<!--        .nav-link, .dropdown-button {-->
-<!--            padding: 10px 20px;-->
-<!--            font-size: 18px;-->
-<!--            font-weight: 700;-->
-<!--            background: none;-->
-<!--            color: black;-->
-<!--            border: none;-->
-<!--            cursor: pointer;-->
-<!--            transition: all 0.3s ease;-->
-<!--            position: relative;-->
-<!--            text-decoration: none;-->
-<!--            border-bottom: none; /* Removed the underline */-->
-<!--        }-->
-
-<!--        .nav-link:hover, .dropdown-button:hover {-->
-<!--            color: #005149;-->
-<!--            text-decoration: none; /* Ensure no underline */-->
-<!--        }-->
-
-<!--        .dropdown-button::after {-->
-<!--            content: '⌄';-->
-<!--            font-size: 12px;-->
-<!--            position: absolute;-->
-<!--            right: 10px;-->
-<!--            top: 50%;-->
-<!--            transform: translateY(-50%);-->
-<!--        }-->
-
-<!--        .dropdown {-->
-<!--            position: relative;-->
-<!--            padding-right: 40px;-->
-<!--        }-->
-
-<!--        .dropdown-menu {-->
-<!--            display: none;-->
-<!--            position: absolute;-->
-<!--            background: #ffffff;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);-->
-<!--            width: 150px;-->
-<!--            right: 0;-->
-<!--            top: 100%;-->
-<!--            z-index: 1001;-->
-<!--        }-->
-
-<!--        .dropdown:hover .dropdown-menu {-->
-<!--            display: block;-->
-<!--        }-->
-
-<!--        .dropdown-menu a {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            padding: 12px;-->
-<!--            color: #091521;-->
-<!--            text-decoration: none;-->
-<!--            font-size: 16px;-->
-<!--            font-weight: 700;-->
-<!--            transition: background 0.3s ease;-->
-<!--        }-->
-
-<!--        .dropdown-menu a:hover {-->
-<!--            background: #333;-->
-<!--            color: white;-->
-<!--            text-decoration: none; /* Ensure no underline */-->
-<!--        }-->
-
-<!--        main {-->
-<!--            margin-top: 120px; /* Adjusted to make space for the fixed headers */-->
-<!--            padding: 20px;-->
-<!--            overflow: auto;-->
-<!--        }-->
-
-<!--        .container {-->
-<!--            display: flex;-->
-<!--            flex-wrap: wrap;-->
-<!--            gap: 20px;-->
-<!--        }-->
-
-<!--        .dashboard-container, .today-container {-->
-<!--            background: #ffffff;-->
-<!--            padding: 30px;-->
-<!--            border-radius: 10px;-->
-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
-<!--            flex: 1;-->
-<!--            min-width: 300px;-->
-<!--            max-width: 48%;-->
-<!--        }-->
-
-<!--        .dashboard-container {-->
-<!--            flex: 2;-->
-<!--        }-->
-
-<!--        .today-container {-->
-<!--            flex: 1;-->
-<!--        }-->
-
-<!--        h1, h2 {-->
-<!--            color: #005149;-->
-<!--            margin: 0 0 15px;-->
-<!--            font-weight: 700;-->
-<!--        }-->
-
-<!--        p {-->
-<!--            margin: 10px 0;-->
-<!--            font-size: 18px;-->
-<!--            color: #333;-->
-<!--        }-->
-
-<!--        #detail {-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            align-items: flex-start;-->
-<!--            background: #ffffff;-->
-<!--            border-radius: 10px;-->
-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
-<!--            padding: 20px;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        #currentDate, #lastLogin {-->
-<!--            font-size: 1.2em;-->
-<!--            color: #005149;-->
-<!--            font-weight: 700;-->
-<!--        }-->
-
-<!--        #lastLoginContainer {-->
-<!--            display: flex;-->
-<!--            justify-content: flex-end;-->
-<!--            width: 100%;-->
-<!--        }-->
-
-<!--        #heading {-->
-<!--            color: #005149;-->
-<!--        }-->
-
-<!--        .summary, .this-week {-->
-<!--            margin-top: 20px;-->
-<!--        }-->
-
-<!--        .this-week-container {-->
-<!--            background: #f9f9f9;-->
-<!--            padding: 20px;-->
-<!--            border-radius: 10px;-->
-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
-<!--            margin-top: 20px;-->
-<!--            max-width: 49.5%;-->
-<!--        }-->
-
-<!--        .show {-->
-<!--            display: block !important;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<header>-->
-<!--    <img src="logo.png" alt="Logo" class="logo">-->
-<!--    <h1 id="heading">Pro-Square</h1>-->
-<!--    <div class="dropdown">-->
-<!--        <button id="loginRegisterButton" class="dropdown-button">Login/Register</button>-->
-<!--        <div id="loginRegisterDropdown" class="dropdown-menu">-->
-<!--            <a href="login.html">Login</a>-->
-<!--            <a href="register.html" id="registerButton">Register</a>-->
-<!--            <a href="#" id="signOutButton" onclick="signOut()" style="display: none;">Sign Out</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</header>-->
-
-<!--<div class="secondary-nav">-->
-<!--    <a href="practice9.html" class="nav-link">Upload & Download Resume</a>-->
-<!--    <div class="dropdown">-->
-<!--        <button class="dropdown-button">JD Actions</button>-->
-<!--        <div id="jdDropdown" class="dropdown-menu">-->
-<!--            <a href="jd3.html">Create JD</a>-->
-<!--            <a href="list5.html">View JD</a>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <div class="dropdown">-->
-<!--        <button class="dropdown-button" onclick="toggleDropdown('clientDropdown')">Client</button>-->
-<!--        <div id="clientDropdown" class="dropdown-menu">-->
-<!--            <a href="clientform.html">Create Client</a>-->
-<!--            <a href="invoiceform.html">Create Invoice</a>-->
-<!--            <a href="dashboard.html">View Dashboard</a>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <div class="dropdown">-->
-<!--        <button class="dropdown-button" onclick="toggleDropdown('billDropdown')">Bill</button>-->
-<!--        <div id="billDropdown" class="dropdown-menu">-->
-<!--            <a href="billpage.html">Bill Page</a>-->
-<!--            <a href="billsdashboard.html">Bills Dashboard</a>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <div class="dropdown">-->
-<!--        <button class="dropdown-button">Profile</button>-->
-<!--        <div id="profileDropdown" class="dropdown-menu">-->
-<!--            <a href="addprofile.html">Add Profile</a>-->
-<!--            <a href="allprofiles.html">View Profiles</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <a href="home.html" class="nav-link">Resume Matcher</a>-->
-<!--</div>-->
-
-<!--<main>-->
-<!--    <div id="detail">-->
-<!--        <h2>Hi User, Welcome To ProSquare</h2>-->
-<!--        <div id="currentDate"></div>-->
-<!--        <div id="lastLoginContainer">-->
-<!--            <p id="lastLogin">Last login: Not available</p>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <div class="container">-->
-<!--        <div class="dashboard-container">-->
-<!--            <h1>Your Dashboard</h1>-->
-<!--            <div class="summary">-->
-<!--                <p>Total Profiles: <span id="totalProfiles">0</span></p>-->
-<!--                <p>Total JDs: <span id="totalJDs">0</span></p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="today-container">-->
-<!--            <h2>Today's Updates</h2>-->
-<!--            <p>Profiles Added: <span id="profilesToday">0</span></p>-->
-<!--            <p>JDs Added: <span id="jdsToday">0</span></p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="this-week-container">-->
-<!--        <h2>This Week</h2>-->
-<!--        <p>Profiles Added: <span id="profilesThisWeek">0</span></p>-->
-<!--        <p>JDs Added: <span id="jdsThisWeek">0</span></p>-->
-<!--    </div>-->
-<!--</main>-->
-<!--<script>-->
-<!--    function toggleDropdown(id) {-->
-<!--    var dropdown = document.getElementById(id);-->
-<!--    if (dropdown.classList.contains('show')) {-->
-<!--    dropdown.classList.remove('show');-->
-<!--    } else {-->
-<!--    dropdown.classList.add('show');-->
-<!--    }-->
-<!--    }-->
-
-<!--    function navigateToPractice9() {-->
-<!--    window.location.href = 'practice9.html';-->
-<!--    }-->
-
-<!--    function navigateToResumeMatcher() {-->
-<!--    window.location.href = 'home.html';-->
-<!--    }-->
-
-<!--    function signOut() {-->
-<!--    console.log('Signing out...');-->
-<!--    localStorage.removeItem('accessToken');-->
-<!--    localStorage.setItem('isLoggedIn', 'false');-->
-<!--    loginRegisterButton.textContent = 'Login/Register';-->
-<!--    localStorage.removeItem('username');-->
-<!--    window.location.reload();-->
-<!--    }-->
-
-<!--    document.addEventListener('DOMContentLoaded', () => {-->
-<!--    const token = localStorage.getItem('accessToken');-->
-<!--    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';-->
-<!--    const username = localStorage.getItem('username');-->
-<!--    const lastLogin = localStorage.getItem('lastLogin');-->
-<!--    console.log("lastlogin", lastLogin);-->
-<!--    const signOutButton = document.getElementById('signOutButton');-->
-<!--    const registerButton = document.getElementById('registerButton');-->
-
-<!--    function updateDisplay() {-->
-<!--    const today = new Date();-->
-<!--    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
-<!--    const currentDateElement = document.getElementById('currentDate');-->
-<!--    if (currentDateElement) {-->
-<!--    currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
-<!--    }-->
-
-<!--    const lastLoginElement = document.getElementById('lastLogin');-->
-<!--    if (lastLoginElement) {-->
-<!--    lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';-->
-<!--    }-->
-<!--    }-->
-
-<!--    // Call updateDisplay initially to set the current date and last login-->
-<!--    updateDisplay();-->
-
-<!--    function handleInvalidToken() {-->
-<!--    showModal("Session expired. Please log in again.");-->
-<!--    const loginButton = document.getElementById('loginRegisterButton');-->
-<!--    if (loginButton) {-->
-<!--    loginButton.innerText = 'Login/Register';-->
-<!--    }-->
-<!--    if (signOutButton) {-->
-<!--    signOutButton.style.display = 'none';-->
-<!--    }-->
-<!--    localStorage.removeItem('accessToken');-->
-<!--    localStorage.setItem('isLoggedIn', 'false');-->
-<!--    localStorage.removeItem('username');-->
-<!--    }-->
-
-<!--    if (!token) {-->
-<!--    showModal("You have not yet logged in. Kindly login first");-->
-<!--    return;-->
-<!--    }-->
-
-<!--    if (isLoggedIn) {-->
-<!--    const loginButton = document.getElementById('loginRegisterButton');-->
-<!--    if (loginButton) {-->
-<!--    loginButton.innerText = `Logged In as ${username}`;-->
-<!--    }-->
-<!--    const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');-->
-<!--    if (loginDropdownMenu) {-->
-<!--    loginDropdownMenu.style.display = 'none';-->
-<!--    }-->
-<!--    if (signOutButton) {-->
-<!--    signOutButton.style.display = 'block';-->
-<!--    }-->
-<!--    if (registerButton) {-->
-<!--    registerButton.style.display = 'none';-->
-<!--    }-->
-<!--    }-->
-
-<!--    if (lastLogin) {-->
-<!--    const lastLoginElement = document.getElementById('lastLogin');-->
-<!--    if (lastLoginElement) {-->
-<!--    lastLoginElement.innerText = `Last login: ${lastLogin}`;-->
-<!--    }-->
-<!--    }-->
-
-<!--    const today = new Date();-->
-<!--    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
-<!--    const currentDateElement = document.getElementById('currentDate');-->
-<!--    if (currentDateElement) {-->
-<!--    currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
-<!--    }-->
-
-<!--    fetch('http://43.205.154.85:8080/profile/count', {-->
-<!--    headers: {-->
-<!--    "Authorization": `Bearer ${token}`-->
-<!--    }-->
-<!--    })-->
-<!--    .then(response => response.json())-->
-<!--    .then(data => {-->
-<!--    const totalProfilesElement = document.getElementById('totalProfiles');-->
-<!--    const profilesThisWeekElement = document.getElementById('profilesThisWeek');-->
-<!--    const profilesTodayElement = document.getElementById('profilesToday');-->
-<!--    if (totalProfilesElement) {-->
-<!--    totalProfilesElement.innerText = data.total;-->
-<!--    }-->
-<!--    if (profilesThisWeekElement) {-->
-<!--    profilesThisWeekElement.innerText = data.thisWeek;-->
-<!--    }-->
-<!--    if (profilesTodayElement) {-->
-<!--    profilesTodayElement.innerText = data.today;-->
-<!--    }-->
-<!--    })-->
-<!--    .catch(error => {-->
-<!--    console.error('Error fetching profile count:', error);-->
-<!--    signOut();-->
-<!--    });-->
-
-<!--    fetch('http://43.205.154.85:8080/jd/count', {-->
-<!--    headers: {-->
-<!--    "Authorization": `Bearer ${token}`-->
-<!--    }-->
-<!--    })-->
-<!--    .then(response => response.json())-->
-<!--    .then(data => {-->
-<!--    const totalJDsElement = document.getElementById('totalJDs');-->
-<!--    const jdsThisWeekElement = document.getElementById('jdsThisWeek');-->
-<!--    const jdsTodayElement = document.getElementById('jdsToday');-->
-<!--    if (totalJDsElement) {-->
-<!--    totalJDsElement.innerText = data.total;-->
-<!--    }-->
-<!--    if (jdsThisWeekElement) {-->
-<!--    jdsThisWeekElement.innerText = data.thisWeek;-->
-<!--    }-->
-<!--    if (jdsTodayElement) {-->
-<!--    jdsTodayElement.innerText = data.today;-->
-<!--    }-->
-<!--    })-->
-<!--    .catch(error => {-->
-<!--    console.error('Error fetching JD count:', error);-->
-<!--    signOut();-->
-<!--    });-->
-<!--    });-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -577,7 +124,7 @@
         }
 
         main {
-            margin-top: 120px; /* Adjusted to make space for the fixed headers */
+            margin-top: 100px;
             padding: 20px;
             overflow: auto;
         }
@@ -759,159 +306,177 @@
         .then(data => {
             document.getElementById('footer').innerHTML = data;
         });
-
         function toggleDropdown(id) {
         var dropdown = document.getElementById(id);
         if (dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
+            dropdown.classList.remove('show');
         } else {
-        dropdown.classList.add('show');
+            dropdown.classList.add('show');
         }
-        }
+    }
 
-        function navigateToPractice9() {
+    function navigateToPractice9() {
         window.location.href = 'practice9.html';
-        }
+    }
 
-        function navigateToResumeMatcher() {
+    function navigateToResumeMatcher() {
         window.location.href = 'home.html';
-        }
+    }
 
-        function signOut() {
+    function signOut() {
         console.log('Signing out...');
         localStorage.removeItem('accessToken');
         localStorage.setItem('isLoggedIn', 'false');
         localStorage.removeItem('username');
         loginRegisterButton.textContent = 'Login/Register';
         window.location.reload();
-        }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-        const token = localStorage.getItem('accessToken');
-        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        const username = localStorage.getItem('username');
-        const lastLogin = localStorage.getItem('lastLogin');
-        console.log("lastlogin", lastLogin);
-        const signOutButton = document.getElementById('signOutButton');
-        const registerButton = document.getElementById('registerButton');
+    document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('accessToken');
+    let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    console.log("Is Logged In:", isLoggedIn);
+    const username = localStorage.getItem('username');
+    const lastLogin = localStorage.getItem('lastLogin');
+    const signOutButton = document.getElementById('signOutButton');
+    const registerButton = document.getElementById('registerButton');
 
-        function updateDisplay() {
+    function updateDisplay() {
         const today = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const currentDateElement = document.getElementById('currentDate');
         if (currentDateElement) {
-        currentDateElement.innerText = today.toLocaleDateString('en-US', options);
+            currentDateElement.innerText = today.toLocaleDateString('en-US', options);
         }
 
         const lastLoginElement = document.getElementById('lastLogin');
         if (lastLoginElement) {
-        lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';
+            lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';
         }
-        }
+    }
 
-        // Call updateDisplay initially to set the current date and last login
-        updateDisplay();
+    // Call updateDisplay initially to set the current date and last login
+    updateDisplay();
 
-        function handleInvalidToken() {
+    function handleInvalidToken() {
+        console.log("Code came in handleInvalidToken");
         showModal("Session expired. Please log in again.");
         const loginButton = document.getElementById('loginRegisterButton');
         if (loginButton) {
-        loginButton.innerText = 'Login/Register';
+            loginButton.innerText = 'Login/Register';
         }
         if (signOutButton) {
-        signOutButton.style.display = 'none';
+            signOutButton.style.display = 'none';
         }
         localStorage.removeItem('accessToken');
         localStorage.setItem('isLoggedIn', 'false');
         localStorage.removeItem('username');
-        }
+        isLoggedIn = false;  // Ensure isLoggedIn is updated
+    }
 
-        if (!token) {
+    if (!token) {
         showModal("You have not yet logged in. Kindly login first");
         return;
-        }
+    }
 
-        if (isLoggedIn) {
-        const loginButton = document.getElementById('loginRegisterButton');
-        if (loginButton) {
-        loginButton.innerText = `Logged In as ${username}`;
-        }
-        const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');
-        if (loginDropdownMenu) {
-        loginDropdownMenu.style.display = 'none';
-        }
-        if (signOutButton) {
-        signOutButton.style.display = 'block';
-        }
-        if (registerButton) {
-        registerButton.style.display = 'none';
-        }
-        }
-
-        if (lastLogin) {
-        const lastLoginElement = document.getElementById('lastLogin');
-        if (lastLoginElement) {
-        lastLoginElement.innerText = `Last login: ${lastLogin}`;
-        }
-        }
-
-        const today = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const currentDateElement = document.getElementById('currentDate');
-        if (currentDateElement) {
-        currentDateElement.innerText = today.toLocaleDateString('en-US', options);
-        }
-
-        fetch('http://43.205.154.85:8080/profile/count', {
+    fetch('http://43.205.154.85:8080/profile/count', {
         headers: {
-        "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`
         }
-        })
-        .then(response => response.json())
-        .then(data => {
+    })
+    .then(response => {
+        if (!response.ok) {  // Checks for any HTTP error
+        if (response.status === 401) {  // Unauthorized, token is invalid
+            handleInvalidToken();
+        }
+        throw new Error('Failed to fetch profile count');
+    }
+        return response.json();
+    })
+    .then(data => {
+        if (!isLoggedIn) {
+            handleInvalidToken();
+            return;
+        }
         const totalProfilesElement = document.getElementById('totalProfiles');
         const profilesThisWeekElement = document.getElementById('profilesThisWeek');
         const profilesTodayElement = document.getElementById('profilesToday');
         if (totalProfilesElement) {
-        totalProfilesElement.innerText = data.total;
+            totalProfilesElement.innerText = data.total;
         }
         if (profilesThisWeekElement) {
-        profilesThisWeekElement.innerText = data.thisWeek;
+            profilesThisWeekElement.innerText = data.thisWeek;
         }
         if (profilesTodayElement) {
-        profilesTodayElement.innerText = data.today;
+            profilesTodayElement.innerText = data.today;
         }
-        })
-        .catch(error => {
-        console.error('Error fetching profile count:', error);
-        signOut();
-        });
 
-        fetch('http://43.205.154.85:8080/jd/count', {
-        headers: {
-        "Authorization": `Bearer ${token}`
+        if (isLoggedIn) {
+            const loginButton = document.getElementById('loginRegisterButton');
+            if (loginButton) {
+                loginButton.innerText = `Logged In as ${username}`;
+            }
+            const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');
+            if (loginDropdownMenu) {
+                loginDropdownMenu.style.display = 'none';
+            }
+            if (signOutButton) {
+                signOutButton.style.display = 'block';
+            }
+            if (registerButton) {
+                registerButton.style.display = 'none';
+            }
+        } else {
+            const loginButton = document.getElementById('loginRegisterButton');
+            if (loginButton) {
+                loginButton.innerText = 'Login/Register';
+            }
         }
-        })
-        .then(response => response.json())
-        .then(data => {
+    })
+    .catch(error => {
+        console.error('Error fetching profile count:', error);
+        handleInvalidToken();
+    });
+
+    fetch('http://43.205.154.85:8080/jd/count', {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (!response.ok) {  // Checks for any HTTP error
+        if (response.status === 401) {  // Unauthorized, token is invalid
+            handleInvalidToken();
+        }
+        throw new Error('Failed to fetch profile count');
+    }
+        return response.json();
+    })
+    .then(data => {
+        if (!isLoggedIn) {
+            handleInvalidToken();
+            return;
+        }
         const totalJDsElement = document.getElementById('totalJDs');
         const jdsThisWeekElement = document.getElementById('jdsThisWeek');
         const jdsTodayElement = document.getElementById('jdsToday');
         if (totalJDsElement) {
-        totalJDsElement.innerText = data.total;
+            totalJDsElement.innerText = data.total;
         }
         if (jdsThisWeekElement) {
-        jdsThisWeekElement.innerText = data.thisWeek;
+            jdsThisWeekElement.innerText = data.thisWeek;
         }
         if (jdsTodayElement) {
-        jdsTodayElement.innerText = data.today;
+            jdsTodayElement.innerText = data.today;
         }
-        })
-        .catch(error => {
+    })
+    .catch(error => {
         console.error('Error fetching JD count:', error);
-        signOut();
-        });
-        });
-   </script>
+        handleInvalidToken();
+    });
+});
+
+
+</script>
 </body>
 </html>

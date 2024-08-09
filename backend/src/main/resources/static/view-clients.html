@@ -29,7 +29,6 @@
     </style>
 </head>
 <body>
-<div id="header"></div>
 <div class="container">
     <h1>View Clients</h1>
     <table>
@@ -48,24 +47,9 @@
     </table>
 </div>
 
-<div id="footer"></div>
-
 <script>
-
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
-
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('http://localhost:8080/api/clients') // Fetch clients from the backend
+        fetch('http://43.205.154.85:8080/api/clients') // Fetch clients from the backend
             .then(response => response.json())
             .then(clients => {
                 const tbody = document.getElementById('clientsTableBody');

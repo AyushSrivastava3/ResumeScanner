@@ -10,7 +10,9 @@
             background-color: #f7f7f7;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            justify-content: space-between;
+            align-items: center;
+            height: 100vh;
             margin: 0;
         }
 
@@ -21,9 +23,6 @@
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             width: 50%;
             max-width: 600px;
-            margin: 20px auto;
-            margin-top: 90px;
-            flex: 1; /* Added flex: 1 to take up remaining space */
         }
 
         h2 {
@@ -57,12 +56,11 @@
             color: #007bff;
         }
 
-        footer {
-            background: white;
-            text-align: center;
-            padding: 10px 20px;
+        #footer {
+            background-color: #fff;
             width: 100%;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 1px solid #ccc;
         }
     </style>
 </head>
@@ -83,9 +81,11 @@
         <p id="pendingReimbursementsValue" class="loading">Loading...</p>
     </div>
 </div>
-<footer id="footer"></footer>
+
+<div id="footer"></div>
 
 <script>
+
     fetch('header.html')
         .then(response => response.text())
         .then(data => {
@@ -98,21 +98,21 @@
             document.getElementById('footer').innerHTML = data;
         });
 
-    async function fetchDashboardStats() {
-        try {
-            let response = await fetch('http://13.201.90.199:8080/dashboard/stats');
-            let data = await response.json();
+async function fetchDashboardStats() {
+    try {
+        let response = await fetch('http://43.205.154.85:8080/api/billing/dashboard/stats');
+        let data = await response.json();
 
-            document.getElementById('totalBillsValue').innerText = data.totalBills;
-            document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed;
-            document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements;
-        } catch (error) {
-            console.error('Error fetching dashboard stats:', error);
-            document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');
-        }
+        document.getElementById('totalBillsValue').innerText = data.totalBills;
+        document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed;
+        document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements;
+    } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+        document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');
     }
+}
 
-    fetchDashboardStats();
+fetchDashboardStats();
 </script>
 </body>
 </html>

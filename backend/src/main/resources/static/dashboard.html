@@ -7,22 +7,40 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
+            background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-        #header, #footer {
-            background-color: #f1f1f1;
-            padding: 10px;
-            text-align: center;
+        .header-content nav ul {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            margin-top: 60px;
+            display: flex;
+            gap: 10px;
         }
-        #content {
+        .header-content nav ul li {
+           padding: 10px 15px;
+            font-size: 14px;
+            background-color: #005149;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .header-content nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            margin-top: 80px;
+            padding: 20px;
+            margin-top: 150px;
         }
         .button-group, .filter-form {
             display: flex;
@@ -32,14 +50,14 @@
         .button-group button, .filter-form button {
             margin: 0 10px;
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #005149;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
         .button-group button:hover, .filter-form button:hover {
-            background-color: #0056b3;
+            background-color: #003d34;
         }
         .filter-form input {
             padding: 10px;
@@ -63,8 +81,17 @@
 </head>
 <body>
 <div id="header"></div>
+<div class="header-content">
+    <nav>
+        <ul>
+            <li><a href="clients.html">Clients</a></li>
+            <li><a href="all-invoices.html">Invoices</a></li>
+            <li><a href="pendinginvoices.html">Pending Invoices</a></li>
+        </ul>
+    </nav>
+</div>
 
-<div id="content">
+<div class="main-content">
     <div class="button-group">
         <button id="togglePending">Show Pending Invoices</button>
         <button id="toggleAll">Show All Invoices</button>
@@ -104,137 +131,172 @@
 
 <script>
     fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-        });
+       .then(response => response.text())
+       .then(data => {
+           document.getElementById('header').innerHTML = data;
+       });
 
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer').innerHTML = data;
-        });
+   fetch('footer.html')
+       .then(response => response.text())
+       .then(data => {
+           document.getElementById('footer').innerHTML = data;
+       });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const togglePendingButton = document.getElementById('togglePending');
-        const toggleAllButton = document.getElementById('toggleAll');
-        const filterButton = document.getElementById('filterButton');
-        const clearButton = document.getElementById('clearButton');
-        const invoiceTableBody = document.querySelector('#invoiceTable tbody');
-        const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
+   document.addEventListener('DOMContentLoaded', function() {
+       const token = localStorage.getItem('accessToken');
 
-        togglePendingButton.addEventListener('click', function() {
-            fetch('http://13.201.90.199:8080/api/invoices/pending')
-                .then(response => response.json())
-                .then(invoices => populateTable(invoices, false))
-                .catch(error => console.error('Error fetching pending invoices:', error));
-        });
+       if (!token) {
+           showModal("You have not yet logged in. Kindly login first.");
+           return;
+       }
 
-        toggleAllButton.addEventListener('click', function() {
-            fetch('http://13.201.90.199:8080/api/invoices/all')
-                .then(response => response.json())
-                .then(invoices => populateTable(invoices, false))
-                .catch(error => console.error('Error fetching all invoices:', error));
-        });
+       function showModal(message) {
+           const modal = document.createElement('div');
+           modal.style.position = 'fixed';
+           modal.style.top = '50%';
+           modal.style.left = '50%';
+           modal.style.transform = 'translate(-50%, -50%)';
+           modal.style.padding = '20px';
+           modal.style.backgroundColor = '#fff';
+           modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+           modal.innerHTML = `
+               <p>${message}</p>
+               <button id="closeModal">Close</button>
+           `;
+           document.body.appendChild(modal);
 
-        filterButton.addEventListener('click', function() {
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
+           document.getElementById('closeModal').addEventListener('click', function() {
+               modal.remove();
+               window.location.href = 'login.html'; // Redirect to login page
+           });
 
-            let url = 'http://13.201.90.199:8080/api/invoices/';
-            if (year && month) {
-                url += `byMonth?year=${year}&month=${month}`;
-            } else if (year) {
-                url += `byYear?year=${year}`;
-            } else {
-                return;
-            }
+           document.getElementById('closeModal').style.backgroundColor = '#005149';
+           document.getElementById('closeModal').style.color = '#fff';
+           document.getElementById('closeModal').style.border = 'none';
+           document.getElementById('closeModal').style.padding = '10px';
+           document.getElementById('closeModal').style.borderRadius = '5px';
+           document.getElementById('closeModal').style.cursor = 'pointer';
+       }
 
-            fetch(url)
-                .then(response => response.json())
-                .then(invoices => populateTable(invoices, true))
-                .catch(error => console.error('Error fetching filtered invoices:', error));
-        });
+       const togglePendingButton = document.getElementById('togglePending');
+       const toggleAllButton = document.getElementById('toggleAll');
+       const filterButton = document.getElementById('filterButton');
+       const clearButton = document.getElementById('clearButton');
+       const invoiceTableBody = document.querySelector('#invoiceTable tbody');
+       const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
 
-        clearButton.addEventListener('click', function() {
-            document.getElementById('year').value = '';
-            document.getElementById('month').value = '';
-            invoiceTableBody.innerHTML = '';
-        });
+       togglePendingButton.addEventListener('click', function() {
+           fetch('http://43.205.154.85:8080/api/invoices/pending')
+               .then(response => response.json())
+               .then(invoices => populateTable(invoices, false))
+               .catch(error => console.error('Error fetching pending invoices:', error));
+       });
 
-        function populateTable(invoices, isFilter) {
-            invoiceTableBody.innerHTML = '';
+       toggleAllButton.addEventListener('click', function() {
+           fetch('http://43.205.154.85:8080/api/invoices/all')
+               .then(response => response.json())
+               .then(invoices => populateTable(invoices, false))
+               .catch(error => console.error('Error fetching all invoices:', error));
+       });
 
-            // Adjust table headers based on filter status
-            if (isFilter) {
-                invoiceTableHead.innerHTML = `
-                    <th>Serial Number</th>
-                    <th>Client Name</th>
-                    <th>Invoice Number</th>
-                    <th>Invoice Value</th>
-                    <th>Paid on Date</th>
-                    <th>Paid with Delay of</th>
-                    <th>Transaction Reference Number</th>
-                    <th>Comments</th>
-                `;
-            } else {
-                invoiceTableHead.innerHTML = `
-                    <th>Serial Number</th>
-                    <th>Client Name</th>
-                    <th>Invoice Number</th>
-                    <th>Invoice Value</th>
-                    <th>Delayed by</th>
-                    <th>Last Follow-up</th>
-                    <th>Follow-up Notes</th>
-                    <th>Target Date</th>
-                `;
-            }
+       filterButton.addEventListener('click', function() {
+           const year = document.getElementById('year').value;
+           const month = document.getElementById('month').value;
 
-            invoices.forEach((invoice, index) => {
-                const row = document.createElement('tr');
-                if (isFilter) {
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${invoice.clientName}</td>
-                        <td>${invoice.invoiceNumber}</td>
-                        <td>${invoice.invoiceValue}</td>
-                        <td>${invoice.paidOn || ''}</td>
-                        <td>${calculatePaidDelay(invoice.raisedOn, invoice.paidOn)}</td>
-                        <td>${invoice.transactionReferenceNumber || ''}</td>
-                        <td>${invoice.comments || ''}</td>
-                    `;
-                } else {
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${invoice.clientName}</td>
-                        <td>${invoice.invoiceNumber}</td>
-                        <td>${invoice.invoiceValue}</td>
-                        <td>${calculateDelay(invoice.raisedOn, invoice.paidOn)}</td>
-                        <td>${invoice.lastFollowUp || ''}</td>
-                        <td>${invoice.followUpNotes || ''}</td>
-                        <td>${invoice.targetDate || ''}</td>
-                    `;
-                }
-                invoiceTableBody.appendChild(row);
-            });
-        }
+           let url = 'http://43.205.154.85:8080/api/invoices/';
+           if (year && month) {
+               url += `byMonth?year=${year}&month=${month}`;
+           } else if (year) {
+               url += `byYear?year=${year}`;
+           } else {
+               return;
+           }
 
-        function calculateDelay(raisedOn, paidOn) {
-            if (!raisedOn || !paidOn) return '';
-            const raisedDate = new Date(raisedOn);
-            const paidDate = new Date(paidOn);
-            const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
-            return `${delay} days`;
-        }
+           fetch(url)
+               .then(response => response.json())
+               .then(invoices => populateTable(invoices, true))
+               .catch(error => console.error('Error fetching filtered invoices:', error));
+       });
 
-        function calculatePaidDelay(raisedOn, paidOn) {
-            if (!raisedOn || !paidOn) return '';
-            const raisedDate = new Date(raisedOn);
-            const paidDate = new Date(paidOn);
-            const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
-            return `${delay} days`;
-        }
-    });
+       clearButton.addEventListener('click', function() {
+           document.getElementById('year').value = '';
+           document.getElementById('month').value = '';
+           invoiceTableBody.innerHTML = '';
+       });
+
+       function populateTable(invoices, isFilter) {
+           invoiceTableBody.innerHTML = '';
+
+           // Adjust table headers based on filter status
+           if (isFilter) {
+               invoiceTableHead.innerHTML = `
+                   <th>Serial Number</th>
+                   <th>Client Name</th>
+                   <th>Invoice Number</th>
+                   <th>Invoice Value</th>
+                   <th>Paid on Date</th>
+                   <th>Paid with Delay of</th>
+                   <th>Transaction Reference Number</th>
+                   <th>Comments</th>
+               `;
+           } else {
+               invoiceTableHead.innerHTML = `
+                   <th>Serial Number</th>
+                   <th>Client Name</th>
+                   <th>Invoice Number</th>
+                   <th>Invoice Value</th>
+                   <th>Delayed by</th>
+                   <th>Last Follow-up</th>
+                   <th>Follow-up Notes</th>
+                   <th>Target Date</th>
+               `;
+           }
+
+           invoices.forEach((invoice, index) => {
+               const row = document.createElement('tr');
+               if (isFilter) {
+                   row.innerHTML = `
+                       <td>${index + 1}</td>
+                       <td>${invoice.clientName}</td>
+                       <td>${invoice.invoiceNumber}</td>
+                       <td>${invoice.invoiceValue}</td>
+                       <td>${invoice.paidOn || ''}</td>
+                       <td>${calculatePaidDelay(invoice.raisedOn, invoice.paidOn)}</td>
+                       <td>${invoice.transactionReferenceNumber || ''}</td>
+                       <td>${invoice.comments || ''}</td>
+                   `;
+               } else {
+                   row.innerHTML = `
+                       <td>${index + 1}</td>
+                       <td>${invoice.clientName}</td>
+                       <td>${invoice.invoiceNumber}</td>
+                       <td>${invoice.invoiceValue}</td>
+                       <td>${calculateDelay(invoice.raisedOn, invoice.paidOn)}</td>
+                       <td>${invoice.lastFollowUp || ''}</td>
+                       <td>${invoice.followUpNotes || ''}</td>
+                       <td>${invoice.targetDate || ''}</td>
+                   `;
+               }
+               invoiceTableBody.appendChild(row);
+           });
+       }
+
+       function calculateDelay(raisedOn, paidOn) {
+           if (!raisedOn || !paidOn) return '';
+           const raisedDate = new Date(raisedOn);
+           const paidDate = new Date(paidOn);
+           const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
+           return `${delay} days`;
+       }
+
+       function calculatePaidDelay(raisedOn, paidOn) {
+           if (!raisedOn || !paidOn) return '';
+           const raisedDate = new Date(raisedOn);
+           const paidDate = new Date(paidOn);
+           const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
+           return `${delay} days`;
+       }
+   });
 </script>
 </body>
 </html>

@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,10 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -191,6 +189,29 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("/profile/export/jdid")
+    public ResponseEntity<byte[]> exportProfilesById(@RequestParam String jdid) {
+        try {
+            List<Profile> profiles = profileRepository.findByJdId(jdid);
+            ExportImportService<Profile> exporter = new ExportImportService<>();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            exporter.exportToExcel(profiles, baos);
+
+            byte[] excelBytes = baos.toByteArray();
+            System.out.println("Excel file size: " + excelBytes.length);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profiles_by_id_export.xlsx");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/profile/import")
     public ResponseEntity<?> importProfilesFromCSV(@RequestParam("file") MultipartFile file) {
         try {
@@ -206,6 +227,14 @@ public class ProfileController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errorResponse);
         }
+    }
+
+    @GetMapping("/downloadProfile")
+    public ResponseEntity<InputStreamResource> downloadProfile(@RequestParam("id") String profileId) throws IOException {
+        ByteArrayInputStream bis = profileService.generateProfileDocument(profileId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=profile.docx");
+        return new ResponseEntity<>(new InputStreamResource(bis), headers, HttpStatus.OK);
     }
 
 }

@@ -5,11 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Clients</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            margin-top: 190px;
+            margin-bottom: 230px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            background-color: #005149;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #003d3d;
+        }
+
+        /* Navigation Buttons CSS */
+        .header-content {
+            position: absolute;
+            top: 5px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            margin-top: 70px;
+            margin-bottom: 40px;
+        }
+
+        .header-content nav ul {
+            list-style: none;
+            display: flex;
+            gap: 5px;
+        }
+
+        .header-content nav ul li {
+            padding: 10px 15px;
+            font-size: 14px;
+            background-color: #005149;
+            border-radius: 4px;
+        }
+
+        .header-content nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 <div id="header"></div>
+<div class="header-content">
+    <nav>
+        <ul>
+            <li><a href="clients.html">Clients</a></li>
+            <li><a href="all-invoices.html">Invoices</a></li>
+            <li><a href="pendinginvoices.html">Pending Invoices</a></li>
+        </ul>
+    </nav>
+</div>
+
 <div class="container">
     <h2>Clients</h2>
+    <button id="exportBtn">Export Clients</button> <!-- Export button -->
     <table id="clientsTable">
         <thead>
         <tr>
@@ -17,7 +104,6 @@
             <th>Client Name</th>
             <th>Location</th>
             <th>Currency</th>
-            <th>Total Pending Invoices</th>
         </tr>
         </thead>
         <tbody>
@@ -26,89 +112,101 @@
     </table>
 </div>
 
-
 <div id="footer"></div>
 
 <script>
+
+
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
     document.addEventListener('DOMContentLoaded', function() {
-    // Load header and footer
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+            showModal("You have not yet logged in. Kindly login first.");
+            return;
+        }
+
+        function showModal(message) {
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '50%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translate(-50%, -50%)';
+            modal.style.padding = '20px';
+            modal.style.backgroundColor = '#fff';
+            modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+            modal.innerHTML = `
+                <p>${message}</p>
+                <button id="closeModal">Close</button>
+            `;
+            document.body.appendChild(modal);
+
+            document.getElementById('closeModal').addEventListener('click', function() {
+                modal.remove();
+                window.location.href = 'login.html'; // Redirect to login page
             });
 
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
+            document.getElementById('closeModal').style.backgroundColor = '#005149';
+            document.getElementById('closeModal').style.color = '#fff';
+            document.getElementById('closeModal').style.border = 'none';
+            document.getElementById('closeModal').style.padding = '10px';
+            document.getElementById('closeModal').style.borderRadius = '5px';
+            document.getElementById('closeModal').style.cursor = 'pointer';
+        }
 
+        fetch('http://43.205.154.85:8080/api/clients')
+            .then(response => response.json())
+            .then(clients => {
+                const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];
+                clients.forEach((client, index) => {
+                    const row = clientsTable.insertRow();
+                    row.insertCell(0).textContent = index + 1;
+                    const clientNameCell = row.insertCell(1);
+                    const clientLink = document.createElement('a');
+                    clientLink.href = `editClient.html?id=${client.id}`;
+                    clientLink.textContent = client.clientName;
+                    clientNameCell.appendChild(clientLink);
+                    row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
+                    row.insertCell(3).textContent = client.currency;
 
-           const token = localStorage.getItem('accessToken');
+                });
+            })
+            .catch(error => console.error('Error fetching clients:', error));
 
-       if (!token) {
-           showModal("You have not yet logged in. Kindly login first.");
-           return;
-       }
+        // Export profile functionality
+        function exportClients() {
+            fetch(`http://43.205.154.85:8080/api/clients/clients/export`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'client_export.xlsx'; // Set the file name for the export
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(error => console.error('Error exporting profile data:', error));
+        }
 
-       function showModal(message) {
-           const modal = document.createElement('div');
-           modal.style.position = 'fixed';
-           modal.style.top = '50%';
-           modal.style.left = '50%';
-           modal.style.transform = 'translate(-50%, -50%)';
-           modal.style.padding = '20px';
-           modal.style.backgroundColor = '#fff';
-           modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-           modal.innerHTML = `
-               <p>${message}</p>
-               <button id="closeModal">Close</button>
-           `;
-           document.body.appendChild(modal);
-
-           document.getElementById('closeModal').addEventListener('click', function() {
-               modal.remove();
-               window.location.href = 'login.html'; // Redirect to login page
-           });
-
-           document.getElementById('closeModal').style.backgroundColor = '#005149';
-           document.getElementById('closeModal').style.color = '#fff';
-           document.getElementById('closeModal').style.border = 'none';
-           document.getElementById('closeModal').style.padding = '10px';
-           document.getElementById('closeModal').style.borderRadius = '5px';
-           document.getElementById('closeModal').style.cursor = 'pointer';
-       }
-
-       fetch('http://43.205.154.85:8080/api/clients')
-           .then(response => response.json())
-           .then(clients => {
-               const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];
-               clients.forEach((client, index) => {
-                   const row = clientsTable.insertRow();
-                   row.insertCell(0).textContent = index + 1;
-                   const clientNameCell = row.insertCell(1);
-                   const clientLink = document.createElement('a');
-                   clientLink.href = `editClient.html?id=${client.id}`;
-                   clientLink.textContent = client.clientName;
-                   clientNameCell.appendChild(clientLink);
-                   row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
-                   row.insertCell(3).textContent = client.currency;
-                   // Assuming there's an API to get total pending invoices for a client
-                   fetch(`http://43.205.154.85:8080/api/invoices/pending/count?clientId=${client.id}`)
-                       .then(response => response.json())
-                       .then(count => {
-                           row.insertCell(4).textContent = count;
-                       })
-                       .catch(error => {
-                           row.insertCell(4).textContent = 'Error fetching count';
-                       });
-               });
-           })
-           .catch(error => console.error('Error fetching clients:', error));
-   });
-
-
+        // Add event listener to export button
+        document.getElementById('exportBtn').addEventListener('click', exportClients);
+    });
 </script>
 </body>
 </html>

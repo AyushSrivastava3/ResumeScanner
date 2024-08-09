@@ -1,5 +1,7 @@
 package com.example.job_desc_backend.model;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "clients")
 public class Client {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String clientName;
     private String clientAddress;
@@ -20,14 +23,14 @@ public class Client {
     private String accountNumber;
     private String ifscCode;
     private String currency;
-    private String createdBy;
+    private int totalPendingInvoices;
 
-    public String getCreatedBy() {
-        return createdBy;
+    public int getTotalPendingInvoices() {
+        return totalPendingInvoices;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setTotalPendingInvoices(int totalPendingInvoices) {
+        this.totalPendingInvoices = totalPendingInvoices;
     }
 
     public String getId() {
@@ -115,5 +118,6 @@ public class Client {
     private String miscellaneous;
 
 
-
+    public void setCreatedBy(String username) {
+    }
 }

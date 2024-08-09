@@ -85,29 +85,36 @@ public class BillWebController {
         return ResponseEntity.ok(bill);
     }
 
-    @GetMapping("/export/bills")
-    public String exportbillsToExcel() {
+   @GetMapping("/export/bills")
+    public ResponseEntity<byte[]> exportProfilesToExcel() {
         try {
-            List<BillEntity> bill = billRepository.findAll();
-
+            List<BillEntity> profiles = billRepository.findAll();
             ExportImportService<BillEntity> exporter = new ExportImportService<>();
-            String filePath = "D:\\exportimport/profiles.xlsx"; // Change this to your desired path
-            exporter.exportToExcel(bill, filePath);
-            return "Excel file created successfully at: " + filePath;
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            exporter.exportToExcel(profiles, baos);
+
+            byte[] excelBytes = baos.toByteArray();
+            System.out.println("Excel file size: " + excelBytes.length);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profiles_export.xlsx");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return "Failed to create Excel file: " + e.getMessage();
+            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
     @PostMapping("/import/bills")
-    public ResponseEntity<?> importbillsFromCSV(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> importProfilesFromCSV(@RequestParam("file") MultipartFile file) {
         try {
             ExportImportService<BillEntity> importer = new ExportImportService<>();
-            List<BillEntity> bills = importer.importFromCSV(file, BillEntity.class);
-            billRepository.saveAll(bills);
-            return ResponseEntity.ok(bills);
+            List<BillEntity> profiles = importer.importFromCSV(file, BillEntity.class);
+            billRepository.saveAll(profiles);
+            return ResponseEntity.ok(profiles);
         } catch (Exception e) {
             e.printStackTrace();
             Map<String, String> errorResponse = new HashMap<>();
@@ -117,6 +124,7 @@ public class BillWebController {
                     .body(errorResponse);
         }
     }
+
 
 
 

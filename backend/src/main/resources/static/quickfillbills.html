@@ -246,6 +246,7 @@
     <nav class="nav-bar">
         <a href="index.html" class="button">Home</a>
         <a href="billsdashboard.html" class="button">Dashboard</a>
+        <a href="viewbills.html" class="button">View All Bills</a>
         <a id="export-btn" class="button">Export</a>
         <input type="file" id="file-input" accept=".csv">
         <button id="importButton">Import</button>
@@ -415,7 +416,7 @@
                comments: comments
            };
 
-           fetch('http://localhost:8080/api/billing', {
+           fetch('http://43.205.154.85:8080/api/billing', {
                method: 'POST',
                headers: {
                    'Content-Type': 'application/json'
@@ -573,7 +574,7 @@
         comments: comments
     };
 
-    fetch(`http://localhost:8080/api/billing/${billId}`, {
+    fetch(`http://43.205.154.85:8080/api/billing/${billId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -605,7 +606,7 @@
 
 
 function exportBills() {
-        fetch('http://localhost:8080/api/billing/export/bills')
+        fetch('http://43.205.154.85:8080/api/billing/export/bills')
             .then(response => response.blob()) // Handle the response as a blob (for file download)
             .then(blob => {
                 // Create a link element and simulate a click to download the file
@@ -639,7 +640,7 @@ function exportBills() {
             const formData = new FormData();
             formData.append('file', file);
 
-            fetch('http://localhost:8080/api/billing/import/bills', {
+            fetch('http://43.205.154.85:8080/api/billing/import/bills', {
                 method: 'POST',
                 body: formData
             })
@@ -660,52 +661,60 @@ function exportBills() {
 
 
 
-       function displayAllBills(bills) {
-           const billTableBody = document.querySelector('#bill-table tbody');
-           billTableBody.innerHTML = '';
-           bills.forEach(bill => {
-               const billRow = document.createElement('tr');
-               billRow.innerHTML = `
-                   <td><a href="billpage.html" data-id="${bill.id}">${bill.reason}</a></td>
-                   <td>${bill.amount}</td>
-                   <td>${bill.date}</td>
-                   <td>${bill.category}</td>
-                   <td>${bill.reimbursed ? 'Yes' : 'No'}</td>
-                   <td>${bill.submittedBy}</td>
-                   <td>${bill.comments}</td>
-                   <td>
-                       <button class="edit-button">Edit</button>
-                       <button class="save-button" style="display:none;">Save</button>
-                   </td>
-               `;
-               billTableBody.appendChild(billRow);
+      function fetchAllBills() {
+    fetch('http://localhost:8080/api/billing')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Bills:', data);
 
-               // Attach event listeners to the buttons in the new row
-               const editButton = billRow.querySelector('.edit-button');
-               const saveButton = billRow.querySelector('.save-button');
+            // Iterate through each bill and concatenate id with reason
+            data.forEach(bill => {
+                const updatedReason = `${bill.reason} (ID: ${bill.id})`;
+                console.log(`Bill ID: ${bill.id}, Updated Reason: ${updatedReason}`);
+            });
 
-               editButton.addEventListener('click', function () {
-                   editBill(editButton);
-               });
+            displayAllBills(data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error fetching bills');
+        });
+}
 
-               saveButton.addEventListener('click', function () {
-                   saveBillEdits(saveButton);
-               });
-           });
-       }
+function displayAllBills(bills) {
+    const billTableBody = document.querySelector('#bill-table tbody');
+    billTableBody.innerHTML = '';
+    bills.forEach(bill => {
+        const billRow = document.createElement('tr');
+        const updatedReason = `${bill.reason} (ID: ${bill.id})`; // Update reason with id
+        billRow.innerHTML = `
+            <td><a href="billpage.html?id=${bill.id}" data-id="${bill.id}">${bill.reason}</a></td>
+            <td>${bill.amount}</td>
+            <td>${bill.date}</td>
+            <td>${bill.category}</td>
+            <td>${bill.reimbursed ? 'Yes' : 'No'}</td>
+            <td>${bill.submittedBy}</td>
+            <td>${bill.comments}</td>
+            <td>
+                <button class="edit-button">Edit</button>
+                <button class="save-button" style="display:none;">Save</button>
+            </td>
+        `;
+        billTableBody.appendChild(billRow);
 
-       function fetchAllBills() {
-           fetch('http://localhost:8080/api/billing')
-               .then(response => response.json())
-               .then(data => {
-                   console.log('Bills:', data);
-                   displayAllBills(data);
-               })
-               .catch((error) => {
-                   console.error('Error:', error);
-                   alert('Error fetching bills');
-               });
-       }
+        // Attach event listeners to the buttons in the new row
+        const editButton = billRow.querySelector('.edit-button');
+        const saveButton = billRow.querySelector('.save-button');
+
+        editButton.addEventListener('click', function () {
+            editBill(editButton);
+        });
+
+        saveButton.addEventListener('click', function () {
+            saveBillEdits(saveButton);
+        });
+    });
+}
 
        function attachEventListenersToForm(form) {
            form.querySelector('#fill-more-btn').addEventListener('click', toggleFillMoreFields);

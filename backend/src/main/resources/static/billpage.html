@@ -310,18 +310,18 @@ function toggleEditMode(enable, form) {
 }
 
 async function fetchBillDetails(billId) {
-    const url = `http://43.205.154.85:8080/getBillById?id=${billId}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Failed to fetch bill details');
+        const url = `http://43.205.154.85:8080/api/billing/getBillById?id=${billId}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Failed to fetch bill details');
+            }
+            const billData = await response.json();
+            populateForm(billData);
+        } catch (error) {
+            console.error('Error fetching bill details:', error);
         }
-        const billData = await response.json();
-        populateForm(billData);
-    } catch (error) {
-        console.error('Error fetching bill details:', error);
     }
-}
 
 function populateForm(billData) {
     const form = document.querySelector('.bill-form');

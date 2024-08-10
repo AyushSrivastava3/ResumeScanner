@@ -56,6 +56,8 @@
             padding: 20px;
             background-color: #ffffff;
             border-radius: 8px;
+            margin-top: 90px;
+            margin-bottom: 300px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .main-title {
@@ -100,9 +102,7 @@
     </style>
 </head>
 <body>
-<!--<div class="header">-->
-<!--    <h1 id="bills-title">Sell All Bills</h1>-->
-<!--</div>-->
+<div id="header"></div>
 <div class="container">
     <div class="main-title">Bills List</div>
     <table id="bill-table">
@@ -125,7 +125,22 @@
     </table>
 </div>
 
+<div id="footer"></div>
+
 <script>
+
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
     function displayAllBills(bills) {
         const billTableBody = document.querySelector('#bill-table tbody');
         billTableBody.innerHTML = '';

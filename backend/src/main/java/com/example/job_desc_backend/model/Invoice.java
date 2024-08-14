@@ -17,6 +17,7 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String clientName;
+    private String clientId;
     private String invoiceNumber;
     private String invoiceValue;
     private String currency;

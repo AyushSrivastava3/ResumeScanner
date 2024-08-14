@@ -5,13 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdf5bc55-a5ec-4eac-a115-da9c75f2ed6e" name="Changes" comment="Updating dev">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_08_24,_6_37 pm_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_03_08_24__6_37pm__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Invoice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/model/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ResumeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/service/ResumeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/addprofile.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/addprofile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/all-invoices.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/all-invoices.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/allprofiles.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/allprofiles.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/billpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/billpage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/billsdashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/billsdashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/clientform.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/clientform.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/clients.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/editClient.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/editClient.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/editInvoice.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/editInvoice.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/editjd.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/editjd.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/editprofile.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/editprofile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/enterOtp.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/enterOtp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/forgotPassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/forgotPassword.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/invoiceform.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/invoiceform.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jd3.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jd3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jddetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jddetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/jobDescription.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/jobDescription.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/list5.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/list5.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/pendinginvoices.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/pendinginvoices.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/practice9.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/practice9.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/profileDesc.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/profileDesc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/profileMatcher.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/profileMatcher.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/profiles.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/profiles.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/quickfillbills.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/quickfillbills.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/view-clients.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/view-clients.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/viewbills.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/viewbills.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -332,7 +362,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723220049174</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Updating dev">
+      <option name="closed" value="true" />
+      <created>1723275289359</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1723275289359</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -404,7 +442,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>192</line>
+          <line>214</line>
           <properties class="com.example.job_desc_backend.controller.ProfileController" method="exportProfilesById">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -438,12 +476,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>151</line>
+          <line>173</line>
           <option name="timeStamp" value="257" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>152</line>
+          <line>174</line>
           <option name="timeStamp" value="258" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -458,7 +496,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>153</line>
+          <line>175</line>
           <option name="timeStamp" value="265" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -478,38 +516,56 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>193</line>
+          <line>215</line>
           <option name="timeStamp" value="270" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>194</line>
+          <line>216</line>
           <option name="timeStamp" value="271" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>195</line>
+          <line>217</line>
           <option name="timeStamp" value="272" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>197</line>
+          <line>219</line>
           <option name="timeStamp" value="273" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>201</line>
+          <line>223</line>
           <option name="timeStamp" value="274" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>200</line>
+          <line>222</line>
           <option name="timeStamp" value="275" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ProfileController.java</url>
-          <line>198</line>
+          <line>220</line>
           <option name="timeStamp" value="276" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ClientController.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="277" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ClientController.java</url>
+          <line>36</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="278" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/com/example/job_desc_backend/controller/ClientController.java</url>
+          <line>37</line>
+          <option name="timeStamp" value="279" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

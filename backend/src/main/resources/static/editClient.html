@@ -157,7 +157,36 @@
         .then(response => response.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
+            // Call updateNavbar after header is inserted
+            updateNavbar();
         });
+        // Function to check login status and update navbar
+function updateNavbar() {
+    const username = localStorage.getItem('username'); // Fetch username from local storage
+    const loginRegisterLink = document.getElementById('loginRegisterLink');
+    const signOutButton = document.getElementById('signOutButton');
+
+    if (username) {
+        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+        signOutButton.style.display = 'block'; // Show the Sign Out button
+    } else {
+        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+    }
+}
+function signOut() {
+        console.log('Signing out...');
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('username');
+        loginRegisterLink.textContent = 'Login/Register';
+        redirectToLogin();
+    }
+
+    function redirectToLogin() {
+        console.log("i am in the redirect");
+        window.location.href = 'login.html';
+    }
 
     fetch('footer.html')
         .then(response => response.text())
@@ -167,11 +196,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         // Load header
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
+        
 
         const token = localStorage.getItem('accessToken');
 
@@ -212,9 +237,15 @@
         const clientId = urlParams.get('id');
 
         if (clientId) {
-            fetch(`http://43.205.154.85:8080/api/clients/${clientId}`)
+            console.log("clientId :",clientId);
+            fetch(`http://43.205.154.85:8080/api/clients/${clientId}`,{
+                method: 'GET'
+            })
+                
                 .then(response => response.json())
                 .then(client => {
+                    console.log("client :",client);
+
                     document.getElementById('clientName').value = client.clientName;
                     document.getElementById('clientAddress').value = client.clientAddress;
                     document.getElementById('gstNumber').value = client.gstNumber;

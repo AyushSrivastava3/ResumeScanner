@@ -27,6 +27,7 @@ public class Profile {
     private String mobNo;
     private String emailId;
     private String totalExp;
+    private String fileid;
     private String relevantExp;
     private String currentCompany;
     private boolean willingToRelocate;

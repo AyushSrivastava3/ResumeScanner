@@ -57,7 +57,18 @@ public class ProfileController {
                 Map<String, String> sections = extractSections(resumeText);
 
                 // Save attachment
-                resumeService.saveResume(attachment, true);
+                // Call the saveResume method and capture the response
+                ResponseEntity<Map<String, Object>> responseEntity = resumeService.saveResume(attachment, true);
+
+                // Extract the fileId if available
+                String fileId = null;
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    Map<String, Object> responseBody = responseEntity.getBody();
+                    if (responseBody != null && responseBody.containsKey("fileId")) {
+                        fileId = (String) responseBody.get("fileId");
+                    }
+                }
+                profile.setFileid(fileId);
                 
                 //save extracted section to ProfileSectionRepository
                 profileSectionService.saveSections(profile.getId(),sections);
@@ -75,7 +86,18 @@ public class ProfileController {
                 Map<String, String> sections = extractSections(resumeText);
 
                 // Save attachment
-                resumeService.saveResume(attachment, true);
+                // Call the saveResume method and capture the response
+                ResponseEntity<Map<String, Object>> responseEntity = resumeService.saveResume(attachment, true);
+
+                // Extract the fileId if available
+                String fileId = null;
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    Map<String, Object> responseBody = responseEntity.getBody();
+                    if (responseBody != null && responseBody.containsKey("fileId")) {
+                        fileId = (String) responseBody.get("fileId");
+                    }
+                }
+                profile.setFileid(fileId);
 
                 //save extracted section to ProfileSectionRepository
                 profileSectionService.saveSections(profile.getId(),sections);

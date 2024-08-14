@@ -87,10 +87,39 @@
 <script>
 
         fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-            });
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+            // Call updateNavbar after header is inserted
+            updateNavbar();
+        });
+        // Function to check login status and update navbar
+function updateNavbar() {
+    const username = localStorage.getItem('username'); // Fetch username from local storage
+    const loginRegisterLink = document.getElementById('loginRegisterLink');
+    const signOutButton = document.getElementById('signOutButton');
+
+    if (username) {
+        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+        signOutButton.style.display = 'block'; // Show the Sign Out button
+    } else {
+        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+    }
+}
+function signOut() {
+        console.log('Signing out...');
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('username');
+        loginRegisterLink.textContent = 'Login/Register';
+        redirectToLogin();
+    }
+
+    function redirectToLogin() {
+        console.log("i am in the redirect");
+        window.location.href = 'login.html';
+    }
 
         fetch('footer.html')
             .then(response => response.text())

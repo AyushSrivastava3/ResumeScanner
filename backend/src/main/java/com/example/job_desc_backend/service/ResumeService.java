@@ -890,6 +890,7 @@ public class ResumeService {
             // Prepare response
             Map<String, Object> response = new HashMap<>();
             response.put("fileId", existingResume.getFileId());
+            response.put("resumeId",existingResume.getId());
             response.put("fileName", existingResume.getFileName());
             response.put("contentType", existingResume.getContentType());
             response.put("Candidate name", savedResume.getCandidateName());
@@ -1082,6 +1083,7 @@ public class ResumeService {
         // Prepare response
         Map<String, Object> response = new HashMap<>();
         response.put("fileId", fileId.toString());
+        response.put("resumeId",savedResume.getId());
         response.put("fileName", file.getOriginalFilename());
         response.put("contentType", file.getContentType());
         response.put("Candidate name", savedResume.getCandidateName());

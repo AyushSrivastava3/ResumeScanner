@@ -107,6 +107,7 @@ color: white;
           border-radius: 10px;
           background-color: #cfd0cf;
           margin-top: 40px;
+
       }
 
       .output-container{
@@ -443,13 +444,55 @@ color: white;
             left: 0;
         }
 
+          #loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff; /* White background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #005149; /* Spinner color */
+    font-family: 'Arial', sans-serif;
+    z-index: 1000; /* Ensure it's on top of other content */
+    text-align: center;
+}
+
+.spinner {
+    border: 6px solid rgba(0, 81, 73, 0.3); /* Light version of #005149 */
+    border-top: 6px solid #005149; /* #005149 for the spinning part */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #005149; /* Text color to match the spinner */
+}
+
     </style>
 </head>
 
 <body>
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your page...</div>
+</div>
 <div id="header"></div>
 
-<div class="container">
+<div class="container" >
 
     <div class="button-group">
         <button type="button" id="downloadFeedbackButton" class="download-button" disabled>Download Feedback</button>
@@ -460,7 +503,7 @@ color: white;
     <div class="loader"></div>
 
 
-    <div class="inner-container">
+    <div class="inner-container" id="page-content" style="display: none;">
         <div class="heading">
             <h1>Match your Resume</h1>
         </div>
@@ -554,6 +597,47 @@ color: white;
 <div id="footer"></div>
 
 <script>
+
+    (function() {
+        const token = localStorage.getItem('accessToken');
+
+        // If the token is missing, redirect to the login page immediately
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Validate the token by making a quick API call
+        fetch('http://43.205.154.85:8080/profile/count', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If token validation fails, redirect to the login page immediately
+                window.location.href = 'login.html';
+            }
+            // No further actions needed as page loading continues only if the token is valid
+        })
+        .catch(error => {
+            // In case of any error, redirect to the login page
+            console.error('Error:', error);
+            window.location.href = 'login.html';
+        });
+    })();
+
+    window.addEventListener('load', function() {
+    // Show the loading overlay
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const pageContent = document.getElementById('page-content');
+
+    // Set a timeout to hide the loading overlay and show the page content
+    setTimeout(function() {
+        loadingOverlay.style.display = 'none'; // Hide the loading overlay
+        pageContent.style.display = 'block';   // Show the page content
+    }, 1000); // 1000 milliseconds = 1 second
+});
 
      fetch('header.html')
         .then(response => response.text())

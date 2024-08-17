@@ -1,3 +1,458 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Job Descriptions</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
+<!--        .container {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            flex: 1;-->
+<!--            padding-top: 80px;-->
+<!--            padding-bottom: 20px;-->
+<!--            background-color: #fff;-->
+<!--        }-->
+<!--        .jd-title{-->
+<!--            color: black;-->
+<!--            -->
+<!--        }-->
+<!--        .jd-list {-->
+<!--            flex: 1;-->
+<!--            overflow-y: auto;-->
+<!--            padding: 20px;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+<!--        .jd-item {-->
+<!--            border: 1px solid #ccc;-->
+<!--            padding: 3px;-->
+<!--            margin: 3px 0;-->
+<!--            border-radius: 5px;-->
+<!--            background-color: #fff;-->
+<!--            transition: box-shadow 0.3s;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+<!--        .jd-item:hover {-->
+<!--            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        .jd-item h3 {-->
+<!--            margin: 0;-->
+<!--            color: #3a7a74;-->
+<!--            cursor: pointer;-->
+<!--            text-decoration: none;-->
+<!--            flex: 1;-->
+<!--        }-->
+<!--        .jd-summary {-->
+<!--            font-size: 0.9em;-->
+<!--            color: #666;-->
+<!--            flex: 2;-->
+<!--        }-->
+<!--        .jd-summary p {-->
+<!--            margin: 5px 0;-->
+<!--        }-->
+<!--        .actions {-->
+<!--            display: flex;-->
+<!--            flex-shrink: 0;-->
+<!--        }-->
+<!--        .actions button {-->
+<!--            padding: 10px;-->
+<!--            margin: 0 5px;-->
+<!--            border: none;-->
+<!--            border-radius: 6px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+<!--        .actions button:hover {-->
+<!--            background-color: #ddd;-->
+<!--        }-->
+<!--        .pagination {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            padding: 10px;-->
+<!--            gap: 10px;-->
+<!--            background-color: #ffffff; /* Ensures visibility */-->
+<!--            border: 1px solid #ddd; /* Debugging border */-->
+<!--        }-->
+
+<!--        .pagination input[type="text"] {-->
+<!--            padding: 10px;-->
+<!--            margin: 0;-->
+<!--            width: 300px;-->
+<!--            border-radius: 5px;-->
+<!--            border: 1px solid #574b4b;-->
+<!--            font-size: 16px;-->
+<!--            box-sizing: border-box; /* Ensures it fits within its container */-->
+<!--        }-->
+
+<!--        .pagination button {-->
+<!--            padding: 10px 15px;-->
+<!--            margin: 0;-->
+<!--            border: none;-->
+<!--            border-radius: 3px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+
+<!--        .pagination button:hover {-->
+<!--            background-color: #ddd;-->
+<!--        }-->
+<!--        .modal {-->
+<!--            display: none;-->
+<!--            position: fixed;-->
+<!--            z-index: 1;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            overflow: auto;-->
+<!--            background-color: rgba(0, 0, 0, 0.5);-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--        }-->
+<!--        .modal-content {-->
+<!--            background-color: #fff;-->
+<!--            padding: 20px;-->
+<!--            border-radius: 5px;-->
+<!--            width: 300px;-->
+<!--            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);-->
+<!--            text-align: center;-->
+<!--        }-->
+<!--        .modal-content p {-->
+<!--            margin: 10px 0;-->
+<!--        }-->
+<!--        .modal-actions {-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+<!--        .modal-actions button {-->
+<!--            padding: 10px 20px;-->
+<!--            border: none;-->
+<!--            border-radius: 3px;-->
+<!--            cursor: pointer;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+<!--        .modal-actions .confirm-delete {-->
+<!--            background-color: #007BFF;-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--        .modal-actions .confirm-delete:hover {-->
+<!--            background-color: #0056b3;-->
+<!--        }-->
+<!--        .modal-actions .close-modal {-->
+<!--            background-color: #ccc;-->
+<!--        }-->
+<!--        .modal-actions .close-modal:hover {-->
+<!--            background-color: #aaa;-->
+<!--        }-->
+<!--        /* Style for enabled previous and next buttons */-->
+<!--#prevPage:enabled,-->
+<!--#nextPage:enabled {-->
+<!--    background-color: #3a7a74;-->
+<!--    color: white;-->
+<!--    border: none;-->
+<!--    padding: 10px 20px;-->
+<!--    cursor: pointer;-->
+<!--    border-radius: 5px;-->
+<!--}-->
+
+<!--/* Style for disabled buttons */-->
+<!--#prevPage:disabled,-->
+<!--#nextPage:disabled {-->
+<!--    background-color: lightgray;-->
+<!--    color: darkgray;-->
+<!--    cursor: not-allowed;-->
+<!--}-->
+
+
+
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+
+<!--<div class="container">-->
+<!--    <title>-->
+<!--        <h1>job Description</h1>-->
+<!--    </title>-->
+<!--    -->
+<!--    <div style="text-align: right;">-->
+<!--       -->
+<!--        -->
+<!--        <label for="searchInput">Search your JD:</label>-->
+<!--        <div style="display: inline-block; position: relative;">-->
+<!--            <input type="text" id="searchInput" placeholder="Search Job Descriptions..." oninput="filterJobDescriptions()" style="padding: 8px 30px 8px 8px; margin: 0 10px; width: 200px; border-radius: 5px; border: 1px solid #ccc; display: inline-block;">-->
+<!--            <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888;">&#128269;</span>-->
+<!--        </div>        -->
+<!--    </div>-->
+<!--    <div class="jd-list" id="jdList">-->
+<!--       -->
+<!--        -->
+<!--    </div>-->
+<!--    <div class="pagination" id="paginationControls">-->
+<!--        <button id="prevPage" disabled>Previous</button>-->
+<!--        <div id="pageNumbersContainer">Page 1 of 1</div>-->
+<!--        <button id="nextPage">Next</button>-->
+<!--        -->
+<!--    </div>-->
+<!--</div>-->
+<!--<div id="response"></div>-->
+
+
+<!--<div id="deleteModal" class="modal">-->
+<!--    <div class="modal-content">-->
+<!--        <h2>Are you sure you want to delete?</h2>-->
+<!--        <div class="modal-actions">-->
+<!--            <button class="confirm-delete" id="confirmDeleteBtn">Delete</button>-->
+<!--            <button class="close-modal" id="closeModal">Cancel</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!--<div id="messageModal" class="modal">-->
+<!--    <div class="modal-content">-->
+<!--        <p id="messageText"></p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+<!--        fetch('header.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('header').innerHTML = data;-->
+<!--            // Call updateNavbar after header is inserted-->
+<!--            updateNavbar();-->
+<!--        });-->
+<!--        // Function to check login status and update navbar-->
+<!--function updateNavbar() {-->
+<!--    const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--    const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--    const signOutButton = document.getElementById('signOutButton');-->
+
+<!--    if (username) {-->
+<!--        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--        signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--    } else {-->
+<!--        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--        signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--    }-->
+<!--}-->
+<!--function signOut() {-->
+<!--        console.log('Signing out...');-->
+<!--        localStorage.removeItem('accessToken');-->
+<!--        localStorage.setItem('isLoggedIn', 'false');-->
+<!--        localStorage.removeItem('username');-->
+<!--        loginRegisterLink.textContent = 'Login/Register';-->
+<!--        redirectToLogin();-->
+<!--    }-->
+
+<!--    function redirectToLogin() {-->
+<!--        console.log("i am in the redirect");-->
+<!--        window.location.href = 'login.html';-->
+<!--    }-->
+
+<!--        fetch('footer.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('footer').innerHTML = data;-->
+<!--            });-->
+
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--    const jdListDiv = document.getElementById('jdList');-->
+<!--    const paginationControls = document.getElementById('paginationControls');-->
+<!--    const prevPageBtn = document.getElementById('prevPage');-->
+<!--    const nextPageBtn = document.getElementById('nextPage');-->
+<!--    const pageNumbersContainer = document.getElementById('pageNumbersContainer');-->
+<!--    const deleteModal = document.getElementById('deleteModal');-->
+<!--    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');-->
+<!--    const closeModal = document.getElementById('closeModal');-->
+<!--    const messageModal = document.getElementById('messageModal');-->
+<!--    const messageText = document.getElementById('messageText');-->
+<!--    const searchInput = document.getElementById('searchInput');-->
+
+<!--    let currentPage = 1;-->
+<!--    const itemsPerPage = 10;-->
+<!--    let selectedIdToDelete = null;-->
+<!--    let totalPages = 1; // Initialize totalPages to 1 to avoid division by zero-->
+
+<!--    const token = localStorage.getItem('accessToken');-->
+<!--    if (!token) {-->
+<!--        console.error("No token found. Please log in.");-->
+<!--        return;-->
+<!--    }-->
+
+<!--    function fetchJobDescriptions(page, query = '') {-->
+<!--        fetch('http://43.205.154.85:8080/jd/getIds', {-->
+<!--            headers: {-->
+<!--                'Authorization': `Bearer ${token}`-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            if (query) {-->
+<!--                data = data.filter(jd => jd.title.toLowerCase().includes(query.toLowerCase()));-->
+<!--            }-->
+<!--            const totalItems = data.length;-->
+<!--            totalPages = Math.ceil(totalItems / itemsPerPage);-->
+<!--            const startIndex = (page - 1) * itemsPerPage;-->
+<!--            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);-->
+<!--            const pageData = data.slice(startIndex, endIndex);-->
+
+<!--            jdListDiv.innerHTML = '';-->
+
+<!--            pageData.forEach((jd, index) => {-->
+<!--                fetch(`http://43.205.154.85:8080/getJd?id=${jd.id}`, {-->
+<!--                    headers: {-->
+<!--                        'Authorization': `Bearer ${token}`-->
+<!--                    }-->
+<!--                })-->
+<!--                .then(response => response.json())-->
+<!--                .then(details => {-->
+<!--                    const jdItem = document.createElement('div');-->
+<!--                    jdItem.classList.add('jd-item');-->
+<!--                    jdItem.innerHTML = `-->
+<!--                        <h3 class="jd-title" data-id="${details.id}">${details.title}</h3>-->
+<!--                        <div class="jd-summary">-->
+<!--                            <p><strong>Location:</strong> ${details.location}</p>-->
+<!--                            <p><strong>Mandatory Skills:</strong> ${details.mandatorySkills.map(skill => skill.skill).join(', ')}</p>-->
+<!--                        </div>-->
+<!--                        <div class="actions">-->
+<!--                            <button class="editBtn" data-id="${details.id}">Edit</button>-->
+<!--                            <button class="deleteBtn" data-id="${details.id}">Delete</button>-->
+<!--                            <button class="relevantBtn" data-id="${details.id}">Relevant Profiles</button>-->
+<!--                        </div>-->
+<!--                    `;-->
+<!--                    jdListDiv.appendChild(jdItem);-->
+
+<!--                    jdItem.querySelector('.jd-title').addEventListener('click', viewJD);-->
+<!--                    jdItem.querySelector('.editBtn').addEventListener('click', editJD);-->
+<!--                    jdItem.querySelector('.deleteBtn').addEventListener('click', showDeleteModal);-->
+<!--                    jdItem.querySelector('.relevantBtn').addEventListener('click', viewRelevantProfiles);-->
+<!--                })-->
+<!--                .catch(error => console.error('Error fetching job description details:', error));-->
+<!--            });-->
+
+<!--            updatePaginationControls();-->
+<!--        })-->
+<!--        .catch(error => console.error('Error fetching job descriptions:', error));-->
+<!--    }-->
+
+<!--    function updatePaginationControls() {-->
+<!--        prevPageBtn.disabled = currentPage === 1;-->
+<!--        nextPageBtn.disabled = currentPage === totalPages;-->
+<!--        pageNumbersContainer.innerHTML = `Page ${currentPage} of ${totalPages}`;-->
+<!--    }-->
+
+<!--    searchInput.addEventListener('input', () => {-->
+<!--        const query = searchInput.value.trim();-->
+<!--        currentPage = 1;-->
+<!--        fetchJobDescriptions(currentPage, query);-->
+<!--    });-->
+
+<!--    prevPageBtn.addEventListener('click', () => {-->
+<!--        if (currentPage > 1) {-->
+<!--            currentPage&#45;&#45;;-->
+<!--            fetchJobDescriptions(currentPage, searchInput.value.trim());-->
+<!--        }-->
+<!--    });-->
+
+<!--    nextPageBtn.addEventListener('click', () => {-->
+<!--        if (currentPage < totalPages) {-->
+<!--            currentPage++;-->
+<!--            fetchJobDescriptions(currentPage, searchInput.value.trim());-->
+<!--        }-->
+<!--    });-->
+
+<!--    function viewJD(event) {-->
+<!--        const selectedId = event.target.getAttribute('data-id');-->
+<!--        window.location.href = `jddetail.html?id=${selectedId}`;-->
+<!--    }-->
+
+<!--    function editJD(event) {-->
+<!--        const selectedId = event.target.getAttribute('data-id');-->
+<!--        window.location.href = `editjd.html?id=${selectedId}`;-->
+<!--    }-->
+
+<!--    function showDeleteModal(event) {-->
+<!--        selectedIdToDelete = event.target.getAttribute('data-id');-->
+<!--        deleteModal.style.display = 'flex';-->
+<!--    }-->
+
+<!--    function deleteJD() {-->
+<!--        fetch(`http://43.205.154.85:8080/deleteJd?id=${selectedIdToDelete}`, {-->
+<!--            method: 'DELETE',-->
+<!--            headers: {-->
+<!--                'Authorization': `Bearer ${token}`-->
+<!--            }-->
+<!--        })-->
+<!--        .then(() => {-->
+<!--            fetchJobDescriptions(currentPage, searchInput.value.trim());-->
+<!--            deleteModal.style.display = 'none';-->
+<!--            showMessageModal('Job description deleted successfully');-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error deleting job description:', error);-->
+<!--            showMessageModal('Error deleting job description');-->
+<!--        });-->
+<!--    }-->
+
+<!--    function viewRelevantProfiles(event) {-->
+<!--        const selectedId = event.target.getAttribute('data-id');-->
+<!--        const selectedTitle = event.target.closest('.jd-item').querySelector('.jd-title').textContent;-->
+<!--        const encodedTitle = encodeURIComponent(selectedTitle);-->
+<!--        window.location.href = `profiles.html?jdId=${selectedId}&jdTitle=${encodedTitle}`;-->
+<!--    }-->
+
+<!--    closeModal.addEventListener('click', () => {-->
+<!--        deleteModal.style.display = 'none';-->
+<!--        selectedIdToDelete = null;-->
+<!--        showMessageModal('Deletion canceled');-->
+<!--    });-->
+
+<!--    window.addEventListener('beforeunload', () => {-->
+<!--        messageModal.style.display = 'none';-->
+<!--    });-->
+
+<!--    confirmDeleteBtn.addEventListener('click', deleteJD);-->
+
+<!--    function showMessageModal(message) {-->
+<!--        messageText.textContent = message;-->
+<!--        messageModal.style.display = 'flex';-->
+
+<!--        setTimeout(() => {-->
+<!--            messageModal.style.display = 'none';-->
+<!--        }, 3000);-->
+<!--    }-->
+
+<!--    fetchJobDescriptions(currentPage);-->
+<!--});-->
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,13 +472,25 @@
             display: flex;
             flex-direction: column;
             flex: 1;
-            padding-top: 80px;
-            padding-bottom: 20px;
+            padding-top: 65px;
+
             background-color: #fff;
+
+        }
+        .header {
+            background-color: #fff; /* Header background color */
+            color: black;
+            padding: 0px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            margin-top: 0px
         }
         .jd-title{
             color: black;
-            
+
         }
         .jd-list {
             flex: 1;
@@ -51,6 +518,9 @@
             cursor: pointer;
             text-decoration: none;
             flex: 1;
+        }
+        .jd-item h3:hover{
+            color:#22423d ;
         }
         .jd-summary {
             font-size: 0.9em;
@@ -175,38 +645,82 @@
     color: darkgray;
     cursor: not-allowed;
 }
+#search{
+    margin-bottom: 0px;
+    padding: 0;
+}
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff; /* White background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #005149; /* Spinner color */
+    font-family: 'Arial', sans-serif;
+    z-index: 1000; /* Ensure it's on top of other content */
+    text-align: center;
+}
 
+.spinner {
+    border: 6px solid rgba(0, 81, 73, 0.3); /* Light version of #005149 */
+    border-top: 6px solid #005149; /* #005149 for the spinning part */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #005149; /* Text color to match the spinner */
+}
 
 
 
     </style>
 </head>
 <body>
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your page...</div>
+</div>
 <div id="header"></div>
 
-<div class="container">
-    <title>
-        <h1>job Description</h1>
-    </title>
-    
-    <div style="text-align: right;">
-       
-        
+<div class="container" id="page-content" style="display: none;">
+    <div class="header">
+        Job Description
+    </div>
+
+    <div id="search" style="text-align: right;">
+
+
         <label for="searchInput">Search your JD:</label>
         <div style="display: inline-block; position: relative;">
             <input type="text" id="searchInput" placeholder="Search Job Descriptions..." oninput="filterJobDescriptions()" style="padding: 8px 30px 8px 8px; margin: 0 10px; width: 200px; border-radius: 5px; border: 1px solid #ccc; display: inline-block;">
             <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888;">&#128269;</span>
-        </div>        
+        </div>
     </div>
     <div class="jd-list" id="jdList">
-       
-        
+
+
     </div>
     <div class="pagination" id="paginationControls">
         <button id="prevPage" disabled>Previous</button>
         <div id="pageNumbersContainer">Page 1 of 1</div>
         <button id="nextPage">Next</button>
-        
+
     </div>
 </div>
 <div id="response"></div>
@@ -233,215 +747,256 @@
 
 <script>
 
-        fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-            // Call updateNavbar after header is inserted
-            updateNavbar();
-        });
-        // Function to check login status and update navbar
-function updateNavbar() {
-    const username = localStorage.getItem('username'); // Fetch username from local storage
-    const loginRegisterLink = document.getElementById('loginRegisterLink');
-    const signOutButton = document.getElementById('signOutButton');
+    (function() {
+        const token = localStorage.getItem('accessToken');
 
-    if (username) {
-        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
-        signOutButton.style.display = 'block'; // Show the Sign Out button
-    } else {
-        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
-        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
-    }
-}
-function signOut() {
-        console.log('Signing out...');
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('username');
-        loginRegisterLink.textContent = 'Login/Register';
-        redirectToLogin();
-    }
-
-    function redirectToLogin() {
-        console.log("i am in the redirect");
-        window.location.href = 'login.html';
-    }
-
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
-    document.addEventListener('DOMContentLoaded', () => {
-    const jdListDiv = document.getElementById('jdList');
-    const paginationControls = document.getElementById('paginationControls');
-    const prevPageBtn = document.getElementById('prevPage');
-    const nextPageBtn = document.getElementById('nextPage');
-    const pageNumbersContainer = document.getElementById('pageNumbersContainer');
-    const deleteModal = document.getElementById('deleteModal');
-    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-    const closeModal = document.getElementById('closeModal');
-    const messageModal = document.getElementById('messageModal');
-    const messageText = document.getElementById('messageText');
-    const searchInput = document.getElementById('searchInput');
-
-    let currentPage = 1;
-    const itemsPerPage = 10;
-    let selectedIdToDelete = null;
-    let totalPages = 1; // Initialize totalPages to 1 to avoid division by zero
-
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-        console.error("No token found. Please log in.");
-        return;
-    }
-
-    function fetchJobDescriptions(page, query = '') {
-        fetch('http://43.205.154.85:8080/jd/getIds', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (query) {
-                data = data.filter(jd => jd.title.toLowerCase().includes(query.toLowerCase()));
-            }
-            const totalItems = data.length;
-            totalPages = Math.ceil(totalItems / itemsPerPage);
-            const startIndex = (page - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-            const pageData = data.slice(startIndex, endIndex);
-
-            jdListDiv.innerHTML = '';
-
-            pageData.forEach((jd, index) => {
-                fetch(`http://43.205.154.85:8080/getJd?id=${jd.id}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                .then(response => response.json())
-                .then(details => {
-                    const jdItem = document.createElement('div');
-                    jdItem.classList.add('jd-item');
-                    jdItem.innerHTML = `
-                        <h3 class="jd-title" data-id="${details.id}">${details.title}</h3>
-                        <div class="jd-summary">
-                            <p><strong>Location:</strong> ${details.location}</p>
-                            <p><strong>Mandatory Skills:</strong> ${details.mandatorySkills.map(skill => skill.skill).join(', ')}</p>
-                        </div>
-                        <div class="actions">
-                            <button class="editBtn" data-id="${details.id}">Edit</button>
-                            <button class="deleteBtn" data-id="${details.id}">Delete</button>
-                            <button class="relevantBtn" data-id="${details.id}">Relevant Profiles</button>
-                        </div>
-                    `;
-                    jdListDiv.appendChild(jdItem);
-
-                    jdItem.querySelector('.jd-title').addEventListener('click', viewJD);
-                    jdItem.querySelector('.editBtn').addEventListener('click', editJD);
-                    jdItem.querySelector('.deleteBtn').addEventListener('click', showDeleteModal);
-                    jdItem.querySelector('.relevantBtn').addEventListener('click', viewRelevantProfiles);
-                })
-                .catch(error => console.error('Error fetching job description details:', error));
-            });
-
-            updatePaginationControls();
-        })
-        .catch(error => console.error('Error fetching job descriptions:', error));
-    }
-
-    function updatePaginationControls() {
-        prevPageBtn.disabled = currentPage === 1;
-        nextPageBtn.disabled = currentPage === totalPages;
-        pageNumbersContainer.innerHTML = `Page ${currentPage} of ${totalPages}`;
-    }
-
-    searchInput.addEventListener('input', () => {
-        const query = searchInput.value.trim();
-        currentPage = 1;
-        fetchJobDescriptions(currentPage, query);
-    });
-
-    prevPageBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            fetchJobDescriptions(currentPage, searchInput.value.trim());
+        // If the token is missing, redirect to the login page immediately
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
         }
-    });
 
-    nextPageBtn.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            fetchJobDescriptions(currentPage, searchInput.value.trim());
-        }
-    });
-
-    function viewJD(event) {
-        const selectedId = event.target.getAttribute('data-id');
-        window.location.href = `jddetail.html?id=${selectedId}`;
-    }
-
-    function editJD(event) {
-        const selectedId = event.target.getAttribute('data-id');
-        window.location.href = `editjd.html?id=${selectedId}`;
-    }
-
-    function showDeleteModal(event) {
-        selectedIdToDelete = event.target.getAttribute('data-id');
-        deleteModal.style.display = 'flex';
-    }
-
-    function deleteJD() {
-        fetch(`http://43.205.154.85:8080/deleteJd?id=${selectedIdToDelete}`, {
-            method: 'DELETE',
+        // Validate the token by making a quick API call
+        fetch('http://43.205.154.85:8080/profile/count', {
             headers: {
-                'Authorization': `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             }
         })
-        .then(() => {
-            fetchJobDescriptions(currentPage, searchInput.value.trim());
-            deleteModal.style.display = 'none';
-            showMessageModal('Job description deleted successfully');
+        .then(response => {
+            if (!response.ok) {
+                // If token validation fails, redirect to the login page immediately
+                window.location.href = 'login.html';
+            }
+            // No further actions needed as page loading continues only if the token is valid
         })
         .catch(error => {
-            console.error('Error deleting job description:', error);
-            showMessageModal('Error deleting job description');
+            // In case of any error, redirect to the login page
+            console.error('Error:', error);
+            window.location.href = 'login.html';
         });
-    }
+    })();
 
-    function viewRelevantProfiles(event) {
-        const selectedId = event.target.getAttribute('data-id');
-        const selectedTitle = event.target.closest('.jd-item').querySelector('.jd-title').textContent;
-        const encodedTitle = encodeURIComponent(selectedTitle);
-        window.location.href = `profiles.html?jdId=${selectedId}&jdTitle=${encodedTitle}`;
-    }
+    window.addEventListener('load', function() {
+    // Show the loading overlay
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const pageContent = document.getElementById('page-content');
 
-    closeModal.addEventListener('click', () => {
+    // Set a timeout to hide the loading overlay and show the page content
+    setTimeout(function() {
+        loadingOverlay.style.display = 'none'; // Hide the loading overlay
+        pageContent.style.display = 'block';   // Show the page content
+    }, 1000); // 1000 milliseconds = 1 second
+});
+
+    fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('header').innerHTML = data;
+        // Call updateNavbar after header is inserted
+        updateNavbar();
+    });
+    // Function to check login status and update navbar
+function updateNavbar() {
+const username = localStorage.getItem('username'); // Fetch username from local storage
+const loginRegisterLink = document.getElementById('loginRegisterLink');
+const signOutButton = document.getElementById('signOutButton');
+
+if (username) {
+    loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+    signOutButton.style.display = 'block'; // Show the Sign Out button
+} else {
+    loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+    signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+}
+}
+function signOut() {
+    console.log('Signing out...');
+    localStorage.removeItem('accessToken');
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('username');
+    loginRegisterLink.textContent = 'Login/Register';
+    redirectToLogin();
+}
+
+function redirectToLogin() {
+    console.log("i am in the redirect");
+    window.location.href = 'login.html';
+}
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+document.addEventListener('DOMContentLoaded', () => {
+const jdListDiv = document.getElementById('jdList');
+const paginationControls = document.getElementById('paginationControls');
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const pageNumbersContainer = document.getElementById('pageNumbersContainer');
+const deleteModal = document.getElementById('deleteModal');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+const closeModal = document.getElementById('closeModal');
+const messageModal = document.getElementById('messageModal');
+const messageText = document.getElementById('messageText');
+const searchInput = document.getElementById('searchInput');
+
+let currentPage = 1;
+const itemsPerPage = 10;
+let selectedIdToDelete = null;
+let totalPages = 1; // Initialize totalPages to 1 to avoid division by zero
+
+const token = localStorage.getItem('accessToken');
+if (!token) {
+    console.error("No token found. Please log in.");
+    return;
+}
+
+function fetchJobDescriptions(page, query = '') {
+    fetch('http://43.205.154.85:8080/jd/getIds', {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (query) {
+            data = data.filter(jd => jd.title.toLowerCase().includes(query.toLowerCase()));
+        }
+        const totalItems = data.length;
+        totalPages = Math.ceil(totalItems / itemsPerPage);
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+        const pageData = data.slice(startIndex, endIndex);
+
+        jdListDiv.innerHTML = '';
+
+        pageData.forEach((jd, index) => {
+            fetch(`http://43.205.154.85:8080/getJd?id=${jd.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(details => {
+                const jdItem = document.createElement('div');
+                jdItem.classList.add('jd-item');
+                jdItem.innerHTML = `
+                    <h3 class="jd-title" data-id="${details.id}">${details.title}</h3>
+                    <div class="jd-summary">
+                        <p><strong>Location:</strong> ${details.location}</p>
+                        <p><strong>Mandatory Skills:</strong> ${details.mandatorySkills.map(skill => skill.skill).join(', ')}</p>
+                    </div>
+                    <div class="actions">
+                        <button class="editBtn" data-id="${details.id}">Edit</button>
+                        <button class="deleteBtn" data-id="${details.id}">Delete</button>
+                        <button class="relevantBtn" data-id="${details.id}">Relevant Profiles</button>
+                    </div>
+                `;
+                jdListDiv.appendChild(jdItem);
+
+                jdItem.querySelector('.jd-title').addEventListener('click', viewJD);
+                jdItem.querySelector('.editBtn').addEventListener('click', editJD);
+                jdItem.querySelector('.deleteBtn').addEventListener('click', showDeleteModal);
+                jdItem.querySelector('.relevantBtn').addEventListener('click', viewRelevantProfiles);
+            })
+            .catch(error => console.error('Error fetching job description details:', error));
+        });
+
+        updatePaginationControls();
+    })
+    .catch(error => console.error('Error fetching job descriptions:', error));
+}
+
+function updatePaginationControls() {
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages;
+    pageNumbersContainer.innerHTML = `Page ${currentPage} of ${totalPages}`;
+}
+
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    currentPage = 1;
+    fetchJobDescriptions(currentPage, query);
+});
+
+prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        fetchJobDescriptions(currentPage, searchInput.value.trim());
+    }
+});
+
+nextPageBtn.addEventListener('click', () => {
+    if (currentPage < totalPages) {
+        currentPage++;
+        fetchJobDescriptions(currentPage, searchInput.value.trim());
+    }
+});
+
+function viewJD(event) {
+    const selectedId = event.target.getAttribute('data-id');
+    window.location.href = `jddetail.html?id=${selectedId}`;
+}
+
+function editJD(event) {
+    const selectedId = event.target.getAttribute('data-id');
+    window.location.href = `editjd.html?id=${selectedId}`;
+}
+
+function showDeleteModal(event) {
+    selectedIdToDelete = event.target.getAttribute('data-id');
+    deleteModal.style.display = 'flex';
+}
+
+function deleteJD() {
+    fetch(`http://43.205.154.85:8080/deleteJd?id=${selectedIdToDelete}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(() => {
+        fetchJobDescriptions(currentPage, searchInput.value.trim());
         deleteModal.style.display = 'none';
-        selectedIdToDelete = null;
-        showMessageModal('Deletion canceled');
+        showMessageModal('Job description deleted successfully');
+    })
+    .catch(error => {
+        console.error('Error deleting job description:', error);
+        showMessageModal('Error deleting job description');
     });
+}
 
-    window.addEventListener('beforeunload', () => {
+function viewRelevantProfiles(event) {
+    const selectedId = event.target.getAttribute('data-id');
+    const selectedTitle = event.target.closest('.jd-item').querySelector('.jd-title').textContent;
+    const encodedTitle = encodeURIComponent(selectedTitle);
+    window.location.href = `profiles.html?jdId=${selectedId}&jdTitle=${encodedTitle}`;
+}
+
+closeModal.addEventListener('click', () => {
+    deleteModal.style.display = 'none';
+    selectedIdToDelete = null;
+    showMessageModal('Deletion canceled');
+});
+
+window.addEventListener('beforeunload', () => {
+    messageModal.style.display = 'none';
+});
+
+confirmDeleteBtn.addEventListener('click', deleteJD);
+
+function showMessageModal(message) {
+    messageText.textContent = message;
+    messageModal.style.display = 'flex';
+
+    setTimeout(() => {
         messageModal.style.display = 'none';
-    });
+    }, 3000);
+}
 
-    confirmDeleteBtn.addEventListener('click', deleteJD);
-
-    function showMessageModal(message) {
-        messageText.textContent = message;
-        messageModal.style.display = 'flex';
-
-        setTimeout(() => {
-            messageModal.style.display = 'none';
-        }, 3000);
-    }
-
-    fetchJobDescriptions(currentPage);
+fetchJobDescriptions(currentPage);
 });
 
 </script>

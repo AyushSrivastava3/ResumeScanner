@@ -1,4 +1,502 @@
 
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Dashboard</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: 'Roboto', sans-serif;-->
+<!--            background: linear-gradient(135deg, #f4f4f4, #e2e2e2);-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            color: #333;-->
+<!--            overflow-x: hidden;-->
+<!--        }-->
+
+<!--        header {-->
+<!--            background: white;-->
+<!--            color: #333;-->
+<!--            padding: 5px 20px; /* Reduced padding */-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            z-index: 1000;-->
+<!--        }-->
+
+<!--        .secondary-nav {-->
+<!--            background: white;-->
+<!--            color: #333;-->
+<!--            padding: 10px 30px;-->
+<!--            display: flex;-->
+<!--            justify-content: space-around;-->
+<!--            align-items: center;-->
+<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 50px; /* Adjusted to position below the main header */-->
+<!--            left: 0;-->
+<!--            z-index: 999;-->
+<!--        }-->
+
+<!--        header h1 {-->
+<!--            margin: 0;-->
+<!--            font-size: 1.8em; /* Reduced font size */-->
+<!--            color: #005149;-->
+<!--            font-weight: 700;-->
+<!--        }-->
+
+<!--        .logo {-->
+<!--            width: 120px; /* Reduced logo size */-->
+<!--            height: auto;-->
+<!--        }-->
+
+<!--        .nav-link, .dropdown-button {-->
+<!--            padding: 10px 20px;-->
+<!--            font-size: 18px;-->
+<!--            font-weight: 700;-->
+<!--            background: none;-->
+<!--            color: black;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            position: relative;-->
+<!--            text-decoration: none;-->
+<!--            border-bottom: none; /* Removed the underline */-->
+<!--        }-->
+
+<!--        .nav-link:hover, .dropdown-button:hover {-->
+<!--            color: #005149;-->
+<!--            text-decoration: none; /* Ensure no underline */-->
+<!--        }-->
+
+<!--        .dropdown-button::after {-->
+<!--            content: '⌄';-->
+<!--            font-size: 12px;-->
+<!--            position: absolute;-->
+<!--            right: 10px;-->
+<!--            top: 50%;-->
+<!--            transform: translateY(-50%);-->
+<!--        }-->
+
+<!--        .dropdown {-->
+<!--            position: relative;-->
+<!--            padding-right: 40px;-->
+<!--        }-->
+
+<!--        .dropdown-menu {-->
+<!--            display: none;-->
+<!--            position: absolute;-->
+<!--            background: #ffffff;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);-->
+<!--            width: 150px;-->
+<!--            right: 0;-->
+<!--            top: 100%;-->
+<!--            z-index: 1001;-->
+<!--        }-->
+
+<!--        .dropdown:hover .dropdown-menu {-->
+<!--            display: block;-->
+<!--        }-->
+
+<!--        .dropdown-menu a {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            padding: 12px;-->
+<!--            color: #091521;-->
+<!--            text-decoration: none;-->
+<!--            font-size: 16px;-->
+<!--            font-weight: 700;-->
+<!--            transition: background 0.3s ease;-->
+<!--        }-->
+
+<!--        .dropdown-menu a:hover {-->
+<!--            background: #333;-->
+<!--            color: white;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+
+<!--        main {-->
+<!--            margin-top: 10px;-->
+<!--            padding: 20px;-->
+<!--            margin-bottom: 200px;-->
+<!--            overflow: auto;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            display: flex;-->
+<!--            flex-wrap: wrap;-->
+<!--            gap: 20px;-->
+<!--        }-->
+
+<!--        .dashboard-container, .today-container {-->
+<!--            background: #ffffff;-->
+<!--            padding: 30px;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--            flex: 1;-->
+<!--            min-width: 300px;-->
+<!--            max-width: 48%;-->
+<!--        }-->
+
+<!--        .dashboard-container {-->
+<!--            flex: 2;-->
+<!--        }-->
+
+<!--        .today-container {-->
+<!--            flex: 1;-->
+<!--        }-->
+
+<!--        h1, h2 {-->
+<!--            color: #005149;-->
+<!--            margin: 0 0 15px;-->
+<!--            font-weight: 700;-->
+<!--        }-->
+
+<!--        p {-->
+<!--            margin: 10px 0;-->
+<!--            font-size: 18px;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        #detail {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: flex-start;-->
+<!--            background: #ffffff;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--            padding: 20px;-->
+<!--            margin-top:35px;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        #currentDate, #lastLogin {-->
+<!--            font-size: 1.2em;-->
+<!--            color: #005149;-->
+<!--            font-weight: 700;-->
+<!--        }-->
+
+<!--        #lastLoginContainer {-->
+<!--            display: flex;-->
+<!--            justify-content: flex-end;-->
+<!--            width: 100%;-->
+<!--        }-->
+
+<!--        #heading {-->
+<!--            color: #005149;-->
+<!--        }-->
+
+<!--        .summary, .this-week {-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+
+<!--        .this-week-container {-->
+<!--            background:#ffffff;-->
+<!--            padding: 20px;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--            margin-top: 20px;-->
+<!--            max-width: 49.5%;-->
+<!--        }-->
+
+<!--        .show {-->
+<!--            display: block !important;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+
+<!--<main>-->
+<!--    <div id="detail">-->
+<!--        <h2>Hi User, Welcome To ProSquare</h2>-->
+<!--        <div id="currentDate"></div>-->
+<!--        <div id="lastLoginContainer">-->
+<!--            <p id="lastLogin">Last login: Not available</p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="container">-->
+<!--        <div class="dashboard-container">-->
+<!--            <h2>Your Dashboard</h2>-->
+<!--            <div class="summary">-->
+<!--                <p>Total Profiles: <span id="totalProfiles">0</span></p>-->
+<!--                <p>Total JDs: <span id="totalJDs">0</span></p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="today-container">-->
+<!--            <h2>Today's Updates</h2>-->
+<!--            <p>Profiles Added: <span id="profilesToday">0</span></p>-->
+<!--            <p>JDs Added: <span id="jdsToday">0</span></p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="this-week-container">-->
+<!--        <h2>This Week</h2>-->
+<!--        <p>Profiles Added: <span id="profilesThisWeek">0</span></p>-->
+<!--        <p>JDs Added: <span id="jdsThisWeek">0</span></p>-->
+<!--    </div>-->
+<!--</main>-->
+<!--<div id="footer"></div>-->
+
+<!--<script >-->
+<!--    (function() {-->
+<!--        const token = localStorage.getItem('accessToken');-->
+
+<!--        // If the token is missing, redirect to the login page immediately-->
+<!--        if (!token) {-->
+<!--            window.location.href = 'login.html';-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // Validate the token by making a quick API call-->
+<!--        fetch('http://43.205.154.85:8080/profile/count', {-->
+<!--            headers: {-->
+<!--                "Authorization": `Bearer ${token}`-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {-->
+<!--                // If token validation fails, redirect to the login page immediately-->
+<!--                window.location.href = 'login.html';-->
+<!--            }-->
+<!--            // No further actions needed as page loading continues only if the token is valid-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            // In case of any error, redirect to the login page-->
+<!--            console.error('Error:', error);-->
+<!--            window.location.href = 'login.html';-->
+<!--        });-->
+<!--    })();-->
+
+<!--    fetch('header.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('header').innerHTML = data;-->
+<!--                // Call updateNavbar after header is inserted-->
+<!--                updateNavbar();-->
+<!--            });-->
+<!--            // Function to check login status and update navbar-->
+<!--    function updateNavbar() {-->
+<!--        const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--        const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--        const signOutButton = document.getElementById('signOutButton');-->
+
+<!--        if (username) {-->
+<!--            loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--            signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--        } else {-->
+<!--            loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--            signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--        }-->
+<!--    }-->
+<!--    function signOut() {-->
+<!--            console.log('Signing out...');-->
+<!--            localStorage.removeItem('accessToken');-->
+<!--            localStorage.setItem('isLoggedIn', 'false');-->
+<!--            localStorage.removeItem('username');-->
+<!--            loginRegisterLink.textContent = 'Login/Register';-->
+<!--            redirectToLogin();-->
+<!--            window.location.reload();-->
+<!--        }-->
+
+<!--        function redirectToLogin() {-->
+<!--            console.log("i am in the redirect");-->
+<!--            window.location.href = 'login.html';-->
+<!--        }-->
+
+<!--        fetch('footer.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('footer').innerHTML = data;-->
+<!--            });-->
+<!--            function toggleDropdown(id) {-->
+<!--            var dropdown = document.getElementById(id);-->
+<!--            if (dropdown.classList.contains('show')) {-->
+<!--                dropdown.classList.remove('show');-->
+<!--            } else {-->
+<!--                dropdown.classList.add('show');-->
+<!--            }-->
+<!--        }-->
+
+<!--        function navigateToPractice9() {-->
+<!--            window.location.href = 'practice9.html';-->
+<!--        }-->
+
+<!--        function navigateToResumeMatcher() {-->
+<!--            window.location.href = 'home.html';-->
+<!--        }-->
+
+
+<!--        // function signOut() {-->
+<!--        //     console.log('Signing out...');-->
+<!--        //     localStorage.removeItem('accessToken');-->
+<!--        //     localStorage.setItem('isLoggedIn', 'false');-->
+<!--        //     localStorage.removeItem('username');-->
+<!--        //     loginRegisterButton.textContent = 'Login/Register';-->
+<!--        //     window.location.reload();-->
+<!--        // }-->
+
+<!--        document.addEventListener('DOMContentLoaded', () => {-->
+<!--        const token = localStorage.getItem('accessToken');-->
+<!--        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';-->
+<!--        console.log("Is Logged In:", isLoggedIn);-->
+<!--        const username = localStorage.getItem('username');-->
+<!--        const lastLogin = localStorage.getItem('lastLogin');-->
+<!--        const signOutButton = document.getElementById('signOutButton');-->
+<!--        const registerButton = document.getElementById('registerButton');-->
+
+<!--        function updateDisplay() {-->
+<!--            const today = new Date();-->
+<!--            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };-->
+<!--            const currentDateElement = document.getElementById('currentDate');-->
+<!--            if (currentDateElement) {-->
+<!--                currentDateElement.innerText = today.toLocaleDateString('en-US', options);-->
+<!--            }-->
+
+<!--            const lastLoginElement = document.getElementById('lastLogin');-->
+<!--            if (lastLoginElement) {-->
+<!--                lastLoginElement.innerText = lastLogin ? `Last login: ${lastLogin}` : 'Last login: Not available';-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Call updateDisplay initially to set the current date and last login-->
+<!--        updateDisplay();-->
+
+<!--        function handleInvalidToken() {-->
+<!--            console.log("Code came in handleInvalidToken");-->
+<!--            showModal("Session expired. Please log in again.");-->
+<!--            const loginButton = document.getElementById('loginRegisterButton');-->
+<!--            if (loginButton) {-->
+<!--                loginButton.innerText = 'Login/Register';-->
+<!--            }-->
+<!--            if (signOutButton) {-->
+<!--                signOutButton.style.display = 'none';-->
+<!--            }-->
+<!--            localStorage.removeItem('accessToken');-->
+<!--            localStorage.setItem('isLoggedIn', 'false');-->
+<!--            localStorage.removeItem('username');-->
+<!--            isLoggedIn = false;  // Ensure isLoggedIn is updated-->
+<!--        }-->
+
+<!--        if (!token) {-->
+<!--            showModal("You have not yet logged in. Kindly login first");-->
+<!--            return;-->
+<!--        }-->
+
+<!--        fetch('http://43.205.154.85:8080/profile/count', {-->
+<!--            headers: {-->
+<!--                "Authorization": `Bearer ${token}`-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {  // Checks for any HTTP error-->
+<!--            if (response.status === 401) {  // Unauthorized, token is invalid-->
+<!--                handleInvalidToken();-->
+<!--            }-->
+<!--            throw new Error('Failed to fetch profile count');-->
+<!--        }-->
+<!--            return response.json();-->
+<!--        })-->
+<!--        .then(data => {-->
+<!--            if (!isLoggedIn) {-->
+<!--                handleInvalidToken();-->
+<!--                return;-->
+<!--            }-->
+<!--            const totalProfilesElement = document.getElementById('totalProfiles');-->
+<!--            const profilesThisWeekElement = document.getElementById('profilesThisWeek');-->
+<!--            const profilesTodayElement = document.getElementById('profilesToday');-->
+<!--            if (totalProfilesElement) {-->
+<!--                totalProfilesElement.innerText = data.total;-->
+<!--            }-->
+<!--            if (profilesThisWeekElement) {-->
+<!--                profilesThisWeekElement.innerText = data.thisWeek;-->
+<!--            }-->
+<!--            if (profilesTodayElement) {-->
+<!--                profilesTodayElement.innerText = data.today;-->
+<!--            }-->
+
+<!--            if (isLoggedIn) {-->
+<!--                const loginButton = document.getElementById('loginRegisterButton');-->
+<!--                if (loginButton) {-->
+<!--                    loginButton.innerText = `Logged In as ${username}`;-->
+<!--                }-->
+<!--                const loginDropdownMenu = document.getElementById('loginRegisterDropdownMenu');-->
+<!--                if (loginDropdownMenu) {-->
+<!--                    loginDropdownMenu.style.display = 'none';-->
+<!--                }-->
+<!--                if (signOutButton) {-->
+<!--                    signOutButton.style.display = 'block';-->
+<!--                }-->
+<!--                if (registerButton) {-->
+<!--                    registerButton.style.display = 'none';-->
+<!--                }-->
+<!--            } else {-->
+<!--                const loginButton = document.getElementById('loginRegisterButton');-->
+<!--                if (loginButton) {-->
+<!--                    loginButton.innerText = 'Login/Register';-->
+<!--                }-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error fetching profile count:', error);-->
+<!--            handleInvalidToken();-->
+<!--        });-->
+
+<!--        fetch('http://43.205.154.85:8080/jd/count', {-->
+<!--            headers: {-->
+<!--                "Authorization": `Bearer ${token}`-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {  // Checks for any HTTP error-->
+<!--            if (response.status === 401) {  // Unauthorized, token is invalid-->
+<!--                handleInvalidToken();-->
+<!--            }-->
+<!--            throw new Error('Failed to fetch profile count');-->
+<!--        }-->
+<!--            return response.json();-->
+<!--        })-->
+<!--        .then(data => {-->
+<!--            if (!isLoggedIn) {-->
+<!--                handleInvalidToken();-->
+<!--                return;-->
+<!--            }-->
+<!--            const totalJDsElement = document.getElementById('totalJDs');-->
+<!--            const jdsThisWeekElement = document.getElementById('jdsThisWeek');-->
+<!--            const jdsTodayElement = document.getElementById('jdsToday');-->
+<!--            if (totalJDsElement) {-->
+<!--                totalJDsElement.innerText = data.total;-->
+<!--            }-->
+<!--            if (jdsThisWeekElement) {-->
+<!--                jdsThisWeekElement.innerText = data.thisWeek;-->
+<!--            }-->
+<!--            if (jdsTodayElement) {-->
+<!--                jdsTodayElement.innerText = data.today;-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error fetching JD count:', error);-->
+<!--            handleInvalidToken();-->
+<!--        });-->
+<!--    });-->
+
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +505,7 @@
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        /* body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #f4f4f4, #e2e2e2);
             margin: 0;
@@ -19,7 +517,7 @@
         header {
             background: white;
             color: #333;
-            padding: 5px 20px; /* Reduced padding */
+            padding: 5px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -41,20 +539,20 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: fixed;
             width: 100%;
-            top: 50px; /* Adjusted to position below the main header */
+            top: 50px;
             left: 0;
             z-index: 999;
         }
 
         header h1 {
             margin: 0;
-            font-size: 1.8em; /* Reduced font size */
+            font-size: 1.8em;
             color: #005149;
             font-weight: 700;
         }
 
         .logo {
-            width: 120px; /* Reduced logo size */
+            width: 120px;
             height: auto;
         }
 
@@ -69,12 +567,12 @@
             transition: all 0.3s ease;
             position: relative;
             text-decoration: none;
-            border-bottom: none; /* Removed the underline */
+            border-bottom: none;
         }
 
         .nav-link:hover, .dropdown-button:hover {
             color: #005149;
-            text-decoration: none; /* Ensure no underline */
+            text-decoration: none;
         }
 
         .dropdown-button::after {
@@ -147,12 +645,37 @@
             max-width: 48%;
         }
 
-        .dashboard-container {
-            flex: 2;
+        .client-invoice-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #b1b1b1c7;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .today-container {
-            flex: 1;
+        .summary h3{
+
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .summary-item h3 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .summary-item p {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 700;
+            color: #005149;
         }
 
         h1, h2 {
@@ -175,7 +698,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            margin-top:35px;
+            margin-top: 35px;
             margin-bottom: 20px;
         }
 
@@ -200,20 +723,345 @@
         }
 
         .this-week-container {
-            background:#ffffff;
+            background: #ffffff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
             max-width: 49.5%;
+
         }
 
         .show {
             display: block !important;
+        } */
+
+
+
+        /* General Body Styles */
+body {
+font-family: 'Roboto', sans-serif;
+background: linear-gradient(135deg, #f4f4f4, #e2e2e2);
+margin: 0;
+padding: 0;
+color: #333;
+overflow-x: hidden;
+}
+
+/* Header Styles */
+header {
+background: #ffffff;
+color: #333;
+padding: 10px 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+position: fixed;
+width: 100%;
+top: 0;
+left: 0;
+z-index: 1000;
+}
+
+header h1 {
+margin: 0;
+font-size: 1.8em;
+color: #005149;
+font-weight: 700;
+}
+
+.logo {
+width: 120px;
+height: auto;
+}
+
+/* Navigation Styles */
+.secondary-nav {
+background: #ffffff;
+color: #333;
+padding: 10px 20px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+position: fixed;
+width: 100%;
+top: 60px;
+left: 0;
+z-index: 999;
+}
+
+.nav-link, .dropdown-button {
+padding: 10px 20px;
+font-size: 18px;
+font-weight: 700;
+background: none;
+color: #005149;
+border: none;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+text-decoration: none;
+}
+
+.nav-link:hover, .dropdown-button:hover {
+color: #003d36;
+}
+
+.dropdown-button::after {
+content: '⌄';
+font-size: 12px;
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+}
+
+.dropdown {
+position: relative;
+padding-right: 40px;
+}
+
+.dropdown-menu {
+display: none;
+position: absolute;
+background: #ffffff;
+border-radius: 8px;
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+width: 150px;
+right: 0;
+top: 100%;
+z-index: 1001;
+}
+
+.dropdown:hover .dropdown-menu {
+display: block;
+}
+
+.dropdown-menu a {
+display: flex;
+align-items: center;
+padding: 12px;
+color: #005149;
+text-decoration: none;
+font-size: 16px;
+font-weight: 700;
+transition: background 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+background: #005149;
+color: white;
+}
+
+/* Main Content Styles */
+main {
+margin-top: 10px; /* Adjusted for header and secondary-nav height */
+padding: 20px;
+}
+
+/* Container Styles */
+.container {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+}
+#detail {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 35px;
+            margin-bottom: 20px;
         }
+
+.dashboard-container, .today-container {
+background: #ffffff;
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+flex: 1;
+min-width: 300px;
+max-width: 48%;
+}
+
+.client-invoice-container {
+margin-top: 20px;
+padding: 20px;
+background-color: #e6f7f0;
+border-radius: 12px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+padding: 10px;
+background-color: #f9f9f9;
+border-radius: 8px;
+}
+
+.summary-item h3 {
+font-size: 18px;
+margin: 0;
+font-weight: 700;
+color: #005149;
+}
+
+.summary-item p {
+font-size: 18px;
+margin: 0;
+font-weight: 700;
+color: #333;
+}
+
+h1, h2 {
+color: #005149;
+margin: 0 0 20px;
+font-weight: 700;
+}
+
+p {
+margin: 10px 0;
+font-size: 18px;
+color: #333;
+}
+
+#detail {
+background: #ffffff;
+border-radius: 12px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+padding: 20px;
+margin-top: 30px;
+margin-bottom: 20px;
+}
+
+#currentDate, #lastLogin {
+font-size: 1.2em;
+color: #005149;
+font-weight: 700;
+}
+
+#lastLoginContainer {
+display: flex;
+justify-content: flex-end;
+width: 100%;
+}
+
+#heading {
+color: #005149;
+}
+
+.summary, .this-week {
+margin-top: 20px;
+}
+
+.this-week-container {
+background: #ffffff;
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin-top: 20px;
+max-width: 49.5%;
+}
+
+.show {
+display: block !important;
+}
+        #signing-in-overlay, #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            display: none; /* Initially hidden */
+        }
+
+        #signing-in-overlay .spinner, #loading-overlay .spinner {
+            border: 6px solid rgba(0, 81, 73, 0.3);
+            border-top: 6px solid #005149;
+            border-radius: 50%;
+            width: 50px;
+
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-right:20px;
+        }
+
+        #signing-in-overlay p, #loading-overlay p {
+            border: 6px solid rgba(0, 81, 73, 0.3); /* Light version of #005149 */
+    border-top: 6px solid #005149; /* #005149 for the spinning part */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #005149; /* Text color to match the spinner */
+}
+
     </style>
+    <script>
+        (function() {
+            const token = localStorage.getItem('accessToken');
+
+            // If the token is missing, redirect to the welcome page immediately
+            if (!token) {
+                window.location.replace('welcome.html');
+                return;
+            }
+
+            // Validate the token by making a quick API call
+            fetch('http://43.205.154.85:8080/profile/count', {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // If token validation fails, redirect to the login page immediately
+                    window.location.replace('login.html');
+                    return;
+                }
+                // No further actions needed as page loading continues only if the token is valid
+            })
+            .catch(error => {
+                // In case of any error, redirect to the login page
+                console.error('Error:', error);
+                window.location.replace('login.html');
+            });
+        })();
+    </script>
 </head>
 <body>
+<div id="signing-in-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Signing In...</div>
+
+</div>
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your page...</div>
+</div>
 <div id="header"></div>
 
 <main>
@@ -229,20 +1077,62 @@
         <div class="dashboard-container">
             <h2>Your Dashboard</h2>
             <div class="summary">
-                <p>Total Profiles: <span id="totalProfiles">0</span></p>
-                <p>Total JDs: <span id="totalJDs">0</span></p>
+                <h3>Total Profiles: <span id="totalProfiles">0</span></h3>
+                <h3>Total JDs: <span id="totalJDs">0</span></h3>
+            </div>
+            <div class="client-invoice-container">
+                <div class="summary-item">
+                    <h3>Total Clients:</h3>
+                    <p id="total-clients">Loading...</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Total Invoices:</h3>
+                    <p id="total-invoices">Loading...</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Pending Invoices:</h3>
+                    <p id="pending-invoices">Loading...</p>
+                </div>
             </div>
         </div>
         <div class="today-container">
             <h2>Today's Updates</h2>
-            <p>Profiles Added: <span id="profilesToday">0</span></p>
-            <p>JDs Added: <span id="jdsToday">0</span></p>
+            <h3>Profiles Added: <span id="profilesToday">0</span></h3>
+            <h3>JDs Added: <span id="jdsToday">0</span></h3>
+            <div class="client-invoice-container">
+                <div class="summary-item">
+                    <h3>Total Clients:</h3>
+                    <p id="total-clients">Loading...</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Total Invoices:</h3>
+                    <p id="total-invoices">Loading...</p>
+                </div>
+                <div class="summary-item">
+                    <h3>Pending Invoices:</h3>
+                    <p id="pending-invoices">Loading...</p>
+                </div>
+            </div>
         </div>
     </div>
     <div class="this-week-container">
         <h2>This Week</h2>
-        <p>Profiles Added: <span id="profilesThisWeek">0</span></p>
-        <p>JDs Added: <span id="jdsThisWeek">0</span></p>
+        <h3>Profiles Added: <span id="profilesThisWeek">0</span></h3>
+        <h3>JDs Added: <span id="jdsThisWeek">0</span></h3>
+        <div class="client-invoice-container">
+            <div class="summary-item">
+                <h3>Total Clients:</h3>
+                <p id="total-clients">Loading...</p>
+            </div>
+            <div class="summary-item">
+                <h3>Total Invoices:</h3>
+                <p id="total-invoices">Loading...</p>
+            </div>
+            <div class="summary-item">
+                <h3>Pending Invoices:</h3>
+                <p id="pending-invoices">Loading...</p>
+            </div>
+        </div>
     </div>
 </main>
 <div id="footer"></div>
@@ -267,7 +1157,9 @@
             if (!response.ok) {
                 // If token validation fails, redirect to the login page immediately
                 window.location.href = 'login.html';
+                return;
             }
+
             // No further actions needed as page loading continues only if the token is valid
         })
         .catch(error => {
@@ -276,6 +1168,30 @@
             window.location.href = 'login.html';
         });
     })();
+
+    // Check if login is in progress or if we need to show the loading overlay
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const signingInOverlay = document.getElementById('signing-in-overlay');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            if (localStorage.getItem('loginInProgress') === 'true') {
+                signingInOverlay.style.display = 'flex';
+
+                // Ensure the overlay stays for at least 1 second
+                setTimeout(() => {
+                    signingInOverlay.style.display = 'none';
+                }, 1000); // 1 second delay
+
+                localStorage.removeItem('loginInProgress'); // Remove the flag after displaying the overlay
+            } else if (localStorage.getItem('isLoggedIn') === 'true'){
+                loadingOverlay.style.display = 'flex';
+
+                // Simulate loading page content
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                }, 800); // 0.8 seconds delay (adjust as needed)
+            }
+        });
 
     fetch('header.html')
             .then(response => response.text())
@@ -303,9 +1219,10 @@
             localStorage.removeItem('accessToken');
             localStorage.setItem('isLoggedIn', 'false');
             localStorage.removeItem('username');
+
             loginRegisterLink.textContent = 'Login/Register';
             redirectToLogin();
-            window.location.reload();
+
         }
 
         function redirectToLogin() {
@@ -487,9 +1404,48 @@
             console.error('Error fetching JD count:', error);
             handleInvalidToken();
         });
-    });
+
+        // Fetch total clients
+    fetch('http://43.205.154.85:8080/api/clients')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-clients').textContent = data.length;
+        })
+        .catch(error => console.error('Error fetching clients:', error));
+
+    // Fetch total invoices
+    fetch('http://43.205.154.85:8080/api/invoices/all')
+        .then(response => response.json())
+        .then(data => {
+            const totalInvoices = data.length;
+            const pendingInvoices = data.filter(invoice => invoice.status === 'Pending').length;
+
+            document.getElementById('total-invoices').textContent = totalInvoices;
+
+        })
+        .catch(error => console.error('Error fetching invoices:', error));
+
+    // Fetch pending invoices
+        fetch('http://43.205.154.85:8080/api/invoices/pending')
+            .then(response => response.json())
+            .then(data => {
+                console.log("data :",data)
+                console.log("Data type:", Array.isArray(data)); // Should be true if it's an array
+
+                const totalpendingInvoices = data.length;
+                console.log("total data :",totalpendingInvoices);
+                document.querySelector('#pending-invoices').innerHTML = totalpendingInvoices;
+
+                console.log(document.getElementById('pending-invoices'));
+            })
+            .catch(error => console.error('Error fetching pending invoices:', error));
+
+});
 
 
 </script>
 </body>
 </html>
+
+
+

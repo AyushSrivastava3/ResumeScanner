@@ -1,4 +1,256 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, Helvetica, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding-top: 60px; /* Adjusted for header height */-->
+<!--            padding-bottom: 60px; /* Adjusted for footer height */-->
+<!--            background-color: #f2f2f2;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            min-height: 100vh; /* Ensure body takes up full height */-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            border: 3px solid #f1f1f1;-->
+<!--            padding: 25px;-->
+<!--            background-color: white;-->
+<!--            width: 100%;-->
+<!--            max-width: 500px; /* Increased max-width */-->
+<!--            box-sizing: border-box;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow for better appearance */-->
+<!--            margin-top: auto; /* Center the container vertically */-->
+<!--            margin-bottom: auto; /* Center the container vertically */-->
+<!--        }-->
+
+<!--        input[type=text], input[type=password] {-->
+<!--            width: 100%;-->
+<!--            padding: 12px 20px;-->
+<!--            margin: 8px 0;-->
+<!--            display: inline-block;-->
+<!--            border: 1px solid #ccc;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        button {-->
+<!--            background-color: #04AA6D;-->
+<!--            color: white;-->
+<!--            padding: 14px 20px;-->
+<!--            margin: 8px 0;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            width: 100%;-->
+<!--        }-->
+
+<!--        button:hover {-->
+<!--            opacity: 0.8;-->
+<!--        }-->
+
+<!--        .cancelbtn {-->
+<!--            width: auto;-->
+<!--            padding: 10px 18px;-->
+<!--            background-color: #f44336;-->
+<!--        }-->
+
+<!--        .title {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 24px;-->
+<!--        }-->
+
+<!--        span.psw {-->
+<!--            float: right;-->
+<!--            padding-top: 16px;-->
+<!--        }-->
+
+<!--        .registerbtn {-->
+<!--            background-color: #2196F3;-->
+<!--            color: white;-->
+<!--            padding: 10px 18px;-->
+<!--            margin: 8px 0;-->
+<!--            border: none;-->
+<!--            cursor: pointer;-->
+<!--            width: 100%;-->
+<!--        }-->
+
+<!--        .registerbtn:hover {-->
+<!--            opacity: 0.8;-->
+<!--        }-->
+
+<!--        @media screen and (max-width: 300px) {-->
+<!--            span.psw {-->
+<!--                display: block;-->
+<!--                float: none;-->
+<!--            }-->
+<!--            .cancelbtn {-->
+<!--                width: 100%;-->
+<!--            }-->
+<!--        }-->
+
+<!--        header {-->
+<!--            background: white;-->
+<!--            color: #333;-->
+<!--            padding: 5px 10px;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            z-index: 1000;-->
+<!--            height: 60px; /* Adjust as needed */-->
+<!--        }-->
+
+<!--        header img {-->
+<!--            height: 50px;-->
+<!--            margin-right: 20px;-->
+<!--        }-->
+
+<!--        header nav ul {-->
+<!--            list-style: none;-->
+<!--            display: flex;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
+
+<!--        header nav ul li {-->
+<!--            margin-right: 20px;-->
+<!--        }-->
+
+<!--        header nav ul li a {-->
+<!--            text-decoration: none;-->
+<!--            color: #333;-->
+<!--            font-weight: bold;-->
+<!--        }-->
+
+<!--        footer {-->
+<!--            background: white;-->
+<!--            text-align: center;-->
+<!--            padding: 10px 20px;-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            bottom: 0;-->
+<!--            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);-->
+<!--            height: 60px; /* Adjust as needed */-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header>-->
+<!--    <img src="logo.png" alt="Header Image">-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="index.html">Home</a></li>-->
+<!--            <li><a href="#">About</a></li>-->
+<!--            <li><a href="#">Contact</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</header>-->
+<!--<div class="container">-->
+<!--    <h2 class="title">Login Form</h2>-->
+<!--    <form id="loginForm">-->
+<!--        <div class="container">-->
+<!--            <label for="username"><b>Username</b></label>-->
+<!--            <input type="text" placeholder="Enter Username" name="username" required>-->
+<!--            <label for="password"><b>Password</b></label>-->
+<!--            <input type="password" placeholder="Enter Password" name="password" required>-->
+<!--            <button type="submit">Login</button>-->
+<!--            <div id="results"></div>-->
+<!--            <label>-->
+<!--                <input type="checkbox" checked="checked" name="remember"> Remember me-->
+<!--            </label>-->
+<!--        </div>-->
+<!--        <div class="container" style="background-color:#f1f1f1">-->
+<!--            <button type="button" class="cancelbtn">Cancel</button>-->
+<!--            <span class="psw">Forgot <a href="forgotPassword.html">password?</a></span>-->
+<!--        </div>-->
+<!--        <div class="container">-->
+<!--            <button type="button" class="registerbtn" onclick="window.open('register.html', '_blank')">Register</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+<!--<footer>-->
+<!--    <p>&copy; 2024 DigiQuad. All rights reserved.</p>-->
+<!--</footer>-->
+<!--<script>-->
+
+<!--        fetch('header.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('header').innerHTML = data;-->
+<!--            });-->
+
+<!--        fetch('footer.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('footer').innerHTML = data;-->
+<!--            });-->
+
+<!--    document.getElementById("loginForm").addEventListener("submit", function(event) {-->
+<!--        event.preventDefault(); // Prevent the default form submission-->
+
+<!--        // Create a JSON object with form data-->
+<!--        const formData = {-->
+<!--            username: document.querySelector('input[name="username"]').value,-->
+<!--            password: document.querySelector('input[name="password"]').value-->
+<!--        };-->
+
+<!--        // Replace 'link' with your actual backend API endpoint-->
+<!--        const url = "http://43.205.154.85:8080/login";-->
+
+<!--        // Make a POST request to the backend-->
+<!--        fetch(url, {-->
+<!--            method: "POST",-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json"-->
+<!--            },-->
+<!--            body: JSON.stringify(formData)-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (response.ok) {-->
+<!--                return response.text(); // Expect a plain text response-->
+<!--            } else {-->
+<!--                throw new Error('Login failed either username or password is incorrect');-->
+<!--            }-->
+<!--        })-->
+<!--        .then(token => {-->
+
+<!--            localStorage.setItem('accessToken', token);-->
+<!--            localStorage.setItem('username', formData.username);-->
+<!--            localStorage.setItem('isLoggedIn', 'true');-->
+<!--            localStorage.setItem('lastLogin', new Date().toLocaleString());-->
+
+<!--            console.log("Login successful, token:", token);-->
+
+<!--            // Redirect to your home page or display a success message-->
+<!--            window.location.replace("index.html");-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error("Error:", error);-->
+<!--            const results=document.querySelector('#results');-->
+<!--            results.style.backgroundColor = "#f8d7da"; // Light red background for error-->
+<!--            results.style.color = "#721c24"; // Dark red text color-->
+<!--            results.style.padding = "10px"; // Some padding for better readability-->
+<!--            results.style.border = "1px solid #f5c6cb"; // Border to highlight the error-->
+<!--            results.style.borderRadius = "5px";-->
+
+<!--            results.innerHTML="Please enter a valid username or password"-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -240,6 +492,293 @@
             results.style.borderRadius = "5px";
 
             results.innerHTML="Please enter a valid username or password"
+        });
+    });
+</script>
+
+</body>
+</html> -->
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1000px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .info {
+            flex: 1;
+            padding: 40px;
+            background-color: #04AA6D;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .info p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .info ul {
+            margin-top: 20px;
+        }
+
+        .info ul li {
+            font-size: 16px;
+            margin-bottom: 10px;
+            list-style: disc inside;
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+
+        .registerbtn {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 18px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .registerbtn:hover {
+            opacity: 0.8;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .info, .login-form {
+                padding: 20px;
+            }
+
+            .info h2 {
+                font-size: 28px;
+            }
+
+            .info p, .info ul li {
+                font-size: 16px;
+            }
+        }
+
+        header {
+            background: white;
+            color: #333;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        header img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        header nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav ul li {
+            margin-right: 20px;
+        }
+
+        header nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        footer {
+            background: white;
+            text-align: center;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="logo.png" alt="Header Image">
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="info">
+        <h2>Welcome to DigiQuad HR Solutions</h2>
+        <p>Your one-stop solution to streamline HR processes and enhance employee management efficiency.</p>
+        <ul>
+            <li>Automate resume matching and report creation</li>
+            <li>Manage employee profiles seamlessly</li>
+            <li>Track Client and invoices</li>
+            <li>Generate insightful candidate eligibilty reports</li>
+        </ul>
+    </div>
+    <div class="login-form">
+        <h2>Login Form</h2>
+        <form id="loginForm">
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required>
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+            <button type="submit">Login</button>
+            <div id="results"></div>
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+        </form>
+        <button type="button" class="cancelbtn">Cancel</button>
+        <span class="psw">Forgot <a href="forgotPassword.html">password?</a></span>
+        <button type="button" class="registerbtn" onclick="window.open('register.html', '_blank')">Register</button>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 DigiQuad. All rights reserved.</p>
+</footer>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        // Set a flag in localStorage to indicate that login is in progress
+    localStorage.setItem('loginInProgress', 'true');
+
+        const formData = {
+            username: document.querySelector('input[name="username"]').value,
+            password: document.querySelector('input[name="password"]').value
+        };
+
+        const url = "http://43.205.154.85:8080/login";
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Login failed either username or password is incorrect');
+            }
+        })
+        .then(token => {
+            localStorage.setItem('accessToken', token);
+            localStorage.setItem('username', formData.username);
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('lastLogin', new Date().toLocaleString());
+
+            window.location.replace("index.html");
+        })
+        .catch(error => {
+            localStorage.removeItem('loginInProgress'); // Remove the flag on error
+            const results = document.querySelector('#results');
+            results.style.backgroundColor = "#f8d7da";
+            results.style.color = "#721c24";
+            results.style.padding = "10px";
+            results.style.border = "1px solid #f5c6cb";
+            results.style.borderRadius = "5px";
+            results.innerHTML = "Please enter a valid username or password";
         });
     });
 </script>

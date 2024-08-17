@@ -1,3 +1,532 @@
+<!--&lt;!&ndash; <!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>View Clients</title>-->
+<!--    <link rel="stylesheet" href="styles.css">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f4f4f4;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 1000px;-->
+<!--            margin: 50px auto;-->
+<!--            padding: 20px;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 8px;-->
+<!--            margin-top: 190px;-->
+<!--            margin-bottom: 230px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        .container h2 {-->
+<!--            text-align: center;-->
+<!--            color: #333;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--        }-->
+<!--        th, td {-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ddd;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        th {-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+<!--        button {-->
+<!--            background-color: #005149;-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        button:hover {-->
+<!--            background-color: #003d3d;-->
+<!--        }-->
+
+<!--        /* Navigation Buttons CSS */-->
+<!--        .header-content {-->
+<!--            position: absolute;-->
+<!--            top: 5px;-->
+<!--            right: 20px;-->
+<!--            display: flex;-->
+<!--            gap: 5px;-->
+<!--            margin-top: 70px;-->
+<!--            margin-bottom: 40px;-->
+<!--        }-->
+
+<!--        .header-content nav ul {-->
+<!--            list-style: none;-->
+<!--            display: flex;-->
+<!--            gap: 5px;-->
+<!--        }-->
+
+<!--        .header-content nav ul li {-->
+<!--            padding: 10px 15px;-->
+<!--            font-size: 14px;-->
+<!--            background-color: #005149;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+
+<!--        .header-content nav ul li a {-->
+<!--            color: #fff;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="header-content">-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="clients.html">Clients</a></li>-->
+<!--            <li><a href="all-invoices.html">Invoices</a></li>-->
+<!--            <li><a href="pendinginvoices.html">Pending Invoices</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+<!--    <h2>Clients</h2>-->
+<!--    <button id="exportBtn">Export Clients</button> -->
+<!--    <table id="clientsTable">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Serial Number</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Location</th>-->
+<!--            <th>Currency</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        -->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+
+<!--    fetch('header.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('header').innerHTML = data;-->
+<!--            // Call updateNavbar after header is inserted-->
+<!--            updateNavbar();-->
+<!--        });-->
+<!--        // Function to check login status and update navbar-->
+<!--function updateNavbar() {-->
+<!--    const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--    const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--    const signOutButton = document.getElementById('signOutButton');-->
+
+<!--    if (username) {-->
+<!--        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--        signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--    } else {-->
+<!--        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--        signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--    }-->
+<!--}-->
+<!--function signOut() {-->
+<!--        console.log('Signing out...');-->
+<!--        localStorage.removeItem('accessToken');-->
+<!--        localStorage.setItem('isLoggedIn', 'false');-->
+<!--        localStorage.removeItem('username');-->
+<!--        loginRegisterLink.textContent = 'Login/Register';-->
+<!--        redirectToLogin();-->
+<!--    }-->
+
+<!--    function redirectToLogin() {-->
+<!--        console.log("i am in the redirect");-->
+<!--        window.location.href = 'login.html';-->
+<!--    }-->
+
+<!--    fetch('footer.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('footer').innerHTML = data;-->
+<!--        });-->
+
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const token = localStorage.getItem('accessToken');-->
+
+<!--        if (!token) {-->
+<!--            showModal("You have not yet logged in. Kindly login first.");-->
+<!--            return;-->
+<!--        }-->
+
+<!--        function showModal(message) {-->
+<!--            const modal = document.createElement('div');-->
+<!--            modal.style.position = 'fixed';-->
+<!--            modal.style.top = '50%';-->
+<!--            modal.style.left = '50%';-->
+<!--            modal.style.transform = 'translate(-50%, -50%)';-->
+<!--            modal.style.padding = '20px';-->
+<!--            modal.style.backgroundColor = '#fff';-->
+<!--            modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';-->
+<!--            modal.innerHTML = `-->
+<!--                <p>${message}</p>-->
+<!--                <button id="closeModal">Close</button>-->
+<!--            `;-->
+<!--            document.body.appendChild(modal);-->
+
+<!--            document.getElementById('closeModal').addEventListener('click', function() {-->
+<!--                modal.remove();-->
+<!--                window.location.href = 'login.html'; // Redirect to login page-->
+<!--            });-->
+
+<!--            document.getElementById('closeModal').style.backgroundColor = '#005149';-->
+<!--            document.getElementById('closeModal').style.color = '#fff';-->
+<!--            document.getElementById('closeModal').style.border = 'none';-->
+<!--            document.getElementById('closeModal').style.padding = '10px';-->
+<!--            document.getElementById('closeModal').style.borderRadius = '5px';-->
+<!--            document.getElementById('closeModal').style.cursor = 'pointer';-->
+<!--        }-->
+
+<!--        fetch('http://43.205.154.85:8080/api/clients')-->
+<!--            .then(response => response.json())-->
+<!--            .then(clients => {-->
+<!--                const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];-->
+<!--                clients.forEach((client, index) => {-->
+<!--                    const row = clientsTable.insertRow();-->
+<!--                    row.insertCell(0).textContent = index + 1;-->
+<!--                    const clientNameCell = row.insertCell(1);-->
+<!--                    const clientLink = document.createElement('a');-->
+<!--                    clientLink.href = `editClient.html?id=${client.id}`;-->
+<!--                    clientLink.textContent = client.clientName;-->
+<!--                    clientNameCell.appendChild(clientLink);-->
+<!--                    row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location-->
+<!--                    row.insertCell(3).textContent = client.currency;-->
+
+<!--                });-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching clients:', error));-->
+
+<!--        // Export profile functionality-->
+<!--        function exportClients() {-->
+<!--            fetch(`http://43.205.154.85:8080/api/clients/clients/export`, {-->
+<!--                method: 'GET',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json'-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => response.blob())-->
+<!--            .then(blob => {-->
+<!--                const url = window.URL.createObjectURL(blob);-->
+<!--                const a = document.createElement('a');-->
+<!--                a.href = url;-->
+<!--                a.download = 'client_export.xlsx'; // Set the file name for the export-->
+<!--                a.click();-->
+<!--                window.URL.revokeObjectURL(url);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error exporting profile data:', error));-->
+<!--        }-->
+
+<!--        // Add event listener to export button-->
+<!--        document.getElementById('exportBtn').addEventListener('click', exportClients);-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html> &ndash;&gt;-->
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>View Clients</title>-->
+<!--    <link rel="stylesheet" href="styles.css">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f4f4f4;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 1000px;-->
+<!--            margin: 50px auto;-->
+<!--            padding: 20px;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 8px;-->
+<!--            margin-top: 190px;-->
+<!--            margin-bottom: 230px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        .container h2 {-->
+<!--            text-align: center;-->
+<!--            color: #333;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--        }-->
+<!--        th, td {-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ddd;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        th {-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+<!--        button {-->
+<!--            background-color: #005149;-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        button:hover {-->
+<!--            background-color: #003d3d;-->
+<!--        }-->
+
+<!--        /* Navigation Buttons CSS */-->
+<!--        .header-content {-->
+<!--            position: absolute;-->
+<!--            top: 5px;-->
+<!--            right: 20px;-->
+<!--            display: flex;-->
+<!--            gap: 5px;-->
+<!--            margin-top: 70px;-->
+<!--            margin-bottom: 40px;-->
+<!--        }-->
+
+<!--        .header-content nav ul {-->
+<!--            list-style: none;-->
+<!--            display: flex;-->
+<!--            gap: 5px;-->
+<!--        }-->
+
+<!--        .header-content nav ul li {-->
+<!--            padding: 10px 15px;-->
+<!--            font-size: 14px;-->
+<!--            background-color: #005149;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+
+<!--        .header-content nav ul li a {-->
+<!--            color: #fff;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+<!--        /* CSV Upload Styling */-->
+<!--        .csv-upload {-->
+<!--            margin: 20px 0;-->
+<!--        }-->
+<!--        .csv-upload label {-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+<!--        .csv-upload input[type="file"] {-->
+<!--            display: inline-block;-->
+<!--        }-->
+<!--        .csv-upload button {-->
+<!--            background-color: #007bff;-->
+<!--            margin-left: 10px;-->
+<!--        }-->
+<!--        .csv-upload button:disabled {-->
+<!--            background-color: #b0bec5;-->
+<!--            cursor: not-allowed;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="header-content">-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="clients.html">Clients</a></li>-->
+<!--            <li><a href="all-invoices.html">Invoices</a></li>-->
+<!--            <li><a href="pendinginvoices.html">Pending Invoices</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+<!--    <h2>Clients</h2>-->
+<!--    &lt;!&ndash; CSV Upload Section &ndash;&gt;-->
+<!--    <tr>-->
+<!--        <td colspan="6">-->
+<!--            <label for="csvUpload">Add Profile Using CSV:</label>-->
+<!--            <input type="file" id="csvUpload" accept=".csv">-->
+<!--            <button type="button" id="importCsvBtn" disabled>Import from CSV</button>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    <button id="exportBtn">Export Clients</button> &lt;!&ndash; Export button &ndash;&gt;-->
+<!--    <table id="clientsTable">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Serial Number</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Location</th>-->
+<!--            <th>Currency</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        &lt;!&ndash; Rows will be added dynamically here &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+<!--    fetch('header.html')-->
+<!--       .then(response => response.text())-->
+<!--       .then(data => {-->
+<!--           document.getElementById('header').innerHTML = data;-->
+<!--       });-->
+
+<!--   fetch('footer.html')-->
+<!--       .then(response => response.text())-->
+<!--       .then(data => {-->
+<!--           document.getElementById('footer').innerHTML = data;-->
+<!--       });-->
+
+<!--   document.addEventListener('DOMContentLoaded', function() {-->
+<!--       const token = localStorage.getItem('accessToken');-->
+
+<!--       if (!token) {-->
+<!--           showModal("You have not yet logged in. Kindly login first.");-->
+<!--           return;-->
+<!--       }-->
+
+<!--       function showModal(message) {-->
+<!--           const modal = document.createElement('div');-->
+<!--           modal.style.position = 'fixed';-->
+<!--           modal.style.top = '50%';-->
+<!--           modal.style.left = '50%';-->
+<!--           modal.style.transform = 'translate(-50%, -50%)';-->
+<!--           modal.style.padding = '20px';-->
+<!--           modal.style.backgroundColor = '#fff';-->
+<!--           modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';-->
+<!--           modal.innerHTML = `-->
+<!--               <p>${message}</p>-->
+<!--               <button id="closeModal">Close</button>-->
+<!--           `;-->
+<!--           document.body.appendChild(modal);-->
+
+<!--           document.getElementById('closeModal').addEventListener('click', function() {-->
+<!--               modal.remove();-->
+<!--               window.location.href = 'login.html'; // Redirect to login page-->
+<!--           });-->
+
+<!--           document.getElementById('closeModal').style.backgroundColor = '#005149';-->
+<!--           document.getElementById('closeModal').style.color = '#fff';-->
+<!--           document.getElementById('closeModal').style.border = 'none';-->
+<!--           document.getElementById('closeModal').style.padding = '10px';-->
+<!--           document.getElementById('closeModal').style.borderRadius = '5px';-->
+<!--           document.getElementById('closeModal').style.cursor = 'pointer';-->
+<!--       }-->
+
+<!--       function fetchClients() {-->
+<!--           fetch('http://43.205.154.85:8080/api/clients')-->
+<!--               .then(response => response.json())-->
+<!--               .then(clients => {-->
+<!--                   const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];-->
+<!--                   clients.forEach((client, index) => {-->
+<!--                       const row = clientsTable.insertRow();-->
+<!--                       row.insertCell(0).textContent = index + 1;-->
+<!--                       const clientNameCell = row.insertCell(1);-->
+<!--                       const clientLink = document.createElement('a');-->
+<!--                       clientLink.href = `editClient.html?id=${client.id}`;-->
+<!--                       clientLink.textContent = client.clientName;-->
+<!--                       clientNameCell.appendChild(clientLink);-->
+<!--                       row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location-->
+<!--                       row.insertCell(3).textContent = client.currency;-->
+<!--                   });-->
+<!--               })-->
+<!--               .catch(error => console.error('Error fetching clients:', error));-->
+<!--       }-->
+
+<!--       fetchClients(); // Fetch clients when page loads-->
+
+<!--       // Export profile functionality-->
+<!--       function exportClients() {-->
+<!--           fetch(`http://43.205.154.85:8080/api/clients/clients/export`, {-->
+<!--               method: 'GET',-->
+<!--               headers: {-->
+<!--                   'Content-Type': 'application/json'-->
+<!--               }-->
+<!--           })-->
+<!--           .then(response => response.blob())-->
+<!--           .then(blob => {-->
+<!--               const url = window.URL.createObjectURL(blob);-->
+<!--               const a = document.createElement('a');-->
+<!--               a.href = url;-->
+<!--               a.download = 'client_export.xlsx'; // Set the file name for the export-->
+<!--               a.click();-->
+<!--               window.URL.revokeObjectURL(url);-->
+<!--           })-->
+<!--           .catch(error => console.error('Error exporting profile data:', error));-->
+<!--       }-->
+
+<!--       // Add event listener to export button-->
+<!--       document.getElementById('exportBtn').addEventListener('click', exportClients);-->
+
+<!--       // Enable the Import button when a file is selected-->
+<!--     csvUpload.addEventListener('change', function() {-->
+<!--        importCsvBtn.disabled = !csvUpload.files.length;-->
+<!--    });-->
+
+<!--    // Handle CSV import-->
+<!--    importCsvBtn.addEventListener('click', function() {-->
+<!--        const file = csvUpload.files[0];-->
+<!--        if (file) {-->
+<!--            const formData = new FormData();-->
+<!--            formData.append('file', file);-->
+
+<!--            fetch('http://43.205.154.85:8080/api/clients/clients/import', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    "Authorization": `Bearer ${token}`-->
+<!--                },-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json()) // Expect JSON response-->
+<!--            .then(data => {-->
+<!--                if (Array.isArray(data)) {-->
+<!--                    console.log('Profiles imported:', data);-->
+<!--                    data.forEach(profile => {-->
+<!--                        fetchProfileById(profile.id); // Display each imported profile-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    console.error('Error importing profiles:', data.message);-->
+<!--                }-->
+<!--                csvUpload.value = ''; // Clear the file input-->
+<!--                importCsvBtn.disabled = true; // Disable the Import button-->
+<!--            })-->
+<!--            .catch(error => console.error('Error:', error));-->
+<!--        }-->
+<!--    });-->
+<!--   });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
 <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,7 +625,7 @@
 
 <div class="container">
     <h2>Clients</h2>
-    <button id="exportBtn">Export Clients</button> 
+    <button id="exportBtn">Export Clients</button>
     <table id="clientsTable">
         <thead>
         <tr>
@@ -107,7 +636,7 @@
         </tr>
         </thead>
         <tbody>
-        
+
         </tbody>
     </table>
 </div>
@@ -247,6 +776,319 @@ function signOut() {
 
 
 
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>View Clients</title>-->
+<!--    <link rel="stylesheet" href="styles.css">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f4f4f4;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
+<!--        .container {-->
+<!--            max-width: 1000px;-->
+<!--            margin: 50px auto;-->
+<!--            padding: 20px;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 8px;-->
+<!--            margin-top: 190px;-->
+<!--            margin-bottom: 450px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        .container h2 {-->
+<!--            text-align: center;-->
+<!--            color: #333;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--        }-->
+<!--        th, td {-->
+<!--            padding: 10px;-->
+<!--            border: 1px solid #ddd;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        th {-->
+<!--            background-color: #f4f4f4;-->
+<!--        }-->
+<!--        button {-->
+<!--            background-color: #005149;-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        button:hover {-->
+<!--            background-color: #003d3d;-->
+<!--        }-->
+
+<!--        /* Navigation Buttons CSS */-->
+<!--        .header-content {-->
+<!--            position: absolute;-->
+<!--            top: 5px;-->
+<!--            right: 20px;-->
+<!--            display: flex;-->
+<!--            gap: 5px;-->
+<!--            margin-top: 70px;-->
+<!--            margin-bottom: 40px;-->
+<!--        }-->
+
+<!--        .header-content nav ul {-->
+<!--            list-style: none;-->
+<!--            display: flex;-->
+<!--            gap: 5px;-->
+<!--        }-->
+
+<!--        .header-content nav ul li {-->
+<!--            padding: 10px 15px;-->
+<!--            font-size: 14px;-->
+<!--            background-color: #005149;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+
+<!--        .header-content nav ul li a {-->
+<!--            color: #fff;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+<!--        /* CSV Upload Styling */-->
+<!--        .csv-upload {-->
+<!--            margin: 20px 0;-->
+<!--        }-->
+<!--        .csv-upload label {-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+<!--        .csv-upload input[type="file"] {-->
+<!--            display: inline-block;-->
+<!--        }-->
+<!--        .csv-upload button {-->
+<!--            background-color: #007bff;-->
+<!--            margin-left: 10px;-->
+<!--        }-->
+<!--        .csv-upload button:disabled {-->
+<!--            background-color: #b0bec5;-->
+<!--            cursor: not-allowed;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="header-content">-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="clients.html">Clients</a></li>-->
+<!--            <li><a href="all-invoices.html">Invoices</a></li>-->
+<!--            <li><a href="pendinginvoices.html">Pending Invoices</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+<!--    <h2>Clients</h2>-->
+<!--    &lt;!&ndash; CSV Upload Section &ndash;&gt;-->
+<!--    <tr>-->
+<!--        <td colspan="6">-->
+<!--            <label for="csvUpload">Add Profile Using CSV:</label>-->
+<!--            <input type="file" id="csvUpload" accept=".csv">-->
+<!--            <button type="button" id="importCsvBtn" disabled>Import from CSV</button>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--    <button id="exportBtn">Export Clients</button> &lt;!&ndash; Export button &ndash;&gt;-->
+<!--    <table id="clientsTable">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Serial Number</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Location</th>-->
+<!--            <th>Currency</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        &lt;!&ndash; Rows will be added dynamically here &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+<!--    fetch('header.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('header').innerHTML = data;-->
+<!--            // Call updateNavbar after header is inserted-->
+<!--            updateNavbar();-->
+<!--        });-->
+<!--        // Function to check login status and update navbar-->
+<!--function updateNavbar() {-->
+<!--    const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--    const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--    const signOutButton = document.getElementById('signOutButton');-->
+
+<!--    if (username) {-->
+<!--        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--        signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--    } else {-->
+<!--        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--        signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--    }-->
+<!--}-->
+<!--function signOut() {-->
+<!--        console.log('Signing out...');-->
+<!--        localStorage.removeItem('accessToken');-->
+<!--        localStorage.setItem('isLoggedIn', 'false');-->
+<!--        localStorage.removeItem('username');-->
+<!--        loginRegisterLink.textContent = 'Login/Register';-->
+<!--        redirectToLogin();-->
+<!--    }-->
+
+<!--    function redirectToLogin() {-->
+<!--        console.log("i am in the redirect");-->
+<!--        window.location.href = 'login.html';-->
+<!--    }-->
+
+<!--   fetch('footer.html')-->
+<!--       .then(response => response.text())-->
+<!--       .then(data => {-->
+<!--           document.getElementById('footer').innerHTML = data;-->
+<!--       });-->
+
+<!--   document.addEventListener('DOMContentLoaded', function() {-->
+<!--       const token = localStorage.getItem('accessToken');-->
+
+<!--       if (!token) {-->
+<!--           showModal("You have not yet logged in. Kindly login first.");-->
+<!--           return;-->
+<!--       }-->
+
+<!--       function showModal(message) {-->
+<!--           const modal = document.createElement('div');-->
+<!--           modal.style.position = 'fixed';-->
+<!--           modal.style.top = '50%';-->
+<!--           modal.style.left = '50%';-->
+<!--           modal.style.transform = 'translate(-50%, -50%)';-->
+<!--           modal.style.padding = '20px';-->
+<!--           modal.style.backgroundColor = '#fff';-->
+<!--           modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';-->
+<!--           modal.innerHTML = `-->
+<!--               <p>${message}</p>-->
+<!--               <button id="closeModal">Close</button>-->
+<!--           `;-->
+<!--           document.body.appendChild(modal);-->
+
+<!--           document.getElementById('closeModal').addEventListener('click', function() {-->
+<!--               modal.remove();-->
+<!--               window.location.href = 'login.html'; // Redirect to login page-->
+<!--           });-->
+
+<!--           document.getElementById('closeModal').style.backgroundColor = '#005149';-->
+<!--           document.getElementById('closeModal').style.color = '#fff';-->
+<!--           document.getElementById('closeModal').style.border = 'none';-->
+<!--           document.getElementById('closeModal').style.padding = '10px';-->
+<!--           document.getElementById('closeModal').style.borderRadius = '5px';-->
+<!--           document.getElementById('closeModal').style.cursor = 'pointer';-->
+<!--       }-->
+
+<!--       function fetchClients() {-->
+<!--           fetch('http://43.205.154.85:8080/api/clients')-->
+<!--               .then(response => response.json())-->
+<!--               .then(clients => {-->
+<!--                   const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];-->
+<!--                   clients.forEach((client, index) => {-->
+<!--                       const row = clientsTable.insertRow();-->
+<!--                       row.insertCell(0).textContent = index + 1;-->
+<!--                       const clientNameCell = row.insertCell(1);-->
+<!--                       const clientLink = document.createElement('a');-->
+<!--                       clientLink.href = `editClient.html?id=${client.id}`;-->
+<!--                       clientLink.textContent = client.clientName;-->
+<!--                       clientNameCell.appendChild(clientLink);-->
+<!--                       row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location-->
+<!--                       row.insertCell(3).textContent = client.currency;-->
+<!--                   });-->
+<!--               })-->
+<!--               .catch(error => console.error('Error fetching clients:', error));-->
+<!--       }-->
+
+<!--       fetchClients(); // Fetch clients when page loads-->
+
+<!--       // Export profile functionality-->
+<!--       function exportClients() {-->
+<!--           fetch(`http://43.205.154.85:8080/api/clients/clients/export`, {-->
+<!--               method: 'GET',-->
+<!--               headers: {-->
+<!--                   'Content-Type': 'application/json'-->
+<!--               }-->
+<!--           })-->
+<!--           .then(response => response.blob())-->
+<!--           .then(blob => {-->
+<!--               const url = window.URL.createObjectURL(blob);-->
+<!--               const a = document.createElement('a');-->
+<!--               a.href = url;-->
+<!--               a.download = 'client_export.xlsx'; // Set the file name for the export-->
+<!--               a.click();-->
+<!--               window.URL.revokeObjectURL(url);-->
+<!--           })-->
+<!--           .catch(error => console.error('Error exporting profile data:', error));-->
+<!--       }-->
+
+<!--       // Add event listener to export button-->
+<!--       document.getElementById('exportBtn').addEventListener('click', exportClients);-->
+
+<!--       // Enable the Import button when a file is selected-->
+<!--     csvUpload.addEventListener('change', function() {-->
+<!--        importCsvBtn.disabled = !csvUpload.files.length;-->
+<!--    });-->
+
+<!--    // Handle CSV import-->
+<!--    importCsvBtn.addEventListener('click', function() {-->
+<!--        const file = csvUpload.files[0];-->
+<!--        if (file) {-->
+<!--            const formData = new FormData();-->
+<!--            formData.append('file', file);-->
+
+<!--            fetch('http://43.205.154.85:8080/api/clients/clients/import', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    "Authorization": `Bearer ${token}`-->
+<!--                },-->
+<!--                body: formData-->
+<!--            })-->
+<!--            .then(response => response.json()) // Expect JSON response-->
+<!--            .then(data => {-->
+<!--                if (Array.isArray(data)) {-->
+<!--                    console.log('Profiles imported:', data);-->
+<!--                    data.forEach(profile => {-->
+<!--                        fetchProfileById(profile.id); // Display each imported profile-->
+<!--                    });-->
+<!--                } else {-->
+<!--                    console.error('Error importing profiles:', data.message);-->
+<!--                }-->
+<!--                csvUpload.value = ''; // Clear the file input-->
+<!--                importCsvBtn.disabled = true; // Disable the Import button-->
+<!--            })-->
+<!--            .catch(error => console.error('Error:', error));-->
+<!--        }-->
+<!--    });-->
+<!--   });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -262,13 +1104,13 @@ function signOut() {
             padding: 0;
         }
         .container {
-            max-width: 1000px;
+
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
-            margin-top: 190px;
-            margin-bottom: 230px;
+            margin-top: 30px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .container h2 {
@@ -279,11 +1121,14 @@ function signOut() {
         table {
             width: 100%;
             border-collapse: collapse;
+
         }
         th, td {
             padding: 10px;
             border: 1px solid #ddd;
             text-align: left;
+            vertical-align:middle;
+            height: 50px;
         }
         th {
             background-color: #f4f4f4;
@@ -308,7 +1153,7 @@ function signOut() {
             right: 20px;
             display: flex;
             gap: 5px;
-            margin-top: 70px;
+            margin-top: 40px;
             margin-bottom: 40px;
         }
 
@@ -321,8 +1166,11 @@ function signOut() {
         .header-content nav ul li {
             padding: 10px 15px;
             font-size: 14px;
-            background-color: #005149;
+            background-color: #8c9393;
             border-radius: 4px;
+        }
+        .header-content nav ul li:hover{
+            background-color: #005149
         }
 
         .header-content nav ul li a {
@@ -347,11 +1195,80 @@ function signOut() {
             background-color: #b0bec5;
             cursor: not-allowed;
         }
+        .form-group{
+            float: right;
+        }
+
+        .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #005149;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.pagination button:disabled {
+    background-color: #b0bec5;
+    cursor: not-allowed;
+}
+#pageInfo{
+    margin-top: 10px;
+}
+                #loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff; /* White background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #005149; /* Spinner color */
+    font-family: 'Arial', sans-serif;
+    z-index: 1000; /* Ensure it's on top of other content */
+    text-align: center;
+}
+
+.spinner {
+    border: 6px solid rgba(0, 81, 73, 0.3); /* Light version of #005149 */
+    border-top: 6px solid #005149; /* #005149 for the spinning part */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #005149; /* Text color to match the spinner */
+}
+
     </style>
 </head>
 <body>
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your page...</div>
+</div>
 <div id="header"></div>
-<div class="header-content">
+<div class="header-content" id="page-content" style="display: none;">
     <nav>
         <ul>
             <li><a href="clients.html">Clients</a></li>
@@ -364,14 +1281,18 @@ function signOut() {
 <div class="container">
     <h2>Clients</h2>
     <!-- CSV Upload Section -->
-    <tr>
-        <td colspan="6">
-            <label for="csvUpload">Add Profile Using CSV:</label>
-            <input type="file" id="csvUpload" accept=".csv">
-            <button type="button" id="importCsvBtn" disabled>Import from CSV</button>
-        </td>
-    </tr>
-    <button id="exportBtn">Export Clients</button> <!-- Export button -->
+    <div class="form-group">
+        <label for="csvUpload">Add Clients Using CSV:</label>
+        <input type="file" id="csvUpload" accept=".csv">
+        <button type="button" id="importCsvBtn" disabled>Import from CSV</button>
+    </div>
+
+
+    <div>
+        <label for="exportBtn">Export client:</label>
+        <button id="exportBtn">Export Clients</button>
+    </div>
+    <!-- Export button -->
     <table id="clientsTable">
         <thead>
         <tr>
@@ -385,17 +1306,98 @@ function signOut() {
         <!-- Rows will be added dynamically here -->
         </tbody>
     </table>
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <button id="prevPageBtn" disabled>Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPageBtn" disabled>Next</button>
+    </div>
 </div>
 
 <div id="footer"></div>
 
 <script>
 
+    (function() {
+        const token = localStorage.getItem('accessToken');
+
+        // If the token is missing, redirect to the login page immediately
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Validate the token by making a quick API call
+        fetch('http://43.205.154.85:8080/profile/count', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If token validation fails, redirect to the login page immediately
+                window.location.href = 'login.html';
+            }
+            // No further actions needed as page loading continues only if the token is valid
+        })
+        .catch(error => {
+            // In case of any error, redirect to the login page
+            console.error('Error:', error);
+            window.location.href = 'login.html';
+        });
+    })();
+
+
+    window.addEventListener('load', function() {
+    // Show the loading overlay
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const pageContent = document.getElementById('page-content');
+
+    // Set a timeout to hide the loading overlay and show the page content
+    setTimeout(function() {
+        loadingOverlay.style.display = 'none'; // Hide the loading overlay
+        pageContent.style.display = 'block';   // Show the page content
+    }, 1000); // 1000 milliseconds = 1 second
+});
+    const pageSize = 10; // Number of clients per page
+    let currentPage = 1;
+    let clientsData = [];
+
+
     fetch('header.html')
-       .then(response => response.text())
-       .then(data => {
-           document.getElementById('header').innerHTML = data;
-       });
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+            // Call updateNavbar after header is inserted
+            updateNavbar();
+        });
+        // Function to check login status and update navbar
+function updateNavbar() {
+    const username = localStorage.getItem('username'); // Fetch username from local storage
+    const loginRegisterLink = document.getElementById('loginRegisterLink');
+    const signOutButton = document.getElementById('signOutButton');
+
+    if (username) {
+        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+        signOutButton.style.display = 'block'; // Show the Sign Out button
+    } else {
+        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+    }
+}
+function signOut() {
+        console.log('Signing out...');
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('username');
+        loginRegisterLink.textContent = 'Login/Register';
+        redirectToLogin();
+    }
+
+    function redirectToLogin() {
+        console.log("i am in the redirect");
+        window.location.href = 'login.html';
+    }
 
    fetch('footer.html')
        .then(response => response.text())
@@ -439,25 +1441,58 @@ function signOut() {
            document.getElementById('closeModal').style.cursor = 'pointer';
        }
 
+
+       function renderTable(clients) {
+        const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];
+        clientsTable.innerHTML = ''; // Clear the table body
+
+        clients.forEach((client, index) => {
+            const row = clientsTable.insertRow();
+            row.insertCell(0).textContent = (currentPage - 1) * pageSize + index + 1;
+            const clientNameCell = row.insertCell(1);
+            const clientLink = document.createElement('a');
+            clientLink.href = `editClient.html?id=${client.id}`;
+            clientLink.textContent = client.clientName;
+            clientNameCell.appendChild(clientLink);
+            row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
+            row.insertCell(3).textContent = client.currency;
+        });
+    }
+
+    function updatePaginationControls() {
+        document.getElementById('prevPageBtn').disabled = currentPage === 1;
+        document.getElementById('nextPageBtn').disabled = currentPage * pageSize >= clientsData.length;
+        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.ceil(clientsData.length / pageSize)}`;
+    }
+
        function fetchClients() {
-           fetch('http://43.205.154.85:8080/api/clients')
-               .then(response => response.json())
-               .then(clients => {
-                   const clientsTable = document.getElementById('clientsTable').getElementsByTagName('tbody')[0];
-                   clients.forEach((client, index) => {
-                       const row = clientsTable.insertRow();
-                       row.insertCell(0).textContent = index + 1;
-                       const clientNameCell = row.insertCell(1);
-                       const clientLink = document.createElement('a');
-                       clientLink.href = `editClient.html?id=${client.id}`;
-                       clientLink.textContent = client.clientName;
-                       clientNameCell.appendChild(clientLink);
-                       row.insertCell(2).textContent = client.clientAddress; // Assuming clientAddress is location
-                       row.insertCell(3).textContent = client.currency;
-                   });
-               })
-               .catch(error => console.error('Error fetching clients:', error));
-       }
+        fetch('http://43.205.154.85:8080/api/clients')
+            .then(response => response.json())
+            .then(clients => {
+                clientsData = clients; // Store all client data
+                renderTable(clientsData.slice((currentPage - 1) * pageSize, currentPage * pageSize));
+                updatePaginationControls();
+            })
+            .catch(error => console.error('Error fetching clients:', error));
+    }
+
+    // Handle Next Page Button Click
+    document.getElementById('nextPageBtn').addEventListener('click', function() {
+        if (currentPage * pageSize < clientsData.length) {
+            currentPage++;
+            renderTable(clientsData.slice((currentPage - 1) * pageSize, currentPage * pageSize));
+            updatePaginationControls();
+        }
+    });
+
+    // Handle Previous Page Button Click
+    document.getElementById('prevPageBtn').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            renderTable(clientsData.slice((currentPage - 1) * pageSize, currentPage * pageSize));
+            updatePaginationControls();
+        }
+    });
 
        fetchClients(); // Fetch clients when page loads
 

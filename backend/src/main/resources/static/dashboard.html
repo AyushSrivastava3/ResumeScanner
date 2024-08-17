@@ -1,334 +1,449 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 0;
-            margin: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .header-content nav ul {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            margin-top: 60px;
-            display: flex;
-            gap: 10px;
-        }
-        .header-content nav ul li {
-           padding: 10px 15px;
-            font-size: 14px;
-            background-color: #005149;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        .header-content nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            margin-top: 150px;
-        }
-        .button-group, .filter-form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .button-group button, .filter-form button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            background-color: #005149;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button-group button:hover, .filter-form button:hover {
-            background-color: #003d34;
-        }
-        .filter-form input {
-            padding: 10px;
-            margin-right: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-<div id="header"></div>
-<div class="header-content">
-    <nav>
-        <ul>
-            <li><a href="clients.html">Clients</a></li>
-            <li><a href="all-invoices.html">Invoices</a></li>
-            <li><a href="pendinginvoices.html">Pending Invoices</a></li>
-        </ul>
-    </nav>
-</div>
 
-<div class="main-content">
-    <div class="button-group">
-        <button id="togglePending">Show Pending Invoices</button>
-        <button id="toggleAll">Show All Invoices</button>
-    </div>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Invoice Dashboard</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background-color: white;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
 
-    <div class="filter-form">
-        <input type="number" id="year" name="year" placeholder="Year" min="2000" max="2100">
-        <input type="number" id="month" name="month" placeholder="Month" min="1" max="12">
-        <button id="filterButton">Filter</button>
-        <button id="clearButton">Clear</button>
-    </div>
+<!--        /* Header styles */-->
+<!--        .header-content {-->
+<!--            margin-top: 50px;-->
+<!--            margin-right: 10px;-->
+<!--            position: relative;-->
+<!--            background-color: white;-->
+<!--            padding: 10px 0;-->
+<!--        }-->
 
-    <table id="invoiceTable">
-        <thead>
-        <tr>
-            <th>Serial Number</th>
-            <th>Client Name</th>
-            <th>Invoice Number</th>
-            <th>Invoice Value</th>
-            <th>Delayed by</th>
-            <th>Last Follow-up</th>
-            <th>Follow-up Notes</th>
-            <th>Target Date</th>
-            <th>Paid on Date</th>
-            <th>Paid with Delay of</th>
-            <th>Transaction Reference Number</th>
-            <th>Comments</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-        </tbody>
-    </table>
-</div>
+<!--        .header-content nav ul {-->
+<!--            display: flex;-->
+<!--            justify-content: flex-end;-->
+<!--            gap: 10px;-->
+<!--            padding: 0;-->
+<!--            margin: 0;-->
+<!--            list-style: none;-->
+<!--        }-->
 
-<div id="footer"></div>
+<!--        .header-content nav ul li {-->
+<!--            padding: 10px 15px;-->
+<!--            font-size: 14px;-->
+<!--            background-color: #afafaf;-->
+<!--            color: black;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+<!--        .header-content nav ul li:hover{-->
+<!--            background-color: #64706f;-->
+<!--        }-->
+<!--        .header-content nav ul li a {-->
+<!--            color: black;-->
+<!--            text-decoration: none;-->
+<!--        }-->
 
-<script>
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-            // Call updateNavbar after header is inserted
-            updateNavbar();
-        });
-        // Function to check login status and update navbar
-function updateNavbar() {
-    const username = localStorage.getItem('username'); // Fetch username from local storage
-    const loginRegisterLink = document.getElementById('loginRegisterLink');
-    const signOutButton = document.getElementById('signOutButton');
+<!--        /* Main content styles */-->
+<!--        .main-content {-->
+<!--            flex: 1;-->
+<!--            padding: 20px;-->
+<!--            margin-top: 0px;-->
+<!--        }-->
 
-    if (username) {
-        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
-        signOutButton.style.display = 'block'; // Show the Sign Out button
-    } else {
-        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
-        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
-    }
-}
-function signOut() {
-        console.log('Signing out...');
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('username');
-        loginRegisterLink.textContent = 'Login/Register';
-        redirectToLogin();
-    }
+<!--        .button-group, .filter-form {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
 
-    function redirectToLogin() {
-        console.log("i am in the redirect");
-        window.location.href = 'login.html';
-    }
+<!--        .button-group button, .filter-form button {-->
+<!--            margin: 0 10px;-->
+<!--            padding: 10px 20px;-->
+<!--            background-color: #005149;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
 
-   fetch('footer.html')
-       .then(response => response.text())
-       .then(data => {
-           document.getElementById('footer').innerHTML = data;
-       });
+<!--        .button-group button:hover, .filter-form button:hover {-->
+<!--            background-color: #003d34;-->
+<!--        }-->
 
-   document.addEventListener('DOMContentLoaded', function() {
-       const token = localStorage.getItem('accessToken');
+<!--        .filter-form input {-->
+<!--            padding: 10px;-->
+<!--            margin-right: 10px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
 
-       if (!token) {
-           showModal("You have not yet logged in. Kindly login first.");
-           return;
-       }
+<!--        /* Table styles */-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
 
-       function showModal(message) {
-           const modal = document.createElement('div');
-           modal.style.position = 'fixed';
-           modal.style.top = '50%';
-           modal.style.left = '50%';
-           modal.style.transform = 'translate(-50%, -50%)';
-           modal.style.padding = '20px';
-           modal.style.backgroundColor = '#fff';
-           modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-           modal.innerHTML = `
-               <p>${message}</p>
-               <button id="closeModal">Close</button>
-           `;
-           document.body.appendChild(modal);
+<!--        table, th, td {-->
+<!--            border: 1px solid black;-->
+<!--        }-->
 
-           document.getElementById('closeModal').addEventListener('click', function() {
-               modal.remove();
-               window.location.href = 'login.html'; // Redirect to login page
-           });
+<!--        th, td {-->
+<!--            padding: 8px;-->
+<!--            text-align: left;-->
+<!--        }-->
 
-           document.getElementById('closeModal').style.backgroundColor = '#005149';
-           document.getElementById('closeModal').style.color = '#fff';
-           document.getElementById('closeModal').style.border = 'none';
-           document.getElementById('closeModal').style.padding = '10px';
-           document.getElementById('closeModal').style.borderRadius = '5px';
-           document.getElementById('closeModal').style.cursor = 'pointer';
-       }
+<!--        /* Pagination styles */-->
+<!--        .pagination {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+<!--        .pagination button {-->
+<!--            margin: 0 5px;-->
+<!--            padding: 10px 15px;-->
+<!--            background-color: #005149;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        .pagination button:hover {-->
+<!--            background-color: #003d34;-->
+<!--        }-->
+<!--        .pagination button[disabled] {-->
+<!--            background-color: #ccc;-->
+<!--            cursor: not-allowed;-->
+<!--        }-->
+<!--        #pageNumber{-->
+<!--            margin-top: 10px;-->
+<!--        }-->
+<!--        #name{-->
+<!--            color: #003d34;-->
+<!--        }-->
+<!--        #name:hover{-->
+<!--            color: rgb(70, 103, 136);-->
+<!--        }-->
+<!--        #invoice_id{-->
+<!--            color: black;-->
+<!--        }-->
+<!--        #invoice_id:hover{-->
+<!--            color: rgb(70, 103, 136)-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="header-content">-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="clients.html">Clients</a></li>-->
+<!--            <li><a href="all-invoices.html">Invoices</a></li>-->
+<!--            <li><a href="pendinginvoices.html">Pending Invoices</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
 
-       const togglePendingButton = document.getElementById('togglePending');
-       const toggleAllButton = document.getElementById('toggleAll');
-       const filterButton = document.getElementById('filterButton');
-       const clearButton = document.getElementById('clearButton');
-       const invoiceTableBody = document.querySelector('#invoiceTable tbody');
-       const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
+<!--&lt;!&ndash; Main content section &ndash;&gt;-->
+<!--<div class="main-content">-->
+<!--    <div class="button-group">-->
+<!--        <button id="togglePending">Show Pending Invoices</button>-->
+<!--        <button id="toggleAll">Show All Invoices</button>-->
+<!--    </div>-->
 
-       togglePendingButton.addEventListener('click', function() {
-           fetch('http://43.205.154.85:8080/api/invoices/pending')
-               .then(response => response.json())
-               .then(invoices => populateTable(invoices, false))
-               .catch(error => console.error('Error fetching pending invoices:', error));
-       });
+<!--    <div class="filter-form">-->
+<!--        <input type="number" id="year" name="year" placeholder="Year" min="2000" max="2100">-->
+<!--        <input type="number" id="month" name="month" placeholder="Month" min="1" max="12">-->
+<!--        <button id="filterButton">Filter</button>-->
+<!--        <button id="clearButton">Clear</button>-->
+<!--    </div>-->
 
-       toggleAllButton.addEventListener('click', function() {
-           fetch('http://43.205.154.85:8080/api/invoices/all')
-               .then(response => response.json())
-               .then(invoices => populateTable(invoices, false))
-               .catch(error => console.error('Error fetching all invoices:', error));
-       });
+<!--    <table id="invoiceTable">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Serial Number</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Invoice Number</th>-->
+<!--            <th>Invoice Value</th>-->
+<!--            <th>Delayed by</th>-->
+<!--            <th>Last Follow-up</th>-->
+<!--            <th>Follow-up Notes</th>-->
+<!--            <th>Target Date</th>-->
+<!--            <th>Paid on Date</th>-->
+<!--            <th>Paid with Delay of</th>-->
+<!--            <th>Transaction Reference Number</th>-->
+<!--            <th>Comments</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        &lt;!&ndash; Rows will be populated by JavaScript &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
 
-       filterButton.addEventListener('click', function() {
-           const year = document.getElementById('year').value;
-           const month = document.getElementById('month').value;
+<!--    <div class="pagination">-->
+<!--        <button id="prevPage" disabled>Previous</button>-->
+<!--        <span id="pageNumber">Page 1 of 1</span>-->
+<!--        <button id="nextPage" disabled>Next</button>-->
+<!--    </div>-->
+<!--</div>-->
 
-           let url = 'http://43.205.154.85:8080/api/invoices/';
-           if (year && month) {
-               url += `byMonth?year=${year}&month=${month}`;
-           } else if (year) {
-               url += `byYear?year=${year}`;
-           } else {
-               return;
-           }
+<!--&lt;!&ndash; Footer section &ndash;&gt;-->
+<!--<div id="footer">-->
+<!--    &lt;!&ndash; Footer content goes here &ndash;&gt;-->
+<!--</div>-->
 
-           fetch(url)
-               .then(response => response.json())
-               .then(invoices => populateTable(invoices, true))
-               .catch(error => console.error('Error fetching filtered invoices:', error));
-       });
+<!--<script>-->
+<!--    let currentPage = 1;-->
+<!--const rowsPerPage = 10; // Number of rows per page-->
+<!--let totalPages = 0;-->
+<!--let currentInvoices = [];-->
 
-       clearButton.addEventListener('click', function() {
-           document.getElementById('year').value = '';
-           document.getElementById('month').value = '';
-           invoiceTableBody.innerHTML = '';
-       });
+<!--fetch('header.html')-->
+<!--    .then(response => response.text())-->
+<!--    .then(data => {-->
+<!--        document.getElementById('header').innerHTML = data;-->
+<!--        // Call updateNavbar after header is inserted-->
+<!--        updateNavbar();-->
+<!--    });-->
 
-       function populateTable(invoices, isFilter) {
-           invoiceTableBody.innerHTML = '';
+<!--function updateNavbar() {-->
+<!--    const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--    const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--    const signOutButton = document.getElementById('signOutButton');-->
 
-           // Adjust table headers based on filter status
-           if (isFilter) {
-               invoiceTableHead.innerHTML = `
-                   <th>Serial Number</th>
-                   <th>Client Name</th>
-                   <th>Invoice Number</th>
-                   <th>Invoice Value</th>
-                   <th>Paid on Date</th>
-                   <th>Paid with Delay of</th>
-                   <th>Transaction Reference Number</th>
-                   <th>Comments</th>
-               `;
-           } else {
-               invoiceTableHead.innerHTML = `
-                   <th>Serial Number</th>
-                   <th>Client Name</th>
-                   <th>Invoice Number</th>
-                   <th>Invoice Value</th>
-                   <th>Delayed by</th>
-                   <th>Last Follow-up</th>
-                   <th>Follow-up Notes</th>
-                   <th>Target Date</th>
-               `;
-           }
+<!--    if (username) {-->
+<!--        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--        signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--    } else {-->
+<!--        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--        signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--    }-->
+<!--}-->
 
-           invoices.forEach((invoice, index) => {
-               const row = document.createElement('tr');
-               if (isFilter) {
-                   row.innerHTML = `
-                       <td>${index + 1}</td>
-                       <td>${invoice.clientName}</td>
-                       <td>${invoice.invoiceNumber}</td>
-                       <td>${invoice.invoiceValue}</td>
-                       <td>${invoice.paidOn || ''}</td>
-                       <td>${calculatePaidDelay(invoice.raisedOn, invoice.paidOn)}</td>
-                       <td>${invoice.transactionReferenceNumber || ''}</td>
-                       <td>${invoice.comments || ''}</td>
-                   `;
-               } else {
-                   row.innerHTML = `
-                       <td>${index + 1}</td>
-                       <td>${invoice.clientName}</td>
-                       <td>${invoice.invoiceNumber}</td>
-                       <td>${invoice.invoiceValue}</td>
-                       <td>${calculateDelay(invoice.raisedOn, invoice.paidOn)}</td>
-                       <td>${invoice.lastFollowUp || ''}</td>
-                       <td>${invoice.followUpNotes || ''}</td>
-                       <td>${invoice.targetDate || ''}</td>
-                   `;
-               }
-               invoiceTableBody.appendChild(row);
-           });
-       }
+<!--function signOut() {-->
+<!--    console.log('Signing out...');-->
+<!--    localStorage.removeItem('accessToken');-->
+<!--    localStorage.setItem('isLoggedIn', 'false');-->
+<!--    localStorage.removeItem('username');-->
+<!--    loginRegisterLink.textContent = 'Login/Register';-->
+<!--    redirectToLogin();-->
+<!--}-->
 
-       function calculateDelay(raisedOn, paidOn) {
-           if (!raisedOn || !paidOn) return '';
-           const raisedDate = new Date(raisedOn);
-           const paidDate = new Date(paidOn);
-           const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
-           return `${delay} days`;
-       }
+<!--function redirectToLogin() {-->
+<!--    console.log("I am in the redirect");-->
+<!--    window.location.href = 'login.html';-->
+<!--}-->
 
-       function calculatePaidDelay(raisedOn, paidOn) {
-           if (!raisedOn || !paidOn) return '';
-           const raisedDate = new Date(raisedOn);
-           const paidDate = new Date(paidOn);
-           const delay = Math.floor((paidDate - raisedDate) / (1000 * 60 * 60 * 24));
-           return `${delay} days`;
-       }
-   });
-</script>
-</body>
-</html> -->
+<!--fetch('footer.html')-->
+<!--    .then(response => response.text())-->
+<!--    .then(data => {-->
+<!--        document.getElementById('footer').innerHTML = data;-->
+<!--    });-->
+
+<!--document.addEventListener('DOMContentLoaded', function() {-->
+<!--    const token = localStorage.getItem('accessToken');-->
+
+<!--    if (!token) {-->
+<!--        showModal("You have not yet logged in. Kindly login first.");-->
+<!--        return;-->
+<!--    }-->
+
+<!--    function showModal(message) {-->
+<!--        const modal = document.createElement('div');-->
+<!--        modal.style.position = 'fixed';-->
+<!--        modal.style.top = '50%';-->
+<!--        modal.style.left = '50%';-->
+<!--        modal.style.transform = 'translate(-50%, -50%)';-->
+<!--        modal.style.padding = '20px';-->
+<!--        modal.style.backgroundColor = '#fff';-->
+<!--        modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';-->
+<!--        modal.innerHTML = `-->
+<!--            <p>${message}</p>-->
+<!--            <button id="closeModal">Close</button>-->
+<!--        `;-->
+<!--        document.body.appendChild(modal);-->
+
+<!--        document.getElementById('closeModal').addEventListener('click', function() {-->
+<!--            modal.remove();-->
+<!--            window.location.href = 'login.html'; // Redirect to login page-->
+<!--        });-->
+
+<!--        document.getElementById('closeModal').style.backgroundColor = '#005149';-->
+<!--        document.getElementById('closeModal').style.color = '#fff';-->
+<!--        document.getElementById('closeModal').style.border = 'none';-->
+<!--        document.getElementById('closeModal').style.padding = '10px';-->
+<!--        document.getElementById('closeModal').style.borderRadius = '5px';-->
+<!--        document.getElementById('closeModal').style.cursor = 'pointer';-->
+<!--    }-->
+
+<!--    const togglePendingButton = document.getElementById('togglePending');-->
+<!--    const toggleAllButton = document.getElementById('toggleAll');-->
+<!--    const filterButton = document.getElementById('filterButton');-->
+<!--    const clearButton = document.getElementById('clearButton');-->
+<!--    const invoiceTableBody = document.querySelector('#invoiceTable tbody');-->
+<!--    const invoiceTableHead = document.querySelector('#invoiceTable thead tr');-->
+
+<!--    fetch('http://43.205.154.85:8080/api/invoices/pending')-->
+<!--        .then(response => response.json())-->
+<!--        .then(invoices => {-->
+<!--            currentInvoices = invoices;-->
+<!--            totalPages = Math.ceil(currentInvoices.length / rowsPerPage);-->
+<!--            updateTable(false);-->
+<!--        })-->
+<!--        .catch(error => console.error('Error fetching pending invoices:', error));-->
+
+<!--    togglePendingButton.addEventListener('click', function() {-->
+<!--        fetch('http://43.205.154.85:8080/api/invoices/pending')-->
+<!--            .then(response => response.json())-->
+<!--            .then(invoices => {-->
+<!--                currentInvoices = invoices;-->
+<!--                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);-->
+<!--                currentPage = 1; // Reset to the first page-->
+<!--                updateTable(false);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching pending invoices:', error));-->
+<!--    });-->
+
+<!--    toggleAllButton.addEventListener('click', function() {-->
+<!--        fetch('http://43.205.154.85:8080/api/invoices/all')-->
+<!--            .then(response => response.json())-->
+<!--            .then(invoices => {-->
+<!--                currentInvoices = invoices;-->
+<!--                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);-->
+<!--                currentPage = 1; // Reset to the first page-->
+<!--                updateTable(false);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching all invoices:', error));-->
+<!--    });-->
+
+<!--    filterButton.addEventListener('click', function() {-->
+<!--        const year = document.getElementById('year').value;-->
+<!--        const month = document.getElementById('month').value;-->
+
+<!--        let url = 'http://43.205.154.85:8080/api/invoices/';-->
+<!--        if (year && month) {-->
+<!--            url += `byMonth?year=${year}&month=${month}`;-->
+<!--        } else if (year) {-->
+<!--            url += `byYear?year=${year}`;-->
+<!--        } else {-->
+<!--            alert("Please enter at least a year for filtering.");-->
+<!--            return;-->
+<!--        }-->
+
+<!--        fetch(url)-->
+<!--            .then(response => response.json())-->
+<!--            .then(invoices => {-->
+<!--                currentInvoices = invoices;-->
+<!--                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);-->
+<!--                currentPage = 1; // Reset to the first page-->
+<!--                updateTable(true);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching filtered invoices:', error));-->
+<!--    });-->
+
+<!--    clearButton.addEventListener('click', function() {-->
+<!--        document.getElementById('year').value = '';-->
+<!--        document.getElementById('month').value = '';-->
+<!--        fetch('http://43.205.154.85:8080/api/invoices/all')-->
+<!--            .then(response => response.json())-->
+<!--            .then(invoices => {-->
+<!--                currentInvoices = invoices;-->
+<!--                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);-->
+<!--                currentPage = 1; // Reset to the first page-->
+<!--                updateTable(false);-->
+<!--            })-->
+<!--            .catch(error => console.error('Error fetching all invoices:', error));-->
+<!--    });-->
+
+<!--    const prevPageButton = document.getElementById('prevPage');-->
+<!--    const nextPageButton = document.getElementById('nextPage');-->
+
+<!--    prevPageButton.addEventListener('click', function() {-->
+<!--        if (currentPage > 1) {-->
+<!--            currentPage&#45;&#45;;-->
+<!--            updateTable(false);-->
+<!--        }-->
+<!--    });-->
+
+<!--    nextPageButton.addEventListener('click', function() {-->
+<!--        if (currentPage < totalPages) {-->
+<!--            currentPage++;-->
+<!--            updateTable(false);-->
+<!--        }-->
+<!--    });-->
+
+
+<!--    function updateTable(isFilter) {-->
+<!--    invoiceTableBody.innerHTML = '';-->
+<!--    const startIndex = (currentPage - 1) * rowsPerPage;-->
+<!--    const endIndex = Math.min(startIndex + rowsPerPage, currentInvoices.length);-->
+
+<!--    if (isFilter) {-->
+<!--        invoiceTableHead.innerHTML = `-->
+<!--            <th>Serial Number</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Invoice Number</th>-->
+<!--            <th>Invoice Value</th>-->
+<!--            <th>Paid on Date</th>-->
+<!--            <th>Paid with Delay of</th>-->
+<!--            <th>Transaction Reference Number</th>-->
+<!--            <th>Comments</th>-->
+<!--        `;-->
+<!--    } else {-->
+<!--        invoiceTableHead.innerHTML = `-->
+<!--            <th>Serial Number</th>-->
+<!--            <th>Client Name</th>-->
+<!--            <th>Invoice Number</th>-->
+<!--            <th>Invoice Value</th>-->
+<!--            <th>Delayed by</th>-->
+<!--            <th>Last Follow-up</th>-->
+<!--            <th>Follow-up Notes</th>-->
+<!--            <th>Target Date</th>-->
+<!--            <th>Paid on Date</th>-->
+<!--            <th>Paid with Delay of</th>-->
+<!--            <th>Transaction Reference Number</th>-->
+<!--            <th>Comments</th>-->
+<!--        `;-->
+<!--    }-->
+
+<!--    for (let i = startIndex; i < endIndex; i++) {-->
+<!--        const invoice = currentInvoices[i];-->
+<!--        const row = `-->
+<!--            <tr>-->
+<!--                <td>${i + 1}</td>-->
+<!--                <td><a href="editClient.html?id=${invoice.clientId}" target="_blank" id="name"><h3>${invoice.clientName}</h3></a></td>-->
+<!--                <td><a href="editInvoice.html?id=${invoice.id}" target="_blank" id="invoice_id">${invoice.invoiceNumber}</a></td>-->
+<!--                <td>${invoice.invoiceValue}</td>-->
+<!--                ${!isFilter ? `<td>${invoice.delayedBy}</td>` : ''}-->
+<!--                ${!isFilter ? `<td>${invoice.lastFollowUp}</td>` : ''}-->
+<!--                ${!isFilter ? `<td>${invoice.followUpNotes}</td>` : ''}-->
+<!--                ${!isFilter ? `<td>${invoice.targetDate}</td>` : ''}-->
+<!--                <td>${invoice.paidOnDate}</td>-->
+<!--                <td>${invoice.paidWithDelay}</td>-->
+<!--                <td>${invoice.transactionReferenceNumber}</td>-->
+<!--                <td>${invoice.comments}</td>-->
+<!--            </tr>-->
+<!--        `;-->
+<!--        invoiceTableBody.insertAdjacentHTML('beforeend', row);-->
+<!--    }-->
+
+<!--    // Update pagination controls-->
+<!--    prevPageButton.disabled = currentPage === 1;-->
+<!--    nextPageButton.disabled = currentPage === totalPages;-->
+<!--    document.getElementById('pageNumber').textContent = `Page ${currentPage} of ${totalPages}`;-->
+<!--}-->
+
+<!--});-->
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
 
 
 
@@ -346,46 +461,60 @@ function signOut() {
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 0;
             margin: 0;
-            background-color: #f4f4f4;
+            padding: 0;
+            background-color: white;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-        .header-content nav ul {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            margin-top: 60px;
-            display: flex;
-            gap: 10px;
+
+        /* Header styles */
+        .header-content {
+            margin-top: 50px;
+            margin-right: 10px;
+            position: relative;
+            background-color: white;
+            padding: 10px 0;
         }
+
+        .header-content nav ul {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
         .header-content nav ul li {
             padding: 10px 15px;
             font-size: 14px;
-            background-color: #005149;
-            color: #fff;
-            text-decoration: none;
+            background-color: #afafaf;
+            color: black;
             border-radius: 4px;
-            display: inline-block;
+        }
+        .header-content nav ul li:hover{
+            background-color: #64706f;
         }
         .header-content nav ul li a {
-            color: #fff;
+            color: black;
             text-decoration: none;
         }
+
+        /* Main content styles */
         .main-content {
             flex: 1;
-            display: flex;
-            flex-direction: column;
             padding: 20px;
-            margin-top: 150px;
+            margin-top: 0px;
         }
+
         .button-group, .filter-form {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
+
         .button-group button, .filter-form button {
             margin: 0 10px;
             padding: 10px 20px;
@@ -395,32 +524,118 @@ function signOut() {
             border-radius: 5px;
             cursor: pointer;
         }
+
         .button-group button:hover, .filter-form button:hover {
             background-color: #003d34;
         }
+
         .filter-form input {
             padding: 10px;
             margin-right: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+        /* Table styles */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
+
         table, th, td {
             border: 1px solid black;
         }
+
         th, td {
             padding: 8px;
             text-align: left;
         }
+
+        /* Pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            background-color: #005149;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pagination button:hover {
+            background-color: #003d34;
+        }
+        .pagination button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #pageNumber{
+            margin-top: 10px;
+        }
+        #name{
+            color: #003d34;
+        }
+        #name:hover{
+            color: rgb(70, 103, 136);
+        }
+        #invoice_id{
+            color: black;
+        }
+        #invoice_id:hover{
+            color: rgb(70, 103, 136)
+        }
+
+                #loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff; /* White background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #005149; /* Spinner color */
+    font-family: 'Arial', sans-serif;
+    z-index: 1000; /* Ensure it's on top of other content */
+    text-align: center;
+}
+
+.spinner {
+    border: 6px solid rgba(0, 81, 73, 0.3); /* Light version of #005149 */
+    border-top: 6px solid #005149; /* #005149 for the spinning part */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #005149; /* Text color to match the spinner */
+}
     </style>
 </head>
 <body>
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your page...</div>
+</div>
 <div id="header"></div>
-<div class="header-content">
+<div class="header-content"  id="page-content" style="display: none;">
     <nav>
         <ul>
             <li><a href="clients.html">Clients</a></li>
@@ -430,6 +645,7 @@ function signOut() {
     </nav>
 </div>
 
+<!-- Main content section -->
 <div class="main-content">
     <div class="button-group">
         <button id="togglePending">Show Pending Invoices</button>
@@ -464,19 +680,74 @@ function signOut() {
         <!-- Rows will be populated by JavaScript -->
         </tbody>
     </table>
+
+    <div class="pagination">
+        <button id="prevPage" disabled>Previous</button>
+        <span id="pageNumber">Page 1 of 1</span>
+        <button id="nextPage" disabled>Next</button>
+    </div>
 </div>
 
-<div id="footer"></div>
+<!-- Footer section -->
+<div id="footer">
+    <!-- Footer content goes here -->
+</div>
 
 <script>
-    fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-            // Call updateNavbar after header is inserted
-            updateNavbar();
+    (function() {
+        const token = localStorage.getItem('accessToken');
+
+        // If the token is missing, redirect to the login page immediately
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Validate the token by making a quick API call
+        fetch('http://43.205.154.85:8080/profile/count', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If token validation fails, redirect to the login page immediately
+                window.location.href = 'login.html';
+            }
+            // No further actions needed as page loading continues only if the token is valid
+        })
+        .catch(error => {
+            // In case of any error, redirect to the login page
+            console.error('Error:', error);
+            window.location.href = 'login.html';
         });
-        // Function to check login status and update navbar
+    })();
+
+    window.addEventListener('load', function() {
+    // Show the loading overlay
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const pageContent = document.getElementById('page-content');
+
+    // Set a timeout to hide the loading overlay and show the page content
+    setTimeout(function() {
+        loadingOverlay.style.display = 'none'; // Hide the loading overlay
+        pageContent.style.display = 'block';   // Show the page content
+    }, 1000); // 1000 milliseconds = 1 second
+});
+
+    let currentPage = 1;
+const rowsPerPage = 10; // Number of rows per page
+let totalPages = 0;
+let currentInvoices = [];
+
+fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('header').innerHTML = data;
+        // Call updateNavbar after header is inserted
+        updateNavbar();
+    });
+
 function updateNavbar() {
     const username = localStorage.getItem('username'); // Fetch username from local storage
     const loginRegisterLink = document.getElementById('loginRegisterLink');
@@ -490,171 +761,223 @@ function updateNavbar() {
         signOutButton.style.display = 'none'; // Hide Sign Out button if no username
     }
 }
+
 function signOut() {
-        console.log('Signing out...');
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('username');
-        loginRegisterLink.textContent = 'Login/Register';
-        redirectToLogin();
+    console.log('Signing out...');
+    localStorage.removeItem('accessToken');
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('username');
+    loginRegisterLink.textContent = 'Login/Register';
+    redirectToLogin();
+}
+
+function redirectToLogin() {
+    console.log("I am in the redirect");
+    window.location.href = 'login.html';
+}
+
+fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('footer').innerHTML = data;
+    });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('accessToken');
+
+    if (!token) {
+        showModal("You have not yet logged in. Kindly login first.");
+        return;
     }
 
-    function redirectToLogin() {
-        console.log("i am in the redirect");
-        window.location.href = 'login.html';
+    function showModal(message) {
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '50%';
+        modal.style.left = '50%';
+        modal.style.transform = 'translate(-50%, -50%)';
+        modal.style.padding = '20px';
+        modal.style.backgroundColor = '#fff';
+        modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
+        modal.innerHTML = `
+            <p>${message}</p>
+            <button id="closeModal">Close</button>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById('closeModal').addEventListener('click', function() {
+            modal.remove();
+            window.location.href = 'login.html'; // Redirect to login page
+        });
+
+        document.getElementById('closeModal').style.backgroundColor = '#005149';
+        document.getElementById('closeModal').style.color = '#fff';
+        document.getElementById('closeModal').style.border = 'none';
+        document.getElementById('closeModal').style.padding = '10px';
+        document.getElementById('closeModal').style.borderRadius = '5px';
+        document.getElementById('closeModal').style.cursor = 'pointer';
     }
 
+    const togglePendingButton = document.getElementById('togglePending');
+    const toggleAllButton = document.getElementById('toggleAll');
+    const filterButton = document.getElementById('filterButton');
+    const clearButton = document.getElementById('clearButton');
+    const invoiceTableBody = document.querySelector('#invoiceTable tbody');
+    const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
 
-   fetch('footer.html')
-       .then(response => response.text())
-       .then(data => {
-           document.getElementById('footer').innerHTML = data;
-       });
+    fetch('http://43.205.154.85:8080/api/invoices/pending')
+        .then(response => response.json())
+        .then(invoices => {
+            currentInvoices = invoices;
+            totalPages = Math.ceil(currentInvoices.length / rowsPerPage);
+            updateTable(false);
+        })
+        .catch(error => console.error('Error fetching pending invoices:', error));
 
-   document.addEventListener('DOMContentLoaded', function() {
-       const token = localStorage.getItem('accessToken');
+    togglePendingButton.addEventListener('click', function() {
+        fetch('http://43.205.154.85:8080/api/invoices/pending')
+            .then(response => response.json())
+            .then(invoices => {
+                currentInvoices = invoices;
+                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);
+                currentPage = 1; // Reset to the first page
+                updateTable(false);
+            })
+            .catch(error => console.error('Error fetching pending invoices:', error));
+    });
 
-       if (!token) {
-           showModal("You have not yet logged in. Kindly login first.");
-           return;
-       }
+    toggleAllButton.addEventListener('click', function() {
+        fetch('http://43.205.154.85:8080/api/invoices/all')
+            .then(response => response.json())
+            .then(invoices => {
+                currentInvoices = invoices;
+                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);
+                currentPage = 1; // Reset to the first page
+                updateTable(false);
+            })
+            .catch(error => console.error('Error fetching all invoices:', error));
+    });
 
-       function showModal(message) {
-           const modal = document.createElement('div');
-           modal.style.position = 'fixed';
-           modal.style.top = '50%';
-           modal.style.left = '50%';
-           modal.style.transform = 'translate(-50%, -50%)';
-           modal.style.padding = '20px';
-           modal.style.backgroundColor = '#fff';
-           modal.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.1)';
-           modal.innerHTML = `
-               <p>${message}</p>
-               <button id="closeModal">Close</button>
-           `;
-           document.body.appendChild(modal);
+    filterButton.addEventListener('click', function() {
+        const year = document.getElementById('year').value;
+        const month = document.getElementById('month').value;
 
-           document.getElementById('closeModal').addEventListener('click', function() {
-               modal.remove();
-               window.location.href = 'login.html'; // Redirect to login page
-           });
+        let url = 'http://43.205.154.85:8080/api/invoices/';
+        if (year && month) {
+            url += `byMonth?year=${year}&month=${month}`;
+        } else if (year) {
+            url += `byYear?year=${year}`;
+        } else {
+            alert("Please enter at least a year for filtering.");
+            return;
+        }
 
-           document.getElementById('closeModal').style.backgroundColor = '#005149';
-           document.getElementById('closeModal').style.color = '#fff';
-           document.getElementById('closeModal').style.border = 'none';
-           document.getElementById('closeModal').style.padding = '10px';
-           document.getElementById('closeModal').style.borderRadius = '5px';
-           document.getElementById('closeModal').style.cursor = 'pointer';
-       }
+        fetch(url)
+            .then(response => response.json())
+            .then(invoices => {
+                currentInvoices = invoices;
+                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);
+                currentPage = 1; // Reset to the first page
+                updateTable(true);
+            })
+            .catch(error => console.error('Error fetching filtered invoices:', error));
+    });
 
-       const togglePendingButton = document.getElementById('togglePending');
-       const toggleAllButton = document.getElementById('toggleAll');
-       const filterButton = document.getElementById('filterButton');
-       const clearButton = document.getElementById('clearButton');
-       const invoiceTableBody = document.querySelector('#invoiceTable tbody');
-       const invoiceTableHead = document.querySelector('#invoiceTable thead tr');
+    clearButton.addEventListener('click', function() {
+        document.getElementById('year').value = '';
+        document.getElementById('month').value = '';
+        fetch('http://43.205.154.85:8080/api/invoices/all')
+            .then(response => response.json())
+            .then(invoices => {
+                currentInvoices = invoices;
+                totalPages = Math.ceil(currentInvoices.length / rowsPerPage);
+                currentPage = 1; // Reset to the first page
+                updateTable(false);
+            })
+            .catch(error => console.error('Error fetching all invoices:', error));
+    });
 
-       fetch('http://43.205.154.85:8080/api/invoices/pending')
-           .then(response => response.json())
-           .then(invoices => populateTable(invoices, false))
-           .catch(error => console.error('Error fetching pending invoices:', error));
+    const prevPageButton = document.getElementById('prevPage');
+    const nextPageButton = document.getElementById('nextPage');
 
-       togglePendingButton.addEventListener('click', function() {
-           fetch('http://43.205.154.85:8080/api/invoices/pending')
-               .then(response => response.json())
-               .then(invoices => populateTable(invoices, false))
-               .catch(error => console.error('Error fetching pending invoices:', error));
-       });
+    prevPageButton.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            updateTable(false);
+        }
+    });
 
-       toggleAllButton.addEventListener('click', function() {
-           fetch('http://43.205.154.85:8080/api/invoices/all')
-               .then(response => response.json())
-               .then(invoices => populateTable(invoices, false))
-               .catch(error => console.error('Error fetching all invoices:', error));
-       });
+    nextPageButton.addEventListener('click', function() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            updateTable(false);
+        }
+    });
 
-       filterButton.addEventListener('click', function() {
-           const year = document.getElementById('year').value;
-           const month = document.getElementById('month').value;
 
-           let url = 'http://43.205.154.85:8080/api/invoices/';
-           if (year && month) {
-               url += `byMonth?year=${year}&month=${month}`;
-           } else if (year) {
-               url += `byYear?year=${year}`;
-           } else {
-               return;
-           }
+    function updateTable(isFilter) {
+    invoiceTableBody.innerHTML = '';
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, currentInvoices.length);
 
-           fetch(url)
-               .then(response => response.json())
-               .then(invoices => populateTable(invoices, true))
-               .catch(error => console.error('Error fetching filtered invoices:', error));
-       });
+    if (isFilter) {
+        invoiceTableHead.innerHTML = `
+            <th>Serial Number</th>
+            <th>Client Name</th>
+            <th>Invoice Number</th>
+            <th>Invoice Value</th>
+            <th>Paid on Date</th>
+            <th>Paid with Delay of</th>
+            <th>Transaction Reference Number</th>
+            <th>Comments</th>
+        `;
+    } else {
+        invoiceTableHead.innerHTML = `
+            <th>Serial Number</th>
+            <th>Client Name</th>
+            <th>Invoice Number</th>
+            <th>Invoice Value</th>
+            <th>Delayed by</th>
+            <th>Last Follow-up</th>
+            <th>Follow-up Notes</th>
+            <th>Target Date</th>
+            <th>Paid on Date</th>
+            <th>Paid with Delay of</th>
+            <th>Transaction Reference Number</th>
+            <th>Comments</th>
+        `;
+    }
 
-       clearButton.addEventListener('click', function() {
-           document.getElementById('year').value = '';
-           document.getElementById('month').value = '';
-           invoiceTableBody.innerHTML = '';
-       });
+    for (let i = startIndex; i < endIndex; i++) {
+        const invoice = currentInvoices[i];
+        const row = `
+            <tr>
+                <td>${i + 1}</td>
+                <td><a href="editClient.html?id=${invoice.clientId}" target="_blank" id="name"><h3>${invoice.clientName}</h3></a></td>
+                <td><a href="editInvoice.html?id=${invoice.id}" target="_blank" id="invoice_id">${invoice.invoiceNumber}</a></td>
+                <td>${invoice.invoiceValue}</td>
+                ${!isFilter ? `<td>${invoice.delayedBy}</td>` : ''}
+                ${!isFilter ? `<td>${invoice.lastFollowUp}</td>` : ''}
+                ${!isFilter ? `<td>${invoice.followUpNotes}</td>` : ''}
+                ${!isFilter ? `<td>${invoice.targetDate}</td>` : ''}
+                <td>${invoice.paidOnDate}</td>
+                <td>${invoice.paidWithDelay}</td>
+                <td>${invoice.transactionReferenceNumber}</td>
+                <td>${invoice.comments}</td>
+            </tr>
+        `;
+        invoiceTableBody.insertAdjacentHTML('beforeend', row);
+    }
 
-       function populateTable(invoices, isFilter) {
-           invoiceTableBody.innerHTML = '';
-    console.log(invoices); // Log the invoices array
+    // Update pagination controls
+    prevPageButton.disabled = currentPage === 1;
+    nextPageButton.disabled = currentPage === totalPages;
+    document.getElementById('pageNumber').textContent = `Page ${currentPage} of ${totalPages}`;
+}
 
-           // Adjust table headers based on filter status
-           if (isFilter) {
-               invoiceTableHead.innerHTML = `
-                   <th>Serial Number</th>
-                   <th>Client Name</th>
-                   <th>Invoice Number</th>
-                   <th>Invoice Value</th>
-                   <th>Paid on Date</th>
-                   <th>Paid with Delay of</th>
-                   <th>Transaction Reference Number</th>
-                   <th>Comments</th>
-               `;
-           } else {
-               invoiceTableHead.innerHTML = `
-                   <th>Serial Number</th>
-                   <th>Client Name</th>
-                   <th>Invoice Number</th>
-                   <th>Invoice Value</th>
-                   <th>Delayed by</th>
-                   <th>Last Follow-up</th>
-                   <th>Follow-up Notes</th>
-                   <th>Target Date</th>
-                   <th>Paid on Date</th>
-                   <th>Paid with Delay of</th>
-                   <th>Transaction Reference Number</th>
-                   <th>Comments</th>
-               `;
-           }
+});
 
-           invoices.forEach((invoice, index) => {
-               const row = document.createElement('tr');
-
-               row.innerHTML = `
-                   <td>${index + 1}</td>
-                   <td><a href="editClient.html?id=${invoice.clientId}" target="_blank">${invoice.clientName}</a></td>
-                   <td><a href="editInvoice.html?id=${invoice.id}" target="_blank">${invoice.invoiceNumber}</a></td>
-                   <td>${invoice.invoiceValue}</td>
-                   ${!isFilter ? `<td>${invoice.delayedBy}</td>` : ''}
-                   ${!isFilter ? `<td>${invoice.lastFollowUp}</td>` : ''}
-                   ${!isFilter ? `<td>${invoice.followUpNotes}</td>` : ''}
-                   ${!isFilter ? `<td>${invoice.targetDate}</td>` : ''}
-                   <td>${invoice.paidOnDate}</td>
-                   <td>${invoice.paidWithDelay}</td>
-                   <td>${invoice.transactionReferenceNumber}</td>
-                   <td>${invoice.comments}</td>
-               `;
-
-               invoiceTableBody.appendChild(row);
-           });
-       }
-   });
 </script>
 </body>
 </html>
- 
- 
+

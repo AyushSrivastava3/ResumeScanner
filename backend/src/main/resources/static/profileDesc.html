@@ -1,3 +1,174 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Profile Information</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 20px;-->
+<!--            box-sizing: border-box;-->
+<!--            background-color: white;-->
+<!--        }-->
+<!--        .profile-container {-->
+<!--            max-width: 800px;-->
+<!--            margin: 0 auto;-->
+<!--            padding: 20px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--            background-color:  #cfd0cf;-->
+<!--            margin-top: 80px;-->
+<!--            margin-bottom: 90px;-->
+<!--        }-->
+<!--        .profile-container h1 {-->
+<!--            color: #005149;-->
+<!--        }-->
+<!--        .profile-detail {-->
+<!--            margin: 10px 0;-->
+<!--        }-->
+<!--        .profile-detail label {-->
+<!--            font-weight: bold;-->
+<!--        }-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--            border-collapse: collapse;-->
+<!--            margin: 20px 0;-->
+<!--        }-->
+<!--        table, th, td {-->
+<!--            border: 1px solid #ccc;-->
+<!--        }-->
+<!--        th, td {-->
+<!--            padding: 10px;-->
+<!--            text-align: left;-->
+<!--        }-->
+<!--        th {-->
+<!--            background-color: #005149;-->
+<!--            color: #fff;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="profile-container" id="profileContainer">-->
+<!--    <h1>Profile Information</h1>-->
+<!--    <div id="profileDetails"></div>-->
+<!--</div>-->
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+<!--        fetch('header.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('header').innerHTML = data;-->
+<!--            // Call updateNavbar after header is inserted-->
+<!--            updateNavbar();-->
+<!--        });-->
+<!--        // Function to check login status and update navbar-->
+<!--function updateNavbar() {-->
+<!--    const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--    const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--    const signOutButton = document.getElementById('signOutButton');-->
+
+<!--    if (username) {-->
+<!--        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--        signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--    } else {-->
+<!--        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--        signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--    }-->
+<!--}-->
+<!--function signOut() {-->
+<!--        console.log('Signing out...');-->
+<!--        localStorage.removeItem('accessToken');-->
+<!--        localStorage.setItem('isLoggedIn', 'false');-->
+<!--        localStorage.removeItem('username');-->
+<!--        loginRegisterLink.textContent = 'Login/Register';-->
+<!--        redirectToLogin();-->
+<!--    }-->
+
+<!--    function redirectToLogin() {-->
+<!--        console.log("i am in the redirect");-->
+<!--        window.location.href = 'login.html';-->
+<!--    }-->
+
+<!--        fetch('footer.html')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('footer').innerHTML = data;-->
+<!--            });-->
+
+<!--    document.addEventListener('DOMContentLoaded', () => {-->
+<!--        const profileDetailsDiv = document.getElementById('profileDetails');-->
+<!--        const token = localStorage.getItem('accessToken');-->
+<!--            if (!token) {-->
+<!--                console.error("No token found. Please log in.");-->
+<!--                return;-->
+<!--            }-->
+
+<!--        function getQueryParam(param) {-->
+<!--            const urlParams = new URLSearchParams(window.location.search);-->
+<!--            return urlParams.get(param);-->
+<!--        }-->
+
+<!--        const fileId = getQueryParam('fileId');-->
+
+<!--        function fetchProfileInformation(fileId) {-->
+<!--            fetch(`http://43.205.154.85:8080/getProfileInformation?fileId=${fileId}`, {-->
+<!--                headers: {-->
+<!--                    'Authorization': `Bearer ${token}`-->
+<!--                }-->
+<!--            })-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    profileDetailsDiv.innerHTML = `-->
+<!--                        <div class="profile-detail"><label>Resume ID:</label> ${data.resumeId}</div>-->
+<!--                        <div class="profile-detail"><label>Candidate Name:</label> ${data.candidateName}</div>-->
+<!--                        <div class="profile-detail"><label>Uploaded Date:</label> ${data.uploadedDate}</div>-->
+<!--                        <div class="profile-detail"><label>Skills:</label>-->
+<!--                            <table>-->
+<!--                                <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th>Skill</th>-->
+<!--                                        <th>Experience</th>-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                    ${Object.entries(data.profile_skill_map).map(([skill, experience]) =>-->
+<!--                                        `<tr>-->
+<!--                                            <td>${skill}</td>-->
+<!--                                            <td>${convertExperience(experience)}</td>-->
+<!--                                        </tr>`-->
+<!--                                    ).join('')}-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                    `;-->
+<!--                })-->
+<!--                .catch(error => console.error('Error fetching profile information:', error));-->
+<!--        }-->
+
+<!--        function convertExperience(months) {-->
+<!--            if (months < 12) {-->
+<!--                return `${months} month${months > 1 ? 's' : ''}`;-->
+<!--            } else {-->
+<!--                const years = Math.floor(months / 12);-->
+<!--                const remainingMonths = months % 12;-->
+<!--                return `${years} year${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}`;-->
+<!--            }-->
+<!--        }-->
+
+<!--        fetchProfileInformation(fileId);-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +191,7 @@
             border-radius: 5px;
             background-color:  #cfd0cf;
             margin-top: 80px;
-            margin-bottom: 90px;
+            margin-bottom: 635px;
         }
         .profile-container h1 {
             color: #005149;
@@ -59,110 +230,137 @@
 <div id="footer"></div>
 
 <script>
+    (function() {
+        const token = localStorage.getItem('accessToken');
 
-        fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-            // Call updateNavbar after header is inserted
-            updateNavbar();
+        // If the token is missing, redirect to the login page immediately
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Validate the token by making a quick API call
+        fetch('http://43.205.154.85:8080/profile/count', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If token validation fails, redirect to the login page immediately
+                window.location.href = 'login.html';
+            }
+            // No further actions needed as page loading continues only if the token is valid
+        })
+        .catch(error => {
+            // In case of any error, redirect to the login page
+            console.error('Error:', error);
+            window.location.href = 'login.html';
         });
-        // Function to check login status and update navbar
+    })();
+    fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('header').innerHTML = data;
+        // Call updateNavbar after header is inserted
+        updateNavbar();
+    });
+    // Function to check login status and update navbar
 function updateNavbar() {
-    const username = localStorage.getItem('username'); // Fetch username from local storage
-    const loginRegisterLink = document.getElementById('loginRegisterLink');
-    const signOutButton = document.getElementById('signOutButton');
+const username = localStorage.getItem('username'); // Fetch username from local storage
+const loginRegisterLink = document.getElementById('loginRegisterLink');
+const signOutButton = document.getElementById('signOutButton');
 
-    if (username) {
-        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
-        signOutButton.style.display = 'block'; // Show the Sign Out button
-    } else {
-        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
-        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
-    }
+if (username) {
+    loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+    signOutButton.style.display = 'block'; // Show the Sign Out button
+} else {
+    loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+    signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+}
 }
 function signOut() {
-        console.log('Signing out...');
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('username');
-        loginRegisterLink.textContent = 'Login/Register';
-        redirectToLogin();
+    console.log('Signing out...');
+    localStorage.removeItem('accessToken');
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('username');
+    loginRegisterLink.textContent = 'Login/Register';
+    redirectToLogin();
+}
+
+function redirectToLogin() {
+    console.log("i am in the redirect");
+    window.location.href = 'login.html';
+}
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const profileDetailsDiv = document.getElementById('profileDetails');
+    const token = localStorage.getItem('accessToken');
+        if (!token) {
+            console.error("No token found. Please log in.");
+            return;
+        }
+
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     }
 
-    function redirectToLogin() {
-        console.log("i am in the redirect");
-        window.location.href = 'login.html';
-    }
+    const fileId = getQueryParam('fileId');
 
-        fetch('footer.html')
-            .then(response => response.text())
+    function fetchProfileInformation(fileId) {
+        fetch(`http://43.205.154.85:8080/getProfileInformation?fileId=${fileId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
             .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const profileDetailsDiv = document.getElementById('profileDetails');
-        const token = localStorage.getItem('accessToken');
-            if (!token) {
-                console.error("No token found. Please log in.");
-                return;
-            }
-
-        function getQueryParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        const fileId = getQueryParam('fileId');
-
-        function fetchProfileInformation(fileId) {
-            fetch(`http://43.205.154.85:8080/getProfileInformation?fileId=${fileId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                profileDetailsDiv.innerHTML = `
+                    <div class="profile-detail"><label>Resume ID:</label> ${data.resumeId}</div>
+                    <div class="profile-detail"><label>Candidate Name:</label> ${data.candidateName}</div>
+                    <div class="profile-detail"><label>Uploaded Date:</label> ${data.uploadedDate}</div>
+                    <div class="profile-detail"><label>Skills:</label>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Experience</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(data.profile_skill_map).map(([skill, experience]) =>
+                                    `<tr>
+                                        <td>${skill}</td>
+                                        <td>${convertExperience(experience)}</td>
+                                    </tr>`
+                                ).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
             })
-                .then(response => response.json())
-                .then(data => {
-                    profileDetailsDiv.innerHTML = `
-                        <div class="profile-detail"><label>Resume ID:</label> ${data.resumeId}</div>
-                        <div class="profile-detail"><label>Candidate Name:</label> ${data.candidateName}</div>
-                        <div class="profile-detail"><label>Uploaded Date:</label> ${data.uploadedDate}</div>
-                        <div class="profile-detail"><label>Skills:</label>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Skill</th>
-                                        <th>Experience</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${Object.entries(data.profile_skill_map).map(([skill, experience]) =>
-                                        `<tr>
-                                            <td>${skill}</td>
-                                            <td>${convertExperience(experience)}</td>
-                                        </tr>`
-                                    ).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                })
-                .catch(error => console.error('Error fetching profile information:', error));
-        }
+            .catch(error => console.error('Error fetching profile information:', error));
+    }
 
-        function convertExperience(months) {
-            if (months < 12) {
-                return `${months} month${months > 1 ? 's' : ''}`;
-            } else {
-                const years = Math.floor(months / 12);
-                const remainingMonths = months % 12;
-                return `${years} year${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}`;
-            }
+    function convertExperience(months) {
+        if (months < 12) {
+            return `${months} month${months > 1 ? 's' : ''}`;
+        } else {
+            const years = Math.floor(months / 12);
+            const remainingMonths = months % 12;
+            return `${years} year${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` and ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}`;
         }
+    }
 
-        fetchProfileInformation(fileId);
-    });
+    fetchProfileInformation(fileId);
+});
 </script>
 </body>
 </html>

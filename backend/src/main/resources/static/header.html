@@ -1,143 +1,447 @@
-<!--&lt;!&ndash; <!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--        }-->
+<!--&lt;!&ndash;&lt;!&ndash; <!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-family: Arial, sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
 
-<!--        header {-->
-<!--            background: white;-->
-<!--            color: #333;-->
-<!--            padding: 17px 10px;-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            align-items: center;-->
-<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
-<!--            position: fixed;-->
-<!--            width: 100%;-->
-<!--            top: 0;-->
-<!--            left: 0;-->
-<!--            z-index: 1000;-->
-<!--        }-->
+<!--&lt;!&ndash;        header {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 17px 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;            position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
 
-<!--        header .link {-->
-<!--            font-size: 24px;-->
-<!--            font-weight: bold;-->
-<!--            color: #285C4D;-->
-<!--            text-decoration: none;-->
-<!--        }-->
+<!--&lt;!&ndash;        header .link {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 24px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #285C4D;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
 
-<!--        header nav ul {-->
-<!--            list-style: none;-->
-<!--            display: flex;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--        }-->
+<!--&lt;!&ndash;        header nav ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            list-style: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
 
-<!--    header nav ul li {-->
-<!--    position: relative;-->
-<!--    margin-right: 20px;-->
-<!--}-->
+<!--&lt;!&ndash;    header nav ul li {&ndash;&gt;-->
+<!--&lt;!&ndash;    position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;    margin-right: 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
-<!--header nav ul li a {-->
-<!--    text-decoration: none;-->
-<!--    color: #285C4D;-->
-<!--    font-weight: bold;-->
-<!--    font-size: 18px;-->
-<!--}-->
+<!--&lt;!&ndash;header nav ul li a {&ndash;&gt;-->
+<!--&lt;!&ndash;    text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;    color: #285C4D;&ndash;&gt;-->
+<!--&lt;!&ndash;    font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;    font-size: 18px;&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
-<!--header nav ul li ul {-->
-<!--    display: none;-->
-<!--    position: absolute;-->
-<!--    top: 100%;-->
-<!--    left: 0;-->
-<!--    background-color: white;-->
-<!--    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);-->
-<!--    list-style: none;-->
-<!--    padding: 10px 0;-->
-<!--    margin: 0;-->
-<!--    min-width: 200px;-->
-<!--    border-radius: 8px;-->
-<!--    z-index: 1000;-->
-<!--}-->
+<!--&lt;!&ndash;header nav ul li ul {&ndash;&gt;-->
+<!--&lt;!&ndash;    display: none;&ndash;&gt;-->
+<!--&lt;!&ndash;    position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;    top: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;    left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;    background-color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;    list-style: none;&ndash;&gt;-->
+<!--&lt;!&ndash;    padding: 10px 0;&ndash;&gt;-->
+<!--&lt;!&ndash;    margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;    min-width: 200px;&ndash;&gt;-->
+<!--&lt;!&ndash;    border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;    z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
-<!--header nav ul li ul li {-->
-<!--    margin: 0;-->
-<!--    padding: 0;-->
-<!--}-->
+<!--&lt;!&ndash;header nav ul li ul li {&ndash;&gt;-->
+<!--&lt;!&ndash;    margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;    padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
-<!--header nav ul li ul li a {-->
-<!--    color: #000;-->
-<!--    display: block;-->
-<!--    padding: 15px 20px;-->
-<!--    font-weight: bold;-->
-<!--    font-size: 16px;-->
-<!--    text-decoration: none;-->
-<!--    white-space: nowrap; /* Ensure text doesn't wrap */-->
-<!--}-->
+<!--&lt;!&ndash;header nav ul li ul li a {&ndash;&gt;-->
+<!--&lt;!&ndash;    color: #000;&ndash;&gt;-->
+<!--&lt;!&ndash;    display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;    padding: 15px 20px;&ndash;&gt;-->
+<!--&lt;!&ndash;    font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;    font-size: 16px;&ndash;&gt;-->
+<!--&lt;!&ndash;    text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;    white-space: nowrap; /* Ensure text doesn't wrap */&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
-<!--header nav ul li ul li a:hover {-->
-<!--    background-color: #f1f1f1;-->
-<!--}-->
+<!--&lt;!&ndash;header nav ul li ul li a:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;    background-color: #f1f1f1;&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
-<!--header nav ul li:hover ul {-->
-<!--    display: block;-->
-<!--    width: auto; /* Automatically adjust width to content */-->
-<!--    left: 50%;-->
-<!--    transform: translateX(-50%); /* Center the dropdown below the parent link */-->
-<!--}-->
+<!--&lt;!&ndash;header nav ul li:hover ul {&ndash;&gt;-->
+<!--&lt;!&ndash;    display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;    width: auto; /* Automatically adjust width to content */&ndash;&gt;-->
+<!--&lt;!&ndash;    left: 50%;&ndash;&gt;-->
+<!--&lt;!&ndash;    transform: translateX(-50%); /* Center the dropdown below the parent link */&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
 
 
-<!--    </style>-->
-<!--    <title>Header</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<header>-->
-<!--    <a href="index.html" class="link">Pro-Square</a>-->
-<!--    <nav>-->
-<!--        <ul>-->
-<!--            <li><a href="index.html">Home</a></li>-->
-<!--            <li>-->
-<!--                <a href="">Profile</a>-->
-<!--                <ul>-->
-<!--                    <li><a href="addprofile.html">Add Profile</a></li>-->
-<!--                    <li><a href="allprofiles.html">View Profiles</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a href="#">Client</a>-->
-<!--                <ul>-->
-<!--                    <li><a href="clientform.html">Create Client</a></li>-->
-<!--                    <li><a href="invoiceform.html">Create Invoice</a></li>-->
-<!--                    <li><a href="dashboard.html">View Dashboard</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a href="#">Bill</a>-->
-<!--                <ul>-->
-<!--                    <li><a href="quickfillbills.html">Quick Fill Bills</a></li>-->
-<!--                    <li><a href="billsdashboard.html">Bills Dashboard</a></li>-->
-<!--                    <li><a href="viewbills.html">View Bills</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a href="#">JD</a>-->
-<!--                <ul>-->
-<!--                    <li><a href="jd3.html">Create JD</a></li>-->
-<!--                    <li><a href="list5.html">View JD</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li><a href="home.html">Resume Matcher</a></li>-->
-<!--            <li><a href="practice9.html">Upload & Download</a></li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-<!--</header>-->
-<!--</body>-->
-<!--</html> &ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Header</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<header>&ndash;&gt;-->
+<!--&lt;!&ndash;    <a href="index.html" class="link">Pro-Square</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    <nav>&ndash;&gt;-->
+<!--&lt;!&ndash;        <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="index.html">Home</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="">Profile</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="addprofile.html">Add Profile</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="allprofiles.html">View Profiles</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Client</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="clientform.html">Create Client</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="invoiceform.html">Create Invoice</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="dashboard.html">View Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Bill</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="quickfillbills.html">Quick Fill Bills</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="billsdashboard.html">Bills Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="viewbills.html">View Bills</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">JD</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="jd3.html">Create JD</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="list5.html">View JD</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="home.html">Resume Matcher</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="practice9.html">Upload & Download</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;    </nav>&ndash;&gt;-->
+<!--&lt;!&ndash;</header>&ndash;&gt;-->
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html> &ndash;&gt;&ndash;&gt;-->
 
+
+
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-family: Arial, sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 5px 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;            position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header .link {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 24px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #285C4D;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            list-style: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li {&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-right: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li a {&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #285C4D;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 18px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: block; /* Makes the whole area clickable */&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 15px; &ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;            list-style: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            min-width: 200px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul li {&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul li a {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #000;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 15px; /* Reduced padding */&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 16px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            white-space: nowrap; /* Ensure text doesn't wrap */&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul li a:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li:hover ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: auto; /* Automatically adjust width to content */&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 50%;&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateX(-50%); /* Center the dropdown below the parent link */&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Header</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<header>&ndash;&gt;-->
+<!--&lt;!&ndash;    <a href="index.html" class="link">Pro-Square</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    <nav>&ndash;&gt;-->
+<!--&lt;!&ndash;        <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="index.html">Home</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Profile</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="addprofile.html">Add Profile</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="allprofiles.html">View Profiles</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Client</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="clientform.html">Create Client</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="invoiceform.html">Create Invoice</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="dashboard.html">View Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Bill</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="quickfillbills.html">Add Bills</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="billsdashboard.html">Bills Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="viewbills.html">View Bills</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">JD</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="jd3.html">Create JD</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="list5.html">View JD</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="home.html">Resume Matcher</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="practice9.html">Upload & Download</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#" id="loginRegisterLink">Login/Register</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul class="dropdown-menu">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="login.html">Login</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="register.html" id="registerButton">Register</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="#" id="signOutButton" onclick="signOut()" style="display: none;">Sign Out</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;    </nav>&ndash;&gt;-->
+<!--&lt;!&ndash;</header>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+
+
+
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        body {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-family: Arial, sans-serif;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 5px 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
+<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;            position: fixed;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header .link {&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 24px;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #285C4D;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            list-style: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li {&ndash;&gt;-->
+<!--&lt;!&ndash;            position: relative;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin-right: 10px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li a {&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #285C4D;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 18px;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: block; /* Makes the whole area clickable */&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 15px;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            position: absolute;&ndash;&gt;-->
+<!--&lt;!&ndash;            top: 100%;&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            background-color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);&ndash;&gt;-->
+<!--&lt;!&ndash;            list-style: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            min-width: 200px;&ndash;&gt;-->
+<!--&lt;!&ndash;            border-radius: 8px;&ndash;&gt;-->
+<!--&lt;!&ndash;            z-index: 1000;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul li {&ndash;&gt;-->
+<!--&lt;!&ndash;            margin: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 0;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul li a {&ndash;&gt;-->
+<!--&lt;!&ndash;            color: #000;&ndash;&gt;-->
+<!--&lt;!&ndash;            display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;            padding: 10px 15px; /* Reduced padding */&ndash;&gt;-->
+<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
+<!--&lt;!&ndash;            font-size: 16px;&ndash;&gt;-->
+<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
+<!--&lt;!&ndash;            white-space: nowrap; /* Ensure text doesn't wrap */&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li ul li a:hover {&ndash;&gt;-->
+<!--&lt;!&ndash;            background: #333;&ndash;&gt;-->
+<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+
+<!--&lt;!&ndash;        header nav ul li:hover ul {&ndash;&gt;-->
+<!--&lt;!&ndash;            display: block;&ndash;&gt;-->
+<!--&lt;!&ndash;            width: auto; /* Automatically adjust width to content */&ndash;&gt;-->
+<!--&lt;!&ndash;            left: 50%;&ndash;&gt;-->
+<!--&lt;!&ndash;            transform: translateX(-50%); /* Center the dropdown below the parent link */&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>Header</title>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--&lt;!&ndash;<header>&ndash;&gt;-->
+<!--&lt;!&ndash;    <a href="index.html" class="link">Pro-Square</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    <nav>&ndash;&gt;-->
+<!--&lt;!&ndash;        <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="index.html">Home</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Profile</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="addprofile.html">Add Profile</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="allprofiles.html">View Profiles</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Client</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="clientform.html">Create Client</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="invoiceform.html">Create Invoice</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="dashboard.html">View Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">Bill</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="quickfillbills.html">Add Bills</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="billsdashboard.html">Bills Dashboard</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="viewbills.html">View Bills</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#">JD</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="jd3.html">Create JD</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="list5.html">View JD</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="home.html">Resume Matcher</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li><a href="practice9.html">Upload & Download</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;            <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <a href="#" id="loginRegisterLink">Login/Register</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <ul class="dropdown-menu">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="login.html">Login</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="register.html" id="registerButton">Register</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <li><a href="#" id="signOutButton" onclick="signOut()" style="display: none;">Sign Out</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--&lt;!&ndash;        </ul>&ndash;&gt;-->
+<!--&lt;!&ndash;    </nav>&ndash;&gt;-->
+<!--&lt;!&ndash;</header>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
 
 
 <!--<!DOCTYPE html>-->
@@ -153,7 +457,7 @@
 <!--        header {-->
 <!--            background: white;-->
 <!--            color: #333;-->
-<!--            padding: 5px 10px;-->
+<!--            padding: 10px 10px;-->
 <!--            display: flex;-->
 <!--            justify-content: space-between;-->
 <!--            align-items: center;-->
@@ -166,10 +470,18 @@
 <!--        }-->
 
 <!--        header .link {-->
-<!--            font-size: 24px;-->
+<!--            font-size: 28px;-->
 <!--            font-weight: bold;-->
 <!--            color: #285C4D;-->
 <!--            text-decoration: none;-->
+<!--            font-family: 'Lucida Console', Courier, monospace;-->
+<!--            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);-->
+<!--            letter-spacing: 2px;-->
+<!--            transition: color 0.3s ease;-->
+<!--        }-->
+
+<!--        header .link:hover {-->
+<!--            color: #1E4031;-->
 <!--        }-->
 
 <!--        header nav ul {-->
@@ -189,8 +501,8 @@
 <!--            color: #285C4D;-->
 <!--            font-weight: bold;-->
 <!--            font-size: 18px;-->
-<!--            display: block; /* Makes the whole area clickable */-->
-<!--            padding: 10px 15px; -->
+<!--            display: block;-->
+<!--            padding: 6px 6px;-->
 <!--        }-->
 
 <!--        header nav ul li ul {-->
@@ -216,11 +528,11 @@
 <!--        header nav ul li ul li a {-->
 <!--            color: #000;-->
 <!--            display: block;-->
-<!--            padding: 10px 15px; /* Reduced padding */-->
+<!--            padding: 10px 15px;-->
 <!--            font-weight: bold;-->
 <!--            font-size: 16px;-->
 <!--            text-decoration: none;-->
-<!--            white-space: nowrap; /* Ensure text doesn't wrap */-->
+<!--            white-space: nowrap;-->
 <!--        }-->
 
 <!--        header nav ul li ul li a:hover {-->
@@ -230,9 +542,9 @@
 
 <!--        header nav ul li:hover ul {-->
 <!--            display: block;-->
-<!--            width: auto; /* Automatically adjust width to content */-->
+<!--            width: auto;-->
 <!--            left: 50%;-->
-<!--            transform: translateX(-50%); /* Center the dropdown below the parent link */-->
+<!--            transform: translateX(-50%);-->
 <!--        }-->
 <!--    </style>-->
 <!--    <title>Header</title>-->
@@ -253,6 +565,7 @@
 <!--            <li>-->
 <!--                <a href="#">Client</a>-->
 <!--                <ul>-->
+<!--                    <li><a href="clients.html">See Clients</a></li>-->
 <!--                    <li><a href="clientform.html">Create Client</a></li>-->
 <!--                    <li><a href="invoiceform.html">Create Invoice</a></li>-->
 <!--                    <li><a href="dashboard.html">View Dashboard</a></li>-->
@@ -293,6 +606,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -306,7 +620,7 @@
         header {
             background: white;
             color: #333;
-            padding: 5px 10px;
+            padding: 10px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -319,10 +633,18 @@
         }
 
         header .link {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             color: #285C4D;
             text-decoration: none;
+            font-family: 'Lucida Console', Courier, monospace;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 2px;
+            transition: color 0.3s ease;
+        }
+
+        header .link:hover {
+            color: #1E4031;
         }
 
         header nav ul {
@@ -342,8 +664,8 @@
             color: #285C4D;
             font-weight: bold;
             font-size: 18px;
-            display: block; /* Makes the whole area clickable */
-            padding: 10px 15px;
+            display: block;
+            padding: 6px 6px;
         }
 
         header nav ul li ul {
@@ -362,6 +684,7 @@
         }
 
         header nav ul li ul li {
+            position: relative;
             margin: 0;
             padding: 0;
         }
@@ -369,11 +692,11 @@
         header nav ul li ul li a {
             color: #000;
             display: block;
-            padding: 10px 15px; /* Reduced padding */
+            padding: 10px 15px;
             font-weight: bold;
             font-size: 16px;
             text-decoration: none;
-            white-space: nowrap; /* Ensure text doesn't wrap */
+            white-space: nowrap;
         }
 
         header nav ul li ul li a:hover {
@@ -381,11 +704,38 @@
             color: white;
         }
 
-        header nav ul li:hover ul {
+        header nav ul li:hover > ul {
             display: block;
-            width: auto; /* Automatically adjust width to content */
-            left: 50%;
-            transform: translateX(-50%); /* Center the dropdown below the parent link */
+        }
+
+        /* Nested dropdown */
+        header nav ul li ul li ul {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+            min-width: 200px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        header nav ul li ul li:hover > ul {
+            display: block;
+        }
+
+        header nav ul li ul li ul li a {
+            padding: 10px 15px;
+        }
+
+        /* Maintain dropdown visibility when hovering */
+        header nav ul li ul li:hover > ul,
+        header nav ul li ul li ul:hover {
+            display: block;
         }
     </style>
     <title>Header</title>
@@ -406,8 +756,21 @@
             <li>
                 <a href="#">Client</a>
                 <ul>
-                    <li><a href="clientform.html">Create Client</a></li>
-                    <li><a href="invoiceform.html">Create Invoice</a></li>
+                    <li>
+                        <a href="#">Clients</a>
+                        <ul>
+                            <li><a href="clients.html">Existing Clients</a></li>
+                            <li><a href="clientform.html">Create Client</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Invoices</a>
+                        <ul>
+                            <li><a href="invoiceform.html">Create Invoice</a></li>
+                            <li><a href="all-invoices.html">All Invoices</a></li>
+                            <li><a href="pendinginvoices.html">Pending Invoices</a></li>
+                        </ul>
+                    </li>
                     <li><a href="dashboard.html">View Dashboard</a></li>
                 </ul>
             </li>

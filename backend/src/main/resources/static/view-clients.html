@@ -51,67 +51,94 @@
 <div id="footer"></div>
 
 <script>
+    (function() {
+    const token = localStorage.getItem('accessToken');
 
-        fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-            // Call updateNavbar after header is inserted
-            updateNavbar();
-        });
-        // Function to check login status and update navbar
-function updateNavbar() {
-    const username = localStorage.getItem('username'); // Fetch username from local storage
-    const loginRegisterLink = document.getElementById('loginRegisterLink');
-    const signOutButton = document.getElementById('signOutButton');
-
-    if (username) {
-        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
-        signOutButton.style.display = 'block'; // Show the Sign Out button
-    } else {
-        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
-        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+    // If the token is missing, redirect to the login page immediately
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
     }
+
+    // Validate the token by making a quick API call
+    fetch('http://43.205.154.85:8080/profile/count', {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            // If token validation fails, redirect to the login page immediately
+            window.location.href = 'login.html';
+        }
+        // No further actions needed as page loading continues only if the token is valid
+    })
+    .catch(error => {
+        // In case of any error, redirect to the login page
+        console.error('Error:', error);
+        window.location.href = 'login.html';
+    });
+})();
+    fetch('header.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('header').innerHTML = data;
+        // Call updateNavbar after header is inserted
+        updateNavbar();
+    });
+    // Function to check login status and update navbar
+function updateNavbar() {
+const username = localStorage.getItem('username'); // Fetch username from local storage
+const loginRegisterLink = document.getElementById('loginRegisterLink');
+const signOutButton = document.getElementById('signOutButton');
+
+if (username) {
+    loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+    signOutButton.style.display = 'block'; // Show the Sign Out button
+} else {
+    loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+    signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+}
 }
 function signOut() {
-        console.log('Signing out...');
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('username');
-        loginRegisterLink.textContent = 'Login/Register';
-        redirectToLogin();
-    }
+    console.log('Signing out...');
+    localStorage.removeItem('accessToken');
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('username');
+    loginRegisterLink.textContent = 'Login/Register';
+    redirectToLogin();
+}
 
-    function redirectToLogin() {
-        console.log("i am in the redirect");
-        window.location.href = 'login.html';
-    }
+function redirectToLogin() {
+    console.log("i am in the redirect");
+    window.location.href = 'login.html';
+}
 
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('http://43.205.154.85:8080/api/clients') // Fetch clients from the backend
+        .then(response => response.json())
+        .then(clients => {
+            const tbody = document.getElementById('clientsTableBody');
+            clients.forEach((client, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><a href="client-details.html?id=${client.id}">${client.clientName}</a></td>
+                    <td>${client.location}</td>
+                    <td>${client.currency}</td>
+                    <td>${client.totalPendingInvoices}</td>
+                `;
+                tbody.appendChild(row);
             });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('http://43.205.154.85:8080/api/clients') // Fetch clients from the backend
-            .then(response => response.json())
-            .then(clients => {
-                const tbody = document.getElementById('clientsTableBody');
-                clients.forEach((client, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td><a href="client-details.html?id=${client.id}">${client.clientName}</a></td>
-                        <td>${client.location}</td>
-                        <td>${client.currency}</td>
-                        <td>${client.totalPendingInvoices}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching clients:', error));
-    });
+        })
+        .catch(error => console.error('Error fetching clients:', error));
+});
 </script>
 </body>
 </html>

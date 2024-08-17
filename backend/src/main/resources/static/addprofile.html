@@ -41,13 +41,15 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            margin-top: 60px; /* Adjust top margin to account for fixed header */
-            margin-bottom: 60px; /* Adjust bottom margin to account for fixed footer */
+            margin-top: 0px; /* Adjust top margin to account for fixed header */
+            margin-bottom: 0px; /* Adjust bottom margin to account for fixed footer */
         }
 
         .container {
+            flex:1;
             width: 100%;
-            max-width: 800px;
+            margin-top: 0px;
+            margin-bottom: 20px;
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -210,7 +212,34 @@
 <div id="footer"></div>
 
 <script>
+    (function() {
+        const token = localStorage.getItem('accessToken');
 
+        // If the token is missing, redirect to the login page immediately
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Validate the token by making a quick API call
+        fetch('http://43.205.154.85:8080/profile/count', {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // If token validation fails, redirect to the login page immediately
+                window.location.href = 'login.html';
+            }
+            // No further actions needed as page loading continues only if the token is valid
+        })
+        .catch(error => {
+            // In case of any error, redirect to the login page
+            console.error('Error:', error);
+            window.location.href = 'login.html';
+        });
+    })();
 
    fetch('header.html')
         .then(response => response.text())

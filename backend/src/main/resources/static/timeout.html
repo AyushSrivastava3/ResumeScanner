@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Pro-Square</title>
+    <title>Session Timeout</title>
     <style>
         body, html {
             margin: 0;
@@ -18,14 +18,14 @@
             color: #005149;
         }
 
-        .welcome-message {
+        .timeout-message {
             text-align: center;
             animation: fadeIn 1.5s ease-in-out;
         }
 
         h1 {
             margin: 0;
-            font-size: 60px;
+            font-size: 50px;
             font-weight: 700;
             color: #005149;
             letter-spacing: 1.5px;
@@ -34,7 +34,7 @@
 
         p {
             margin-top: 20px;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 400;
             letter-spacing: 1px;
             color: #005149;
@@ -93,19 +93,33 @@
                 transform: scale(1);
             }
         }
+
+        .countdown {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #005149;
+        }
     </style>
 </head>
 <body>
-<div class="welcome-message">
-    <h1>Welcome to <span class="highlight">Pro-Square</span></h1>
-    <p>Your Professional HR Platform</p>
+<div class="timeout-message">
+    <h1>Session <span class="highlight">Expired</span></h1>
+    <p>Your session has timed out. Redirecting to the login page in <span class="countdown" id="countdown">4</span> seconds...</p>
 </div>
 
 <script>
-    // Redirect to login page after 3 seconds
-    setTimeout(function() {
-        window.location.href = 'login.html';
-    }, 5000);
+    // Countdown timer for 4 seconds
+    let countdown = 5;
+    function updateCountdown() {
+        document.getElementById('countdown').textContent = countdown;
+        if (countdown === 0) {
+            window.location.href = 'login.html'; // Replace 'login.html' with your login page URL
+        } else {
+            countdown--;
+            setTimeout(updateCountdown, 1000);
+        }
+    }
+    window.onload = updateCountdown;
 </script>
 </body>
 </html>

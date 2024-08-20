@@ -901,7 +901,7 @@ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 display: flex;
 justify-content: space-between;
 align-items: center;
-margin-bottom: 15px;
+margin-bottom: 5px;
 padding: 10px;
 background-color: #f9f9f9;
 border-radius: 8px;
@@ -1020,12 +1020,62 @@ display: block !important;
 }
 
     </style>
+<!--    <script>-->
+<!--        (function() {-->
+<!--            const token = localStorage.getItem('accessToken');-->
+
+<!--            // If the token is missing, redirect to the welcome page immediately-->
+<!--            if (!token) {-->
+<!--                window.location.replace('welcome.html');-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Validate the token by making a quick API call-->
+<!--            fetch('http://43.205.154.85:8080/profile/count', {-->
+<!--                headers: {-->
+<!--                    "Authorization": `Bearer ${token}`-->
+<!--                }-->
+<!--            })-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    // If token validation fails, redirect to the login page immediately-->
+<!--                    window.location.replace('timeout.html');-->
+<!--                    return;-->
+<!--                }-->
+<!--                // No further actions needed as page loading continues only if the token is valid-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                // In case of any error, redirect to the login page-->
+<!--                console.error('Error:', error);-->
+<!--                window.location.replace('login.html');-->
+<!--            });-->
+<!--        })();-->
+<!--    </script>-->
+
+
     <script>
         (function() {
+            function isTokenValid() {
+                const tokenExpiration = localStorage.getItem('tokenExpiration');
+                const now = new Date().getTime();
+
+                if (tokenExpiration && now < tokenExpiration) {
+                    return true;
+                } else {
+                    // Token is expired or not set
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('tokenExpiration');
+                    localStorage.removeItem('lastLogin');
+                    return false;
+                }
+            }
+
             const token = localStorage.getItem('accessToken');
 
-            // If the token is missing, redirect to the welcome page immediately
-            if (!token) {
+            // If the token is missing or expired, redirect to the welcome page immediately
+            if (!token || !isTokenValid()) {
                 window.location.replace('welcome.html');
                 return;
             }
@@ -1039,7 +1089,7 @@ display: block !important;
             .then(response => {
                 if (!response.ok) {
                     // If token validation fails, redirect to the login page immediately
-                    window.location.replace('login.html');
+                    window.location.replace('timeout.html');
                     return;
                 }
                 // No further actions needed as page loading continues only if the token is valid
@@ -1051,6 +1101,8 @@ display: block !important;
             });
         })();
     </script>
+
+
 </head>
 <body>
 <div id="signing-in-overlay">
@@ -1066,7 +1118,7 @@ display: block !important;
 
 <main>
     <div id="detail">
-        <h2>Hi User, Welcome To ProSquare</h2>
+        <h2 id="welcomeText">Hi User, Welcome To ProSquare</h2>
         <div id="currentDate"></div>
         <div id="lastLoginContainer">
             <p id="lastLogin">Last login: Not available</p>
@@ -1076,9 +1128,17 @@ display: block !important;
     <div class="container">
         <div class="dashboard-container">
             <h2>Your Dashboard</h2>
-            <div class="summary">
-                <h3>Total Profiles: <span id="totalProfiles">0</span></h3>
-                <h3>Total JDs: <span id="totalJDs">0</span></h3>
+            <div class="client-invoice-container">
+                <div class="summary-item">
+                    <h3>Total Profiles:</h3>
+                    <p id="totalProfiles">Loading...</p>
+
+                </div>
+                <div class="summary-item">
+
+                    <h3>Total JDs:</h3>
+                    <p id="totalJDs">Loading...</p>
+                </div>
             </div>
             <div class="client-invoice-container">
                 <div class="summary-item">
@@ -1096,41 +1156,57 @@ display: block !important;
             </div>
         </div>
         <div class="today-container">
-            <h2>Today's Updates</h2>
-            <h3>Profiles Added: <span id="profilesToday">0</span></h3>
-            <h3>JDs Added: <span id="jdsToday">0</span></h3>
+            <h2>Today's Activities</h2>
+            <div class="client-invoice-container">
+                <div class="summary-item">
+                    <h3>Profiles Added:</h3>
+                    <p id="profilesToday">0</p>
+                </div>
+                <div class="summary-item">
+                    <h3>JDs Added:</h3>
+                    <p id="jdsToday">0</p>
+                </div>
+            </div>
             <div class="client-invoice-container">
                 <div class="summary-item">
                     <h3>Total Clients:</h3>
-                    <p id="total-clients">Loading...</p>
+                    <p id="clientsToday">Loading...</p>
                 </div>
                 <div class="summary-item">
                     <h3>Total Invoices:</h3>
-                    <p id="total-invoices">Loading...</p>
+                    <p id="invoices-today">Loading...</p>
                 </div>
                 <div class="summary-item">
                     <h3>Pending Invoices:</h3>
-                    <p id="pending-invoices">Loading...</p>
+                    <p id="pending-invoices-today">Loading...</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="this-week-container">
         <h2>This Week</h2>
-        <h3>Profiles Added: <span id="profilesThisWeek">0</span></h3>
-        <h3>JDs Added: <span id="jdsThisWeek">0</span></h3>
+        <div class="client-invoice-container">
+            <div class="summary-item">
+                <h3>Profiles Added:</h3>
+                <p id="profilesThisWeek">0</p>
+            </div>
+            <div class="summary-item">
+                <h3>JDs Added:</h3>
+                <p id="jdsThisWeek">0</p>
+            </div>
+        </div>
         <div class="client-invoice-container">
             <div class="summary-item">
                 <h3>Total Clients:</h3>
-                <p id="total-clients">Loading...</p>
+                <p id="clientsThisWeek">Loading...</p>
             </div>
             <div class="summary-item">
                 <h3>Total Invoices:</h3>
-                <p id="total-invoices">Loading...</p>
+                <p id="invoicesThisWeek">Loading...</p>
             </div>
             <div class="summary-item">
                 <h3>Pending Invoices:</h3>
-                <p id="pending-invoices">Loading...</p>
+                <p id="pending-invoices-ThisWeek">Loading...</p>
             </div>
         </div>
     </div>
@@ -1138,36 +1214,7 @@ display: block !important;
 <div id="footer"></div>
 
 <script >
-    (function() {
-        const token = localStorage.getItem('accessToken');
 
-        // If the token is missing, redirect to the login page immediately
-        if (!token) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // Validate the token by making a quick API call
-        fetch('http://43.205.154.85:8080/profile/count', {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                // If token validation fails, redirect to the login page immediately
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // No further actions needed as page loading continues only if the token is valid
-        })
-        .catch(error => {
-            // In case of any error, redirect to the login page
-            console.error('Error:', error);
-            window.location.href = 'login.html';
-        });
-    })();
 
     // Check if login is in progress or if we need to show the loading overlay
         window.addEventListener('DOMContentLoaded', (event) => {
@@ -1214,6 +1261,17 @@ display: block !important;
             signOutButton.style.display = 'none'; // Hide Sign Out button if no username
         }
     }
+    // Function to update the welcome text with the username
+    function updateWelcomeText() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            const welcomeText = document.getElementById('welcomeText');
+            welcomeText.textContent = `Hi ${username}, Welcome To ProSquare`;
+        }
+    }
+
+    // Call the function to update the text
+    updateWelcomeText();
     function signOut() {
             console.log('Signing out...');
             localStorage.removeItem('accessToken');
@@ -1251,16 +1309,6 @@ display: block !important;
         function navigateToResumeMatcher() {
             window.location.href = 'home.html';
         }
-
-
-        // function signOut() {
-        //     console.log('Signing out...');
-        //     localStorage.removeItem('accessToken');
-        //     localStorage.setItem('isLoggedIn', 'false');
-        //     localStorage.removeItem('username');
-        //     loginRegisterButton.textContent = 'Login/Register';
-        //     window.location.reload();
-        // }
 
         document.addEventListener('DOMContentLoaded', () => {
         const token = localStorage.getItem('accessToken');
@@ -1439,6 +1487,21 @@ display: block !important;
                 console.log(document.getElementById('pending-invoices'));
             })
             .catch(error => console.error('Error fetching pending invoices:', error));
+     // Fetch  clients added today
+    fetch('http://43.205.154.85:8080/api/clients/getTodayClients')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('clientsToday').textContent = data.length;
+        })
+        .catch(error => console.error('Error fetching clients:', error));
+
+    // Fetch  clients added in a week
+    fetch('http://43.205.154.85:8080/api/clients/getWeekClients')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('clientsThisWeek').textContent = data.length;
+        })
+        .catch(error => console.error('Error fetching clients:', error));
 
 });
 

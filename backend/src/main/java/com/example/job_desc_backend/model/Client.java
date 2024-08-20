@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,6 +28,15 @@ public class Client {
     private String ifscCode;
     private String currency;
     private int totalPendingInvoices;
+    private LocalDateTime createdDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public int getTotalPendingInvoices() {
         return totalPendingInvoices;

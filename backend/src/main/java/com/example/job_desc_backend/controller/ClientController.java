@@ -3,6 +3,7 @@ package com.example.job_desc_backend.controller;
 import com.example.job_desc_backend.model.Client;
 
 import com.example.job_desc_backend.repository.ClientRepository;
+import com.example.job_desc_backend.service.ClientService;
 import com.example.job_desc_backend.service.ExportImportService;
 import org.apache.poi.sl.draw.geom.GuideIf;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,8 @@ public class ClientController {
 
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    ClientService clientService;
 
     @GetMapping
     public List<Client> getAllClients(){
@@ -60,6 +64,7 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestBody Client client){
+        client.setCreatedDate(LocalDateTime.now());
         Client savedclient= clientRepository.save(client);
         return ResponseEntity.ok(savedclient);
     }
@@ -102,6 +107,15 @@ public class ClientController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errorResponse);
         }
+    }
+
+    @GetMapping("/getTodayClients")
+    public List<Client> getTodayClients() {
+        return clientService.getClientsCreatedToday();
+    }
+    @GetMapping("/getWeekClients")
+    public List<Client> getWeekClients() {
+        return clientService.getClientsCreatedInWeek();
     }
 
 

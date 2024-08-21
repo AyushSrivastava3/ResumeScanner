@@ -1173,13 +1173,13 @@ display: block !important;
                     <p id="clientsToday">Loading...</p>
                 </div>
                 <div class="summary-item">
-                    <h3>Total Invoices:</h3>
+                    <h3>Invoices added today:</h3>
                     <p id="invoices-today">Loading...</p>
                 </div>
-                <div class="summary-item">
-                    <h3>Pending Invoices:</h3>
-                    <p id="pending-invoices-today">Loading...</p>
-                </div>
+<!--                <div class="summary-item">-->
+<!--                    <h3>Pending Invoices:</h3>-->
+<!--                    <p id="pending-invoices-today">Loading...</p>-->
+<!--                </div>-->
             </div>
         </div>
     </div>
@@ -1204,10 +1204,10 @@ display: block !important;
                 <h3>Total Invoices:</h3>
                 <p id="invoicesThisWeek">Loading...</p>
             </div>
-            <div class="summary-item">
-                <h3>Pending Invoices:</h3>
-                <p id="pending-invoices-ThisWeek">Loading...</p>
-            </div>
+<!--            <div class="summary-item">-->
+<!--                <h3>Pending Invoices:</h3>-->
+<!--                <p id="pending-invoices-ThisWeek">Loading...</p>-->
+<!--            </div>-->
         </div>
     </div>
 </main>
@@ -1500,6 +1500,23 @@ display: block !important;
         .then(response => response.json())
         .then(data => {
             document.getElementById('clientsThisWeek').textContent = data.length;
+        })
+        .catch(error => console.error('Error fetching clients:', error));
+
+    // Fetch  Invoices added in a week
+    fetch('http://43.205.154.85:8080/api/invoices/getWeekInvoices')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('invoicesThisWeek').textContent = data.length;
+        })
+        .catch(error => console.error('Error fetching clients:', error));
+
+
+        // Fetch  Invoices added today
+    fetch('http://43.205.154.85:8080/api/invoices/getTodayInvoices')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('invoices-today').textContent = data.length;
         })
         .catch(error => console.error('Error fetching clients:', error));
 

@@ -1,5 +1,6 @@
 package com.example.job_desc_backend.service;
 
+import com.example.job_desc_backend.model.Client;
 import com.example.job_desc_backend.model.Invoice;
 import com.example.job_desc_backend.repository.InvoiceRepository;
 import org.slf4j.Logger;
@@ -8,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,24 +26,21 @@ public class InvoiceService {
     private InvoiceRepository invoiceRepository;
 
     public List<Invoice> getInvoicesByYear(int year) {
-        List<Invoice> allInvoices = invoiceRepository.findAll();
-        return allInvoices.stream()
-                .filter(invoice -> {
-                    LocalDate date = LocalDate.parse(invoice.getRaisedOn(), DATE_FORMATTER);
-                    return date.getYear() == year;
-                })
-                .collect(Collectors.toList());
+        String startDate = year + "-01-01";
+        String endDate = (year + 1) + "-01-01"; // Start of next year to include all dates in the current year
+        return invoiceRepository.findByRaisedOnBetween(startDate, endDate);
     }
 
+
     public List<Invoice> getInvoicesByMonth(int year, int month) {
-        List<Invoice> allInvoices = invoiceRepository.findAll();
-        return allInvoices.stream()
-                .filter(invoice -> {
-                    LocalDate date = LocalDate.parse(invoice.getRaisedOn(), DATE_FORMATTER);
-                    return date.getYear() == year && date.getMonthValue() == month;
-                })
-                .collect(Collectors.toList());
+        String startDate = String.format("%d-%02d-01", year, month);
+        LocalDate startLocalDate = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String endDate = startLocalDate.withDayOfMonth(startLocalDate.lengthOfMonth()).plusDays(1).toString();
+        return invoiceRepository.findByRaisedOnBetween(startDate, endDate);
     }
+
+
+
 
     public List<Invoice> getPendingInvoices() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -48,5 +49,17 @@ public class InvoiceService {
         List<Invoice> invoices = invoiceRepository.findPendingInvoices(currentDateString);
 
         return invoices;
+    }
+
+    public List<Invoice> getInvoiceCreatedToday() {
+        LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
+        return invoiceRepository.findInvoiceAddedToday(todayStart);
+    }
+
+    public List<Invoice> getInvoiceCreatedInWeek() {
+        LocalDateTime weekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+        LocalDateTime now = LocalDateTime.now();
+        return invoiceRepository.findInvoiceWithinDateRange(weekAgo,now);
+
     }
 }

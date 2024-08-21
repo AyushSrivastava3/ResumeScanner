@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
-import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/invoices")
 public class InvoiceController {
 
@@ -43,14 +41,10 @@ public class InvoiceController {
 
     @PostMapping
     public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
+        invoice.setCreatedDate(LocalDateTime.now());
         Invoice savedInvoice = invoiceRepository.save(invoice);
         return ResponseEntity.ok(savedInvoice);
     }
-
-//    @GetMapping("/pending")
-//    public List<Invoice> getPendingInvoices() {
-//        return invoiceRepository.findPendingInvoices();
-//    }
 
     @GetMapping("/all")
     public List<Invoice> getAllInvoices() {
@@ -144,6 +138,15 @@ public class InvoiceController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errorResponse);
         }
+    }
+
+    @GetMapping("/getTodayInvoices")
+    public List<Invoice> getTodayInvoices() {
+        return invoiceService.getInvoiceCreatedToday();
+    }
+    @GetMapping("/getWeekInvoices")
+    public List<Invoice> getWeekInvoices() {
+        return invoiceService.getInvoiceCreatedInWeek();
     }
 
 }

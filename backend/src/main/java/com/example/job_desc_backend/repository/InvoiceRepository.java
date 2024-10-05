@@ -34,9 +34,5 @@ public interface InvoiceRepository extends MongoRepository<Invoice,String> {
     List<Invoice> findByRaisedOnBetween(String startDate, String endDate);
 
 
-
-
-
-
-
+    List<Invoice> findByClientId(String clientId);
 }

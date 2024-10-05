@@ -1,0 +1,363 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Employee List</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <style>-->
+<!--        /* Optional custom styles */-->
+<!--        .modal { display: none; } /* Hidden by default */-->
+<!--        .modal.active { display: flex; } /* Show modal when active */-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+<!--<div class="container mx-auto p-6">-->
+<!--    <h2 class="text-3xl font-semibold mb-6 text-center">Employee List</h2>-->
+<!--    <div id="employeeContainer" class="hidden">-->
+<!--        <table class="min-w-full bg-white rounded shadow-md overflow-hidden">-->
+<!--            <thead class="bg-gray-200">-->
+<!--            <tr>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Name</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Email</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Phone</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Job Title</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Join Date</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Type</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Salary/Hourly Rate</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Actions</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody id="employeeList">-->
+<!--            &lt;!&ndash; Employee rows will be added here dynamically &ndash;&gt;-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    <p id="noEmployees" class="text-gray-600 hidden text-center">No employees found.</p>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Edit Employee Modal &ndash;&gt;-->
+<!--<div id="editEmployeeModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden justify-center items-center modal">-->
+<!--    <div class="bg-white rounded-lg w-1/3 p-6">-->
+<!--        <h3 class="text-xl font-semibold mb-4">Edit Employee</h3>-->
+<!--        <form id="editEmployeeForm">-->
+<!--            <input type="hidden" id="editEmployeeId">-->
+<!--            <div class="mb-4">-->
+<!--                <label class="block text-gray-700">Name</label>-->
+<!--                <input type="text" id="editEmployeeName" class="w-full border px-3 py-2 rounded">-->
+<!--            </div>-->
+<!--            <div class="mb-4">-->
+<!--                <label class="block text-gray-700">Email</label>-->
+<!--                <input type="email" id="editEmployeeEmail" class="w-full border px-3 py-2 rounded">-->
+<!--            </div>-->
+<!--            <div class="mb-4">-->
+<!--                <label class="block text-gray-700">Phone</label>-->
+<!--                <input type="text" id="editEmployeePhone" class="w-full border px-3 py-2 rounded">-->
+<!--            </div>-->
+<!--            <div class="mb-4">-->
+<!--                <label class="block text-gray-700">Job Title</label>-->
+<!--                <input type="text" id="editEmployeeJobTitle" class="w-full border px-3 py-2 rounded">-->
+<!--            </div>-->
+<!--            <div class="mb-4">-->
+<!--                <label class="block text-gray-700">Salary</label>-->
+<!--                <input type="text" id="editEmployeeSalary" class="w-full border px-3 py-2 rounded">-->
+<!--            </div>-->
+<!--            <div class="flex justify-end space-x-4">-->
+<!--                <button type="button" class="bg-red-500 text-white px-4 py-2 rounded" onclick="closeModal()">Cancel</button>-->
+<!--                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Function to fetch and display employees-->
+<!--    function fetchEmployees() {-->
+<!--        $.ajax({-->
+<!--            url: 'http://43.205.154.85:8080/employees', // Adjust this URL based on your API-->
+<!--            method: 'GET',-->
+<!--            success: function(data) {-->
+<!--                const employeeList = $('#employeeList');-->
+<!--                const noEmployees = $('#noEmployees');-->
+<!--                employeeList.empty(); // Clear previous data-->
+<!--                if (data.length > 0) {-->
+<!--                    data.forEach(employee => {-->
+<!--                        const row = `-->
+<!--                            <tr class="hover:bg-gray-100">-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.name}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.email}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.phone}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.jobTitle}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.joinDate}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.type}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.salary}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300 flex space-x-2">-->
+<!--                                    <button class="text-blue-500 hover:text-blue-700" onclick="openEditModal('${employee.id}', '${employee.name}', '${employee.email}', '${employee.phone}', '${employee.jobTitle}', '${employee.salary}')">-->
+<!--                                        Edit-->
+<!--                                    </button>-->
+<!--                                    <button class="text-red-500 hover:text-red-700" onclick="deleteEmployee('${employee.id}')">-->
+<!--                                        Delete-->
+<!--                                    </button>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        `;-->
+<!--                        employeeList.append(row);-->
+<!--                    });-->
+<!--                    $('#employeeContainer').removeClass('hidden');-->
+<!--                    noEmployees.addClass('hidden');-->
+<!--                } else {-->
+<!--                    $('#employeeContainer').addClass('hidden');-->
+<!--                    noEmployees.removeClass('hidden');-->
+<!--                }-->
+<!--            },-->
+<!--            error: function(err) {-->
+<!--                console.error('Error fetching employees:', err);-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+
+<!--    // Function to open edit modal-->
+<!--    function openEditModal(id, name, email, phone, jobTitle, salary) {-->
+<!--        $('#editEmployeeId').val(id);-->
+<!--        $('#editEmployeeName').val(name);-->
+<!--        $('#editEmployeeEmail').val(email);-->
+<!--        $('#editEmployeePhone').val(phone);-->
+<!--        $('#editEmployeeJobTitle').val(jobTitle);-->
+<!--        $('#editEmployeeSalary').val(salary);-->
+<!--        $('#editEmployeeModal').addClass('active');-->
+<!--    }-->
+
+<!--    // Function to close the modal-->
+<!--    function closeModal() {-->
+<!--        $('#editEmployeeModal').removeClass('active');-->
+<!--    }-->
+
+<!--    // Function to handle form submission and update employee-->
+<!--    $('#editEmployeeForm').on('submit', function(event) {-->
+<!--        event.preventDefault();-->
+<!--        const employeeId = $('#editEmployeeId').val();-->
+<!--        const updatedEmployee = {-->
+<!--            name: $('#editEmployeeName').val(),-->
+<!--            email: $('#editEmployeeEmail').val(),-->
+<!--            phone: $('#editEmployeePhone').val(),-->
+<!--            jobTitle: $('#editEmployeeJobTitle').val(),-->
+<!--            salary: $('#editEmployeeSalary').val()-->
+<!--        };-->
+
+<!--        $.ajax({-->
+<!--            url: `http://43.205.154.85:8080/employees/${employeeId}`,-->
+<!--            method: 'PUT',-->
+<!--            contentType: 'application/json',-->
+<!--            data: JSON.stringify(updatedEmployee),-->
+<!--            success: function() {-->
+<!--                closeModal();-->
+<!--                fetchEmployees(); // Refresh the employee list-->
+<!--            },-->
+<!--            error: function(err) {-->
+<!--                console.error('Error updating employee:', err);-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+
+<!--    // Function to delete an employee-->
+<!--    function deleteEmployee(employeeId) {-->
+<!--        fetch(`http://43.205.154.85:8080/employees/${employeeId}`, {-->
+<!--            method: 'DELETE',-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {-->
+<!--                throw new Error('Network response was not ok');-->
+<!--            }-->
+<!--            fetchEmployees(); // Refresh the employee list after deletion-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--            alert('There was an error deleting the employee. Please try again.');-->
+<!--        });-->
+<!--    }-->
+
+<!--    // Fetch employees on page load-->
+<!--    $(document).ready(function() {-->
+<!--        fetchEmployees();-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .modal { display: none; } /* Hidden by default */
+        .modal.active { display: flex; } /* Show modal when active */
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Take full height of viewport */
+        }
+        footer {
+          margin-top: auto;
+             height: 70px;
+        }
+        header{
+
+            height: 55px; /* Fixed height for header */
+            /* Other styles if needed */
+            padding-left:0px;
+            padding-right:0px;
+
+        }
+        }
+         #employeeContainer {
+            flex-grow: 1; /* Allow the employee container to grow */
+        }
+    </style>
+</head>
+<body class="bg-white-100">
+<div id="header"></div>
+<div class="w-95% mt-20 flex-grow px-4 ">
+    <h2 class="text-3xl font-semibold mb-2 mt-1 text-center">Employee List</h2>
+    <div id="employeeContainer" class="hidden ">
+        <table class="w-full bg-white rounded shadow-md overflow-hidden">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="py-3 px-4 border-b border-gray-300 text-left">Name</th>
+                <th class="py-3 px-4 border-b border-gray-300 text-left">Email</th>
+                <th class="py-3 px-4 border-b border-gray-300 text-left">Phone</th>
+                <th class="py-3 px-4 border-b border-gray-300 text-left">Job Title</th>
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Join Date</th>-->
+                <th class="py-3 px-4 border-b border-gray-300 text-left">Type</th>
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Salary</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Hourly Rate</th>-->
+<!--                <th class="py-3 px-4 border-b border-gray-300 text-left">Contract End Date</th>-->
+                <th class="py-3 px-4 border-b border-gray-300 text-left">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="employeeList">
+            <!-- Employee rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+    <p id="noEmployees" class="text-gray-600 hidden text-center">No employees found.</p>
+</div>
+
+<div id="footer"></div>
+<script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+            // Call updateNavbar after header is inserted
+            updateNavbar();
+        });
+        // Function to check login status and update navbar
+function updateNavbar() {
+    const username = localStorage.getItem('username'); // Fetch username from local storage
+    const loginRegisterLink = document.getElementById('loginRegisterLink');
+    const signOutButton = document.getElementById('signOutButton');
+
+    if (username) {
+        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+        signOutButton.style.display = 'block'; // Show the Sign Out button
+    } else {
+        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+    }
+}
+function signOut() {
+        console.log('Signing out...');
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('username');
+        loginRegisterLink.textContent = 'Login/Register';
+        redirectToLogin();
+
+    }
+
+    function redirectToLogin() {
+        console.log("i am in the redirect");
+        window.location.href = 'login.html';
+    }
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    // Function to fetch and display employees
+    function fetchEmployees() {
+        $.ajax({
+            url: 'http://43.205.154.85:8080/employees', // Adjust this URL based on your API
+            method: 'GET',
+            success: function(data) {
+                const employeeList = $('#employeeList');
+                const noEmployees = $('#noEmployees');
+                employeeList.empty(); // Clear previous data
+                if (data.length > 0) {
+                    data.forEach(employee => {
+                        const row = `
+                            <tr class="bg-gray-10 hover:bg-gray-200 transition duration-300 ease-in-out transform hover:scale-105  rounded-lg">
+                                <td class="py-2 px-4 border-b border-gray-300">${employee.name}</td>
+                                <td class="py-2 px-4 border-b border-gray-300">${employee.email}</td>
+                                <td class="py-2 px-4 border-b border-gray-300">${employee.phone}</td>
+                                <td class="py-2 px-4 border-b border-gray-300">${employee.jobTitle}</td>
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.joinDate}</td>-->
+                                <td class="py-2 px-4 border-b border-gray-300">${employee.employeeType}</td>
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.salary || ''}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.hourlyRate || ''}</td>-->
+<!--                                <td class="py-2 px-4 border-b border-gray-300">${employee.contractEndDate || ''}</td>-->
+                                <td class="py-2 px-4 border-b border-gray-300 flex space-x-2">
+
+                                    <button class="text-red-500 hover:text-red-700" onclick="deleteEmployee('${employee.id}')">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        employeeList.append(row);
+                    });
+                    $('#employeeContainer').removeClass('hidden');
+                    noEmployees.addClass('hidden');
+                } else {
+                    $('#employeeContainer').addClass('hidden');
+                    noEmployees.removeClass('hidden');
+                }
+            },
+            error: function(err) {
+                console.error('Error fetching employees:', err);
+            }
+        });
+    }
+
+
+    // Function to delete an employee
+    function deleteEmployee(employeeId) {
+        $.ajax({
+            url: `http://43.205.154.85:8080/employees/${employeeId}`,
+            method: 'DELETE',
+            success: function() {
+                fetchEmployees(); // Refresh the employee list
+            },
+            error: function(err) {
+                console.error('Error deleting employee:', err);
+            }
+        });
+    }
+
+    // Fetch employees on page load
+    $(document).ready(function() {
+        fetchEmployees();
+    });
+</script>
+</body>
+</html>

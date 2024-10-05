@@ -1,0 +1,660 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Employee Management</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+<!--<div class="container mx-auto p-6">-->
+<!--    <h1 class="text-3xl font-bold mb-6">Employee Management</h1>-->
+
+<!--    &lt;!&ndash; Employee Form &ndash;&gt;-->
+<!--    <form id="employeeForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">-->
+<!--        <h2 class="text-xl font-semibold mb-4">Add Employee</h2>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="employeeType">Employee Type</label>-->
+<!--            <select id="employeeType" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--                <option value="permanent">Permanent</option>-->
+<!--                <option value="contract">Contract</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Name</label>-->
+<!--            <input type="text" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>-->
+<!--            <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Phone</label>-->
+<!--            <input type="text" id="phone" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="joinDate">Join Date</label>-->
+<!--            <input type="date" id="joinDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4" id="permanentFields">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="salary">Salary</label>-->
+<!--            <input type="number" id="salary" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--        </div>-->
+<!--        <div class="mb-4" id="contractFields" style="display: none;">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="hourlyRate">Hourly Rate</label>-->
+<!--            <input type="number" id="hourlyRate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="contractEndDate">Contract End Date</label>-->
+<!--            <input type="date" id="contractEndDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--        </div>-->
+<!--        <div class="flex items-center justify-between">-->
+<!--            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Employee</button>-->
+<!--        </div>-->
+<!--    </form>-->
+
+<!--    &lt;!&ndash; Employee List &ndash;&gt;-->
+<!--    <h2 class="text-xl font-semibold mb-4">Employee List</h2>-->
+<!--    <table class="min-w-full bg-white shadow-md rounded">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Name</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Email</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Phone</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Join Date</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Type</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Salary/Hourly Rate</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="employeeList">-->
+<!--        &lt;!&ndash; Employee rows will be added here dynamically &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const employeeTypeSelect = document.getElementById('employeeType');-->
+<!--    const permanentFields = document.getElementById('permanentFields');-->
+<!--    const contractFields = document.getElementById('contractFields');-->
+
+<!--    employeeTypeSelect.addEventListener('change', function() {-->
+<!--        if (this.value === 'permanent') {-->
+<!--            permanentFields.style.display = 'block';-->
+<!--            contractFields.style.display = 'none';-->
+<!--        } else {-->
+<!--            permanentFields.style.display = 'none';-->
+<!--            contractFields.style.display = 'block';-->
+<!--        }-->
+<!--    });-->
+
+<!--    document.getElementById('employeeForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault();-->
+
+<!--        const employeeData = {-->
+<!--            type: employeeTypeSelect.value,-->
+<!--            name: document.getElementById('name').value,-->
+<!--            email: document.getElementById('email').value,-->
+<!--            phone: document.getElementById('phone').value,-->
+<!--            joinDate: document.getElementById('joinDate').value,-->
+<!--            salary: employeeTypeSelect.value === 'permanent' ? document.getElementById('salary').value : null,-->
+<!--            hourlyRate: employeeTypeSelect.value === 'contract' ? document.getElementById('hourlyRate').value : null,-->
+<!--            contractEndDate: employeeTypeSelect.value === 'contract' ? document.getElementById('contractEndDate').value : null,-->
+<!--        };-->
+
+<!--        // Make the POST request to create a new employee-->
+<!--        fetch('http://43.205.154.85:8080/employees', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json',-->
+<!--            },-->
+<!--            body: JSON.stringify(employeeData),-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            // Add the new employee to the list-->
+<!--            const employeeList = document.getElementById('employeeList');-->
+<!--            const row = document.createElement('tr');-->
+<!--            row.innerHTML = `-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.name}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.email}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.phone}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.joinDate}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.type}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.salary || data.hourlyRate}</td>-->
+<!--            `;-->
+<!--            employeeList.appendChild(row);-->
+
+<!--            // Reset the form-->
+<!--            document.getElementById('employeeForm').reset();-->
+<!--            permanentFields.style.display = 'block';-->
+<!--            contractFields.style.display = 'none';-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error:', error);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Employee Management</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body class="bg-gray-100">-->
+<!--<div class="container mx-auto p-6">-->
+<!--    <h1 class="text-3xl font-bold mb-6">Employee Management</h1>-->
+
+<!--    &lt;!&ndash; Employee Form &ndash;&gt;-->
+<!--    <form id="employeeForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">-->
+<!--        <h2 class="text-xl font-semibold mb-4">Add Employee</h2>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="employeeType">Employee Type</label>-->
+<!--            <select id="employeeType" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--                <option value="permanent">Permanent</option>-->
+<!--                <option value="contract">Contract</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Name</label>-->
+<!--            <input type="text" id="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>-->
+<!--            <input type="email" id="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Phone</label>-->
+<!--            <input type="text" id="phone" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="jobTitle">Job Title</label>-->
+<!--            <input type="text" id="jobTitle" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="joinDate">Join Date</label>-->
+<!--            <input type="date" id="joinDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>-->
+<!--        </div>-->
+<!--        <div class="mb-4" id="permanentFields">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="salary">Salary</label>-->
+<!--            <input type="number" id="salary" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--        </div>-->
+<!--        <div class="mb-4" id="contractFields" style="display: none;">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="hourlyRate">Hourly Rate</label>-->
+<!--            <input type="number" id="hourlyRate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--            <label class="block text-gray-700 text-sm font-bold mb-2" for="contractEndDate">Contract End Date</label>-->
+<!--            <input type="date" id="contractEndDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">-->
+<!--        </div>-->
+<!--        <div class="flex items-center justify-between">-->
+<!--            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Add Employee</button>-->
+<!--        </div>-->
+<!--    </form>-->
+
+<!--    &lt;!&ndash; Employee List &ndash;&gt;-->
+<!--    <h2 class="text-xl font-semibold mb-4">Employee List</h2>-->
+<!--    <table class="min-w-full bg-white shadow-md rounded">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Name</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Email</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Phone</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Job Title</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Join Date</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Type</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Salary/Hourly Rate</th>-->
+<!--            <th class="py-2 px-4 border-b border-gray-300 text-left">Actions</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="employeeList">-->
+<!--        &lt;!&ndash; Employee rows will be added here dynamically &ndash;&gt;-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    const employeeTypeSelect = document.getElementById('employeeType');-->
+<!--    const permanentFields = document.getElementById('permanentFields');-->
+<!--    const contractFields = document.getElementById('contractFields');-->
+
+<!--    employeeTypeSelect.addEventListener('change', function() {-->
+<!--        if (this.value === 'permanent') {-->
+<!--            permanentFields.style.display = 'block';-->
+<!--            contractFields.style.display = 'none';-->
+<!--        } else {-->
+<!--            permanentFields.style.display = 'none';-->
+<!--            contractFields.style.display = 'block';-->
+<!--        }-->
+<!--    });-->
+
+<!--    document.getElementById('employeeForm').addEventListener('submit', function(event) {-->
+<!--        event.preventDefault();-->
+
+<!--        const employeeData = {-->
+<!--            type: employeeTypeSelect.value,-->
+<!--            name: document.getElementById('name').value,-->
+<!--            email: document.getElementById('email').value,-->
+<!--            phone: document.getElementById('phone').value,-->
+<!--            jobTitle: document.getElementById('jobTitle').value,-->
+<!--            joinDate: document.getElementById('joinDate').value,-->
+<!--            salary: employeeTypeSelect.value === 'permanent' ? document.getElementById('salary').value : null,-->
+<!--            hourlyRate: employeeTypeSelect.value === 'contract' ? document.getElementById('hourlyRate').value : null,-->
+<!--            contractEndDate: employeeTypeSelect.value === 'contract' ? document.getElementById('contractEndDate').value : null,-->
+<!--        };-->
+
+<!--        // Make the POST request to create a new employee-->
+<!--        fetch('http://43.205.154.85:8080/employees', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json',-->
+<!--            },-->
+<!--            body: JSON.stringify(employeeData),-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            // Add the new employee to the list-->
+<!--            const employeeList = document.getElementById('employeeList');-->
+<!--            const row = document.createElement('tr');-->
+<!--            row.setAttribute('data-id', data.id); // Store the employee ID in the row-->
+<!--            row.innerHTML = `-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.name}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.email}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.phone}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.jobTitle}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.joinDate}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.type}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">${data.salary || data.hourlyRate}</td>-->
+<!--                <td class="py-2 px-4 border-b border-gray-300">-->
+<!--                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" onclick="editEmployee('${data.id}')">Edit</button>-->
+<!--                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" onclick="deleteEmployee('${data.id}')">Delete</button>-->
+<!--                </td>-->
+<!--            `;-->
+<!--            employeeList.appendChild(row);-->
+<!--            this.reset(); // Reset the form fields-->
+<!--        })-->
+<!--        .catch(error => console.error('Error:', error));-->
+<!--    });-->
+
+<!--    function editEmployee(id) {-->
+<!--        // Fetch employee data and populate the form-->
+<!--        fetch(`http://43.205.154.85:8080/employees/${id}`)-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                document.getElementById('employeeType').value = data.type;-->
+<!--                document.getElementById('name').value = data.name;-->
+<!--                document.getElementById('email').value = data.email;-->
+<!--                document.getElementById('phone').value = data.phone;-->
+<!--                document.getElementById('jobTitle').value = data.jobTitle;-->
+<!--                document.getElementById('joinDate').value = data.joinDate;-->
+
+<!--                if (data.type === 'permanent') {-->
+<!--                    document.getElementById('salary').value = data.salary;-->
+<!--                    document.getElementById('permanentFields').style.display = 'block';-->
+<!--                    document.getElementById('contractFields').style.display = 'none';-->
+<!--                } else {-->
+<!--                    document.getElementById('hourlyRate').value = data.hourlyRate;-->
+<!--                    document.getElementById('contractEndDate').value = data.contractEndDate;-->
+<!--                    document.getElementById('permanentFields').style.display = 'none';-->
+<!--                    document.getElementById('contractFields').style.display = 'block';-->
+<!--                }-->
+<!--            });-->
+<!--    }-->
+
+<!--    function deleteEmployee(id) {-->
+<!--        fetch(`http://43.205.154.85:8080/employees/${id}`, {-->
+<!--            method: 'DELETE',-->
+<!--        })-->
+<!--        .then(() => {-->
+<!--            const employeeRow = document.querySelector(`tr[data-id='${id}']`);-->
+<!--            if (employeeRow) {-->
+<!--                employeeRow.remove();-->
+<!--            }-->
+<!--        })-->
+<!--        .catch(error => console.error('Error:', error));-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Add any additional styles here */
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Take full height of viewport */
+        }
+        footer {
+          margin-top: auto;
+             height: 70px;
+        }
+        header{
+
+            height: 55px; /* Fixed height for header */
+            /* Other styles if needed */
+            padding-left:0px;
+            padding-right:0px;
+
+        }
+        }
+         #employeeContainer {
+            flex-grow: 1; /* Allow the employee container to grow */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div id="header"></div>
+<div class=" w-95% mt-5 flex-grow px-4 ">
+
+    <!-- Employee Form -->
+    <form id="employeeForm" class=" bg-white shadow-md rounded px-8 pt-5 pb-8 mb-6 mt-9 w-full" aria-labelledby="form-title">
+        <h1 class="text-3xl font-semibold mb-4 text-center" id="form-title">Add Employee</h1>
+        <input type="hidden" id="editEmployeeId" value=""> <!-- Hidden input to track editing -->
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="employeeType">Employee Type</label>
+            <select id="employeeType" aria-required="true" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="permanent">Permanent</option>
+                <option value="contract">Contract</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Name</label>
+            <input type="text" id="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email</label>
+            <input type="email" id="email" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Phone</label>
+            <input type="text" id="phone" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="jobTitle">Job Title</label>
+            <input type="text" id="jobTitle" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="joinDate">Join Date</label>
+            <input type="date" id="joinDate" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4" id="permanentFields">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="salary">Salary</label>
+            <input type="number" id="salary" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4" id="contractFields" style="display: none;">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="hourlyRate">Hourly Rate</label>
+            <input type="number" id="hourlyRate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="contractEndDate">Contract End Date</label>
+            <input type="date" id="contractEndDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+<!--        <div class="flex items-center justify-between">-->
+<!--            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save Employee</button>-->
+<!--        </div>-->
+        <div class="flex items-center justify-center w-full">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save Employee</button>
+        </div>
+
+    </form>
+
+    <!-- Employee List -->
+<!--    <h2 class="text-xl font-semibold mb-4 ">Employee List</h2>-->
+    <table id="employee" class="table-auto w-full mt-4 mb-6 bg-white rounded-lg shadow-lg" style="display: none;">
+        <thead>
+        <tr>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Name</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Email</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Phone</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Job Title</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Join Date</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Type</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Salary/Hourly Rate</th>
+            <th class="py-2 px-4 border-b border-gray-300 text-left">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="employeeList">
+        <!-- Employee rows will be added here dynamically -->
+        </tbody>
+    </table>
+</div>
+<div id="footer"></div>
+
+<script>
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+            // Call updateNavbar after header is inserted
+            updateNavbar();
+        });
+        // Function to check login status and update navbar
+function updateNavbar() {
+    const username = localStorage.getItem('username'); // Fetch username from local storage
+    const loginRegisterLink = document.getElementById('loginRegisterLink');
+    const signOutButton = document.getElementById('signOutButton');
+
+    if (username) {
+        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
+        signOutButton.style.display = 'block'; // Show the Sign Out button
+    } else {
+        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
+        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
+    }
+}
+function signOut() {
+        console.log('Signing out...');
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.removeItem('username');
+        loginRegisterLink.textContent = 'Login/Register';
+        redirectToLogin();
+
+    }
+
+    function redirectToLogin() {
+        console.log("i am in the redirect");
+        window.location.href = 'login.html';
+    }
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+
+
+    let editingEmployeeId = null; // Track the employee being edited
+
+    const employeeTypeSelect = document.getElementById('employeeType');
+    const permanentFields = document.getElementById('permanentFields');
+    const contractFields = document.getElementById('contractFields');
+
+    // Toggle fields based on employee type
+    employeeTypeSelect.addEventListener('change', function() {
+        if (this.value === 'permanent') {
+            permanentFields.style.display = 'block';
+            contractFields.style.display = 'none';
+        } else {
+            permanentFields.style.display = 'none';
+            contractFields.style.display = 'block';
+        }
+    });
+
+    // Handle form submission
+    document.getElementById('employeeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const employeeData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            jobTitle: document.getElementById('jobTitle').value,
+            joinDate: document.getElementById('joinDate').value,
+            type: employeeTypeSelect.value,
+            salary: employeeTypeSelect.value === 'permanent' ? document.getElementById('salary').value : null,
+            hourlyRate: employeeTypeSelect.value === 'contract' ? document.getElementById('hourlyRate').value : null,
+            contractEndDate: employeeTypeSelect.value === 'contract' ? document.getElementById('contractEndDate').value : null,
+        };
+
+        if (editingEmployeeId) {
+            // Update existing employee
+            fetch(`http://43.205.154.85:8080/employees/${editingEmployeeId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(employeeData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateEmployeeInList(data);
+                this.reset();
+                editingEmployeeId = null; // Clear editing ID
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error updating the employee. Please try again.');
+            });
+        } else {
+            // Create new employee
+            fetch('http://43.205.154.85:8080/employees', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(employeeData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const newClientTable = document.getElementById('employee');
+    newClientTable.style.display = 'table';
+                addEmployeeToList(data);
+                this.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error adding the employee. Please try again.');
+            });
+        }
+    });
+
+    // Function to add new employee to the list
+    function addEmployeeToList(data) {
+        const employeeList = document.getElementById('employeeList');
+        const row = document.createElement('tr');
+        row.setAttribute('data-id', data.id); // Add data-id attribute for easy access
+
+        row.innerHTML = `
+            <td class="py-2 px-4 border-b border-gray-300">${data.name}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.email}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.phone}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.jobTitle}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.joinDate}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.type}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.salary || data.hourlyRate}</td>
+<!--            <td class="py-2 px-4 border-b border-gray-300">-->
+<!--                <button class="text-blue-500 hover:text-blue-700 edit-button" onclick="editEmployee('${data.id}')">Edit</button>-->
+<!--                <button class="text-red-500 hover:text-red-700 delete-button" onclick="deleteEmployee('${data.id}')">Delete</button>-->
+<!--            </td>-->
+
+            <td class="py-2 px-4 border-b border-gray-300">
+                <button class="text-blue-500 hover:text-blue-700 edit-button" onclick="editEmployee('${data.id}')">
+                    <i class="fas fa-pencil-alt"></i> <!-- Pencil icon for edit -->
+                </button>
+                <button class="text-red-500 hover:text-red-700 delete-button" onclick="deleteEmployee('${data.id}')">
+                    <i class="fas fa-trash-alt"></i> <!-- Trash icon for delete -->
+                </button>
+            </td>
+
+        `;
+        employeeList.appendChild(row);
+
+    }
+
+    // Function to update existing employee in the list
+    function updateEmployeeInList(data) {
+        const employeeRow = document.querySelector(`tr[data-id='${data.id}']`);
+        employeeRow.innerHTML = `
+            <td class="py-2 px-4 border-b border-gray-300">${data.name}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.email}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.phone}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.jobTitle}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.joinDate}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.type}</td>
+            <td class="py-2 px-4 border-b border-gray-300">${data.salary || data.hourlyRate}</td>
+            <td class="py-2 px-4 border-b border-gray-300">
+                <button class="text-blue-500 hover:text-blue-700 edit-button" onclick="editEmployee('${data.id}')">
+                    <i class="fas fa-pencil-alt"></i> <!-- Pencil icon for edit -->
+                </button>
+                <button class="text-red-500 hover:text-red-700 delete-button" onclick="deleteEmployee('${data.id}')">
+                    <i class="fas fa-trash-alt"></i> <!-- Trash icon for delete -->
+                </button>
+            </td>
+        `;
+    }
+
+    // Function to edit an employee
+    function editEmployee(employeeId) {
+        const employeeRow = document.querySelector(`tr[data-id='${employeeId}']`);
+        const cells = employeeRow.querySelectorAll('td');
+
+        document.getElementById('name').value = cells[0].textContent;
+        document.getElementById('email').value = cells[1].textContent;
+        document.getElementById('phone').value = cells[2].textContent;
+        document.getElementById('jobTitle').value = cells[3].textContent;
+        document.getElementById('joinDate').value = cells[4].textContent;
+
+        if (cells[5].textContent === 'permanent') {
+            employeeTypeSelect.value = 'permanent';
+            document.getElementById('salary').value = cells[6].textContent;
+            permanentFields.style.display = 'block';
+            contractFields.style.display = 'none';
+        } else {
+            employeeTypeSelect.value = 'contract';
+            document.getElementById('hourlyRate').value = cells[6].textContent;
+            contractFields.style.display = 'block';
+            permanentFields.style.display = 'none';
+        }
+
+        // Set the employee ID for editing
+        editingEmployeeId = employeeId; // Set the ID of the employee being edited
+    }
+
+    // Function to delete an employee
+    function deleteEmployee(employeeId) {
+        fetch(`http://43.205.154.85:8080/employees/${employeeId}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const employeeRow = document.querySelector(`tr[data-id='${employeeId}']`);
+            employeeRow.remove();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error deleting the employee. Please try again.');
+        });
+    }
+</script>
+</body>
+</html>
+

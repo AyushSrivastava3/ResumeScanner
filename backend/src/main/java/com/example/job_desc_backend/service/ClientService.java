@@ -31,4 +31,12 @@ public class ClientService {
         List<Client> clients= clientRepository.findClientWithinDateRange(weekAgo,now);
         return clients;
     }
+
+    public void deleteClientById(String id){
+        if(clientRepository.existsById(id)){
+            clientRepository.deleteById(id);
+        }else {
+            // throw new ClientNotFoundException("Client with id " + id + " not found");
+        }
+    }
 }

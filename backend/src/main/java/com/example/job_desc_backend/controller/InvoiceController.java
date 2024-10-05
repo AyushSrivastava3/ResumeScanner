@@ -7,6 +7,7 @@ import com.example.job_desc_backend.repository.InvoiceRepository;
 import com.example.job_desc_backend.service.ExportImportService;
 import com.example.job_desc_backend.service.InvoiceService;
 //import org.apache.regexp.RE;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,13 @@ public class InvoiceController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteInvoice(@PathVariable String id){
+        invoiceService.deleteInvocieById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
     @GetMapping("/pending")
     public ResponseEntity<List<Invoice>> getPendingInvoices() {
@@ -98,6 +106,12 @@ public class InvoiceController {
         } else {
             return ResponseEntity.ok(invoices);
         }
+    }
+
+    @GetMapping("/pending/clientInvoices")
+    public ResponseEntity<List<Invoice>> getPendingClientInvoices(@RequestParam String clientId) {
+        List<Invoice> invoices = invoiceService.getPendingInvoicesByClientId(clientId);
+        return ResponseEntity.ok(invoices);
     }
 
     @GetMapping("/export/invoices")
@@ -148,5 +162,64 @@ public class InvoiceController {
     public List<Invoice> getWeekInvoices() {
         return invoiceService.getInvoiceCreatedInWeek();
     }
+
+
+    @GetMapping("/byClient")
+    public ResponseEntity<List<Invoice>> getInvoicesByClientId(@RequestParam String clientId){
+        List<Invoice> invoices= invoiceService.getInvoicesByClientId(clientId);
+        if(invoices.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(invoices);
+        }
+    }
+
+
+    @GetMapping("/clients/invoices/export")
+    public ResponseEntity<byte[]> exportClientInvoicesToExcel(@RequestParam String clientId) {
+        try {
+            List<Invoice> invoices= invoiceService.getInvoicesByClientId(clientId);
+            ExportImportService<Invoice> exporter = new ExportImportService<>();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            exporter.exportToExcel(invoices, baos);
+
+            byte[] excelBytes = baos.toByteArray();
+            System.out.println("Excel file size: " + excelBytes.length);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profiles_export.xlsx");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/pending/clientInvoices/export")
+    public ResponseEntity<byte[]> exportPendingInvoicesToExcel(@RequestParam String clientId) {
+        try {
+            List<Invoice> invoices = invoiceService.getPendingInvoicesByClientId(clientId);
+            ExportImportService<Invoice> exporter = new ExportImportService<>();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            exporter.exportToExcel(invoices, baos);
+
+            byte[] excelBytes = baos.toByteArray();
+            System.out.println("Excel file size: " + excelBytes.length);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=profiles_export.xlsx");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+            return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(("Failed to create Excel file: " + e.getMessage()).getBytes(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

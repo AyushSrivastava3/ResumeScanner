@@ -1,30 +1,214 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Company Bill Dashboard</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f7f7f7;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--            height: 100vh;-->
+<!--            margin: 0;-->
+<!--        }-->
+
+<!--        .dashboard-container {-->
+<!--            background-color: #fff;-->
+<!--            padding: 20px;-->
+<!--            border-radius: 8px;-->
+<!--            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);-->
+<!--            width: 50%;-->
+<!--            max-width: 600px;-->
+<!--        }-->
+
+<!--        h2 {-->
+<!--            margin-bottom: 20px;-->
+<!--            text-align: center;-->
+<!--            font-size: 1.6rem;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        .stat {-->
+<!--            margin-bottom: 15px;-->
+<!--            padding: 15px;-->
+<!--            border-radius: 4px;-->
+<!--            background-color: #e7f1ff;-->
+<!--            border: 1px solid #d1e4f7;-->
+<!--        }-->
+
+<!--        .stat h3 {-->
+<!--            margin: 0;-->
+<!--            font-size: 1.2rem;-->
+<!--            color: #0056b3;-->
+<!--        }-->
+
+<!--        .stat p {-->
+<!--            margin: 5px 0 0;-->
+<!--            font-size: 1rem;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        .loading {-->
+<!--            color: #007bff;-->
+<!--        }-->
+
+<!--        #footer {-->
+<!--            background-color: #fff;-->
+<!--            width: 100%;-->
+<!--            text-align: center;-->
+<!--            border-top: 1px solid #ccc;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="header"></div>-->
+<!--<div class="dashboard-container">-->
+<!--    <h2>Company Bill Dashboard</h2>-->
+<!--    <div id="totalBills" class="stat">-->
+<!--        <h3>Total Bills Raised</h3>-->
+<!--        <p id="totalBillsValue" class="loading">Loading...</p>-->
+<!--    </div>-->
+<!--    <div id="totalToBeClaimed" class="stat">-->
+<!--        <h3>Total Bills to be Claimed from Client</h3>-->
+<!--        <p id="totalToBeClaimedValue" class="loading">Loading...</p>-->
+<!--    </div>-->
+<!--    <div id="pendingReimbursements" class="stat">-->
+<!--        <h3>Pending Bills to be Reimbursed by Company</h3>-->
+<!--        <p id="pendingReimbursementsValue" class="loading">Loading...</p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div id="footer"></div>-->
+
+<!--<script>-->
+
+<!--    (function() {-->
+<!--        const token = localStorage.getItem('accessToken');-->
+
+<!--        // If the token is missing, redirect to the login page immediately-->
+<!--        if (!token) {-->
+<!--            window.location.href = 'login.html';-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // Validate the token by making a quick API call-->
+<!--        fetch('http://43.205.154.85:8080/profile/count', {-->
+<!--            headers: {-->
+<!--                "Authorization": `Bearer ${token}`-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => {-->
+<!--            if (!response.ok) {-->
+<!--                // If token validation fails, redirect to the login page immediately-->
+<!--                window.location.href = 'login.html';-->
+<!--            }-->
+<!--            // No further actions needed as page loading continues only if the token is valid-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            // In case of any error, redirect to the login page-->
+<!--            console.error('Error:', error);-->
+<!--            window.location.href = 'login.html';-->
+<!--        });-->
+<!--    })();-->
+
+<!--    fetch('header.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('header').innerHTML = data;-->
+<!--            // Call updateNavbar after header is inserted-->
+<!--            updateNavbar();-->
+<!--        });-->
+<!--        // Function to check login status and update navbar-->
+<!--function updateNavbar() {-->
+<!--    const username = localStorage.getItem('username'); // Fetch username from local storage-->
+<!--    const loginRegisterLink = document.getElementById('loginRegisterLink');-->
+<!--    const signOutButton = document.getElementById('signOutButton');-->
+
+<!--    if (username) {-->
+<!--        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username-->
+<!--        signOutButton.style.display = 'block'; // Show the Sign Out button-->
+<!--    } else {-->
+<!--        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username-->
+<!--        signOutButton.style.display = 'none'; // Hide Sign Out button if no username-->
+<!--    }-->
+<!--}-->
+<!--function signOut() {-->
+<!--        console.log('Signing out...');-->
+<!--        localStorage.removeItem('accessToken');-->
+<!--        localStorage.setItem('isLoggedIn', 'false');-->
+<!--        localStorage.removeItem('username');-->
+<!--        loginRegisterLink.textContent = 'Login/Register';-->
+<!--        redirectToLogin();-->
+<!--    }-->
+
+<!--    function redirectToLogin() {-->
+<!--        console.log("i am in the redirect");-->
+<!--        window.location.href = 'login.html';-->
+<!--    }-->
+
+<!--    fetch('footer.html')-->
+<!--        .then(response => response.text())-->
+<!--        .then(data => {-->
+<!--            document.getElementById('footer').innerHTML = data;-->
+<!--        });-->
+
+<!--async function fetchDashboardStats() {-->
+<!--    try {-->
+<!--        let response = await fetch('http://43.205.154.85:8080/api/billing/dashboard/stats');-->
+<!--        let data = await response.json();-->
+
+<!--        document.getElementById('totalBillsValue').innerText = data.totalBills;-->
+<!--        document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed;-->
+<!--        document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements;-->
+<!--    } catch (error) {-->
+<!--        console.error('Error fetching dashboard stats:', error);-->
+<!--        document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');-->
+<!--    }-->
+<!--}-->
+
+<!--fetchDashboardStats();-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Bill Dashboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
+        /* General styling for the dashboard container */
         .dashboard-container {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-            width: 50%;
-            max-width: 600px;
+            width: 100%;
+            max-width: 1000px;
+            margin: auto;
+            margin-top: 80px;
         }
 
+        .main-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 36px; /* Larger font size */
+    font-weight: bold; /* Make the text bold */
+    background: linear-gradient(45deg, #005149, #005149); /* Gradient background */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Apply gradient to text */
+    padding: 20px; /* Add padding for a better visual structure */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A modern, clean font */
+}
+
+        /* Styling for the header */
         h2 {
             margin-bottom: 20px;
             text-align: center;
@@ -32,6 +216,7 @@
             color: #333;
         }
 
+        /* Styling for the statistics sections */
         .stat {
             margin-bottom: 15px;
             padding: 15px;
@@ -40,137 +225,200 @@
             border: 1px solid #d1e4f7;
         }
 
+        /* Styling for the titles of the statistics */
         .stat h3 {
             margin: 0;
             font-size: 1.2rem;
             color: #0056b3;
         }
 
+        /* Styling for the values of the statistics */
         .stat p {
             margin: 5px 0 0;
             font-size: 1rem;
             color: #333;
+            cursor: pointer;
         }
 
+        /* Styling for the loading state */
         .loading {
             color: #007bff;
         }
 
-        #footer {
+        /* General styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        /* Styling for the export button */
+        .button {
+             padding: 10px 20px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 4px;
+            background-color: #005149; /* Adjust to match your theme */
+        }
+
+        /* Styling for the export button */
+
+
+        /* Hover effect for the export button */
+        .button:hover {
+            background-color: #138496;
+        }
+
+        /* Styling for the details table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+                #footer {
             background-color: #fff;
             width: 100%;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            border-top: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
 <div id="header"></div>
 <div class="dashboard-container">
-    <h2>Company Bill Dashboard</h2>
+    <a id="export-btn" class="button">Export</a>
+
+    <h2 class="main-title">Company Bill Dashboard</h2>
+
     <div id="totalBills" class="stat">
         <h3>Total Bills Raised</h3>
         <p id="totalBillsValue" class="loading">Loading...</p>
     </div>
+
     <div id="totalToBeClaimed" class="stat">
         <h3>Total Bills to be Claimed from Client</h3>
         <p id="totalToBeClaimedValue" class="loading">Loading...</p>
     </div>
+
     <div id="pendingReimbursements" class="stat">
         <h3>Pending Bills to be Reimbursed by Company</h3>
         <p id="pendingReimbursementsValue" class="loading">Loading...</p>
     </div>
 </div>
 
+<!-- Container to hold the details table -->
+<div id="detailsContainer" class="dashboard-container"></div>
+
 <div id="footer"></div>
-
 <script>
-
-    (function() {
-        const token = localStorage.getItem('accessToken');
-
-        // If the token is missing, redirect to the login page immediately
-        if (!token) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // Validate the token by making a quick API call
-        fetch('http://43.205.154.85:8080/profile/count', {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                // If token validation fails, redirect to the login page immediately
-                window.location.href = 'login.html';
-            }
-            // No further actions needed as page loading continues only if the token is valid
-        })
-        .catch(error => {
-            // In case of any error, redirect to the login page
-            console.error('Error:', error);
-            window.location.href = 'login.html';
-        });
-    })();
-
     fetch('header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('header').innerHTML = data;
-            // Call updateNavbar after header is inserted
-            updateNavbar();
-        });
-        // Function to check login status and update navbar
-function updateNavbar() {
-    const username = localStorage.getItem('username'); // Fetch username from local storage
-    const loginRegisterLink = document.getElementById('loginRegisterLink');
-    const signOutButton = document.getElementById('signOutButton');
-
-    if (username) {
-        loginRegisterLink.textContent = `LoggedIn / ${username}`; // Update the link text to show the username
-        signOutButton.style.display = 'block'; // Show the Sign Out button
-    } else {
-        loginRegisterLink.textContent = 'Login/Register'; // Default text if no username
-        signOutButton.style.display = 'none'; // Hide Sign Out button if no username
-    }
-}
-function signOut() {
-        console.log('Signing out...');
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        localStorage.removeItem('username');
-        loginRegisterLink.textContent = 'Login/Register';
-        redirectToLogin();
-    }
-
-    function redirectToLogin() {
-        console.log("i am in the redirect");
-        window.location.href = 'login.html';
-    }
-
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                // Call updateNavbar after header is inserted
+                updateNavbar();
+            });
     fetch('footer.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('footer').innerHTML = data;
         });
 
-async function fetchDashboardStats() {
-    try {
-        let response = await fetch('http://43.205.154.85:8080/api/billing/dashboard/stats');
-        let data = await response.json();
+    async function fetchDashboardStats() {
+        try {
+            let response = await fetch('http://43.205.154.85:8080/api/billing/dashboard/stats');
+            let data = await response.json();
 
-        document.getElementById('totalBillsValue').innerText = data.totalBills;
-        document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed;
-        document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements;
-    } catch (error) {
-        console.error('Error fetching dashboard stats:', error);
-        document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');
+            document.getElementById('totalBillsValue').innerText = data.totalBills.length;
+            document.getElementById('totalToBeClaimedValue').innerText = data.totalToBeClaimed.length;
+            document.getElementById('pendingReimbursementsValue').innerText = data.pendingReimbursements.length;
+
+            document.getElementById('totalBillsValue').addEventListener('click', () => showDetails(data.totalBills));
+            document.getElementById('totalToBeClaimedValue').addEventListener('click', () => showDetails(data.totalToBeClaimed));
+            document.getElementById('pendingReimbursementsValue').addEventListener('click', () => showDetails(data.pendingReimbursements));
+
+        } catch (error) {
+            console.error('Error fetching dashboard stats:', error);
+            document.querySelectorAll('.loading').forEach(el => el.innerText = 'Error loading data');
+        }
     }
-}
 
-fetchDashboardStats();
+ function showDetails(detailsArray) {
+        const detailsContainer = document.getElementById('detailsContainer');
+        detailsContainer.innerHTML = ''; // Clear previous table if any
+
+        const table = document.createElement('table');
+
+        const headerRow = document.createElement('tr');
+        const headers = ['Reason', 'Amount', 'Date', 'Category', 'Reimbursed', 'Submitted By', 'Comments', 'Client Reimbursed', 'Reimbursement Date'];
+        headers.forEach(header => {
+            const th = document.createElement('th');
+            th.innerText = header;
+            headerRow.appendChild(th);
+        });
+        table.appendChild(headerRow);
+
+        detailsArray.forEach(item => {
+            const row = document.createElement('tr');
+
+            const fields = ['reason', 'amount', 'date', 'category', 'reimbursed', 'submittedBy', 'comments', 'clientReimbursed', 'reimbursementDate'];
+            fields.forEach(field => {
+                const td = document.createElement('td');
+                td.innerText = item[field] !== undefined ? item[field] : '';
+                row.appendChild(td);
+            });
+
+            table.appendChild(row);
+        });
+
+        detailsContainer.appendChild(table);
+    }
+
+    // Trigger export of bills as a CSV file
+    function exportBills() {
+        fetch('http://43.205.154.85:8080/api/billing/export/bills')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'bills_export.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error exporting bills');
+            });
+    }
+
+    // Attach event listener to the export button
+    document.getElementById('export-btn').addEventListener('click', exportBills);
+
+    // Load the dashboard stats on page load
+    fetchDashboardStats();
 </script>
 </body>
 </html>

@@ -110,6 +110,13 @@ public class ClientController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClient(@PathVariable String id){
+        clientService.deleteClientById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @GetMapping("/getTodayClients")
     public List<Client> getTodayClients() {
         return clientService.getClientsCreatedToday();

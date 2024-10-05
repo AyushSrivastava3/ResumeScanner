@@ -1,11 +1,10 @@
+
 package com.example.job_desc_backend.controller;
-
-
-
 import com.example.job_desc_backend.model.BillEntity;
 import com.example.job_desc_backend.service.ExportImportService;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.http.*;
 
 import com.example.job_desc_backend.model.Billpdf;
@@ -21,11 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static org.apache.poi.hwpf.model.FileInformationBlock.logger;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -35,6 +38,8 @@ public class BillWebController {
 
     @Autowired
     private BillDataService billService;
+    @Autowired
+    BillMongoRepository billRepository;
 
     @PostMapping
     public ResponseEntity<BillEntity> createBill(@RequestBody BillEntity bill) {
@@ -47,6 +52,9 @@ public class BillWebController {
         List<BillEntity> bills = billService.getAllBills();
         return ResponseEntity.ok(bills);
     }
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<BillEntity> updateBill(@PathVariable String id, @RequestBody BillEntity updatedBill) {
@@ -128,18 +136,118 @@ public class BillWebController {
 
 
     @GetMapping("/dashboard/stats")
-    public ResponseEntity<Map<String, Long>> getDashboardStats() {
-        long totalBills = billRepository.count();
-        long totalToBeClaimed = billRepository.countByClientReimbursed(false);
-        long pendingReimbursements = billRepository.countByReimbursed(false);
+    public ResponseEntity<Map<String, List<BillEntity>>> getDashboardStats() {
+        // Fetch all bills
+        List<BillEntity> totalBills = billRepository.findAll();
 
-        Map<String, Long> stats = new HashMap<>();
+        // Fetch bills where clientReimbursed is false
+        List<BillEntity> totalToBeClaimed = billRepository.findByClientReimbursed(false);
+
+        // Fetch bills where reimbursed is false
+        List<BillEntity> pendingReimbursements = billRepository.findByReimbursed(false);
+
+        // Create a map to store the lists of bills
+        Map<String, List<BillEntity>> stats = new HashMap<>();
         stats.put("totalBills", totalBills);
         stats.put("totalToBeClaimed", totalToBeClaimed);
         stats.put("pendingReimbursements", pendingReimbursements);
 
         return ResponseEntity.ok(stats);
     }
+
+    @GetMapping("/totalBills")
+    public List<BillEntity> totalBills() {
+        // Fetch all bills
+        List<BillEntity> totalBills = billRepository.findAll();
+        return totalBills;
+    }
+
+    @GetMapping("/totalToBeClaimed")
+    public List<BillEntity> billsToBeClaimed() {
+        List<BillEntity> totalToBeClaimed = billRepository.findByClientReimbursed(false);
+        return totalToBeClaimed;
+    }
+
+    @GetMapping("/pendingReimbursements")
+    public List<BillEntity> pendingReimbursements() {
+        List<BillEntity> pendingReimbursements = billRepository.findByReimbursed(false);
+        return pendingReimbursements;
+    }
+
+
+//    @GetMapping("/dashboard/weekly-stats")
+//    public ResponseEntity<Map<String, List<BillEntity>>> getWeeklyDashboardStats() {
+//        List<BillEntity> weeklyBills = billService.getBillsForCurrentWeek();
+//        List<BillEntity> weeklyToBeClaimed = weeklyBills.stream()
+//                .filter(bill -> !bill.isClientReimbursed())
+//                .collect(Collectors.toList());
+//        List<BillEntity> weeklyPendingReimbursements = weeklyBills.stream()
+//                .filter(bill -> !bill.isReimbursed())
+//                .collect(Collectors.toList());
+//
+//        Map<String, List<BillEntity>> stats = new HashMap<>();
+//        stats.put("weeklyBills", weeklyBills);
+//        stats.put("weeklyToBeClaimed", weeklyToBeClaimed);
+//        stats.put("weeklyPendingReimbursements", weeklyPendingReimbursements);
+//
+//        return ResponseEntity.ok(stats);
+//    }
+
+    @GetMapping("/weekly-stats")
+    public List<BillEntity> getWeeklyDashboardStats() {
+        return billService.getBillsForCurrentWeek();
+    }
+
+    @GetMapping("/today-bills")
+    public List<BillEntity> getTodayBills() {
+        return billService.getBillsForToday();
+    }
+
+
+
+
+        @GetMapping("/dashboard/weekly-stats")
+    public List<BillEntity> getTodayDashboardStats() {
+        List<BillEntity> weeklyBills = billService.getBillsForCurrentWeek();
+        return weeklyBills;
+    }
+
+    @GetMapping("/dashboard/daily-stats")
+    public ResponseEntity<Map<String, List<BillEntity>>> getDailyDashboardStats() {
+        List<BillEntity> dailyBills = billService.getBillsForToday();
+        List<BillEntity> dailyToBeClaimed = dailyBills.stream()
+                .filter(bill -> !bill.isClientReimbursed())
+                .collect(Collectors.toList());
+        List<BillEntity> dailyPendingReimbursements = dailyBills.stream()
+                .filter(bill -> !bill.isReimbursed())
+                .collect(Collectors.toList());
+
+        Map<String, List<BillEntity>> stats = new HashMap<>();
+        stats.put("dailyBills", dailyBills);
+        stats.put("dailyToBeClaimed", dailyToBeClaimed);
+        stats.put("dailyPendingReimbursements", dailyPendingReimbursements);
+
+        return ResponseEntity.ok(stats);
+    }
+
+    @GetMapping("/getBillByIdGopal")
+    public ResponseEntity<List<BillEntity>> getAllBill(
+            @RequestParam(required = false) Boolean clientReimbursed,
+            @RequestParam(required = false) Boolean reimbursed) {
+
+        List<BillEntity> bills;
+
+        if (clientReimbursed != null) {
+            bills = billRepository.findByClientReimbursed(clientReimbursed);
+        } else if (reimbursed != null) {
+            bills = billRepository.findByReimbursed(reimbursed);
+        } else {
+            bills = billRepository.findAll();
+        }
+
+        return ResponseEntity.ok(bills);
+    }
+
 
     @Autowired
     BillPdfRepository billPdfRepository;
@@ -148,8 +256,7 @@ public class BillWebController {
 
 
 
-    @Autowired
-    private BillMongoRepository billRepository;
+
 
     @PostMapping("/updateBill/{id}")
     public ResponseEntity<BillEntity> uploadBill(
@@ -184,6 +291,8 @@ public class BillWebController {
 
         // Ensure the ID of the updated bill matches the existing one
         bill.setId(id);
+
+
 
         // Save the updated bill entity
         BillEntity savedBill = billRepository.save(bill);
@@ -231,6 +340,16 @@ public class BillWebController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @DeleteMapping("/deleteBillById")
+    public ResponseEntity<String> deletebyid(@RequestParam String id){
+        if (id!=null) {
+            billRepository.deleteById(id);
+            return ResponseEntity.ok("Bill deleted successfully");
+        }
+        else {
+            return (ResponseEntity<String>) ResponseEntity.status(HttpStatus.NO_CONTENT);
         }
     }
 

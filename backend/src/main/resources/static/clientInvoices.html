@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Invoices</title>
+    <style>
+        /* Your existing CSS styles here */
+/* Export Button Styling */
+#exportBtn {
+    background-color: #005149;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#exportBtn:hover {
+    background-color: #003d3d;
+}
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header-content {
+            margin-top: 50px;
+            margin-right: 10px;
+            position: relative;
+            background-color: white;
+            padding: 10px 0;
+        }
+
+        .header-content nav ul {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .header-content nav ul li {
+            padding: 10px 15px;
+            font-size: 14px;
+            background-color: #afafaf;
+            color: black;
+            border-radius: 4px;
+        }
+        .header-content nav ul li:hover{
+            background-color: #64706f;
+        }
+        .header-content nav ul li a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .main-content {
+    flex: 1;
+    padding: 20px;
+    margin-top: 20px; /* Add margin to push the table down */
+}
+
+        .button-group, .filter-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .button-group button, .filter-form button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #005149;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button-group button:hover, .filter-form button:hover {
+            background-color: #003d34;
+        }
+
+        .filter-form input {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%; /* Ensure the table takes up the full width of the page */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th:first-child,
+table td:first-child {
+    width: 50px; /* Reduce the width of the serial number column */
+}
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid black;
+
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+            background-color: #005149;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+            background-color: #003d34;
+        }
+
+        .pagination button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #pageNumber {
+            margin-top: 10px;
+        }
+
+        #name {
+            color: #003d34;
+        }
+
+        #name:hover {
+            color: rgb(70, 103, 136);
+        }
+
+        #invoice_id {
+            color: black;
+        }
+
+        #invoice_id:hover {
+            color: rgb(70, 103, 136);
+        }
+
+        #pendingInvoicesBtn, #paidInvoicesBtn, #naInvoicesBtn {
+            background-color: #005149;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            margin-right: 10px; /* Add margin-right for spacing between buttons */
+        }
+
+        #pendingInvoicesBtn:hover, #paidInvoicesBtn:hover, #naInvoicesBtn:hover {
+            background-color: #003d3d;
+        }
+
+        /* Heading style */
+        h2 {
+            text-align: center;
+            color: #005149;
+            margin-bottom: 20px;
+        }
+        /* Button Group styling */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Adjust the gap between buttons */
+    margin-bottom: 20px;
+}
+
+/* Button hover effect */
+.button-group button:hover {
+    background-color: #003d34;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="header"></div>
+<div class="header-content" id="page-content" style="display: none;">
+    <nav>
+        <ul>
+            <li><a href="clients.html">Clients</a></li>
+            <li><a href="all-invoices.html">Invoices</a></li>
+            <li><a href="pendinginvoices.html">Pending Invoices</a></li>
+        </ul>
+    </nav>
+</div>
+
+<div>
+    <label for="exportBtn">Export Client Invoices:</label>
+    <button id="exportBtn">Export Invoices</button>
+</div>
+
+
+<!-- Button Group for Invoice Filters -->
+<div class="button-group" style="text-align: center; margin-top: 20px;">
+    <button id="paidInvoicesBtn">Paid Invoices</button>
+    <button id="pendingInvoicesBtn">Pending Invoices</button>
+    <button id="naInvoicesBtn">Not Applicable Invoices</button>
+</div>
+
+<div class="main-content">
+    <table id="invoiceTable">
+        <thead>
+        <tr>
+            <th>Serial Number</th>
+            <th>Invoice Number</th>
+            <th>Invoice Value</th>
+            <th>Currency</th>
+            <th>Month</th>
+            <th>Raised On</th>
+            <th>Timeline</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows will be populated by JavaScript -->
+        </tbody>
+    </table>
+
+
+
+    <div class="pagination">
+        <button id="prevPage" disabled>Previous</button>
+        <span id="pageNumber">Page 1 of 1</span>
+        <button id="nextPage" disabled>Next</button>
+    </div>
+</div>
+
+<!-- Footer section -->
+<div id="footer">
+    <!-- Footer content goes here -->
+</div>
+
+<script>
+
+    // Export pending invoices functionality
+    function exportPendingInvoices() {
+        const clientId = new URLSearchParams(window.location.search).get('clientId');
+        fetch(`http://43.205.154.85:8080/api/invoices/pending/clientInvoices/export?clientId=${clientId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'clientPendingInvoices_export.xlsx'; // Set the file name for the export
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error exporting pending invoice data:', error));
+    }
+
+    // Add event listener to the export button
+    document.getElementById('exportBtn').addEventListener('click', exportPendingInvoices);
+
+
+
+       // Export invoices functionality
+       function exportInvoices() {
+        const clientId = new URLSearchParams(window.location.search).get('clientId');
+               fetch(`http://43.205.154.85:8080/api/invoices/clients/invoices/export?clientId=${clientId}`, {
+                   method: 'GET',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   }
+               })
+               .then(response => response.blob())
+               .then(blob => {
+                   const url = window.URL.createObjectURL(blob);
+                   const a = document.createElement('a');
+                   a.href = url;
+                   a.download = 'clientInvoices_export.xlsx'; // Set the file name for the export
+                   a.click();
+                   window.URL.revokeObjectURL(url);
+               })
+               .catch(error => console.error('Error exporting Invoice data:', error));
+           }
+
+           // Add event listener to export button
+           document.getElementById('exportBtn').addEventListener('click', exportInvoices);
+
+
+    //Function for getting pending invoices
+           function PendingClientInvoices() {
+        const clientId = new URLSearchParams(window.location.search).get('clientId');
+    if (clientId) {
+        fetch(`http://43.205.154.85:8080/api/invoices/pending/clientInvoices?clientId=${clientId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("data",data)
+                populateTable(data);
+                document.getElementById('loading-overlay').style.display = 'none';
+                document.getElementById('page-content').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching invoices:', error));
+    } else {
+        console.error('Client ID is missing in the URL');
+    }
+    };
+           // Add event listener to export button
+           document.getElementById('pendingInvoicesBtn').addEventListener('click', PendingClientInvoices);
+
+
+
+
+    //Function for getting Invoices of Particular Client
+            document.addEventListener('DOMContentLoaded', function() {
+                const clientId = new URLSearchParams(window.location.search).get('clientId');
+
+                if (clientId) {
+                    fetch(`http://43.205.154.85:8080/api/invoices/byClient?clientId=${clientId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("data",data)
+                            populateTable(data);
+                            document.getElementById('loading-overlay').style.display = 'none';
+                            document.getElementById('page-content').style.display = 'block';
+                        })
+                        .catch(error => console.error('Error fetching invoices:', error));
+                } else {
+                    console.error('Client ID is missing in the URL');
+                }
+            });
+
+
+
+            fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+            // Ensure the navigation is set correctly after header loads
+            document.getElementById('page-content').style.display = 'block';
+        })
+        .catch(error => console.error('Error loading header:', error));
+
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading footer:', error));
+
+
+            function populateTable(invoices) {
+                const tableBody = document.querySelector('#invoiceTable tbody');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                invoices.forEach((invoice, index) => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td id="invoice_id">${invoice.invoiceNumber}</td>
+                        <td>${invoice.invoiceValue}</td>
+                        <td>${invoice.currency}</td>
+                        <td>${invoice.month}</td>
+                        <td>${invoice.raisedOn}</td>
+                        <td>${invoice.timeline}</td>
+
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            }
+</script>
+</body>
+</html>

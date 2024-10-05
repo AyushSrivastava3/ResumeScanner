@@ -13,7 +13,7 @@ public class MongoConfig {
     @Bean
     public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory mongoDbFactory, MongoMappingContext context) {
         MappingMongoConverter converter = new MappingMongoConverter(mongoDbFactory, context);
-        converter.setTypeMapper(new DefaultMongoTypeMapper(null));
+//        converter.setTypeMapper(new DefaultMongoTypeMapper(null));
         converter.setMapKeyDotReplacement("_"); // Replaces dots with underscores
         return converter;
     }

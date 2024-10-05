@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,13 @@ public class InvoiceService {
     }
 
 
+    public void deleteInvocieById(String id){
+        if(invoiceRepository.existsById(id)){
+            invoiceRepository.deleteById(id);
+        }else {
+            // throw new ClientNotFoundException("Client with id " + id + " not found");
+        }
+    }
 
 
     public List<Invoice> getPendingInvoices() {
@@ -47,10 +55,23 @@ public class InvoiceService {
         String currentDateString = LocalDate.now().format(formatter);
 
         List<Invoice> invoices = invoiceRepository.findPendingInvoices(currentDateString);
-
         return invoices;
     }
 
+    public List<Invoice> getPendingInvoicesByClientId(String clientId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String currentDateString = LocalDate.now().format(formatter);
+
+        List<Invoice> invoices = invoiceRepository.findPendingInvoices(currentDateString);
+
+        List<Invoice> result= new ArrayList<>();
+        for (Invoice currentInvoice : invoices){
+            if(currentInvoice.getClientId().equals(clientId)){
+                result.add(currentInvoice);
+            }
+        }
+        return result;
+    }
     public List<Invoice> getInvoiceCreatedToday() {
         LocalDateTime todayStart = LocalDateTime.now().with(LocalTime.MIN);
         return invoiceRepository.findInvoiceAddedToday(todayStart);
@@ -61,5 +82,9 @@ public class InvoiceService {
         LocalDateTime now = LocalDateTime.now();
         return invoiceRepository.findInvoiceWithinDateRange(weekAgo,now);
 
+    }
+
+    public List<Invoice> getInvoicesByClientId(String clientId){
+        return invoiceRepository.findByClientId(clientId);
     }
 }
